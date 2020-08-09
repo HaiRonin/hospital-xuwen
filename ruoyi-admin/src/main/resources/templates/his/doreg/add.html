@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增预约挂号')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-doreg-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">医生编号：</label>
+                <div class="col-sm-8">
+                    <input name="organdoctorId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">患者身份证号：</label>
+                <div class="col-sm-8">
+                    <input name="cardNo" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">患者编号：</label>
+                <div class="col-sm-8">
+                    <input name="patientNo" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">社保号：</label>
+                <div class="col-sm-8">
+                    <input name="socialsecurityNO" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">取号日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="sourceDate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">时间段标识：</label>
+                <div class="col-sm-8">
+                    <select name="timestypeNo" class="form-control m-b" th:with="type=${@dict.getType('his_source_time_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">时间段标识：</label>
+                <div class="col-sm-8">
+                    <select name="sourceTimeType" class="form-control m-b" th:with="type=${@dict.getType('his_source_time_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">支付流水号：</label>
+                <div class="col-sm-8">
+                    <input name="payNo" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">支付金额：</label>
+                <div class="col-sm-8">
+                    <input name="payAmount" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">商户ID：</label>
+                <div class="col-sm-8">
+                    <input name="appId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">创建时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="creatTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">支付状态：</label>
+                <div class="col-sm-8">
+                    <select name="successfulPayment" class="form-control m-b" th:with="type=${@dict.getType('his_payment_state')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">商户订单号：</label>
+                <div class="col-sm-8">
+                    <input name="outTradeNo" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">微信订单号：</label>
+                <div class="col-sm-8">
+                    <input name="transactionId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">科室id：</label>
+                <div class="col-sm-8">
+                    <input name="departmentorganId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">支付方式：</label>
+                <div class="col-sm-8">
+                    <select name="payType" class="form-control m-b" th:with="type=${@dict.getType('his_pay_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">返回信息：</label>
+                <div class="col-sm-8">
+                    <input name="resultMsg" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "his/doreg"
+        $("#form-doreg-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-doreg-add').serialize());
+            }
+        }
+
+        $("input[name='sourceDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='creatTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>
