@@ -14,13 +14,13 @@ public enum HisBusinessTypeEnum {
 	DOPAY("dopay", "/dopay","缴费支付",DoregInfoHisServiceHander.class),
 	INPATIENTPAYMENT("inpatientpayment", "/inpatientpayment","住院押金补缴",DoregInfoHisServiceHander.class),;
 	private String code;
-	private String apiCode;
+	private String apiUrl;
 	private String desc;
 	private Class clazz;
 
-	HisBusinessTypeEnum(String code, String apiCode,String desc,  Class clazz) {
+	HisBusinessTypeEnum(String code, String apiUrl,String desc,  Class clazz) {
 		this.code=code;
-		this.apiCode=apiCode;
+		this.apiUrl=apiUrl;
 		this.desc=desc;
 		this.clazz=clazz;
 	}
@@ -33,12 +33,12 @@ public enum HisBusinessTypeEnum {
 		this.code = code;
 	}
 
-	public String getApiCode() {
-		return apiCode;
+	public String getApiUrl() {
+		return apiUrl;
 	}
 
-	public void setApiCode(String apiCode) {
-		this.apiCode = apiCode;
+	public void setApiUrl(String apiCode) {
+		this.apiUrl = apiCode;
 	}
 
 	public String getDesc() {

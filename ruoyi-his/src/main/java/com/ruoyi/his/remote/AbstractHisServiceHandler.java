@@ -20,7 +20,7 @@ import java.util.Map;
 /***
  * his接口抽象类
  */
-public abstract class AbstractHisServiceHandler<T extends BaseRequest> implements HisWebServices{
+public abstract class AbstractHisServiceHandler<T extends BaseRequest> extends HisBaseServices implements HisWebServices{
 
     private static Logger logger = LoggerFactory.getLogger(AbstractHisServiceHandler.class);
     /**
@@ -71,41 +71,26 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest> implement
      */
     private String buildRequestData(Long id){
         T t = this.getBusinessData(id);
-        Map<String, Object> requestMap = new HashMap<String, Object>();
-        requestMap.put("synUserName","");
-        requestMap.put("synKey","");
-        try {
-            requestMap.put(getBusinessType().getCode(), MapUtil.objectToMap(t));
-            return JSON.toJSONString(requestMap);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BusinessException(String.format("数据转换发生异常"));
-        }
+        Map<String, Object> requestMap = buildBaseRequestData(getBusinessType().getCode(),t);
+        return JSON.toJSONString(requestMap);
     }
+
+
 
     /***
      * 构建his请求
      * @param dataParam
      * @return
      */
-    public HisResponse requestHisService(String dataParam) {
-        try {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("arg0", dataParam);
-            logger.info("AbstractHisServiceHandler.api={},dataParam={}",getBusinessType().getApiCode(),dataParam);
-            HttpResponse responseInfo = HttpUtils.doPost("http://219.129.12.10:8099/wechat.asmx", getBusinessType().getApiCode(),  new HashMap<>(), null,headers);
-            String result = EntityUtils.toString(responseInfo.getEntity(), "UTF-8");
-            logger.info("AbstractHisServiceHandler.api={}，result={}",result);
-            if(StringUtils.isBlank(result)){
-                throw new BusinessException(String.format("无法调用His接口"));
-            }
-            HisResponse hisResponse = JSON.toJavaObject(JSON.parseObject(result), HisResponse.class);
-            return hisResponse;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BusinessException(String.format("调用His接口发生异常，操作失败:%1$s",e.getMessage()));
+    private HisResponse requestHisService(String dataParam) {
+        String result = requestHisService(getBusinessType().getApiUrl(),dataParam);
+        if(StringUtils.isBlank(result)){
+            throw new BusinessException(String.format("无法调用His接口"));
         }
-
+        HisResponse hisResponse = JSON.toJavaObject(JSON.parseObject(result), HisResponse.class);
+        return hisResponse;
     }
+
+
 
 }
