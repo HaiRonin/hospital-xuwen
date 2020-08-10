@@ -36,8 +36,8 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
 
     @Override
     public DoRegIn getBusinessData(Long id) {
-        DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
-        doregInfoNew = getTest();
+       // DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
+        DoregInfo doregInfoNew = getTest();
         if(null == doregInfoNew){
             throw new BusinessException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
         }

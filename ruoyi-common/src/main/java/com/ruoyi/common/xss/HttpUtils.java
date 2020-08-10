@@ -32,7 +32,6 @@ public class HttpUtils {
      *
      * @param host
      * @param path
-     * @param method
      * @param headers
      * @param querys
      * @param bodys
