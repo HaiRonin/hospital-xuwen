@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 预约挂号Controller
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author whl
  * @date 2020-08-08
  */
-@Controller
+@RestController
 @Api("his接口")
 @RequestMapping("/his")
 public class HisServiceCallController extends BaseController
@@ -37,6 +38,6 @@ public class HisServiceCallController extends BaseController
     @ResponseBody
     public String invokeCall(@RequestParam("api") String api,@RequestParam("dataParam") String dataParam)
     {
-        return hisBaseServices.requestHisService("/"+api,dataParam);
+        return hisBaseServices.requestHisService("/"+api.trim(),dataParam);
     }
 }
