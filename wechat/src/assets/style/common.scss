@@ -63,3 +63,13 @@ body {
     box-shadow: 0 0.0625rem .75rem rgba(100, 101, 102, 0.12);
     background-color: #fff;
 }
+
+.z-box{background: #fff;min-height: 100%;padding-top: 1rem;overflow: hidden;}
+
+.head-img{
+    width: 4rem;
+    height: 5rem;
+    object-fit: cover;
+    object-position: center top;
+    margin-right: 1rem;
+}

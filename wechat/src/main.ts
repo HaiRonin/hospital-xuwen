@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import {Icon} from 'vant';
+import pageList from '@/components/pageList.vue';
 import '@/assets/style/common.scss';
 import 'vant/lib/index.css';
 
@@ -22,6 +23,7 @@ utils.winSize();
 // });
 
 Vue.use(Icon);
+Vue.component('pageList', pageList);
 
 new Vue({
     router,

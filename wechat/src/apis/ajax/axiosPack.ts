@@ -1,3 +1,4 @@
+// 第一步
 import axios, {Canceler, AxiosResponse} from 'axios';
 import qs from 'qs';
 
@@ -67,7 +68,7 @@ const get: TMyGet = (url, params, options) => {
             transformResponse: [(res) => {
                 executionAjax[url] = null;
                 try {
-                    return (typeof res === 'string' ? JSON.parse(res) : res);
+                    return typeof res === 'string' ? JSON.parse(res) : res;
                 } catch (error) {
                     return res;
                 }
@@ -81,7 +82,7 @@ const get: TMyGet = (url, params, options) => {
         }).then((res) => {
             const data: IMyResponse = res.data;
 
-            if (data.code === 0) {
+            if (data.resultCode === '00') {
                 resolve(data);
             } else {
                 reject({type: 'thenError', data, oldRes: res} as IMyRejectObj);

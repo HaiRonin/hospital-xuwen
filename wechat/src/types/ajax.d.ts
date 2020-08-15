@@ -5,17 +5,12 @@ interface IApiServer extends IOBJ {
     baseApi: string;
 }
 
-interface IMyResponse {
+interface IMyResponse extends IOBJ {
     /**
      * 状态码
      */
-    code: number;
-    data: IOBJ;
-    msg: string;
-    /**
-     * 时间戳
-     */
-    timestamp: number;
+    resultCode: string;
+    resultMsg: string;
 }
 
 interface IMyOptions {
@@ -72,6 +67,7 @@ interface IMyCacheData {
 }
 
 type IMyPromiseAjax = (params: IOBJ, options: IMyOptions) => Promise<IOBJ>;
+type TApi = IMyPromiseAjax;
 
 type TMyGet = (url: string, params: IOBJ, options: IMyOptions) => Promise<IOBJ>;
 type TMyAjax = (url: string, params?: IOBJ, options?: IMyOptions) => Promise<IMyResponse>;

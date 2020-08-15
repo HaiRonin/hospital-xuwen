@@ -61,7 +61,7 @@
             },
             {
                 text: '信息查询',
-                name: '',
+                name: 'infoIndex',
                 imgUrl: require('@/assets/image/icon/icon_81.png'),
             },
             {

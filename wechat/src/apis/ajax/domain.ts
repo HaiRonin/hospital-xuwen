@@ -7,8 +7,10 @@ if (process.env.NODE_ENV === 'development') {
     apiServer = {
         // 正式
         // 测试
-        baseApi: '',
+        // baseApi: 'http://120.76.246.196',
 
+        // vueconfig proxy 代理
+        baseApi: '',
     };
 
 } else if (process.env.NODE_ENV === 'test') {
@@ -23,6 +25,6 @@ if (process.env.NODE_ENV === 'development') {
         baseApi: '',
     };
 
-};
+}
 
-export default (apiServer as IApiServer);
+export default apiServer as IApiServer;

@@ -56,6 +56,30 @@ const routes: Array<RouteConfig> = [
         meta: {title: '列表'},
         props: true
     },
+    {
+        path: '/info/index',
+        component: () => import('@pages/info/index.vue'),
+        name: 'infoIndex',
+        meta: {title: '信息查询'},
+    },
+    {
+        path: '/info/drugSearch',
+        component: () => import('@pages/info/drugSearch.vue'),
+        name: 'infoDrugSearch',
+        meta: {title: '药品/非药品查询'},
+    },
+    {
+        path: '/info/expertIntroduction',
+        component: () => import('@pages/info/expertIntroduction.vue'),
+        name: 'infoExpertIntroduction',
+        meta: {title: '专家介绍'},
+    },
+    {
+        path: '/info/hospitalntroduction',
+        component: () => import('@pages/info/hospitalntroduction.vue'),
+        name: 'infoHospitalntroduction',
+        meta: {title: '医院简介'},
+    },
 ];
 
 const router = new VueRouter({routes});

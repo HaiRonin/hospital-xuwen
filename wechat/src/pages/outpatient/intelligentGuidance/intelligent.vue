@@ -346,7 +346,7 @@
             const proportion = imgWidth / standardWidth;
             const arr = item.value;
             // console.log(imgWidth, standardWidth, proportion);
-            return arr.map((num: number) => (num * proportion)).join();
+            return arr.map((num: number) => num * proportion).join();
         }
 
         sleep (d = 1000) {
@@ -367,6 +367,7 @@
         }
 
         setStatus (item?: IOBJ) {
+            // debugger;
             if (item) {
                 const {value, key} = item;
                 this.params[key] = value;

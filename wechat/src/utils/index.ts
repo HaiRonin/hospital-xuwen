@@ -6,7 +6,7 @@ export const winSize = () => {
     document!.querySelector('meta[name="viewport"]')!.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
 
     var deviceWidth = document.documentElement.clientWidth;
-    document.documentElement.style.fontSize = (deviceWidth * 16 / 375) + 'px';
+    document.documentElement.style.fontSize = deviceWidth * 0.5 / 375 + 'px';
 };
 
 export const jsCopyObj: TJsCopyObj = (data: any, cache = []) => {
@@ -16,7 +16,7 @@ export const jsCopyObj: TJsCopyObj = (data: any, cache = []) => {
     }
 
     // 循环引用
-    const find = cache.find((i) => (i.old === data));
+    const find = cache.find((i) => i.old === data);
     if (find) {
         return find.obj;
     }
@@ -74,7 +74,7 @@ export const dateData: TDateData = (() => {
     const WEEK_ARR = ['日', '一', '二', '三', '四', '五', '六'];
 
     const addZero = (val: number) => {
-        return (val >= 10 ? val : `0${val}`);
+        return val >= 10 ? val : `0${val}`;
     };
 
     return (date: Date) => {

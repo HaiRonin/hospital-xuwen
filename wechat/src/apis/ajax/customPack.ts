@@ -1,3 +1,4 @@
+// 第二步
 import CacheAjax from './cacheAjax';
 import domain from './domain';
 import get from './axiosPack';
@@ -9,10 +10,27 @@ const ajaxErr = [
     {key: '404', text: '请求地址有误'},
 ];
 
-function handleError (err: IMyRejectObj) {
+// 特殊处理
+const specialHandl = (url: string, params: IOBJ) => {
+    let newParams = params;
+    if (url === '/his/request') {
+        const {api, ...o} = params;
+        newParams = {
+            api,
+            dataParam: {
+                ...o,
+                synUserName: '',
+                synKey: ''
+            }
+        };
+    }
+    return newParams;
+};
+
+const handleError = (err: IMyRejectObj) => {
     // console.log(err);
     const {type, data} = err;
-    let errorText = '';
+    let errorText = '服务器异常';
     let item = null;
     // console.log(data.msg);
     switch (true) {
@@ -20,15 +38,15 @@ function handleError (err: IMyRejectObj) {
             item = ajaxErr.find((ii) => ~data.message.indexOf(ii.key));
             item && (errorText = item.text);
             break;
-        case type === 'thenError' && !!data.msg:
-            errorText = data.msg;
+        case type === 'thenError' && !!data.resultMsg:
+            errorText = data.resultMsg;
             break;
     }
 
     return errorText;
-}
+};
 
-function ajax1 (url: string, params: IOBJ, options: IMyOptions) {
+const ajax1 = (url: string, params: IOBJ, options: IMyOptions) => {
     const {isLoad, closeErrorTips} = options;
 
     let toast: IOBJ | null = null;
@@ -48,12 +66,14 @@ function ajax1 (url: string, params: IOBJ, options: IMyOptions) {
         }
         return Promise.reject(err);
     });
-}
+};
 
 // 加上缓存功能
 export default function ajax2 (url: string, params: IOBJ, options: IMyOptions) {
     const {targetDomain} = options;
     const baseUrl = domain[targetDomain!];
+
+    params = specialHandl(url, params);
     url = baseUrl + url;
 
     const cacheKey = url;
