@@ -1,0 +1,65 @@
+
+
+body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4, h5, h6, i, b, textarea, button, input, select, figure, figcaption {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-style: normal;
+    text-decoration: none;
+    border: none;
+    box-sizing: border-box;
+    font-family: PingFangSC-Medium, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    background-color: #f5f5f9;
+    color: #333;
+    line-height: 1.2;
+}
+
+#app{height: 100%;}
+
+.flex-box { display: flex; }
+
+.f-v { flex-direction: column; }
+
+.justify-center { justify-content: center; }
+
+.justify-end { justify-content: flex-end; }
+
+.flex-wrap { flex-wrap: wrap; }
+
+.justify-s-b { justify-content: space-between; }
+
+.justify-a-r { justify-content: space-around; }
+
+.align-center { align-items: center; }
+
+.align-end { align-items: flex-end; }
+
+.flex-1 { flex: 1; }
+
+.rel{position: relative;}
+.abs{position: absolute;}
+
+.z-title{padding: .8rem .5rem;color: $main-color;border-bottom: $border-line;text-align: center;}
+.z-list{background-color: #fff;font-size: 1rem;}
+.z-l-item{
+    padding: .8rem .5rem;
+    background:-webkit-linear-gradient(left, #ebedf0, #ebedf0) no-repeat center bottom/92% $border-width;
+}
+.common-block{
+    margin: 0 1rem 1rem;padding: .8rem .5rem;font-size: .9rem;
+    border-radius: .3rem;
+    box-shadow: 0 0.0625rem .75rem rgba(100, 101, 102, 0.12);
+    background-color: #fff;
+}
