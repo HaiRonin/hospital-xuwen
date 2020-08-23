@@ -1,11 +1,13 @@
+import '@/assets/style/vantIndex.css';
+import '@/assets/style/common.scss';
+
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import {Icon} from 'vant';
 import pageList from '@/components/pageList.vue';
-import '@/assets/style/common.scss';
-import 'vant/lib/index.css';
+
 
 Vue.config.productionTip = false;
 utils.winSize();

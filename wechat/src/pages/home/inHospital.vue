@@ -57,12 +57,12 @@
 <style lang="scss" scoped>
     .top-bg {
         display: block;
-        height: 12.5rem;
+        height: 400px;
         width: 100%;
     }
 
-    .q-e-3{margin-top: 1rem;}
-    .q-e-img{width: 2rem;height: 2rem;object-fit: contain;}
-    .q-e-text{color: #666;font-size: .75rem;margin-top: .5rem;}
+    .q-e-3{margin-top: 32px;}
+    .q-e-img{width: 64px;height: 64px;object-fit: contain;}
+    .q-e-text{color: #666;font-size: 24px;margin-top: 16px;}
 </style>
 

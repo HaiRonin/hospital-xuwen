@@ -3,10 +3,12 @@ import throttleFun from './throttle';
 
 export const winSize = () => {
     var scale = 1 / (window.devicePixelRatio || 1);
-    document!.querySelector('meta[name="viewport"]')!.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+    document!.querySelector('meta[name="viewport"]')!.setAttribute('content', 'width=device-width,initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
 
     var deviceWidth = document.documentElement.clientWidth;
-    document.documentElement.style.fontSize = deviceWidth * 0.5 / 375 + 'px';
+    // const ua = navigator.userAgent.toLowerCase();
+    // alert(ua);
+    document.documentElement.style.fontSize = deviceWidth * 16 / 375 + 'px';
 };
 
 export const jsCopyObj: TJsCopyObj = (data: any, cache = []) => {
@@ -90,3 +92,8 @@ export const dateData: TDateData = (() => {
         };
     };
 })();
+
+export const toFixed: TToFixed = (val, toNum = false, retain = 2) => {
+    const newVal = (+val).toFixed(retain);
+    return toNum ? +newVal : newVal;
+};

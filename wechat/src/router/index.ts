@@ -80,6 +80,12 @@ const routes: Array<RouteConfig> = [
         name: 'infoHospitalntroduction',
         meta: {title: '医院简介'},
     },
+    {
+        path: '/info/departmentIsIntroduced',
+        component: () => import('@pages/info/departmentIsIntroduced.vue'),
+        name: 'infoDepartmentIsIntroduced',
+        meta: {title: '科室介绍'},
+    },
 ];
 
 const router = new VueRouter({routes});

@@ -53,11 +53,11 @@
         z-index: 2;
     }
     .z-custom-d{margin-bottom: 0;}
-    .text{padding: .5rem 1.5rem;font-size: .9rem;}
+    .text{padding: 16px 48px;font-size: 28.8px;}
     // .item{
-    //     margin: 0 1rem 1rem;padding: .8rem .5rem;font-size: .9rem;
-    //     border-radius: .3rem;
-    //     box-shadow: 0 0.0625rem .75rem rgba(100, 101, 102, 0.12);
+    //     margin: 0 32px 32px;padding: 25.6px 16px;font-size: 28.8px;
+    //     border-radius: 9.6px;
+    //     box-shadow: 0 64px 24px rgba(100, 101, 102, 0.12);
     // }
 </style>
 

@@ -73,7 +73,7 @@
 
     .box::v-deep .van-tabs{height: 100%;}
 
-    .box::v-deep .van-tabs__content{position: absolute;top: 2.75rem;left: 0;right: 0;bottom: 0;}
+    .box::v-deep .van-tabs__content{position: absolute;top: 88px;left: 0;right: 0;bottom: 0;}
 
     .box::v-deep .van-tab__pane{height: 100%;}
 </style>

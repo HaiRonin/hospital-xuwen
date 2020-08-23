@@ -13,10 +13,10 @@
         </div>
         <van-cell-group>
             <van-cell v-for="(item, index) in quickEntry2" :key="index" center is-link @click="$router.push({name: item.name})">
-                 <template #title>
+                <template #title>
                     <img class="list-img" :src="item.imgUrl" alt="">
                     <span class="list-text">{{item.text}}</span>
-                 </template>
+                </template>
             </van-cell>
         </van-cell-group>
     </div>
@@ -61,23 +61,23 @@
 </script>
 
 <style lang="scss" scoped>
-    .list-img{width: 1.2rem;height: 1.2rem;object-fit: contain;margin-right: .5rem;display: inline-block;vertical-align: middle;}
-    .list-text{display: inline-block;vertical-align: middle;font-size: .9rem;}
+    .list-img{width: 32px;height: 32px;object-fit: contain;margin-right: 16px;display: inline-block;vertical-align: middle;}
+    .list-text{display: inline-block;vertical-align: middle;font-size: 28.8px;}
 
     .user-info{
         background: no-repeat center/cover;
-        height: 12rem;
-        margin-bottom: 1rem;
+        height:384px;
+        margin-bottom: 32px;
         color: #fff;
     }
 
     .u-i-headimg{
-        width: 3.5rem;height: 3.5rem;object-fit: cover;
-        border: .15rem solid #fff;
+        width: 112px;height: 112px;object-fit: cover;
+        border: 6px solid #fff;
         border-radius: 50%;
     }
 
-    .text-1{font-size: 1.1rem;margin-top: .5rem;}
-    .text-2{font-size: .8rem;margin-top: .2rem;}
+    .text-1{font-size: 30px;margin-top: 16px;}
+    .text-2{font-size: 28px;margin-top: 8px;}
 </style>
 

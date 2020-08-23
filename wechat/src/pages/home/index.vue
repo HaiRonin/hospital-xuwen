@@ -4,7 +4,7 @@
         <keep-alive>
             <router-view />
         </keep-alive>
-        <div style="height:3.125rem"></div>
+        <div style="height:3.125px"></div>
         <van-tabbar v-model="active" @change="navChange">
             <van-tabbar-item v-for="item in tabNav" :key="item.name" :name="item.name">
                 <span>{{item.text}}</span>

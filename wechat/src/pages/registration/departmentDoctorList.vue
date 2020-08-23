@@ -79,7 +79,7 @@
 
             this.params.theTitle = undefined;
             // debugger;
-            this.theTitleList = [{text: '医生职称', value: undefined}].concat((Array.from(set)).map((value: any | string) => ({text: value, value})));
+            this.theTitleList = [{text: '医生职称', value: undefined}].concat(Array.from(set).map((value: any | string) => ({text: value, value})));
         }
 
         // 处理list数据
@@ -649,10 +649,10 @@
         border-color: $main-color;
     }
 
-    // .item{box-shadow: 0 0.0625rem 0.75rem rgb(100 101 102 / 5%);}
-    .item-img{width: 3rem;height: 3rem;border-radius: 50%;object-fit: cover;object-position: top;margin-right: 1rem;}
-    .item-text-1{font-size: 1.1rem;}
-    .item-text-2{color: $color-grey;margin-top: .2rem;}
-    .item-btn{min-width: 5rem;}
+    // .item{box-shadow: 0 64px 24px rgb(100 101 102 / 5%);}
+    .item-img{width: 96px;height: 96px;border-radius: 50%;object-fit: cover;object-position: top;margin-right: 32px;}
+    .item-text-1{font-size: 35.2px;}
+    .item-text-2{color: $color-grey;margin-top: 6.4px;}
+    .item-btn{min-width: 160px;}
 </style>
 

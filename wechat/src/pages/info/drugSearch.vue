@@ -21,9 +21,26 @@
             </template>
         </van-search>
 
-        <pageList :request="request" :params="params" ref="pageList">
+        <pageList :request="request" :params="params" :handleItem="handleItem" ref="pageList" class="list-box">
             <template v-slot="{list}">
-                <div v-for="(item, index) in list" :key="index">{{item.Name}}</div>
+                <div v-for="(item, index) in list" :key="index" class="common-block item">
+                    <div class="flex-box align-center">
+                        <div class="text-1">物品名称:</div>
+                        <div class="text-2">{{item.Name}}</div>
+                    </div>
+                    <div class="flex-box align-center">
+                        <div class="text-1">规格:</div>
+                        <div class="text-2">{{item.spec}}</div>
+                    </div>
+                    <div class="flex-box align-center">
+                        <div class="text-1">价格:</div>
+                        <div class="text-2">{{item.price}}元</div>
+                    </div>
+                    <div class="flex-box align-center">
+                        <div class="text-1">产地:</div>
+                        <div class="text-2">{{item.manufacturerName}}</div>
+                    </div>
+                </div>
             </template>
         </pageList>
 
@@ -41,17 +58,16 @@
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import {ActionSheet, Search} from 'vant';
-    import {infoApi} from '@/apis';
+    import {seachitem} from '@/apis';
 
     Vue.use(ActionSheet);
     Vue.use(Search);
-
 
     @Component
     export default class DrugSearch extends Vue {
         @Ref('pageList') readonly pageList!: IOBJ;
 
-        request: TApi = infoApi.getSeachList;
+        request: TApi = seachitem;
         seachOpen: boolean = false;
         params: IOBJ = {
             seachString: '',
@@ -64,11 +80,16 @@
             {name: '非药品', value: 2},
         ];
 
+        handleItem (item: IOBJ) {
+            item.oldPrice = item.price;
+            item.price = utils.toFixed(item.oldPrice);
+        }
+
         onSelect (item: IOBJ) {
             this.params.seachType = item.value;
             this.pageList.getList(1);
         }
-        onSearch (...a) {
+        onSearch () {
             this.pageList.getList(1);
         }
         getList () {}
@@ -90,20 +111,29 @@
         position: sticky;
         left: 0;
         top: 0;
+        border-bottom:$border-line;
     }
     .search-box::v-deep .van-search__content {
-        padding-left: 4rem;
+        padding-left:128px;
     }
     .sort-btn {
-        width: 4.5rem;
+        width: 144px;
         text-align: center;
         top: 0;
         left: 0;
         bottom: 0;
         background: #fff;
-        font-size: 0.9rem;
+        font-size: 28.8px;
     }
     .sort-text {
-        min-width: 3rem;
+        min-width: 96px;
     }
+
+    .list-box{
+        padding-top: 32px;
+        // background: #fff;
+    }
+
+    .item{line-height: 1.8;}
+    .text-1{color: $color-grey;min-width: 150px;text-align: right;padding-right: 20px;}
 </style>

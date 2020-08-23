@@ -40,6 +40,7 @@ type TFun = (...arr: []) => TFunCallBack;
 type TImmediateFun = (fn: TFunCallBack, interval: number, fakeInterval: number) => TFunCallBack;
 type TThrottle = (fn: TFunCallBack, interval?: 200 | number, fakeInterval?: 300 | number, immediate?: false | boolean) => TFunCallBack;
 type TDateData = (date: Date) => IDateData;
+type TToFixed = (val: string | number, toNum?: boolean | false, retain?: number | 2) => string | number;
 
 declare module utils {
 
@@ -85,5 +86,13 @@ declare module utils {
     const winSize: () => void;
 
     const dateData: TDateData;
+
+    /**
+     * 保留小数点后两位
+     * val 需要处理的值
+     * toNum 是否转为数值
+     * retain 保留位数
+     */
+    const toFixed: TToFixed;
 }
 

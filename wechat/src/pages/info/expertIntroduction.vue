@@ -4,7 +4,6 @@
             v-for="(item, index) in list"
             :key="index"
             class="common-block flex-box rel"
-            @click="$router.push({name: item.name})"
         >
             <img :src="item.imgUrl" alt="" class="head-img">
             <div>
@@ -37,6 +36,6 @@
 <style lang="scss" scoped>
     .head-img{
     }
-    .text-1{font-size: 1rem;margin-bottom: .5rem;}
+    .text-1{font-size: 32px;margin-bottom: 16px;}
     .text-2{color: $color-grey;}
 </style>

@@ -67,7 +67,7 @@ interface IMyCacheData {
 }
 
 type IMyPromiseAjax = (params: IOBJ, options: IMyOptions) => Promise<IOBJ>;
-type TApi = IMyPromiseAjax;
+type TApi = (params?: IOBJ, options?: IMyOptions) => Promise<IOBJ>;
 
 type TMyGet = (url: string, params: IOBJ, options: IMyOptions) => Promise<IOBJ>;
 type TMyAjax = (url: string, params?: IOBJ, options?: IMyOptions) => Promise<IMyResponse>;

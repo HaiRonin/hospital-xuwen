@@ -83,6 +83,8 @@ const get: TMyGet = (url, params, options) => {
             const data: IMyResponse = res.data;
 
             if (data.resultCode === '00') {
+                const dataKey = Object.keys(data).find((key: string) => !['resultCode', 'resultMsg'].includes(key));
+                data.data = data[dataKey || ''];
                 resolve(data);
             } else {
                 reject({type: 'thenError', data, oldRes: res} as IMyRejectObj);

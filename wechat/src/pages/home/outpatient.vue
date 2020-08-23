@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <van-grid border :column-num="3" class="q-e-3">
+        <van-grid border :column-num="3" class="">
             <van-grid-item v-for="(item, index) in quickEntry2" :key="index" @click="$router.push({name: item.name})">
                 <img class="q-e-img" :src="item.imgUrl"/>
                 <div class="q-e-text">{{item.text}}</div>
@@ -66,7 +66,7 @@
             },
             {
                 text: '科室介绍',
-                name: '',
+                name: 'infoDepartmentIsIntroduced',
                 imgUrl: require('@/assets/image/icon/icon_91.png'),
             },
         ];
@@ -79,21 +79,21 @@
 <style lang="scss" scoped>
     .top-bg {
         display: block;
-        height: 12.5rem;
+        height: 400px;
         width: 100%;
     }
 
-    .q-e-3{margin-top: 1rem;}
-    .q-e-img{width: 2rem;height: 2rem;object-fit: contain;}
-    .q-e-text{color: #666;font-size: .75rem;margin-top: .5rem;}
+    .q-e-3{margin-top: 32px;}
+    .q-e-img{width: 64px;height: 64px;object-fit: contain;}
+    .q-e-text{color: #666;font-size: 24px;margin-top: 16px;}
 
     .box-1{
-        padding: 1rem 0;
-        background:#fff -webkit-linear-gradient(left, #ebedf0, #ebedf0) no-repeat center/.0625rem 50%;
-        border-bottom: .0625rem solid #ebedf0;
+        padding: 32px 0;
+        background:#fff -webkit-linear-gradient(left, #ebedf0, #ebedf0) no-repeat center/2px 50%;
+        border-bottom: 32px solid #ebedf0;
     }
-    .b-img{width: 3rem;height: 3rem;object-fit: contain;margin-right: .8rem;}
-    .b-text-1{font-size: .95rem;}
-    .b-text-2{color: #999;margin-top: .2rem;font-size: .75rem;}
+    .b-img{width: 96px;height: 96px;object-fit: contain;margin-right: 25.6px;}
+    .b-text-1{font-size: 30.4px;}
+    .b-text-2{color: #999;margin-top: 8px;font-size: 24px;}
 </style>
 

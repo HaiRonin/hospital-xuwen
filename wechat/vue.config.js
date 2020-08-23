@@ -3,6 +3,7 @@ const webpack = require('webpack');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const FilemanagerWebpackPlugin = require('filemanager-webpack-plugin');
+const createTransformer = require('ts-import-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const isBuild = process.env.NODE_ENV !== 'development';
@@ -10,6 +11,12 @@ const isBuild = process.env.NODE_ENV !== 'development';
 function resolve (dir) {
     return path.join(__dirname, dir);
 }
+
+const transformer = createTransformer({
+    libraryName: 'vant',
+    libraryDirectory: 'es',
+});
+
 // console.log(resolve('./pulbic/favicon.ico'));
 module.exports = {
     // baseUrl: './',
@@ -93,6 +100,12 @@ module.exports = {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV),
                     PACK: JSON.stringify(process.env.PACK),
                 }
+            })
+        );
+
+        plugins.push(
+            transformer({
+                clean: true
             })
         );
 

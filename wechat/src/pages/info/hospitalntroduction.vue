@@ -26,8 +26,8 @@
     .common-block{
         // text-indent: ;
         line-height: 1.8;
-        letter-spacing: .05rem;
-        font-size: 1.05rem;
-        text-indent: 2rem;
+        letter-spacing: 1.6px;
+        font-size: 33.6px;
+        text-indent: 64px;
     }
 </style>

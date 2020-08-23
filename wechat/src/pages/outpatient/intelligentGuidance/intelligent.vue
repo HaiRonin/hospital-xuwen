@@ -331,7 +331,7 @@
             });
         }
 
-        remderPart (partList: IOBJ[]) {
+        pxderPart (partList: IOBJ[]) {
             return new Promise((rel) => {
                 this.partList = partList;
                 this.$nextTick(() => {
@@ -362,7 +362,7 @@
             await this.renderImg(imgUrl);
             // 怕没渲染完成
             await this.sleep(200);
-            await this.remderPart(partList);
+            await this.pxderPart(partList);
             utils.hideLoad();
         }
 
@@ -433,17 +433,17 @@
     .sel-box {
         background: #ddd;
         text-align: center;
-        padding: 0.2rem;
-        border-radius: 1.5rem;
-        font-size: 0.9rem;
+        padding: 6.4px;
+        border-radius: 48px;
+        font-size: 28.8px;
         z-index: 1;
         line-height: 1.5;
-        top: 0.8rem;
+        top: 25.6px;
     }
 
     .sel-box > span {
-        padding: 0.1rem 0.4rem;
-        min-width: 2rem;
+        padding: 3.2px 12.8px;
+        min-width: 64px;
         display: inline-block;
     }
 
@@ -454,26 +454,26 @@
     }
 
     .right-box {
-        right: 0.8rem;
+        right: 25.6px;
     }
     .left-box {
-        left: 0.8rem;
+        left: 25.6px;
     }
 
     .bottom-box{
         background: $main-color;
-        width: 2.6rem;
+        width: 83.2px;
         line-height: 1.5;
-        height: 2.6rem;
-        line-height: 2.6rem;
+        height: 83.2px;
+        line-height: 83.2px;
         text-align: center;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        padding: .5rem;
+        bottom: 48px;
+        right: 48px;
+        padding: 16px;
         color: #fff;
         border-radius: 50%;
         z-index: 1;
-        font-size: .9rem;
+        font-size: 28.8px;
     }
 
     .bottom-box>span{

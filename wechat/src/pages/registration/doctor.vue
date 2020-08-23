@@ -176,38 +176,38 @@
 
 <style lang="scss" scoped>
     // .common-block-1 {
-    //     margin-top: 1rem;
+    //     margin-top: 32px;
     // }
     .box {
-        padding-top: 1rem;
+        padding-top: 32px;
     }
     .info-img {
-        width: 4rem;
-        height: 5rem;
+        width:128px;
+        height: 160px;
         object-fit: cover;
         object-position: top;
-        margin-right: 1rem;
+        margin-right: 32px;
     }
     .info-text-1 {
-        font-size: 1.1rem;
+        font-size: 35.2px;
     }
     .info-text-2 {
         color: $color-grey;
-        margin-top: 0.4rem;
+        margin-top: 12.8px;
     }
     .info-text-3 {
-        margin-top: 0.8rem;
-        padding-top: 0.8rem;
+        margin-top: 25.6px;
+        padding-top: 25.6px;
         border-top: $border-line;
         color: $color-grey;
-        font-size: 0.9rem;
+        font-size: 28.8px;
         white-space: 1.5;
         line-height: 1.5;
     }
 
     // .item-text-1{width: 40%;}
     .item-text-3 {
-        min-width: 3rem;
+        min-width: 96px;
     }
     .num-text {
         // color: #07c160;
@@ -232,18 +232,18 @@
         text-align: center;
     }
     .tb-text-2 {
-        width: 1.5rem;
-        height: 1.5rem;
-        line-height: 1.5rem;
+        width: 48px;
+        height: 48px;
+        line-height: 48px;
         // background: #000;
-        margin: 0.5rem auto 0;
+        margin: 16px auto 0;
         border-radius: 50%;
         color: $main-color;
     }
     .tb-item.cur .tb-text-2 {
         background: $main-cur-color;
         color: #fff;
-        font-size: 0.8rem;
+        font-size: 25.6px;
     }
 </style>
 
