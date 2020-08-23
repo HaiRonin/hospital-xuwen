@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.SymptomsOrganMapper">
+    
+    <resultMap type="SymptomsOrgan" id="SymptomsOrganResult">
+        <result property="id"    column="id"    />
+        <result property="sex"    column="sex"    />
+        <result property="bodyPart"    column="body_part"    />
+        <result property="symptoms"    column="symptoms"    />
+        <result property="organName"    column="organ_name"    />
+        <result property="organId"    column="organ_id"    />
+    </resultMap>
+
+    <sql id="selectSymptomsOrganVo">
+        select id, sex, body_part, symptoms, organ_name, organ_id from his_symptoms_organ
+    </sql>
+
+    <select id="selectSymptomsOrganList" parameterType="SymptomsOrgan" resultMap="SymptomsOrganResult">
+        <include refid="selectSymptomsOrganVo"/>
+        <where>  
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="bodyPart != null  and bodyPart != ''"> and body_part = #{bodyPart}</if>
+            <if test="symptoms != null  and symptoms != ''"> and symptoms = #{symptoms}</if>
+            <if test="organName != null  and organName != ''"> and organ_name like concat('%', #{organName}, '%')</if>
+            <if test="organId != null "> and organ_id = #{organId}</if>
+        </where>
+    </select>
+    
+    <select id="selectSymptomsOrganById" parameterType="Integer" resultMap="SymptomsOrganResult">
+        <include refid="selectSymptomsOrganVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSymptomsOrgan" parameterType="SymptomsOrgan" useGeneratedKeys="true" keyProperty="id">
+        insert into his_symptoms_organ
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sex != null and sex != ''">sex,</if>
+            <if test="bodyPart != null and bodyPart != ''">body_part,</if>
+            <if test="symptoms != null and symptoms != ''">symptoms,</if>
+            <if test="organName != null and organName != ''">organ_name,</if>
+            <if test="organId != null">organ_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sex != null and sex != ''">#{sex},</if>
+            <if test="bodyPart != null and bodyPart != ''">#{bodyPart},</if>
+            <if test="symptoms != null and symptoms != ''">#{symptoms},</if>
+            <if test="organName != null and organName != ''">#{organName},</if>
+            <if test="organId != null">#{organId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSymptomsOrgan" parameterType="SymptomsOrgan">
+        update his_symptoms_organ
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="bodyPart != null and bodyPart != ''">body_part = #{bodyPart},</if>
+            <if test="symptoms != null and symptoms != ''">symptoms = #{symptoms},</if>
+            <if test="organName != null and organName != ''">organ_name = #{organName},</if>
+            <if test="organId != null">organ_id = #{organId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSymptomsOrganById" parameterType="Integer">
+        delete from his_symptoms_organ where id = #{id}
+    </delete>
+
+    <delete id="deleteSymptomsOrganByIds" parameterType="String">
+        delete from his_symptoms_organ where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

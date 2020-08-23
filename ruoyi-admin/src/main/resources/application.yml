@@ -136,6 +136,23 @@ swagger:
   # 是否开启swagger
   enabled: true
 
+redis:
+  host: 127.0.01
+  jedis:
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: -1
+      min-idle: 0
+  password: ''
+  port: 6379
+  timeout: 10000
+
+
 his:
   service:
     url: http://219.129.12.10:8099/wechat.asmx
+
+
+    initCaches:
+      mobile::code::: 2m
