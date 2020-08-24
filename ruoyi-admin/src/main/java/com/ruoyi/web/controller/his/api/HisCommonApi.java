@@ -51,7 +51,7 @@ public class HisCommonApi
     @ApiOperation("his接口调用")
     @GetMapping("/request")
     @ResponseBody
-    @Cacheable(value="#api", key="#dataParam")
+//    @Cacheable(value="#api", key="#dataParam")
     public String invokeCall(@RequestParam("api") String api,@RequestParam("dataParam") String dataParam)
     {
         return hisBaseServices.requestHisService("/"+api.trim(),dataParam);

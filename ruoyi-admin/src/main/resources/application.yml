@@ -151,8 +151,10 @@ redis:
 
 his:
   service:
-    url: http://219.129.12.10:8099/wechat.asmx
-
+    #廉江医院
+    #url: http://219.129.12.10:8099/wechat.asmx
+    #农垦中心医院
+    url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
 
     initCaches:
       mobile::code::: 2m
