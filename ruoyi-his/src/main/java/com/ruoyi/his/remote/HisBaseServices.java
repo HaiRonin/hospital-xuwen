@@ -37,7 +37,7 @@ public class HisBaseServices {
     public String requestHisService(String apiUrl, String dataParam) {
         try {
             Map<String, String> headers = new HashMap<>();
-            headers.put("arg0", dataParam);
+            headers.put("doRegIn", dataParam);
             logger.info("HisBaseServices.apiUrl={},dataParam={}",apiUrl,dataParam);
             HttpResponse responseInfo = HttpUtils.doPost(hisUrl, apiUrl,  new HashMap<>(), null,headers);
             String result = EntityUtils.toString(responseInfo.getEntity(), "UTF-8");
