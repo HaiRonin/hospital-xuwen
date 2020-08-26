@@ -11,13 +11,13 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 预约挂号对象 his_doreg_info
  * 
  * @author whl
- * @date 2020-08-08
+ * @date 2020-08-26
  */
 public class DoregInfo extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 序号 */
+    /** null */
     private Long id;
 
     /** 医生编号 */
@@ -42,7 +42,7 @@ public class DoregInfo extends BaseEntity
 
     /** 时间段标识 */
     @Excel(name = "时间段标识")
-    private String timestypeNo;
+    private Integer timestypeNo;
 
     /** 时间段标识 */
     @Excel(name = "时间段标识")
@@ -52,17 +52,13 @@ public class DoregInfo extends BaseEntity
     @Excel(name = "支付流水号")
     private String payNo;
 
-    /** 支付金额 */
-    @Excel(name = "支付金额")
+    /** 已支金额 */
+    @Excel(name = "已支金额")
     private BigDecimal payAmount;
 
     /** 商户ID */
     @Excel(name = "商户ID")
     private String appId;
-
-    /** 创建时间 */
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date creatTime;
 
     /** 支付状态 */
     @Excel(name = "支付状态")
@@ -87,6 +83,18 @@ public class DoregInfo extends BaseEntity
     /** 返回信息 */
     @Excel(name = "返回信息")
     private String resultMsg;
+
+    /** 号源编号 */
+    @Excel(name = "号源编号")
+    private String sourceMark;
+
+    /** 医院就医码 */
+    @Excel(name = "医院就医码")
+    private String medicalCode;
+
+    /** 挂号费 */
+    @Excel(name = "挂号费")
+    private String consultationFee;
 
     public void setId(Long id) 
     {
@@ -142,12 +150,12 @@ public class DoregInfo extends BaseEntity
     {
         return sourceDate;
     }
-    public void setTimestypeNo(String timestypeNo) 
+    public void setTimestypeNo(Integer timestypeNo) 
     {
         this.timestypeNo = timestypeNo;
     }
 
-    public String getTimestypeNo() 
+    public Integer getTimestypeNo() 
     {
         return timestypeNo;
     }
@@ -186,15 +194,6 @@ public class DoregInfo extends BaseEntity
     public String getAppId() 
     {
         return appId;
-    }
-    public void setCreatTime(Date creatTime) 
-    {
-        this.creatTime = creatTime;
-    }
-
-    public Date getCreatTime() 
-    {
-        return creatTime;
     }
     public void setSuccessfulPayment(String successfulPayment) 
     {
@@ -250,6 +249,33 @@ public class DoregInfo extends BaseEntity
     {
         return resultMsg;
     }
+    public void setSourceMark(String sourceMark) 
+    {
+        this.sourceMark = sourceMark;
+    }
+
+    public String getSourceMark() 
+    {
+        return sourceMark;
+    }
+    public void setMedicalCode(String medicalCode) 
+    {
+        this.medicalCode = medicalCode;
+    }
+
+    public String getMedicalCode() 
+    {
+        return medicalCode;
+    }
+    public void setConsultationFee(String consultationFee) 
+    {
+        this.consultationFee = consultationFee;
+    }
+
+    public String getConsultationFee() 
+    {
+        return consultationFee;
+    }
 
     @Override
     public String toString() {
@@ -265,13 +291,17 @@ public class DoregInfo extends BaseEntity
             .append("payNo", getPayNo())
             .append("payAmount", getPayAmount())
             .append("appId", getAppId())
-            .append("creatTime", getCreatTime())
+            .append("createTime", getCreateTime())
             .append("successfulPayment", getSuccessfulPayment())
             .append("outTradeNo", getOutTradeNo())
             .append("transactionId", getTransactionId())
             .append("departmentorganId", getDepartmentorganId())
             .append("payType", getPayType())
             .append("resultMsg", getResultMsg())
+            .append("sourceMark", getSourceMark())
+            .append("medicalCode", getMedicalCode())
+            .append("consultationFee", getConsultationFee())
+            .append("updateTime", getUpdateTime())
             .toString();
     }
 }

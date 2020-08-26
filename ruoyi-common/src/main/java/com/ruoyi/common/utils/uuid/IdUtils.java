@@ -1,5 +1,9 @@
 package com.ruoyi.common.utils.uuid;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+
 /**
  * ID生成器工具类
  * 
@@ -46,4 +50,28 @@ public class IdUtils
     {
         return UUID.fastUUID().toString(true);
     }
+
+
+    /**
+     * @function 生成单号
+     * @date 2019-1-11
+     * @return String
+     */
+    public static String getOrderNo(String prefix){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        Date date = new Date();
+        return prefix + sdf.format(date) + getRandomStringByLength(7);
+    }
+
+    public static String getRandomStringByLength(int length) {
+        String base = "0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(base.length());
+            sb.append(base.charAt(number));
+        }
+        return sb.toString();
+    }
+
 }

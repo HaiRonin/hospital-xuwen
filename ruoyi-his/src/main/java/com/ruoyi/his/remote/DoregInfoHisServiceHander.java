@@ -1,17 +1,18 @@
 package com.ruoyi.his.remote;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.exception.BusinessException;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
+import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.DoregInfo;
-import com.ruoyi.his.domain.HisResponse;
 import com.ruoyi.his.remote.request.DoRegIn;
+import com.ruoyi.his.remote.request.DoRequestInfo;
+import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDoregInfoService;
-import org.apache.http.client.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 预约挂号Service业务层处理
@@ -20,7 +21,7 @@ import java.util.Date;
  * @date 2020-08-08
  */
 @Service
-public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn> {
+public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn, DoRegOut> {
     @Autowired
     private IDoregInfoService doregInfoService;
 
@@ -31,51 +32,69 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
 
     @Override
     boolean checkData(Long id) {
+        DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
+        if(PayStatusEnum.PAY_SUCCESS.getCode().equals(doregInfoNew.getSuccessfulPayment())){
+            throw new BusinessException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
+        }
+        if(StringUtils.isEmpty(doregInfoNew.getPayNo())){
+            throw new BusinessException(String.format("%1$s记录支付流水为空，不能进行此操作:",id));
+        }
         return true;
     }
 
     @Override
-    public DoRegIn getBusinessData(Long id) {
-       // DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
-        DoregInfo doregInfoNew = getTest();
+    public DoRegIn buildRequestData(Long id) {
+        DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
         if(null == doregInfoNew){
             throw new BusinessException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
         }
-        DoRegIn doRegInInfo = new DoRegIn();
-        doRegInInfo.setCardNo(doregInfoNew.getCardNo());
-        doRegInInfo.setDepartmentorganId(doregInfoNew.getDepartmentorganId());
+        DoRequestInfo doRegInInfo = new DoRequestInfo();
+        //医生编号
         doRegInInfo.setOrgandoctorId(doregInfoNew.getOrgandoctorId());
+        //科室编号
+        doRegInInfo.setDepartmentorganId(doregInfoNew.getDepartmentorganId());
+        //患者身份证号
+        doRegInInfo.setCardNo(doregInfoNew.getCardNo());
+        //患者编号
         doRegInInfo.setPatientNo(doregInfoNew.getPatientNo());
-        doRegInInfo.setPayAmount(String.valueOf(doregInfoNew.getPayAmount()));
-        doRegInInfo.setPayNo(doregInfoNew.getPayNo());
-        doRegInInfo.setPayType(Integer.parseInt(doregInfoNew.getPayType()));
-        doRegInInfo.setSocialsecurityNO("");
-        doRegInInfo.setSourceDate(DateUtils.formatDate(doregInfoNew.getSourceDate(),DateUtils.PATTERN_RFC1036));
+        //社保号
+        doRegInInfo.setSocialsecurityNO(doregInfoNew.getSocialsecurityNO());
+        //取号时间（号源日期）
+        doRegInInfo.setSourceDate(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD,doregInfoNew.getSourceDate()));
+        //时间段标识 0表示无时间段
+        doRegInInfo.setTimestypeNo(doregInfoNew.getTimestypeNo());
+        //1,上午 2，中午3 下午 4，晚上 5，凌晨
         doRegInInfo.setSourceTimeType(doregInfoNew.getSourceTimeType());
-        doRegInInfo.setTimestypeNo(Integer.parseInt(doregInfoNew.getTimestypeNo()));
-        return doRegInInfo;
+        //1,银联，2支付宝 3，现场支付 4、医保账户，5、微信，6、云医院微信，7、云医院支付宝，8、诊疗卡
+        doRegInInfo.setPayType(Integer.parseInt(doregInfoNew.getPayType()));
+        //支付卡号
+        doRegInInfo.setPayCardNo(doregInfoNew.getPayNo());
+        //支付金额
+        doRegInInfo.setPayAmount(String.valueOf(doregInfoNew.getPayAmount()));
+        //支付流水号
+        doRegInInfo.setPayNo(doregInfoNew.getPayNo());
+        DoRegIn doRegIn = new DoRegIn();
+        doRegIn.setDoRegIn(JSON.toJSONString(doRegInInfo));
+        return doRegIn;
     }
 
     @Override
-    public String afterInvokeCall(Long id, HisResponse hisResponse) {
-        return null;
+    protected DoRegOut transResult(String result) {
+        return JSON.toJavaObject(JSON.parseObject(result), DoRegOut.class);
     }
 
 
-    /***
-     * 测试数据
-     * @return
-     */
-    private DoregInfo getTest(){
-        DoregInfo doregInfoNew = new DoregInfo();
-        doregInfoNew.setCardNo("1111");
-        doregInfoNew.setPatientNo("2222");
-        doregInfoNew.setPayAmount(BigDecimal.TEN);
-        doregInfoNew.setPayNo("22222");
-        doregInfoNew.setPayType("5");
-        doregInfoNew.setSourceDate(new Date());
-        doregInfoNew.setSourceTimeType(0);
-        doregInfoNew.setTimestypeNo("0");
-        return doregInfoNew;
+    @Override
+    public boolean afterInvokeCallSumbit(Long id, DoRegOut regOut) {
+        DoregInfo doregInfo = new DoregInfo();
+        doregInfo.setId(id);
+        doregInfo.setMedicalCode(regOut.getMedicalCode());
+        doregInfo.setSourceMark(regOut.getSourceMark());
+        doregInfo.setConsultationFee(regOut.getConsultationFee());
+        doregInfo.setUpdateTime(DateUtils.getNowDate());
+        doregInfo.setSuccessfulPayment(regOut.isOk()?PayStatusEnum.ORDER_SUCCESS.getCode():PayStatusEnum.ORDER_FAIL.getCode());
+        doregInfoService.updateDoregInfo(doregInfo);
+        return true;
     }
+
 }

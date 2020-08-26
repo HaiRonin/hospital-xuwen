@@ -1,11 +1,11 @@
-package com.ruoyi.his.domain;
+package com.ruoyi.his.remote.response;
 
 import java.io.Serializable;
 
 /**
  * Created by ASUS on 2019/1/25.
  */
-public class HisResponse implements Serializable{
+public class BaseResponse implements Serializable{
     /**
      * 00：表示成功，
         其他表示失败
@@ -17,16 +17,11 @@ public class HisResponse implements Serializable{
      */
    private String resultMsg;
 
-    /**
-     * 返回消息内容 SON字符串
-     */
-   private String regDoctor;
-
    public boolean isOk(){
        return "00".equals(this.getResultCode());
    }
 
-    public HisResponse (String resultCode, String resultMsg){
+    public BaseResponse(String resultCode, String resultMsg){
         this.resultCode=resultCode;
         this.resultMsg = resultMsg;
     }
@@ -47,11 +42,4 @@ public class HisResponse implements Serializable{
         this.resultMsg = resultMsg;
     }
 
-    public String getRegDoctor() {
-        return regDoctor;
-    }
-
-    public void setRegDoctor(String regDoctor) {
-        this.regDoctor = regDoctor;
-    }
 }

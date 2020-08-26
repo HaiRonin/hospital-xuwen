@@ -1,11 +1,9 @@
 package com.ruoyi.his.remote;
 
-import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.MapUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.xss.HttpUtils;
-import com.ruoyi.his.domain.HisResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;

@@ -51,18 +51,12 @@
                                 <input type="text" name="payNo"/>
                             </li>
                             <li>
-                                <label>支付金额：</label>
+                                <label>已支金额：</label>
                                 <input type="text" name="payAmount"/>
                             </li>
                             <li>
                                 <label>商户ID：</label>
                                 <input type="text" name="appId"/>
-                            </li>
-                            <li class="select-time">
-                                <label>创建时间：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreatTime]"/>
-                                <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreatTime]"/>
                             </li>
                             <li>
                                 <label>支付状态：</label>
@@ -93,6 +87,18 @@
                             <li>
                                 <label>返回信息：</label>
                                 <input type="text" name="resultMsg"/>
+                            </li>
+                            <li>
+                                <label>号源编号：</label>
+                                <input type="text" name="sourceMark"/>
+                            </li>
+                            <li>
+                                <label>医院就医码：</label>
+                                <input type="text" name="medicalCode"/>
+                            </li>
+                            <li>
+                                <label>挂号费：</label>
+                                <input type="text" name="consultationFee"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -145,7 +151,7 @@
                 },
                 {
                     field: 'id',
-                    title: '序号',
+                    title: 'null',
                     visible: false
                 },
                 {
@@ -188,15 +194,11 @@
                 },
                 {
                     field: 'payAmount',
-                    title: '支付金额'
+                    title: '已支金额'
                 },
                 {
                     field: 'appId',
                     title: '商户ID'
-                },
-                {
-                    field: 'creatTime',
-                    title: '创建时间'
                 },
                 {
                     field: 'successfulPayment',
@@ -227,6 +229,18 @@
                 {
                     field: 'resultMsg',
                     title: '返回信息'
+                },
+                {
+                    field: 'sourceMark',
+                    title: '号源编号'
+                },
+                {
+                    field: 'medicalCode',
+                    title: '医院就医码'
+                },
+                {
+                    field: 'consultationFee',
+                    title: '挂号费'
                 },
                 {
                     title: '操作',

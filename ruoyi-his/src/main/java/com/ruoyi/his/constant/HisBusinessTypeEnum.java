@@ -10,9 +10,10 @@ import com.ruoyi.his.remote.DoregInfoHisServiceHander;
  */
 public enum HisBusinessTypeEnum {
 
-	DOREG("doRegIn", "/doreg","预约挂号", DoregInfoHisServiceHander.class),
-	DOPAY("dopay", "/dopay","缴费支付",DoregInfoHisServiceHander.class),
-	INPATIENTPAYMENT("inpatientpayment", "/inpatientpayment","住院押金补缴",DoregInfoHisServiceHander.class),;
+	DOREG("doReg", "/doReg","预约挂号", DoregInfoHisServiceHander.class),
+	DOPAY("doPay", "/doPay","缴费支付",DoregInfoHisServiceHander.class),
+	INPATIENTPAYMENT("inPatientPayment", "/inPatientPayment","住院押金补缴",DoregInfoHisServiceHander.class),
+	LEAVEHOSPAY("leaveHosPay", "/leaveHosPay","住院押金补缴",DoregInfoHisServiceHander.class),;
 	private String code;
 	private String apiUrl;
 	private String desc;
@@ -57,10 +58,10 @@ public enum HisBusinessTypeEnum {
 		this.clazz = clazz;
 	}
 
-	public static HisBusinessTypeEnum getCodeByName(String name){
+	public static HisBusinessTypeEnum getTypeByCode(String code){
 		HisBusinessTypeEnum[] values = HisBusinessTypeEnum.values();
 		for(HisBusinessTypeEnum businessTypeEnum : values  ){
-			if(businessTypeEnum.code.equals(name)){
+			if(businessTypeEnum.code.equals(code)){
 				return businessTypeEnum;
 			}
 		}

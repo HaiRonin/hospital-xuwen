@@ -16,39 +16,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="payNo"    column="pay_no"    />
         <result property="payAmount"    column="pay_amount"    />
         <result property="appId"    column="app_id"    />
-        <result property="creatTime"    column="creat_time"    />
+        <result property="createTime"    column="create_time"    />
         <result property="successfulPayment"    column="successful_payment"    />
         <result property="outTradeNo"    column="out_trade_no"    />
         <result property="transactionId"    column="transaction_id"    />
         <result property="departmentorganId"    column="departmentorgan_id"    />
         <result property="payType"    column="pay_type"    />
         <result property="resultMsg"    column="result_msg"    />
+        <result property="sourceMark"    column="sourceMark"    />
+        <result property="medicalCode"    column="medicalCode"    />
+        <result property="consultationFee"    column="consultationFee"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectDoregInfoVo">
-        select id, organdoctor_id, card_no, patient_no, socialsecurityNO, source_date, timestype_no, source_time_type, pay_no, pay_amount, app_id, creat_time, successful_payment, out_trade_no, transaction_id, departmentorgan_id, pay_type, result_msg from his_doreg_info
+        select id, organdoctor_id, card_no, patient_no, socialsecurityNO, source_date, timestype_no, source_time_type, pay_no, pay_amount, app_id, create_time, successful_payment, out_trade_no, transaction_id, departmentorgan_id, pay_type, result_msg, sourceMark, medicalCode, consultationFee, update_time from his_doreg_info
     </sql>
 
     <select id="selectDoregInfoList" parameterType="DoregInfo" resultMap="DoregInfoResult">
         <include refid="selectDoregInfoVo"/>
         <where>  
-            <if test="organdoctorId != null  and organdoctorId != ''"> and organdoctor_id = #{organdoctorId}</if>
-            <if test="cardNo != null  and cardNo != ''"> and card_no = #{cardNo}</if>
-            <if test="patientNo != null  and patientNo != ''"> and patient_no = #{patientNo}</if>
-            <if test="socialsecurityNO != null  and socialsecurityNO != ''"> and socialsecurityNO = #{socialsecurityNO}</if>
+            <if test="organdoctorId != null  and organdoctorId != ''"> and organdoctor_id like concat('%', #{organdoctorId}, '%')</if>
+            <if test="cardNo != null  and cardNo != ''"> and card_no like concat('%', #{cardNo}, '%')</if>
+            <if test="patientNo != null  and patientNo != ''"> and patient_no like concat('%', #{patientNo}, '%')</if>
+            <if test="socialsecurityNO != null  and socialsecurityNO != ''"> and socialsecurityNO like concat('%', #{socialsecurityNO}, '%')</if>
             <if test="sourceDate != null "> and source_date = #{sourceDate}</if>
-            <if test="timestypeNo != null  and timestypeNo != ''"> and timestype_no = #{timestypeNo}</if>
+            <if test="timestypeNo != null "> and timestype_no = #{timestypeNo}</if>
             <if test="sourceTimeType != null "> and source_time_type = #{sourceTimeType}</if>
-            <if test="payNo != null  and payNo != ''"> and pay_no = #{payNo}</if>
+            <if test="payNo != null  and payNo != ''"> and pay_no like concat('%', #{payNo}, '%')</if>
             <if test="payAmount != null "> and pay_amount = #{payAmount}</if>
             <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
-            <if test="creatTime != null "> and creat_time = #{creatTime}</if>
             <if test="successfulPayment != null  and successfulPayment != ''"> and successful_payment = #{successfulPayment}</if>
             <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no = #{outTradeNo}</if>
             <if test="transactionId != null  and transactionId != ''"> and transaction_id = #{transactionId}</if>
             <if test="departmentorganId != null  and departmentorganId != ''"> and departmentorgan_id = #{departmentorganId}</if>
             <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
-            <if test="resultMsg != null  and resultMsg != ''"> and result_msg = #{resultMsg}</if>
+            <if test="resultMsg != null  and resultMsg != ''"> and result_msg like concat('%', #{resultMsg}, '%')</if>
+            <if test="sourceMark != null  and sourceMark != ''"> and sourceMark like concat('%', #{sourceMark}, '%')</if>
+            <if test="medicalCode != null  and medicalCode != ''"> and medicalCode like concat('%', #{medicalCode}, '%')</if>
+            <if test="consultationFee != null  and consultationFee != ''"> and consultationFee = #{consultationFee}</if>
         </where>
     </select>
     
@@ -70,13 +76,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="payNo != null">pay_no,</if>
             <if test="payAmount != null">pay_amount,</if>
             <if test="appId != null">app_id,</if>
-            <if test="creatTime != null">creat_time,</if>
+            <if test="createTime != null">create_time,</if>
             <if test="successfulPayment != null">successful_payment,</if>
             <if test="outTradeNo != null">out_trade_no,</if>
             <if test="transactionId != null">transaction_id,</if>
             <if test="departmentorganId != null">departmentorgan_id,</if>
             <if test="payType != null">pay_type,</if>
             <if test="resultMsg != null">result_msg,</if>
+            <if test="sourceMark != null">sourceMark,</if>
+            <if test="medicalCode != null">medicalCode,</if>
+            <if test="consultationFee != null">consultationFee,</if>
+            <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="organdoctorId != null">#{organdoctorId},</if>
@@ -89,13 +99,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="payNo != null">#{payNo},</if>
             <if test="payAmount != null">#{payAmount},</if>
             <if test="appId != null">#{appId},</if>
-            <if test="creatTime != null">#{creatTime},</if>
+            <if test="createTime != null">#{createTime},</if>
             <if test="successfulPayment != null">#{successfulPayment},</if>
             <if test="outTradeNo != null">#{outTradeNo},</if>
             <if test="transactionId != null">#{transactionId},</if>
             <if test="departmentorganId != null">#{departmentorganId},</if>
             <if test="payType != null">#{payType},</if>
             <if test="resultMsg != null">#{resultMsg},</if>
+            <if test="sourceMark != null">#{sourceMark},</if>
+            <if test="medicalCode != null">#{medicalCode},</if>
+            <if test="consultationFee != null">#{consultationFee},</if>
+            <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
 
@@ -112,13 +126,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="payNo != null">pay_no = #{payNo},</if>
             <if test="payAmount != null">pay_amount = #{payAmount},</if>
             <if test="appId != null">app_id = #{appId},</if>
-            <if test="creatTime != null">creat_time = #{creatTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
             <if test="successfulPayment != null">successful_payment = #{successfulPayment},</if>
             <if test="outTradeNo != null">out_trade_no = #{outTradeNo},</if>
             <if test="transactionId != null">transaction_id = #{transactionId},</if>
             <if test="departmentorganId != null">departmentorgan_id = #{departmentorganId},</if>
             <if test="payType != null">pay_type = #{payType},</if>
             <if test="resultMsg != null">result_msg = #{resultMsg},</if>
+            <if test="sourceMark != null">sourceMark = #{sourceMark},</if>
+            <if test="medicalCode != null">medicalCode = #{medicalCode},</if>
+            <if test="consultationFee != null">consultationFee = #{consultationFee},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
     </update>

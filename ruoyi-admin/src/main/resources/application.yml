@@ -155,3 +155,19 @@ his:
     #url: http://219.129.12.10:8099/wechat.asmx
     #农垦中心医院
     url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
+
+  wechat:
+      #AppID
+      appId: wx50617d578b93801d
+      #appSecret
+      appsecret: d2258bd67e9ef6bb8a795c723f483301
+      #商户号
+      mchid: 1433629902
+      #key值
+      key: 1433629902
+      #回调地址
+      baseUrl: http://app.gdsnkzxyy.cn/hospital/wechat/notify_weixin
+      #退款地址
+      refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
+      #支付地址
+      unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder

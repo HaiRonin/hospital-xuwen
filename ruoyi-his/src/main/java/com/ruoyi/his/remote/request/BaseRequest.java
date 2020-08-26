@@ -1,115 +1,34 @@
 package com.ruoyi.his.remote.request;
 
 
-public class BaseRequest {
+import java.io.Serializable;
 
-    private String organdoctorId;
+public class BaseRequest implements Serializable {
 
-    private String departmentorganId;
 
-    private String cardNo;
+    /***
+     * 用户名
+     */
+    private String synUserName = "";
 
-    private String patientNo;
+    /***
+     * 效验码
+     */
+    private String synKey = "";
 
-    private String socialsecurityNO;
-
-    private String sourceDate;
-
-    private Integer timestypeNo;
-
-    private Integer sourceTimeType;
-
-    private Integer payType;
-
-    private String payNo;
-
-    private String payAmount;
-
-    public String getOrgandoctorId() {
-        return organdoctorId;
+    public String getSynUserName() {
+        return synUserName;
     }
 
-    public String getDepartmentorganId() {
-        return departmentorganId;
+    public void setSynUserName(String synUserName) {
+        this.synUserName = synUserName;
     }
 
-    public String getCardNo() {
-        return cardNo;
+    public String getSynKey() {
+        return synKey;
     }
 
-    public String getPatientNo() {
-        return patientNo;
-    }
-
-    public String getSocialsecurityNO() {
-        return socialsecurityNO;
-    }
-
-    public String getSourceDate() {
-        return sourceDate;
-    }
-
-    public int getTimestypeNo() {
-        return timestypeNo;
-    }
-
-    public int getSourceTimeType() {
-        return sourceTimeType;
-    }
-
-    public int getPayType() {
-        return payType;
-    }
-
-    public String getPayNo() {
-        return payNo;
-    }
-
-    public String getPayAmount() {
-        return payAmount;
-    }
-
-    public void setOrgandoctorId(String organdoctorId) {
-        this.organdoctorId = organdoctorId;
-    }
-
-    public void setDepartmentorganId(String departmentorganId) {
-        this.departmentorganId = departmentorganId;
-    }
-
-    public void setCardNo(String cardNo) {
-        this.cardNo = cardNo;
-    }
-
-    public void setPatientNo(String patientNo) {
-        this.patientNo = patientNo;
-    }
-
-    public void setSocialsecurityNO(String socialsecurityNO) {
-        this.socialsecurityNO = socialsecurityNO;
-    }
-
-    public void setSourceDate(String sourceDate) {
-        this.sourceDate = sourceDate;
-    }
-
-    public void setTimestypeNo(Integer timestypeNo) {
-        this.timestypeNo = timestypeNo;
-    }
-
-    public void setSourceTimeType(Integer sourceTimeType) {
-        this.sourceTimeType = sourceTimeType;
-    }
-
-    public void setPayType(Integer payType) {
-        this.payType = payType;
-    }
-
-    public void setPayNo(String payNo) {
-        this.payNo = payNo;
-    }
-
-    public void setPayAmount(String payAmount) {
-        this.payAmount = payAmount;
+    public void setSynKey(String synKey) {
+        this.synKey = synKey;
     }
 }

@@ -1,20 +1,27 @@
 package com.ruoyi.web.controller.his.api;
 
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.BarcodeUtil;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.BodySymptomsEnum;
+import com.ruoyi.his.constant.HisBusinessTypeEnum;
+import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.domain.SymptomsOrgan;
+import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.HisBaseServices;
+import com.ruoyi.his.remote.response.DoRegOut;
+import com.ruoyi.his.service.IDoregInfoService;
 import com.ruoyi.his.service.ISmsService;
 import com.ruoyi.his.service.ISymptomsOrganService;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.vo.BodyPart;
+import com.ruoyi.vo.HisRequestBO;
 import com.ruoyi.vo.SymptomsOrganExd;
+import com.ruoyi.web.core.config.WechatConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +29,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,17 +52,18 @@ public class HisCommonApi
     private ISysDictDataService  dictDataService;
     @Autowired
     private ISymptomsOrganService symptomsOrganService;
+    @Autowired
+    private IDoregInfoService doregInfoService;
     /**
      * his接口调用
      */
     @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("his接口调用")
-    @GetMapping("/request")
+    @PostMapping("/request")
     @ResponseBody
-//    @Cacheable(value="#api", key="#dataParam")
-    public String invokeCall(@RequestParam("api") String api,@RequestParam("dataParam") String dataParam)
+    public String invokeCall(@RequestBody HisRequestBO hisRequestBO)
     {
-        return hisBaseServices.requestHisService("/"+api.trim(),dataParam);
+        return hisBaseServices.requestHisService("/"+hisRequestBO.getApi().trim(),hisRequestBO.getDataParam());
     }
 
 
@@ -161,5 +170,42 @@ public class HisCommonApi
             listSymptomsOrganExd.add(symptomsOrganExd);
         }
         return AjaxResult.success(listSymptomsOrganExd);
+    }
+
+    /**
+     * 2020.8.26
+     * 新增支付挂号的记录
+     *
+     * @return
+     */
+    @ApiOperation("新增挂号的记录")
+    @ResponseBody
+    @PostMapping(value = "/outpatientPayment")
+    public AjaxResult outpatientPayment(@RequestBody DoregInfo doregInfo){
+        doregInfo.setAppId(WechatConfig.appId);
+        doregInfo.setCreateTime(new Date());
+        doregInfo.setPayType("5");
+        doregInfo.setSuccessfulPayment("0");
+        String orderNo = IdUtils.getOrderNo("RE");
+        doregInfo.setOutTradeNo(orderNo);
+        int iCount = doregInfoService.insertDoregInfo(doregInfo);
+        if (iCount > 0){
+            return AjaxResult.success(doregInfo);
+        }
+        return AjaxResult.error("支付挂号操作失败");
+    }
+
+    /**
+     * 2020.8.26
+     * 测试预约挂号推his
+     *
+     * @return
+     */
+    @ApiOperation("测试预约挂号推his")
+    @ResponseBody
+    @PostMapping(value = "/testDoregInfo")
+    public AjaxResult testDoregInfo(@RequestBody DoregInfo doregInfo){
+        DoRegOut doRegOut = (DoRegOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG).invokeCallSubmit(doregInfo.getId());
+        return AjaxResult.success(doRegOut);
     }
 }
