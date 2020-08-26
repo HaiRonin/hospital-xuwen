@@ -1,6 +1,8 @@
 package com.ruoyi.framework.web.exception;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.ruoyi.common.exception.HisException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,6 +94,16 @@ public class GlobalExceptionHandler
             modelAndView.setViewName("error/business");
             return modelAndView;
         }
+    }
+
+    /**
+     * 业务异常
+     */
+    @ExceptionHandler(HisException.class)
+    public Object HisException(HisException e)
+    {
+        log.error(e.getMessage(), e);
+        return AjaxResult.error(e.getMessage());
     }
 
     /**

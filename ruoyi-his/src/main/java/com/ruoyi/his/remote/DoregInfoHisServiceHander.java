@@ -1,7 +1,7 @@
 package com.ruoyi.his.remote;
 
 import com.alibaba.fastjson.JSON;
-import com.ruoyi.common.exception.BusinessException;
+import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
@@ -34,10 +34,10 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
     boolean checkData(Long id) {
         DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(doregInfoNew.getSuccessfulPayment())){
-            throw new BusinessException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
         }
         if(StringUtils.isEmpty(doregInfoNew.getPayNo())){
-            throw new BusinessException(String.format("%1$s记录支付流水为空，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",id));
         }
         return true;
     }
@@ -46,7 +46,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
     public DoRegIn buildRequestData(Long id) {
         DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
         if(null == doregInfoNew){
-            throw new BusinessException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
         }
         DoRequestInfo doRegInInfo = new DoRequestInfo();
         //医生编号
