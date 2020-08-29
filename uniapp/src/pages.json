@@ -1,0 +1,168 @@
+{
+    "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        {
+			"path": "pages/home/outpatient",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+				// #endif
+                "navigationBarTitleText": "门诊"
+			}
+        },
+        {
+			"path": "pages/home/inHospital",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+				// #endif
+                "navigationBarTitleText": "住院"
+			}
+        },
+        {
+			"path": "pages/home/my",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+				// #endif
+                "navigationBarTitleText": "我的"
+			}
+        },
+        {
+			"path": "pages/login",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "登录"
+			}
+		}
+    ],
+    "subPackages": [
+        {
+            "root": "pages/info",
+            "pages": [
+                {
+                    "path": "index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "信息查询"
+                    }
+                },
+                {
+                    "path": "drugSearch",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "药品/非药品查询",
+                        "enablePullDownRefresh": true
+                    }
+                },
+                {
+                    "path": "expertIntroduction",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "专家介绍"
+                    }
+                },
+                {
+                    "path": "hospitalntroduction",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "医院简介"
+                    }
+                },
+                {
+                    "path": "departmentIsIntroduced",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "科室介绍"
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/registration",
+            "pages": [
+                {
+                    "path": "index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "科室选择"
+                    }
+                },
+                {
+                    "path": "departmentDoctorList/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "医生列表",
+                        "enablePullDownRefresh": true
+                    }
+                },
+                {
+                    "path": "doctor",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "医生"
+                    }
+                }
+            ]
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8",
+        "navigationBarShadow": {
+            "colorType": "grey"
+        },
+        "app-plus": { /* 5+App特有相关 */
+            "pullToRefresh": {
+                "color": "#6dbcf6"
+            }
+        }
+    },
+    "tabBar": {
+		"color": "#333333",
+		"selectedColor": "#94c0ff",
+        "backgroundColor": "#FFFFFF",
+		"list": [
+			{
+				"pagePath": "pages/home/outpatient",
+				"text": "门诊",
+				"iconPath": "static/image/icon_58.png",
+				"selectedIconPath": "static/image/icon_60.png"
+			},
+			{
+				"pagePath": "pages/home/inHospital",
+				"text": "住院",
+				"iconPath": "static/image/icon_50.png",
+				"selectedIconPath": "static/image/icon_54.png"
+			},
+			{
+				"pagePath": "pages/home/my",
+				"text": "我的",
+				"iconPath": "static/image/icon_52.png",
+				"selectedIconPath": "static/image/icon_56.png"
+			}
+		]
+	},
+    "easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	}
+}
