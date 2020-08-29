@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.DopayInfoMapper">
+    
+    <resultMap type="DopayInfo" id="DopayInfoResult">
+        <result property="id"    column="id"    />
+        <result property="appId"    column="app_id"    />
+        <result property="synUserName"    column="syn_user_name"    />
+        <result property="synKey"    column="syn_key"    />
+        <result property="hiFeeNos"    column="hi_fee_nos"    />
+        <result property="socialsecurityNO"    column="socialsecurityNO"    />
+        <result property="overRecord"    column="over_record"    />
+        <result property="overMoney"    column="over_money"    />
+        <result property="medicareReturn"    column="medicare_return"    />
+        <result property="bankReturn"    column="bank_return"    />
+        <result property="terminalCode"    column="terminal_code"    />
+        <result property="userNo"    column="user_no"    />
+        <result property="medicareType"    column="medicare_type"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payCardNo"    column="pay_card_no"    />
+        <result property="payRecord"    column="pay_record"    />
+        <result property="payMoney"    column="pay_money"    />
+        <result property="creatTime"    column="creat_time"    />
+        <result property="successfulPayment"    column="successful_payment"    />
+        <result property="outTradeNo"    column="out_trade_no"    />
+        <result property="transactionId"    column="transaction_id"    />
+        <result property="resultMessage"    column="result_message"    />
+        <result property="checkInfo"    column="check_Info"    />
+        <result property="resultMsg"    column="result_msg"    />
+        <result property="resultCode"    column="result_code"    />
+    </resultMap>
+
+    <sql id="selectDopayInfoVo">
+        select id, app_id, syn_user_name, syn_key, hi_fee_nos, socialsecurityNO, over_record, over_money, medicare_return, bank_return, terminal_code, user_no, medicare_type, pay_type, pay_card_no, pay_record, pay_money, creat_time, successful_payment, out_trade_no, transaction_id, result_message, check_Info, result_msg, result_code from his_dopay_info
+    </sql>
+
+    <select id="selectDopayInfoList" parameterType="DopayInfo" resultMap="DopayInfoResult">
+        <include refid="selectDopayInfoVo"/>
+        <where>  
+            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
+            <if test="synUserName != null  and synUserName != ''"> and syn_user_name like concat('%', #{synUserName}, '%')</if>
+            <if test="synKey != null  and synKey != ''"> and syn_key = #{synKey}</if>
+            <if test="hiFeeNos != null  and hiFeeNos != ''"> and hi_fee_nos like concat('%', #{hiFeeNos}, '%')</if>
+            <if test="socialsecurityNO != null  and socialsecurityNO != ''"> and socialsecurityNO like concat('%', #{socialsecurityNO}, '%')</if>
+            <if test="overRecord != null  and overRecord != ''"> and over_record like concat('%', #{overRecord}, '%')</if>
+            <if test="overMoney != null  and overMoney != ''"> and over_money = #{overMoney}</if>
+            <if test="medicareReturn != null  and medicareReturn != ''"> and medicare_return = #{medicareReturn}</if>
+            <if test="bankReturn != null  and bankReturn != ''"> and bank_return = #{bankReturn}</if>
+            <if test="terminalCode != null  and terminalCode != ''"> and terminal_code = #{terminalCode}</if>
+            <if test="userNo != null  and userNo != ''"> and user_no = #{userNo}</if>
+            <if test="medicareType != null "> and medicare_type = #{medicareType}</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="payCardNo != null  and payCardNo != ''"> and pay_card_no = #{payCardNo}</if>
+            <if test="payRecord != null  and payRecord != ''"> and pay_record = #{payRecord}</if>
+            <if test="payMoney != null "> and pay_money = #{payMoney}</if>
+            <if test="creatTime != null "> and creat_time = #{creatTime}</if>
+            <if test="successfulPayment != null  and successfulPayment != ''"> and successful_payment = #{successfulPayment}</if>
+            <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no like concat('%', #{outTradeNo}, '%')</if>
+            <if test="transactionId != null  and transactionId != ''"> and transaction_id like concat('%', #{transactionId}, '%')</if>
+            <if test="resultMessage != null  and resultMessage != ''"> and result_message = #{resultMessage}</if>
+            <if test="checkInfo != null  and checkInfo != ''"> and check_Info = #{checkInfo}</if>
+            <if test="resultMsg != null  and resultMsg != ''"> and result_msg like concat('%', #{resultMsg}, '%')</if>
+            <if test="resultCode != null  and resultCode != ''"> and result_code like concat('%', #{resultCode}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectDopayInfoById" parameterType="Long" resultMap="DopayInfoResult">
+        <include refid="selectDopayInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDopayInfo" parameterType="DopayInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into his_dopay_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appId != null">app_id,</if>
+            <if test="synUserName != null">syn_user_name,</if>
+            <if test="synKey != null">syn_key,</if>
+            <if test="hiFeeNos != null">hi_fee_nos,</if>
+            <if test="socialsecurityNO != null">socialsecurityNO,</if>
+            <if test="overRecord != null">over_record,</if>
+            <if test="overMoney != null">over_money,</if>
+            <if test="medicareReturn != null">medicare_return,</if>
+            <if test="bankReturn != null">bank_return,</if>
+            <if test="terminalCode != null">terminal_code,</if>
+            <if test="userNo != null">user_no,</if>
+            <if test="medicareType != null">medicare_type,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="payCardNo != null">pay_card_no,</if>
+            <if test="payRecord != null">pay_record,</if>
+            <if test="payMoney != null">pay_money,</if>
+            <if test="creatTime != null">creat_time,</if>
+            <if test="successfulPayment != null">successful_payment,</if>
+            <if test="outTradeNo != null">out_trade_no,</if>
+            <if test="transactionId != null">transaction_id,</if>
+            <if test="resultMessage != null">result_message,</if>
+            <if test="checkInfo != null">check_Info,</if>
+            <if test="resultMsg != null">result_msg,</if>
+            <if test="resultCode != null">result_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appId != null">#{appId},</if>
+            <if test="synUserName != null">#{synUserName},</if>
+            <if test="synKey != null">#{synKey},</if>
+            <if test="hiFeeNos != null">#{hiFeeNos},</if>
+            <if test="socialsecurityNO != null">#{socialsecurityNO},</if>
+            <if test="overRecord != null">#{overRecord},</if>
+            <if test="overMoney != null">#{overMoney},</if>
+            <if test="medicareReturn != null">#{medicareReturn},</if>
+            <if test="bankReturn != null">#{bankReturn},</if>
+            <if test="terminalCode != null">#{terminalCode},</if>
+            <if test="userNo != null">#{userNo},</if>
+            <if test="medicareType != null">#{medicareType},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="payCardNo != null">#{payCardNo},</if>
+            <if test="payRecord != null">#{payRecord},</if>
+            <if test="payMoney != null">#{payMoney},</if>
+            <if test="creatTime != null">#{creatTime},</if>
+            <if test="successfulPayment != null">#{successfulPayment},</if>
+            <if test="outTradeNo != null">#{outTradeNo},</if>
+            <if test="transactionId != null">#{transactionId},</if>
+            <if test="resultMessage != null">#{resultMessage},</if>
+            <if test="checkInfo != null">#{checkInfo},</if>
+            <if test="resultMsg != null">#{resultMsg},</if>
+            <if test="resultCode != null">#{resultCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDopayInfo" parameterType="DopayInfo">
+        update his_dopay_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="synUserName != null">syn_user_name = #{synUserName},</if>
+            <if test="synKey != null">syn_key = #{synKey},</if>
+            <if test="hiFeeNos != null">hi_fee_nos = #{hiFeeNos},</if>
+            <if test="socialsecurityNO != null">socialsecurityNO = #{socialsecurityNO},</if>
+            <if test="overRecord != null">over_record = #{overRecord},</if>
+            <if test="overMoney != null">over_money = #{overMoney},</if>
+            <if test="medicareReturn != null">medicare_return = #{medicareReturn},</if>
+            <if test="bankReturn != null">bank_return = #{bankReturn},</if>
+            <if test="terminalCode != null">terminal_code = #{terminalCode},</if>
+            <if test="userNo != null">user_no = #{userNo},</if>
+            <if test="medicareType != null">medicare_type = #{medicareType},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="payCardNo != null">pay_card_no = #{payCardNo},</if>
+            <if test="payRecord != null">pay_record = #{payRecord},</if>
+            <if test="payMoney != null">pay_money = #{payMoney},</if>
+            <if test="creatTime != null">creat_time = #{creatTime},</if>
+            <if test="successfulPayment != null">successful_payment = #{successfulPayment},</if>
+            <if test="outTradeNo != null">out_trade_no = #{outTradeNo},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="resultMessage != null">result_message = #{resultMessage},</if>
+            <if test="checkInfo != null">check_Info = #{checkInfo},</if>
+            <if test="resultMsg != null">result_msg = #{resultMsg},</if>
+            <if test="resultCode != null">result_code = #{resultCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDopayInfoById" parameterType="Long">
+        delete from his_dopay_info where id = #{id}
+    </delete>
+
+    <delete id="deleteDopayInfoByIds" parameterType="String">
+        delete from his_dopay_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

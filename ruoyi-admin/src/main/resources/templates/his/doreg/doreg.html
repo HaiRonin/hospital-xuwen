@@ -11,6 +11,18 @@
                     <div class="select-list">
                         <ul>
                             <li>
+                                <label>商户ID：</label>
+                                <input type="text" name="appId"/>
+                            </li>
+                            <li>
+                                <label>用户名：</label>
+                                <input type="text" name="synUserName"/>
+                            </li>
+                            <li>
+                                <label>效验码：</label>
+                                <input type="text" name="synKey"/>
+                            </li>
+                            <li>
                                 <label>医生编号：</label>
                                 <input type="text" name="organdoctorId"/>
                             </li>
@@ -47,22 +59,19 @@
                                 </select>
                             </li>
                             <li>
+                                <label>支付方式：</label>
+                                <select name="payType" th:with="type=${@dict.getType('his_pay_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
                                 <label>支付流水号：</label>
                                 <input type="text" name="payNo"/>
                             </li>
                             <li>
-                                <label>支付金额：</label>
+                                <label>已支金额：</label>
                                 <input type="text" name="payAmount"/>
-                            </li>
-                            <li>
-                                <label>商户ID：</label>
-                                <input type="text" name="appId"/>
-                            </li>
-                            <li class="select-time">
-                                <label>创建时间：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreatTime]"/>
-                                <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreatTime]"/>
                             </li>
                             <li>
                                 <label>支付状态：</label>
@@ -84,15 +93,20 @@
                                 <input type="text" name="departmentorganId"/>
                             </li>
                             <li>
-                                <label>支付方式：</label>
-                                <select name="payType" th:with="type=${@dict.getType('his_pay_type')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-                            <li>
                                 <label>返回信息：</label>
                                 <input type="text" name="resultMsg"/>
+                            </li>
+                            <li>
+                                <label>号源编号：</label>
+                                <input type="text" name="sourceMark"/>
+                            </li>
+                            <li>
+                                <label>医院就医码：</label>
+                                <input type="text" name="medicalCode"/>
+                            </li>
+                            <li>
+                                <label>挂号费：</label>
+                                <input type="text" name="consultationFee"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -128,8 +142,8 @@
         var removeFlag = [[${@permission.hasPermi('his:doreg:remove')}]];
         var timestypeNoDatas = [[${@dict.getType('his_source_time_type')}]];
         var sourceTimeTypeDatas = [[${@dict.getType('his_source_time_type')}]];
-        var successfulPaymentDatas = [[${@dict.getType('his_payment_state')}]];
         var payTypeDatas = [[${@dict.getType('his_pay_type')}]];
+        var successfulPaymentDatas = [[${@dict.getType('his_payment_state')}]];
         var prefix = ctx + "his/doreg";
 
         $(function() {
@@ -145,8 +159,20 @@
                 },
                 {
                     field: 'id',
-                    title: '序号',
+                    title: 'null',
                     visible: false
+                },
+                {
+                    field: 'appId',
+                    title: '商户ID'
+                },
+                {
+                    field: 'synUserName',
+                    title: '用户名'
+                },
+                {
+                    field: 'synKey',
+                    title: '效验码'
                 },
                 {
                     field: 'organdoctorId',
@@ -183,20 +209,19 @@
                     }
                 },
                 {
+                    field: 'payType',
+                    title: '支付方式',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(payTypeDatas, value);
+                    }
+                },
+                {
                     field: 'payNo',
                     title: '支付流水号'
                 },
                 {
                     field: 'payAmount',
-                    title: '支付金额'
-                },
-                {
-                    field: 'appId',
-                    title: '商户ID'
-                },
-                {
-                    field: 'creatTime',
-                    title: '创建时间'
+                    title: '已支金额'
                 },
                 {
                     field: 'successfulPayment',
@@ -218,15 +243,20 @@
                     title: '科室id'
                 },
                 {
-                    field: 'payType',
-                    title: '支付方式',
-                    formatter: function(value, row, index) {
-                       return $.table.selectDictLabel(payTypeDatas, value);
-                    }
-                },
-                {
                     field: 'resultMsg',
                     title: '返回信息'
+                },
+                {
+                    field: 'sourceMark',
+                    title: '号源编号'
+                },
+                {
+                    field: 'medicalCode',
+                    title: '医院就医码'
+                },
+                {
+                    field: 'consultationFee',
+                    title: '挂号费'
                 },
                 {
                     title: '操作',

@@ -1,9 +1,14 @@
 package com.ruoyi.his.remote;
 
-import com.ruoyi.his.domain.HisResponse;
+import com.ruoyi.his.remote.response.BaseResponse;
 
 public interface HisWebServices {
 
-    public HisResponse invokeCall(Long id);
+    /***
+     * 调用his接口下单
+     * @param id
+     * @return
+     */
+    public BaseResponse invokeCallSubmit(Long id);
 
 }

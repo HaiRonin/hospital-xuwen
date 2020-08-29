@@ -1,11 +1,9 @@
 package com.ruoyi.his.remote;
 
-import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.MapUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.xss.HttpUtils;
-import com.ruoyi.his.domain.HisResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -37,7 +35,7 @@ public class HisBaseServices {
     public String requestHisService(String apiUrl, String dataParam) {
         try {
             Map<String, String> headers = new HashMap<>();
-            headers.put("arg0", dataParam);
+            headers.put("doRegIn", dataParam);
             logger.info("HisBaseServices.apiUrl={},dataParam={}",apiUrl,dataParam);
             HttpResponse responseInfo = HttpUtils.doPost(hisUrl, apiUrl,  new HashMap<>(), null,headers);
             String result = EntityUtils.toString(responseInfo.getEntity(), "UTF-8");

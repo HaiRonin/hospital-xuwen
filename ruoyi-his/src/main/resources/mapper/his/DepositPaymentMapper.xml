@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.DepositPaymentMapper">
+    
+    <resultMap type="DepositPayment" id="DepositPaymentResult">
+        <result property="id"    column="id"    />
+        <result property="synUserName"    column="syn_user_name"    />
+        <result property="synKey"    column="syn_key"    />
+        <result property="inHosNo"    column="in_hos_no"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payRecord"    column="pay_record"    />
+        <result property="payMoney"    column="pay_money"    />
+        <result property="payReturn"    column="pay_return"    />
+        <result property="successfulPayment"    column="successful_payment"    />
+        <result property="terminalCode"    column="terminal_code"    />
+        <result property="outTradeNo"    column="out_trade_no"    />
+        <result property="transactionId"    column="transaction_id"    />
+        <result property="appId"    column="app_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="bedNo"    column="bed_no"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="departmentName"    column="department_name"    />
+        <result property="depositMoney"    column="deposit_money"    />
+        <result property="medicalTypeName"    column="medical_type_name"    />
+        <result property="resultMsg"    column="result_msg"    />
+        <result property="resultCode"    column="result_code"    />
+    </resultMap>
+
+    <sql id="selectDepositPaymentVo">
+        select id, syn_user_name, syn_key, in_hos_no, pay_type, pay_record, pay_money, pay_return, successful_payment, terminal_code, out_trade_no, transaction_id, app_id, create_time, update_time, bed_no, patient_name, department_name, deposit_money, medical_type_name, result_msg, result_code from his_deposit_payment
+    </sql>
+
+    <select id="selectDepositPaymentList" parameterType="DepositPayment" resultMap="DepositPaymentResult">
+        <include refid="selectDepositPaymentVo"/>
+        <where>  
+            <if test="synUserName != null  and synUserName != ''"> and syn_user_name like concat('%', #{synUserName}, '%')</if>
+            <if test="synKey != null  and synKey != ''"> and syn_key = #{synKey}</if>
+            <if test="inHosNo != null  and inHosNo != ''"> and in_hos_no like concat('%', #{inHosNo}, '%')</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="payRecord != null  and payRecord != ''"> and pay_record = #{payRecord}</if>
+            <if test="payMoney != null "> and pay_money = #{payMoney}</if>
+            <if test="payReturn != null  and payReturn != ''"> and pay_return = #{payReturn}</if>
+            <if test="successfulPayment != null  and successfulPayment != ''"> and successful_payment = #{successfulPayment}</if>
+            <if test="terminalCode != null  and terminalCode != ''"> and terminal_code = #{terminalCode}</if>
+            <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no like concat('%', #{outTradeNo}, '%')</if>
+            <if test="transactionId != null  and transactionId != ''"> and transaction_id like concat('%', #{transactionId}, '%')</if>
+            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
+            <if test="bedNo != null  and bedNo != ''"> and bed_no = #{bedNo}</if>
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="departmentName != null  and departmentName != ''"> and department_name like concat('%', #{departmentName}, '%')</if>
+            <if test="depositMoney != null "> and deposit_money = #{depositMoney}</if>
+            <if test="medicalTypeName != null  and medicalTypeName != ''"> and medical_type_name like concat('%', #{medicalTypeName}, '%')</if>
+            <if test="resultMsg != null  and resultMsg != ''"> and result_msg = #{resultMsg}</if>
+            <if test="resultCode != null  and resultCode != ''"> and result_code = #{resultCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectDepositPaymentById" parameterType="Long" resultMap="DepositPaymentResult">
+        <include refid="selectDepositPaymentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDepositPayment" parameterType="DepositPayment" useGeneratedKeys="true" keyProperty="id">
+        insert into his_deposit_payment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="synUserName != null">syn_user_name,</if>
+            <if test="synKey != null">syn_key,</if>
+            <if test="inHosNo != null">in_hos_no,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="payRecord != null">pay_record,</if>
+            <if test="payMoney != null">pay_money,</if>
+            <if test="payReturn != null">pay_return,</if>
+            <if test="successfulPayment != null">successful_payment,</if>
+            <if test="terminalCode != null">terminal_code,</if>
+            <if test="outTradeNo != null">out_trade_no,</if>
+            <if test="transactionId != null">transaction_id,</if>
+            <if test="appId != null">app_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="bedNo != null">bed_no,</if>
+            <if test="patientName != null">patient_name,</if>
+            <if test="departmentName != null">department_name,</if>
+            <if test="depositMoney != null">deposit_money,</if>
+            <if test="medicalTypeName != null">medical_type_name,</if>
+            <if test="resultMsg != null">result_msg,</if>
+            <if test="resultCode != null">result_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="synUserName != null">#{synUserName},</if>
+            <if test="synKey != null">#{synKey},</if>
+            <if test="inHosNo != null">#{inHosNo},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="payRecord != null">#{payRecord},</if>
+            <if test="payMoney != null">#{payMoney},</if>
+            <if test="payReturn != null">#{payReturn},</if>
+            <if test="successfulPayment != null">#{successfulPayment},</if>
+            <if test="terminalCode != null">#{terminalCode},</if>
+            <if test="outTradeNo != null">#{outTradeNo},</if>
+            <if test="transactionId != null">#{transactionId},</if>
+            <if test="appId != null">#{appId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="bedNo != null">#{bedNo},</if>
+            <if test="patientName != null">#{patientName},</if>
+            <if test="departmentName != null">#{departmentName},</if>
+            <if test="depositMoney != null">#{depositMoney},</if>
+            <if test="medicalTypeName != null">#{medicalTypeName},</if>
+            <if test="resultMsg != null">#{resultMsg},</if>
+            <if test="resultCode != null">#{resultCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDepositPayment" parameterType="DepositPayment">
+        update his_deposit_payment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="synUserName != null">syn_user_name = #{synUserName},</if>
+            <if test="synKey != null">syn_key = #{synKey},</if>
+            <if test="inHosNo != null">in_hos_no = #{inHosNo},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="payRecord != null">pay_record = #{payRecord},</if>
+            <if test="payMoney != null">pay_money = #{payMoney},</if>
+            <if test="payReturn != null">pay_return = #{payReturn},</if>
+            <if test="successfulPayment != null">successful_payment = #{successfulPayment},</if>
+            <if test="terminalCode != null">terminal_code = #{terminalCode},</if>
+            <if test="outTradeNo != null">out_trade_no = #{outTradeNo},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="bedNo != null">bed_no = #{bedNo},</if>
+            <if test="patientName != null">patient_name = #{patientName},</if>
+            <if test="departmentName != null">department_name = #{departmentName},</if>
+            <if test="depositMoney != null">deposit_money = #{depositMoney},</if>
+            <if test="medicalTypeName != null">medical_type_name = #{medicalTypeName},</if>
+            <if test="resultMsg != null">result_msg = #{resultMsg},</if>
+            <if test="resultCode != null">result_code = #{resultCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDepositPaymentById" parameterType="Long">
+        delete from his_deposit_payment where id = #{id}
+    </delete>
+
+    <delete id="deleteDepositPaymentByIds" parameterType="String">
+        delete from his_deposit_payment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
