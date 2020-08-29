@@ -9,23 +9,24 @@ import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.BodySymptomsEnum;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.domain.DoregInfo;
+import com.ruoyi.his.domain.HisUser;
 import com.ruoyi.his.domain.SymptomsOrgan;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.HisBaseServices;
 import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDoregInfoService;
+import com.ruoyi.his.service.IHisUserService;
 import com.ruoyi.his.service.ISmsService;
 import com.ruoyi.his.service.ISymptomsOrganService;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.service.ISysDictDataService;
-import com.ruoyi.vo.BodyPart;
-import com.ruoyi.vo.HisRequestBO;
-import com.ruoyi.vo.SymptomsOrganExd;
+import com.ruoyi.vo.*;
 import com.ruoyi.web.core.config.WechatConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class HisCommonApi
     private ISymptomsOrganService symptomsOrganService;
     @Autowired
     private IDoregInfoService doregInfoService;
+    @Autowired
+    private IHisUserService hisUserService;
     /**
      * his接口调用
      */
@@ -75,7 +78,7 @@ public class HisCommonApi
     @GetMapping("/user/sendMsg")
     @ResponseBody
     @ApiOperation("获取验证码短信")
-    public AjaxResult sendMsg(@RequestParam("phone") String phone)throws Exception  {
+    public AjaxResult sendMsg(@Validated String phone) {
         return smsService.sendVerificationCode(phone);
     }
 
@@ -84,15 +87,14 @@ public class HisCommonApi
      *
      * @return
      */
-    @ApiOperation("验证码校验")
-    @GetMapping("/user/verification")
+    @ApiOperation("用户注册")
+    @PostMapping("/user/register")
     @ResponseBody
-    @Cacheable(value="#phone", key="#verificationCode")
-    public AjaxResult verification(@RequestParam("phone") String phone, @RequestParam("verificationCode") String verificationCode)throws Exception  {
-        if(StringUtils.isEmpty(verificationCode)){
-            return AjaxResult.error("验证码不能为空");
-        }
-        return smsService.checkVerificationCode(phone,verificationCode);
+    public AjaxResult userRegister(@Validated @RequestBody UserRegBO userRegBO){
+        HisUser hisUser = new HisUser();
+        hisUser.setPhone(userRegBO.getPhone());
+        hisUser.setPassword(userRegBO.getPassword());
+        return AjaxResult.error(hisUserService.userRegister(hisUser,userRegBO.getVerificationCode())?"注册成功":"注册失败");
     }
 
     /**
@@ -101,10 +103,13 @@ public class HisCommonApi
      * @return
      */
     @ApiOperation("发送短信")
-    @GetMapping("/user/shortMessage")
+    @PostMapping("/user/shortMessage")
     @ResponseBody
-    public AjaxResult shortMessage(@RequestParam("phone") String phone, @RequestParam("message") String message)throws Exception  {
-        return smsService.sendSmsMessage(phone,message);
+    public AjaxResult shortMessage(@Validated @RequestBody SmsMsgBO smsMsgBO) {
+        if(StringUtils.isEmpty(smsMsgBO.getMessage())){
+            return AjaxResult.error("短信内容不能为空");
+        }
+        return smsService.sendSmsMessage(smsMsgBO.getPhone(),smsMsgBO.getMessage());
     }
 
 
@@ -126,9 +131,8 @@ public class HisCommonApi
      * @return
      */
     @ApiOperation("获取所有的身体部位")
-    @GetMapping(value = "/getBodyListPart")
+    @PostMapping(value = "/getBodyListPart")
     @ResponseBody
-//    @Cacheable(value="bodyListPart")
     public AjaxResult getBodyListPart() {
         SysDictData dictData = new SysDictData();
         dictData.setDictType("his_body_part");
@@ -151,14 +155,13 @@ public class HisCommonApi
      * @return
      */
     @ApiOperation("根据身体部位获取对应的病症")
-    @GetMapping(value = "/getOrganList")
+    @PostMapping(value = "/getOrganList")
     @ResponseBody
 //    @Cacheable(value="#bodyPart", key="#sex+'-'+#age")
-    public AjaxResult getOrganList(@RequestParam("bodyPart") String bodyPart,
-                                   @RequestParam("sex") String sex,@RequestParam("age") String age) {
-        String sexCode = BodySymptomsEnum.getCodeByName(sex+"_"+age);
+    public AjaxResult getOrganList(@RequestBody SymptomsOrganBO symptomsOrganBO) {
+        String sexCode = BodySymptomsEnum.getCodeByName(symptomsOrganBO.getSex()+"_"+symptomsOrganBO.getAge());
         SymptomsOrgan symptomsOrgan = new SymptomsOrgan();
-        symptomsOrgan.setBodyPart(bodyPart);
+        symptomsOrgan.setBodyPart(symptomsOrganBO.getBodyPart());
         symptomsOrgan.setSex(sexCode);
         List<SymptomsOrgan> list = symptomsOrganService.selectSymptomsOrganList(symptomsOrgan);
         List<SymptomsOrganExd> listSymptomsOrganExd = new ArrayList<SymptomsOrganExd>();
@@ -166,7 +169,7 @@ public class HisCommonApi
             SymptomsOrganExd symptomsOrganExd = new SymptomsOrganExd();
             symptomsOrganExd.setSymptoms(item.getSymptoms());
             symptomsOrganExd.setSex(sexCode);
-            symptomsOrganExd.setBodyPart(bodyPart);
+            symptomsOrganExd.setBodyPart(symptomsOrganBO.getBodyPart());
             listSymptomsOrganExd.add(symptomsOrganExd);
         }
         return AjaxResult.success(listSymptomsOrganExd);

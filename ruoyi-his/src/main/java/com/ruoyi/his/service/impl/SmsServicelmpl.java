@@ -3,7 +3,6 @@ package com.ruoyi.his.service.impl;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.RandomUtil;
 import com.ruoyi.common.utils.RedisUtil;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.constant.Constants;
 import com.ruoyi.his.service.ISmsService;
 import com.ruoyi.his.utils.SmsSendUtil;
@@ -24,7 +23,7 @@ public class SmsServicelmpl implements ISmsService {
     * 验证码短信
     * */
     @Override
-    public AjaxResult sendVerificationCode(String phone)throws Exception {
+    public AjaxResult sendVerificationCode(String phone) {
         Object obj= redisUtil.get(Constants.MOBILE_VERIFICATION_CODE+phone);
         if(ObjectUtils.allNotNull(obj)){
             return AjaxResult.error("操作太频繁，请稍后再重新获取");
@@ -52,7 +51,7 @@ public class SmsServicelmpl implements ISmsService {
 
 
     @Override
-    public AjaxResult sendSmsMessage(String phone,String message) throws Exception {
+    public AjaxResult sendSmsMessage(String phone,String message){
         String info = SmsSendUtil.sendMsg(phone,message);
         return AjaxResult.success(info);
     }
