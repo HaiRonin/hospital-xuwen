@@ -1,0 +1,61 @@
+package com.ruoyi.his.mapper;
+
+import java.util.List;
+import com.ruoyi.his.domain.DepositPayment;
+
+/**
+ * 押金补缴Mapper接口
+ * 
+ * @author whl
+ * @date 2020-08-29
+ */
+public interface DepositPaymentMapper 
+{
+    /**
+     * 查询押金补缴
+     * 
+     * @param id 押金补缴ID
+     * @return 押金补缴
+     */
+    public DepositPayment selectDepositPaymentById(Long id);
+
+    /**
+     * 查询押金补缴列表
+     * 
+     * @param depositPayment 押金补缴
+     * @return 押金补缴集合
+     */
+    public List<DepositPayment> selectDepositPaymentList(DepositPayment depositPayment);
+
+    /**
+     * 新增押金补缴
+     * 
+     * @param depositPayment 押金补缴
+     * @return 结果
+     */
+    public int insertDepositPayment(DepositPayment depositPayment);
+
+    /**
+     * 修改押金补缴
+     * 
+     * @param depositPayment 押金补缴
+     * @return 结果
+     */
+    public int updateDepositPayment(DepositPayment depositPayment);
+
+    /**
+     * 删除押金补缴
+     * 
+     * @param id 押金补缴ID
+     * @return 结果
+     */
+    public int deleteDepositPaymentById(Long id);
+
+    /**
+     * 批量删除押金补缴
+     * 
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    public int deleteDepositPaymentByIds(String[] ids);
+}

@@ -6,6 +6,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="DoregInfo" id="DoregInfoResult">
         <result property="id"    column="id"    />
+        <result property="appId"    column="app_id"    />
+        <result property="synUserName"    column="syn_user_name"    />
+        <result property="synKey"    column="syn_key"    />
         <result property="organdoctorId"    column="organdoctor_id"    />
         <result property="cardNo"    column="card_no"    />
         <result property="patientNo"    column="patient_no"    />
@@ -13,15 +16,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="sourceDate"    column="source_date"    />
         <result property="timestypeNo"    column="timestype_no"    />
         <result property="sourceTimeType"    column="source_time_type"    />
+        <result property="payType"    column="pay_type"    />
         <result property="payNo"    column="pay_no"    />
         <result property="payAmount"    column="pay_amount"    />
-        <result property="appId"    column="app_id"    />
         <result property="createTime"    column="create_time"    />
         <result property="successfulPayment"    column="successful_payment"    />
         <result property="outTradeNo"    column="out_trade_no"    />
         <result property="transactionId"    column="transaction_id"    />
         <result property="departmentorganId"    column="departmentorgan_id"    />
-        <result property="payType"    column="pay_type"    />
         <result property="resultMsg"    column="result_msg"    />
         <result property="sourceMark"    column="sourceMark"    />
         <result property="medicalCode"    column="medicalCode"    />
@@ -30,29 +32,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectDoregInfoVo">
-        select id, organdoctor_id, card_no, patient_no, socialsecurityNO, source_date, timestype_no, source_time_type, pay_no, pay_amount, app_id, create_time, successful_payment, out_trade_no, transaction_id, departmentorgan_id, pay_type, result_msg, sourceMark, medicalCode, consultationFee, update_time from his_doreg_info
+        select id, app_id, syn_user_name, syn_key, organdoctor_id, card_no, patient_no, socialsecurityNO, source_date, timestype_no, source_time_type, pay_type, pay_no, pay_amount, create_time, successful_payment, out_trade_no, transaction_id, departmentorgan_id, result_msg, sourceMark, medicalCode, consultationFee, update_time from his_doreg_info
     </sql>
 
     <select id="selectDoregInfoList" parameterType="DoregInfo" resultMap="DoregInfoResult">
         <include refid="selectDoregInfoVo"/>
         <where>  
-            <if test="organdoctorId != null  and organdoctorId != ''"> and organdoctor_id like concat('%', #{organdoctorId}, '%')</if>
+            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
+            <if test="synUserName != null  and synUserName != ''"> and syn_user_name like concat('%', #{synUserName}, '%')</if>
+            <if test="synKey != null  and synKey != ''"> and syn_key = #{synKey}</if>
+            <if test="organdoctorId != null  and organdoctorId != ''"> and organdoctor_id = #{organdoctorId}</if>
             <if test="cardNo != null  and cardNo != ''"> and card_no like concat('%', #{cardNo}, '%')</if>
             <if test="patientNo != null  and patientNo != ''"> and patient_no like concat('%', #{patientNo}, '%')</if>
             <if test="socialsecurityNO != null  and socialsecurityNO != ''"> and socialsecurityNO like concat('%', #{socialsecurityNO}, '%')</if>
             <if test="sourceDate != null "> and source_date = #{sourceDate}</if>
             <if test="timestypeNo != null "> and timestype_no = #{timestypeNo}</if>
             <if test="sourceTimeType != null "> and source_time_type = #{sourceTimeType}</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
             <if test="payNo != null  and payNo != ''"> and pay_no like concat('%', #{payNo}, '%')</if>
             <if test="payAmount != null "> and pay_amount = #{payAmount}</if>
-            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
             <if test="successfulPayment != null  and successfulPayment != ''"> and successful_payment = #{successfulPayment}</if>
-            <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no = #{outTradeNo}</if>
-            <if test="transactionId != null  and transactionId != ''"> and transaction_id = #{transactionId}</if>
+            <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no like concat('%', #{outTradeNo}, '%')</if>
+            <if test="transactionId != null  and transactionId != ''"> and transaction_id like concat('%', #{transactionId}, '%')</if>
             <if test="departmentorganId != null  and departmentorganId != ''"> and departmentorgan_id = #{departmentorganId}</if>
-            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
-            <if test="resultMsg != null  and resultMsg != ''"> and result_msg like concat('%', #{resultMsg}, '%')</if>
-            <if test="sourceMark != null  and sourceMark != ''"> and sourceMark like concat('%', #{sourceMark}, '%')</if>
+            <if test="resultMsg != null  and resultMsg != ''"> and result_msg = #{resultMsg}</if>
+            <if test="sourceMark != null  and sourceMark != ''"> and sourceMark = #{sourceMark}</if>
             <if test="medicalCode != null  and medicalCode != ''"> and medicalCode like concat('%', #{medicalCode}, '%')</if>
             <if test="consultationFee != null  and consultationFee != ''"> and consultationFee = #{consultationFee}</if>
         </where>
@@ -66,6 +70,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertDoregInfo" parameterType="DoregInfo" useGeneratedKeys="true" keyProperty="id">
         insert into his_doreg_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appId != null">app_id,</if>
+            <if test="synUserName != null">syn_user_name,</if>
+            <if test="synKey != null">syn_key,</if>
             <if test="organdoctorId != null">organdoctor_id,</if>
             <if test="cardNo != null">card_no,</if>
             <if test="patientNo != null">patient_no,</if>
@@ -73,15 +80,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sourceDate != null">source_date,</if>
             <if test="timestypeNo != null">timestype_no,</if>
             <if test="sourceTimeType != null">source_time_type,</if>
+            <if test="payType != null">pay_type,</if>
             <if test="payNo != null">pay_no,</if>
             <if test="payAmount != null">pay_amount,</if>
-            <if test="appId != null">app_id,</if>
             <if test="createTime != null">create_time,</if>
             <if test="successfulPayment != null">successful_payment,</if>
             <if test="outTradeNo != null">out_trade_no,</if>
             <if test="transactionId != null">transaction_id,</if>
             <if test="departmentorganId != null">departmentorgan_id,</if>
-            <if test="payType != null">pay_type,</if>
             <if test="resultMsg != null">result_msg,</if>
             <if test="sourceMark != null">sourceMark,</if>
             <if test="medicalCode != null">medicalCode,</if>
@@ -89,6 +95,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appId != null">#{appId},</if>
+            <if test="synUserName != null">#{synUserName},</if>
+            <if test="synKey != null">#{synKey},</if>
             <if test="organdoctorId != null">#{organdoctorId},</if>
             <if test="cardNo != null">#{cardNo},</if>
             <if test="patientNo != null">#{patientNo},</if>
@@ -96,15 +105,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sourceDate != null">#{sourceDate},</if>
             <if test="timestypeNo != null">#{timestypeNo},</if>
             <if test="sourceTimeType != null">#{sourceTimeType},</if>
+            <if test="payType != null">#{payType},</if>
             <if test="payNo != null">#{payNo},</if>
             <if test="payAmount != null">#{payAmount},</if>
-            <if test="appId != null">#{appId},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="successfulPayment != null">#{successfulPayment},</if>
             <if test="outTradeNo != null">#{outTradeNo},</if>
             <if test="transactionId != null">#{transactionId},</if>
             <if test="departmentorganId != null">#{departmentorganId},</if>
-            <if test="payType != null">#{payType},</if>
             <if test="resultMsg != null">#{resultMsg},</if>
             <if test="sourceMark != null">#{sourceMark},</if>
             <if test="medicalCode != null">#{medicalCode},</if>
@@ -116,6 +124,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateDoregInfo" parameterType="DoregInfo">
         update his_doreg_info
         <trim prefix="SET" suffixOverrides=",">
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="synUserName != null">syn_user_name = #{synUserName},</if>
+            <if test="synKey != null">syn_key = #{synKey},</if>
             <if test="organdoctorId != null">organdoctor_id = #{organdoctorId},</if>
             <if test="cardNo != null">card_no = #{cardNo},</if>
             <if test="patientNo != null">patient_no = #{patientNo},</if>
@@ -123,15 +134,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sourceDate != null">source_date = #{sourceDate},</if>
             <if test="timestypeNo != null">timestype_no = #{timestypeNo},</if>
             <if test="sourceTimeType != null">source_time_type = #{sourceTimeType},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
             <if test="payNo != null">pay_no = #{payNo},</if>
             <if test="payAmount != null">pay_amount = #{payAmount},</if>
-            <if test="appId != null">app_id = #{appId},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="successfulPayment != null">successful_payment = #{successfulPayment},</if>
             <if test="outTradeNo != null">out_trade_no = #{outTradeNo},</if>
             <if test="transactionId != null">transaction_id = #{transactionId},</if>
             <if test="departmentorganId != null">departmentorgan_id = #{departmentorganId},</if>
-            <if test="payType != null">pay_type = #{payType},</if>
             <if test="resultMsg != null">result_msg = #{resultMsg},</if>
             <if test="sourceMark != null">sourceMark = #{sourceMark},</if>
             <if test="medicalCode != null">medicalCode = #{medicalCode},</if>

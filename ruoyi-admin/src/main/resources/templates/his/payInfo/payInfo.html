@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('预约挂号列表')" />
+    <th:block th:include="include :: header('门诊支付列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -11,7 +11,7 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>商户ID：</label>
+                                <label>商户id：</label>
                                 <input type="text" name="appId"/>
                             </li>
                             <li>
@@ -23,55 +23,68 @@
                                 <input type="text" name="synKey"/>
                             </li>
                             <li>
-                                <label>医生编号：</label>
-                                <input type="text" name="organdoctorId"/>
+                                <label>缴费编号：</label>
+                                <input type="text" name="hiFeeNos"/>
                             </li>
                             <li>
-                                <label>患者身份证号：</label>
-                                <input type="text" name="cardNo"/>
-                            </li>
-                            <li>
-                                <label>患者编号：</label>
-                                <input type="text" name="patientNo"/>
-                            </li>
-                            <li>
-                                <label>社保号：</label>
+                                <label>社保卡号：</label>
                                 <input type="text" name="socialsecurityNO"/>
                             </li>
-                            <li class="select-time">
-                                <label>取号日期：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginSourceDate]"/>
-                                <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSourceDate]"/>
+                            <li>
+                                <label>统筹结算流水号：</label>
+                                <input type="text" name="overRecord"/>
                             </li>
                             <li>
-                                <label>时间段标识：</label>
-                                <select name="timestypeNo" th:with="type=${@dict.getType('his_source_time_type')}">
+                                <label>统筹金额：</label>
+                                <input type="text" name="overMoney"/>
+                            </li>
+                            <li>
+                                <label>医保返回信息：</label>
+                                <input type="text" name="medicareReturn"/>
+                            </li>
+                            <li>
+                                <label>银行返回信息：</label>
+                                <input type="text" name="bankReturn"/>
+                            </li>
+                            <li>
+                                <label>终端号：</label>
+                                <input type="text" name="terminalCode"/>
+                            </li>
+                            <li>
+                                <label>个人编号：</label>
+                                <input type="text" name="userNo"/>
+                            </li>
+                            <li>
+                                <label>医保卡类型：</label>
+                                <select name="medicareType" th:with="type=${@dict.getType('his_medicare_type')}">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
                             <li>
-                                <label>时间段标识：</label>
-                                <select name="sourceTimeType" th:with="type=${@dict.getType('his_source_time_type')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-                            <li>
-                                <label>支付方式：</label>
+                                <label>支付类型：</label>
                                 <select name="payType" th:with="type=${@dict.getType('his_pay_type')}">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
                             <li>
-                                <label>支付流水号：</label>
-                                <input type="text" name="payNo"/>
+                                <label>支付卡号：</label>
+                                <input type="text" name="payCardNo"/>
                             </li>
                             <li>
-                                <label>已支金额：</label>
-                                <input type="text" name="payAmount"/>
+                                <label>支付交易流水：</label>
+                                <input type="text" name="payRecord"/>
+                            </li>
+                            <li>
+                                <label>实际支付金额：</label>
+                                <input type="text" name="payMoney"/>
+                            </li>
+                            <li class="select-time">
+                                <label>创建时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreatTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreatTime]"/>
                             </li>
                             <li>
                                 <label>支付状态：</label>
@@ -89,24 +102,12 @@
                                 <input type="text" name="transactionId"/>
                             </li>
                             <li>
-                                <label>科室id：</label>
-                                <input type="text" name="departmentorganId"/>
-                            </li>
-                            <li>
                                 <label>返回信息：</label>
                                 <input type="text" name="resultMsg"/>
                             </li>
                             <li>
-                                <label>号源编号：</label>
-                                <input type="text" name="sourceMark"/>
-                            </li>
-                            <li>
-                                <label>医院就医码：</label>
-                                <input type="text" name="medicalCode"/>
-                            </li>
-                            <li>
-                                <label>挂号费：</label>
-                                <input type="text" name="consultationFee"/>
+                                <label>his接口返回信息：</label>
+                                <input type="text" name="resultCode"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -118,16 +119,16 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="his:doreg:add">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="his:payInfo:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="his:doreg:edit">
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="his:payInfo:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="his:doreg:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="his:payInfo:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="his:doreg:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="his:payInfo:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
@@ -138,13 +139,12 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('his:doreg:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('his:doreg:remove')}]];
-        var timestypeNoDatas = [[${@dict.getType('his_source_time_type')}]];
-        var sourceTimeTypeDatas = [[${@dict.getType('his_source_time_type')}]];
+        var editFlag = [[${@permission.hasPermi('his:payInfo:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('his:payInfo:remove')}]];
+        var medicareTypeDatas = [[${@dict.getType('his_medicare_type')}]];
         var payTypeDatas = [[${@dict.getType('his_pay_type')}]];
         var successfulPaymentDatas = [[${@dict.getType('his_payment_state')}]];
-        var prefix = ctx + "his/doreg";
+        var prefix = ctx + "his/payInfo";
 
         $(function() {
             var options = {
@@ -153,7 +153,7 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "预约挂号",
+                modalName: "门诊支付",
                 columns: [{
                     checkbox: true
                 },
@@ -164,7 +164,7 @@
                 },
                 {
                     field: 'appId',
-                    title: '商户ID'
+                    title: '商户id'
                 },
                 {
                     field: 'synUserName',
@@ -175,53 +175,66 @@
                     title: '效验码'
                 },
                 {
-                    field: 'organdoctorId',
-                    title: '医生编号'
-                },
-                {
-                    field: 'cardNo',
-                    title: '患者身份证号'
-                },
-                {
-                    field: 'patientNo',
-                    title: '患者编号'
+                    field: 'hiFeeNos',
+                    title: '缴费编号'
                 },
                 {
                     field: 'socialsecurityNO',
-                    title: '社保号'
+                    title: '社保卡号'
                 },
                 {
-                    field: 'sourceDate',
-                    title: '取号日期'
+                    field: 'overRecord',
+                    title: '统筹结算流水号'
                 },
                 {
-                    field: 'timestypeNo',
-                    title: '时间段标识',
+                    field: 'overMoney',
+                    title: '统筹金额'
+                },
+                {
+                    field: 'medicareReturn',
+                    title: '医保返回信息'
+                },
+                {
+                    field: 'bankReturn',
+                    title: '银行返回信息'
+                },
+                {
+                    field: 'terminalCode',
+                    title: '终端号'
+                },
+                {
+                    field: 'userNo',
+                    title: '个人编号'
+                },
+                {
+                    field: 'medicareType',
+                    title: '医保卡类型',
                     formatter: function(value, row, index) {
-                       return $.table.selectDictLabel(timestypeNoDatas, value);
-                    }
-                },
-                {
-                    field: 'sourceTimeType',
-                    title: '时间段标识',
-                    formatter: function(value, row, index) {
-                       return $.table.selectDictLabel(sourceTimeTypeDatas, value);
+                       return $.table.selectDictLabel(medicareTypeDatas, value);
                     }
                 },
                 {
                     field: 'payType',
-                    title: '支付方式',
+                    title: '支付类型',
                     formatter: function(value, row, index) {
                        return $.table.selectDictLabel(payTypeDatas, value);
                     }
                 },
                 {
-                    field: 'payNo',
-                    title: '支付流水号'
+                    field: 'payCardNo',
+                    title: '支付卡号'
                 },
                 {
-                    field: 'payAmount',
-                    title: '已支金额'
+                    field: 'payRecord',
+                    title: '支付交易流水'
+                },
+                {
+                    field: 'payMoney',
+                    title: '实际支付金额'
+                },
+                {
+                    field: 'creatTime',
+                    title: '创建时间'
                 },
                 {
                     field: 'successfulPayment',
@@ -239,24 +252,20 @@
                     title: '微信订单号'
                 },
                 {
-                    field: 'departmentorganId',
-                    title: '科室id'
+                    field: 'resultMessage',
+                    title: '返回信息'
+                },
+                {
+                    field: 'checkInfo',
+                    title: '检验条码信息'
                 },
                 {
                     field: 'resultMsg',
                     title: '返回信息'
                 },
                 {
-                    field: 'sourceMark',
-                    title: '号源编号'
-                },
-                {
-                    field: 'medicalCode',
-                    title: '医院就医码'
-                },
-                {
-                    field: 'consultationFee',
-                    title: '挂号费'
+                    field: 'resultCode',
+                    title: 'his接口返回信息'
                 },
                 {
                     title: '操作',

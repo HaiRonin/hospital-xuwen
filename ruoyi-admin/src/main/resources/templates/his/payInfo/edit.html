@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('修改预约挂号')" />
+    <th:block th:include="include :: header('修改门诊支付')" />
     <th:block th:include="include :: datetimepicker-css" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-doreg-edit" th:object="${doregInfo}">
+        <form class="form-horizontal m" id="form-payInfo-edit" th:object="${dopayInfo}">
             <input name="id" th:field="*{id}" type="hidden">
             <div class="form-group">    
-                <label class="col-sm-3 control-label">商户ID：</label>
+                <label class="col-sm-3 control-label">商户id：</label>
                 <div class="col-sm-8">
                     <input name="appId" th:field="*{appId}" class="form-control" type="text">
                 </div>
@@ -27,56 +27,63 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">医生编号：</label>
+                <label class="col-sm-3 control-label">缴费编号：</label>
                 <div class="col-sm-8">
-                    <input name="organdoctorId" th:field="*{organdoctorId}" class="form-control" type="text">
+                    <input name="hiFeeNos" th:field="*{hiFeeNos}" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">患者身份证号：</label>
-                <div class="col-sm-8">
-                    <input name="cardNo" th:field="*{cardNo}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">患者编号：</label>
-                <div class="col-sm-8">
-                    <input name="patientNo" th:field="*{patientNo}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">社保号：</label>
+                <label class="col-sm-3 control-label">社保卡号：</label>
                 <div class="col-sm-8">
                     <input name="socialsecurityNO" th:field="*{socialsecurityNO}" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">取号日期：</label>
+                <label class="col-sm-3 control-label">统筹结算流水号：</label>
                 <div class="col-sm-8">
-                    <div class="input-group date">
-                        <input name="sourceDate" th:value="${#dates.format(doregInfo.sourceDate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    </div>
+                    <input name="overRecord" th:field="*{overRecord}" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">时间段标识：</label>
+                <label class="col-sm-3 control-label">统筹金额：</label>
                 <div class="col-sm-8">
-                    <select name="timestypeNo" class="form-control m-b" th:with="type=${@dict.getType('his_source_time_type')}">
-                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{timestypeNo}"></option>
+                    <input name="overMoney" th:field="*{overMoney}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">医保返回信息：</label>
+                <div class="col-sm-8">
+                    <input name="medicareReturn" th:field="*{medicareReturn}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">银行返回信息：</label>
+                <div class="col-sm-8">
+                    <input name="bankReturn" th:field="*{bankReturn}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">终端号：</label>
+                <div class="col-sm-8">
+                    <input name="terminalCode" th:field="*{terminalCode}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">个人编号：</label>
+                <div class="col-sm-8">
+                    <input name="userNo" th:field="*{userNo}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">医保卡类型：</label>
+                <div class="col-sm-8">
+                    <select name="medicareType" class="form-control m-b" th:with="type=${@dict.getType('his_medicare_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{medicareType}"></option>
                     </select>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">时间段标识：</label>
-                <div class="col-sm-8">
-                    <select name="sourceTimeType" class="form-control m-b" th:with="type=${@dict.getType('his_source_time_type')}">
-                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{sourceTimeType}"></option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">支付方式：</label>
+                <label class="col-sm-3 control-label">支付类型：</label>
                 <div class="col-sm-8">
                     <select name="payType" class="form-control m-b" th:with="type=${@dict.getType('his_pay_type')}">
                         <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{payType}"></option>
@@ -84,15 +91,30 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">支付流水号：</label>
+                <label class="col-sm-3 control-label">支付卡号：</label>
                 <div class="col-sm-8">
-                    <input name="payNo" th:field="*{payNo}" class="form-control" type="text">
+                    <input name="payCardNo" th:field="*{payCardNo}" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">已支金额：</label>
+                <label class="col-sm-3 control-label">支付交易流水：</label>
                 <div class="col-sm-8">
-                    <input name="payAmount" th:field="*{payAmount}" class="form-control" type="text">
+                    <input name="payRecord" th:field="*{payRecord}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">实际支付金额：</label>
+                <div class="col-sm-8">
+                    <input name="payMoney" th:field="*{payMoney}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">创建时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="creatTime" th:value="${#dates.format(dopayInfo.creatTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
                 </div>
             </div>
             <div class="form-group">    
@@ -115,10 +137,16 @@
                     <input name="transactionId" th:field="*{transactionId}" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">科室id：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">返回信息：</label>
                 <div class="col-sm-8">
-                    <input name="departmentorganId" th:field="*{departmentorganId}" class="form-control" type="text">
+                    <textarea name="resultMessage" class="form-control">[[*{resultMessage}]]</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">检验条码信息：</label>
+                <div class="col-sm-8">
+                    <textarea name="checkInfo" class="form-control">[[*{checkInfo}]]</textarea>
                 </div>
             </div>
             <div class="form-group">    
@@ -128,21 +156,9 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">号源编号：</label>
+                <label class="col-sm-3 control-label">his接口返回信息：</label>
                 <div class="col-sm-8">
-                    <input name="sourceMark" th:field="*{sourceMark}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">医院就医码：</label>
-                <div class="col-sm-8">
-                    <input name="medicalCode" th:field="*{medicalCode}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">挂号费：</label>
-                <div class="col-sm-8">
-                    <input name="consultationFee" th:field="*{consultationFee}" class="form-control" type="text">
+                    <input name="resultCode" th:field="*{resultCode}" class="form-control" type="text">
                 </div>
             </div>
         </form>
@@ -150,18 +166,18 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <script th:inline="javascript">
-        var prefix = ctx + "his/doreg";
-        $("#form-doreg-edit").validate({
+        var prefix = ctx + "his/payInfo";
+        $("#form-payInfo-edit").validate({
             focusCleanup: true
         });
 
         function submitHandler() {
             if ($.validate.form()) {
-                $.operate.save(prefix + "/edit", $('#form-doreg-edit').serialize());
+                $.operate.save(prefix + "/edit", $('#form-payInfo-edit').serialize());
             }
         }
 
-        $("input[name='sourceDate']").datetimepicker({
+        $("input[name='creatTime']").datetimepicker({
             format: "yyyy-mm-dd",
             minView: "month",
             autoclose: true
