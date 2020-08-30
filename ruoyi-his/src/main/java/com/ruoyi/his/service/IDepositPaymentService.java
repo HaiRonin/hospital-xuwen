@@ -1,7 +1,8 @@
 package com.ruoyi.his.service;
 
-import java.util.List;
 import com.ruoyi.his.domain.DepositPayment;
+
+import java.util.List;
 
 /**
  * 押金补缴Service接口
@@ -58,4 +59,13 @@ public interface IDepositPaymentService
      * @return 结果
      */
     public int deleteDepositPaymentById(Long id);
+
+
+    /**
+     * 查询押金补缴
+     *
+     * @param outTradeNo 订单号
+     * @return 押金补缴
+     */
+    public DepositPayment getDetailByOutTradeNo(String outTradeNo);
 }

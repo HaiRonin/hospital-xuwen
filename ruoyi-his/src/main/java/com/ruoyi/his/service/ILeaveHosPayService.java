@@ -1,7 +1,8 @@
 package com.ruoyi.his.service;
 
-import java.util.List;
 import com.ruoyi.his.domain.LeaveHosPay;
+
+import java.util.List;
 
 /**
  * 出院结算Service接口
@@ -58,4 +59,12 @@ public interface ILeaveHosPayService
      * @return 结果
      */
     public int deleteLeaveHosPayById(Integer id);
+
+    /**
+     * 查询出院结算
+     *
+     * @param outTradeNo 订单号
+     * @return 出院结算
+     */
+    public LeaveHosPay getDetailByOutTradeNo(String outTradeNo);
 }

@@ -7,9 +7,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.BarcodeUtil;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.BodySymptomsEnum;
-import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.domain.HisUser;
 import com.ruoyi.his.domain.SymptomsOrgan;
 import com.ruoyi.his.remote.HisBaseServices;
@@ -20,7 +18,6 @@ import com.ruoyi.his.service.ISymptomsOrganService;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.vo.*;
-import com.ruoyi.web.core.config.WechatConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,8 +48,6 @@ public class HisCommonApi extends BaseController
     private ISysDictDataService  dictDataService;
     @Autowired
     private ISymptomsOrganService symptomsOrganService;
-    @Autowired
-    private IDoregInfoService doregInfoService;
     @Autowired
     private IHisUserService hisUserService;
     /**
@@ -199,30 +193,6 @@ public class HisCommonApi extends BaseController
             listSymptomsOrganExd.add(symptomsOrganExd);
         }
         return AjaxResult.success(listSymptomsOrganExd);
-    }
-
-    /**
-     * 2020.8.26
-     * 新增支付挂号的记录
-     *
-     * @return
-     */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
-    @ApiOperation("新增挂号的记录")
-    @ResponseBody
-    @PostMapping(value = "/outpatientPayment")
-    public AjaxResult outpatientPayment(@RequestBody DoregInfo doregInfo){
-        doregInfo.setAppId(WechatConfig.appId);
-        doregInfo.setCreateTime(new Date());
-        doregInfo.setPayType("5");
-        doregInfo.setSuccessfulPayment("0");
-        String orderNo = IdUtils.getOrderNo("RE");
-        doregInfo.setOutTradeNo(orderNo);
-        int iCount = doregInfoService.insertDoregInfo(doregInfo);
-        if (iCount > 0){
-            return AjaxResult.success(doregInfo);
-        }
-        return AjaxResult.error("支付挂号操作失败");
     }
 
 }

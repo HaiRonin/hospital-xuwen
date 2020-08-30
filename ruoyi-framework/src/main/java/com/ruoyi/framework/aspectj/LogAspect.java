@@ -162,7 +162,7 @@ public class LogAspect
         String params = "";
         if(StringUtils.isNotEmpty(operLog.getOperUrl())
                 && "POST".equals(operLog.getRequestMethod())
-                && "/his/request".equals(operLog.getOperUrl())){
+                && operLog.getOperUrl().indexOf("his/") > 0){
             String api  = ServletUtils.getRequest().getAttribute("api").toString();
             String dataParam  = ServletUtils.getRequest().getAttribute("dataParam").toString();
             operLog.setOperName(api);

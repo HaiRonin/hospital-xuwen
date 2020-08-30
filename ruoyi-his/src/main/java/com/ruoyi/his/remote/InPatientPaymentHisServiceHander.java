@@ -37,25 +37,25 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
     }
 
     @Override
-    boolean checkData(Long id) {
-        DepositPayment depositPayment = depositPaymentService.selectDepositPaymentById(id);
+    boolean checkData(String outTradeNo) {
+        DepositPayment depositPayment = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
         if(null == depositPayment){
-            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",outTradeNo));
         }
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(depositPayment.getSuccessfulPayment())){
-            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
         }
         if(StringUtils.isEmpty(depositPayment.getTransactionId())){
-            throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",outTradeNo));
         }
         return true;
     }
 
     @Override
-    public InPatientPaymentIn buildRequestData(Long id) {
-        DepositPayment depositPayment = depositPaymentService.selectDepositPaymentById(id);
+    public InPatientPaymentIn buildRequestData(String outTradeNo) {
+        DepositPayment depositPayment = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
         if(null == depositPayment){
-            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
         }
         InPatientPaymentIn inPatientPaymentIn = new InPatientPaymentIn();
         inPatientPaymentIn.setInHosNo(depositPayment.getInHosNo());
@@ -74,9 +74,13 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
 
 
     @Override
-    public boolean afterInvokeCallSumbit(Long id, InPatientPaymentOut inPatientPaymentOut) {
+    public boolean afterInvokeCallSumbit(String outTradeNo, InPatientPaymentOut inPatientPaymentOut) {
+        DepositPayment depositPaymentTemp = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
+        if(null == depositPaymentTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
         DepositPayment depositPayment = new DepositPayment();
-        depositPayment.setId(id);
+        depositPayment.setId(depositPaymentTemp.getId());
         depositPayment.setResultMsg(inPatientPaymentOut.getResultMsg());
         depositPayment.setUpdateTime(DateUtils.getNowDate());
         depositPayment.setSuccessfulPayment(inPatientPaymentOut.isOk()?PayStatusEnum.ORDER_SUCCESS.getCode():PayStatusEnum.ORDER_FAIL.getCode());

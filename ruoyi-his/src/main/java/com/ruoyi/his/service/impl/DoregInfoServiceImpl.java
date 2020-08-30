@@ -1,6 +1,9 @@
 package com.ruoyi.his.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.his.domain.DopayInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.his.mapper.DoregInfoMapper;
@@ -90,5 +93,22 @@ public class DoregInfoServiceImpl implements IDoregInfoService
     public int deleteDoregInfoById(Long id)
     {
         return doregInfoMapper.deleteDoregInfoById(id);
+    }
+
+    /**
+     * 查询预约挂号
+     *
+     * @param outTradeNo 订单号
+     * @return 预约挂号
+     */
+    @Override
+    public DoregInfo getDetailByOutTradeNo(String outTradeNo) {
+        DoregInfo query = new DoregInfo();
+        query.setOutTradeNo(outTradeNo);
+        List<DoregInfo> list = selectDoregInfoList(query);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
+        return list.stream().findFirst().get();
     }
 }

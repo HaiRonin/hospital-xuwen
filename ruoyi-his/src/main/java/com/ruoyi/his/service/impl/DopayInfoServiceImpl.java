@@ -1,12 +1,14 @@
 package com.ruoyi.his.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.his.domain.DopayInfo;
+import com.ruoyi.his.mapper.DopayInfoMapper;
+import com.ruoyi.his.service.IDopayInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.his.mapper.DopayInfoMapper;
-import com.ruoyi.his.domain.DopayInfo;
-import com.ruoyi.his.service.IDopayInfoService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.util.List;
 
 /**
  * 门诊支付Service业务层处理
@@ -90,5 +92,22 @@ public class DopayInfoServiceImpl implements IDopayInfoService
     public int deleteDopayInfoById(Long id)
     {
         return dopayInfoMapper.deleteDopayInfoById(id);
+    }
+
+    /**
+     * 查询门诊支付
+     *
+     * @param outTradeNo 订单号
+     * @return 门诊支付
+     */
+    @Override
+    public DopayInfo getDetailByOutTradeNo(String outTradeNo) {
+        DopayInfo query = new DopayInfo();
+        query.setOutTradeNo(outTradeNo);
+        List<DopayInfo> list = selectDopayInfoList(query);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
+        return list.stream().findFirst().get();
     }
 }

@@ -35,16 +35,16 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
     }
 
     @Override
-    boolean checkData(Long id) {
-        DopayInfo dopayInfo = dopayInfoService.selectDopayInfoById(id);
+    boolean checkData(String outTradeNo) {
+        DopayInfo dopayInfo = dopayInfoService.getDetailByOutTradeNo(outTradeNo);
         if(null == dopayInfo){
-            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",outTradeNo));
         }
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(dopayInfo.getSuccessfulPayment())){
-            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
         }
         if(StringUtils.isEmpty(dopayInfo.getTransactionId())){
-            throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",outTradeNo));
         }
         return true;
     }
@@ -67,14 +67,14 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
      *     "medicareType":1,
      *     "terminalCode":""
      * }
-     * @param id
+     * @param outTradeNo
      * @return
      */
     @Override
-    public DoPayIn buildRequestData(Long id) {
-        DopayInfo dopayInfo = dopayInfoService.selectDopayInfoById(id);
+    public DoPayIn buildRequestData(String outTradeNo) {
+        DopayInfo dopayInfo = dopayInfoService.getDetailByOutTradeNo(outTradeNo);
         if(null == dopayInfo){
-            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
         }
         DoPayIn doPayIn = new DoPayIn();
         doPayIn.setHiFeeNos(dopayInfo.getHiFeeNos());
@@ -93,9 +93,13 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
 
 
     @Override
-    public boolean afterInvokeCallSumbit(Long id, DoPayOut doPayOut) {
+    public boolean afterInvokeCallSumbit(String outTradeNo, DoPayOut doPayOut) {
+        DopayInfo dopayInfoTemp = dopayInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == dopayInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
         DopayInfo dopayInfo = new DopayInfo();
-        dopayInfo.setId(id);
+        dopayInfo.setId(dopayInfoTemp.getId());
         dopayInfo.setUpdateTime(DateUtils.getNowDate());
         dopayInfo.setResultCode(doPayOut.getResultCode());
         dopayInfo.setResultMsg(doPayOut.getResultMsg());

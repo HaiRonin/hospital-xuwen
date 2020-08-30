@@ -58,4 +58,12 @@ public interface IDopayInfoService
      * @return 结果
      */
     public int deleteDopayInfoById(Long id);
+
+    /**
+     * 查询门诊支付
+     *
+     * @param outTradeNo 订单号
+     * @return 门诊支付
+     */
+    public DopayInfo getDetailByOutTradeNo(String outTradeNo);
 }

@@ -5,8 +5,6 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
-import com.ruoyi.his.domain.DopayInfo;
-import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.response.DoPayOut;
 import com.ruoyi.his.remote.response.DoRegOut;
@@ -37,8 +35,8 @@ public class HisTestApi extends BaseController
     @ApiOperation("预约挂号推his")
     @ResponseBody
     @GetMapping(value = "/doregInfo")
-    public AjaxResult doregInfo(@RequestParam("id") Long id){
-        DoRegOut doRegOut = (DoRegOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG).invokeCallSubmit(id);
+    public AjaxResult doregInfo(@RequestParam("outTradeNo") String outTradeNo){
+        DoRegOut doRegOut = (DoRegOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG).invokeCallSubmit(outTradeNo);
         return AjaxResult.success(doRegOut);
     }
 
@@ -52,8 +50,8 @@ public class HisTestApi extends BaseController
     @ApiOperation("缴费支付推his")
     @ResponseBody
     @GetMapping(value = "/doPay")
-    public AjaxResult doPay(@RequestParam("id") Long id){
-        DoPayOut doPayOut = (DoPayOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOPAY).invokeCallSubmit(id);
+    public AjaxResult doPay(@RequestParam("outTradeNo") String outTradeNo){
+        DoPayOut doPayOut = (DoPayOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOPAY).invokeCallSubmit(outTradeNo);
         return AjaxResult.success(doPayOut);
     }
 
@@ -67,8 +65,8 @@ public class HisTestApi extends BaseController
     @ApiOperation("住院押金补缴推his")
     @ResponseBody
     @GetMapping(value = "/inpatientpayment")
-    public AjaxResult inpatientpayment(@RequestParam("id") Long id){
-        InPatientPaymentOut inPatientPaymentOut = (InPatientPaymentOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.INPATIENTPAYMENT).invokeCallSubmit(id);
+    public AjaxResult inpatientpayment(@RequestParam("outTradeNo") String outTradeNo){
+        InPatientPaymentOut inPatientPaymentOut = (InPatientPaymentOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.INPATIENTPAYMENT).invokeCallSubmit(outTradeNo);
         return AjaxResult.success(inPatientPaymentOut);
     }
 
@@ -82,8 +80,8 @@ public class HisTestApi extends BaseController
     @ApiOperation("离院结算推his")
     @ResponseBody
     @GetMapping(value = "/leavehospay")
-    public AjaxResult leavehospay(@RequestParam("id") Long id){
-        LeaveHosPayOut leaveHosPayOut = (LeaveHosPayOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.LEAVEHOSPAY).invokeCallSubmit(id);
+    public AjaxResult leavehospay(@RequestParam("outTradeNo") String outTradeNo){
+        LeaveHosPayOut leaveHosPayOut = (LeaveHosPayOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.LEAVEHOSPAY).invokeCallSubmit(outTradeNo);
         return AjaxResult.success(leaveHosPayOut);
     }
 }

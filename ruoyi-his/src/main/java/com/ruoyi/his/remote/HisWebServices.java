@@ -6,9 +6,9 @@ public interface HisWebServices {
 
     /***
      * 调用his接口下单
-     * @param id
+     * @param outTradeNo 订单号
      * @return
      */
-    public BaseResponse invokeCallSubmit(Long id);
+    public BaseResponse invokeCallSubmit(String outTradeNo);
 
 }

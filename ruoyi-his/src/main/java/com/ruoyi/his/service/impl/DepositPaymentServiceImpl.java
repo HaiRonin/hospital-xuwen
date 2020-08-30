@@ -2,6 +2,7 @@ package com.ruoyi.his.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.his.mapper.DepositPaymentMapper;
@@ -93,5 +94,22 @@ public class DepositPaymentServiceImpl implements IDepositPaymentService
     public int deleteDepositPaymentById(Long id)
     {
         return depositPaymentMapper.deleteDepositPaymentById(id);
+    }
+
+    /**
+     * 查询押金补缴
+     *
+     * @param outTradeNo 订单号
+     * @return 押金补缴
+     */
+    @Override
+    public DepositPayment getDetailByOutTradeNo(String outTradeNo) {
+        DepositPayment depositPaymentQuery = new DepositPayment();
+        depositPaymentQuery.setOutTradeNo(outTradeNo);
+        List<DepositPayment> list = selectDepositPaymentList(depositPaymentQuery);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
+        return list.stream().findFirst().get();
     }
 }

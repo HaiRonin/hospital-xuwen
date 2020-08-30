@@ -30,25 +30,25 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
     }
 
     @Override
-    boolean checkData(Long id) {
-        LeaveHosPay leaveHosPay = leaveHosPayService.selectLeaveHosPayById(id);
+    boolean checkData(String outTradeNo) {
+        LeaveHosPay leaveHosPay = leaveHosPayService.getDetailByOutTradeNo(outTradeNo);
         if(null == leaveHosPay){
-            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",outTradeNo));
         }
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(leaveHosPay.getSuccessfulPayment())){
-            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
         }
         if(StringUtils.isEmpty(leaveHosPay.getTransactionId())){
-            throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",outTradeNo));
         }
         return true;
     }
 
     @Override
-    public LeaveHosPayIn buildRequestData(Long id) {
-        LeaveHosPay leaveHosPay = leaveHosPayService.selectLeaveHosPayById(id);
+    public LeaveHosPayIn buildRequestData(String outTradeNo) {
+        LeaveHosPay leaveHosPay = leaveHosPayService.getDetailByOutTradeNo(outTradeNo);
         if(null == leaveHosPay){
-            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
         }
         LeaveHosPayIn leaveHosPayIn = new LeaveHosPayIn();
         leaveHosPayIn.setInHosNo(leaveHosPay.getInHosNo());
@@ -74,9 +74,13 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
 
 
     @Override
-    public boolean afterInvokeCallSumbit(Long id, LeaveHosPayOut leaveHosPayOut) {
+    public boolean afterInvokeCallSumbit(String outTradeNo, LeaveHosPayOut leaveHosPayOut) {
+        LeaveHosPay leaveHosPayTemp = leaveHosPayService.getDetailByOutTradeNo(outTradeNo);
+        if(null == leaveHosPayTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
         LeaveHosPay leaveHosPay = new LeaveHosPay();
-        leaveHosPay.setId(id);
+        leaveHosPay.setId(leaveHosPayTemp.getId());
         leaveHosPay.setResultMsg(leaveHosPayOut.getResultMsg());
         leaveHosPay.setUpdateTime(DateUtils.getNowDate());
         leaveHosPay.setSuccessfulPayment(leaveHosPayOut.isOk()?PayStatusEnum.ORDER_SUCCESS.getCode():PayStatusEnum.ORDER_FAIL.getCode());

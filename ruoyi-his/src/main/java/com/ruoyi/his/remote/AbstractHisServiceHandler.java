@@ -26,16 +26,16 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
 
     /***
      * 数据检查
-     * @param id
+     * @param outTradeNo
      * @return
      */
-    abstract boolean checkData(Long id);
+    abstract boolean checkData(String outTradeNo);
 
     /***
      * 构建需要请求的消息体
      * @return
      */
-    public abstract T buildRequestData(Long id);
+    public abstract T buildRequestData(String outTradeNo);
 
     /***
      * 转换成具体的返回对象
@@ -47,7 +47,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
      * 接口调用完后处理
      * @return
      */
-    abstract public boolean afterInvokeCallSumbit(Long id, R r);
+    abstract public boolean afterInvokeCallSumbit(String outTradeNo, R r);
 
     /***
      * 发送His接口请求
@@ -55,17 +55,17 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
      */
     @Override
     @Transient
-    public R invokeCallSubmit(Long id) {
+    public R invokeCallSubmit(String outTradeNo) {
         //数据检查
-        checkData(id);
+        checkData(outTradeNo);
         //his接口对象构造
-        T t = buildRequestData(id);
+        T t = buildRequestData(outTradeNo);
         //his接口请求下单
         String response = calltHisService(JSON.toJSONString(t));
         //返回结果数据转换本地对象
         R r = transResult(response);
         //更新本地对象
-        this.afterInvokeCallSumbit(id,r);
+        this.afterInvokeCallSumbit(outTradeNo,r);
         return r;
     }
 
