@@ -32,15 +32,16 @@ public class SmsServicelmpl implements ISmsService {
         String  random = RandomUtil.createRandom(true,6);
         //短信内容(【签名】+短信内容)，系统提供的测试签名和内容，如需要发送自己的短信内容请在启瑞云平台申请签名和模板
         String message   = "【广东省农垦中心医院】您的验证码是:"+ random ;
-        String info = SmsSendUtil.sendMsg(phone,message);
-        //把验证码存入redis
-        redisUtil.set(Constants.MOBILE_VERIFICATION_CODE+phone,random,60l);
-        return AjaxResult.success(info);
+        boolean isOK = SmsSendUtil.sendSms(phone,message);
+        if(isOK){
+            //把验证码存入redis
+            redisUtil.set(Constants.MOBILE_VERIFICATION_CODE+phone,random,60l);
+        }
+        return isOK?AjaxResult.success("短信发送成功，请注意查收"):AjaxResult.error("短信发送失败，请检查手机号码");
     }
 
     @Override
     public AjaxResult checkVerificationCode(String phone,String verificationCode) {
-        Map<String,String> result=new HashMap<String, String>();
         Object obj= redisUtil.get(Constants.MOBILE_VERIFICATION_CODE+phone);
         if(ObjectUtils.allNotNull(obj) && verificationCode.equals(obj.toString())){
             return AjaxResult.error("验证通过");
@@ -49,10 +50,10 @@ public class SmsServicelmpl implements ISmsService {
     }
 
 
-
     @Override
     public AjaxResult sendSmsMessage(String phone,String message){
-        String info = SmsSendUtil.sendMsg(phone,message);
-        return AjaxResult.success(info);
+        boolean isOK = SmsSendUtil.sendSms(phone,message);
+        return isOK?AjaxResult.success("短信发送成功"):AjaxResult.error("短信发送失败");
     }
+
 }

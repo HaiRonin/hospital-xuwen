@@ -1,9 +1,11 @@
 package com.ruoyi.web.controller.his.api;
 
 import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.BarcodeUtil;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.BodySymptomsEnum;
@@ -42,7 +44,7 @@ import java.util.List;
 @RestController
 @Api("his接口")
 @RequestMapping("/his")
-public class HisCommonApi
+public class HisCommonApi extends BaseController
 {
 
     @Autowired
@@ -66,6 +68,8 @@ public class HisCommonApi
     @ResponseBody
     public String invokeCall(@RequestBody HisRequestBO hisRequestBO)
     {
+        ServletUtils.getRequest().setAttribute("api", hisRequestBO.getApi());
+        ServletUtils.getRequest().setAttribute("dataParam", hisRequestBO.getDataParam());
         return hisBaseServices.requestHisService("/"+hisRequestBO.getApi().trim(),hisRequestBO.getDataParam());
     }
 
@@ -78,12 +82,12 @@ public class HisCommonApi
     @GetMapping("/user/sendMsg")
     @ResponseBody
     @ApiOperation("获取验证码短信")
-    public AjaxResult sendMsg(@Validated String phone) {
+    public AjaxResult sendMsg(@RequestParam("phone") @Validated String phone) {
         return smsService.sendVerificationCode(phone);
     }
 
     /**
-     * 验证码是否正确
+     * 用户注册
      *
      * @return
      */
@@ -94,7 +98,25 @@ public class HisCommonApi
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
-        return AjaxResult.error(hisUserService.userRegister(hisUser,userRegBO.getVerificationCode())?"注册成功":"注册失败");
+        boolean isOK = hisUserService.userRegister(hisUser,userRegBO.getVerificationCode());
+        return isOK?AjaxResult.success("注册成功"):AjaxResult.error("注册失败");
+    }
+
+
+    /**
+     * 修改密码
+     *
+     * @return
+     */
+    @ApiOperation("修改密码")
+    @PostMapping("/user/modifyPassword")
+    @ResponseBody
+    public AjaxResult modifyPassword(@Validated @RequestBody UserRegBO userRegBO){
+        HisUser hisUser = new HisUser();
+        hisUser.setPhone(userRegBO.getPhone());
+        hisUser.setPassword(userRegBO.getPassword());
+        boolean isOK = hisUserService.modifyPassword(hisUser,userRegBO.getVerificationCode());
+        return isOK?AjaxResult.success("修改成功"):AjaxResult.error("修改失败");
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.ruoyi.his.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.exception.HisException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -62,4 +64,12 @@ public class SmsSendUtil {
 
     }
 
+    public static boolean sendSms(String mobile,String message)  {
+       String result = sendMsg(mobile,message);
+        JSONObject jsonObject = JSON.parseObject(result);
+        if(null != jsonObject && jsonObject.containsKey("success")){
+            return jsonObject.getBoolean("success");
+        }
+        return false;
+    }
 }

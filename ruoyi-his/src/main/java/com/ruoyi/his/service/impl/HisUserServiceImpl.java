@@ -1,5 +1,6 @@
 package com.ruoyi.his.service.impl;
 
+import java.beans.Transient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import com.ruoyi.common.utils.RedisUtil;
 import com.ruoyi.his.constant.Constants;
 import com.ruoyi.his.remote.HisBaseServices;
 import com.ruoyi.his.remote.response.BaseResponse;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -133,6 +135,43 @@ public class HisUserServiceImpl implements IHisUserService
         hisUser.setCreateBy(hisUser.getPhone());
         hisUser.setUpdateBy(hisUser.getPhone());
         insertHisUser(hisUser);
+        return true;
+    }
+
+    @Override
+    public boolean modifyPassword(HisUser hisUser, String verificationCode) {
+        Object obj= redisUtil.get(Constants.MOBILE_VERIFICATION_CODE+hisUser.getPhone());
+        if(null ==  obj){
+            throw new HisException(String.format("验证码过期，请重新获取"));
+        }
+        if(!verificationCode.equals(obj.toString())){
+            throw new HisException(String.format("验证码校验不通过，请重新输入"));
+        }
+        Map<String,String> map = new HashMap<>();
+        map.put("UserName",hisUser.getPhone());
+        map.put("newPassWord",hisUser.getPassword());
+        String result = hisBaseServices.requestHisService("/ModifyPassword", JSONObject.toJSONString(map));
+        BaseResponse baseResponse = JSONObject.parseObject(result,BaseResponse.class);
+        if(!baseResponse.isOk()){
+            throw new HisException(String.format("密码修改失败，原因为"+baseResponse.getResultMsg()));
+        }
+        HisUser hisUserQuery = new HisUser();
+        hisUserQuery.setPhone(hisUser.getPhone());
+        List<HisUser> listHisUser = selectHisUserList(hisUserQuery);
+        if(CollectionUtils.isEmpty(listHisUser)){
+            hisUser.setName(hisUser.getPhone());
+            hisUser.setDelFlag("0");
+            hisUser.setUpdateTime(DateUtils.getNowDate());
+            hisUser.setCreateBy(hisUser.getPhone());
+            hisUser.setUpdateBy(hisUser.getPhone());
+            insertHisUser(hisUser);
+        }
+        else{
+            hisUserQuery = listHisUser.stream().findFirst().get();
+            hisUserQuery.setPassword(hisUser.getPassword());
+            hisUserQuery.setUpdateTime(DateUtils.getNowDate());
+            updateHisUser(hisUserQuery);
+        }
         return true;
     }
 
