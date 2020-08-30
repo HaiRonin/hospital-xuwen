@@ -4,6 +4,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.json.JSONObject;
 import com.ruoyi.common.utils.BarcodeUtil;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -53,12 +54,11 @@ public class HisCommonApi extends BaseController
     /**
      * his接口调用
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+    @Log(title = "his远程接口", businessType = BusinessType.HIS)
     @ApiOperation("his接口调用")
     @PostMapping("/request")
     @ResponseBody
-    public String invokeCall(@RequestBody HisRequestBO hisRequestBO)
-    {
+    public String invokeCall(@RequestBody HisRequestBO hisRequestBO){
         ServletUtils.getRequest().setAttribute("api", hisRequestBO.getApi());
         ServletUtils.getRequest().setAttribute("dataParam", hisRequestBO.getDataParam());
         return hisBaseServices.requestHisService("/"+hisRequestBO.getApi().trim(),hisRequestBO.getDataParam());
@@ -75,6 +75,8 @@ public class HisCommonApi extends BaseController
     @ResponseBody
     @ApiOperation("获取验证码短信")
     public AjaxResult sendMsg(@RequestParam("phone") @Validated String phone) {
+        ServletUtils.getRequest().setAttribute("api", "/user/sendMsg");
+        ServletUtils.getRequest().setAttribute("dataParam", phone);
         return smsService.sendVerificationCode(phone);
     }
 
@@ -88,6 +90,8 @@ public class HisCommonApi extends BaseController
     @PostMapping("/user/register")
     @ResponseBody
     public AjaxResult userRegister(@Validated @RequestBody UserRegBO userRegBO){
+        ServletUtils.getRequest().setAttribute("api", "register");
+        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(userRegBO));
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
@@ -101,11 +105,13 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+    @Log(title = "his远程接口", businessType = BusinessType.HIS)
     @ApiOperation("修改密码")
     @PostMapping("/user/modifyPassword")
     @ResponseBody
     public AjaxResult modifyPassword(@Validated @RequestBody UserRegBO userRegBO){
+        ServletUtils.getRequest().setAttribute("api", "modifyPassword");
+        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(userRegBO));
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
@@ -123,6 +129,8 @@ public class HisCommonApi extends BaseController
     @PostMapping("/user/shortMessage")
     @ResponseBody
     public AjaxResult shortMessage(@Validated @RequestBody SmsMsgBO smsMsgBO) {
+        ServletUtils.getRequest().setAttribute("api", "/user/shortMessage");
+        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(smsMsgBO));
         if(StringUtils.isEmpty(smsMsgBO.getMessage())){
             return AjaxResult.error("短信内容不能为空");
         }
@@ -134,7 +142,7 @@ public class HisCommonApi extends BaseController
      * 生成条形码
      * @return
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("生成条形码")
     @GetMapping("/user/barCode")
     @ResponseBody
@@ -148,11 +156,13 @@ public class HisCommonApi extends BaseController
      * 获取所有的身体部位
      * @return
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("获取所有的身体部位")
     @PostMapping(value = "/getBodyListPart")
     @ResponseBody
     public AjaxResult getBodyListPart() {
+        ServletUtils.getRequest().setAttribute("api", "getBodyListPart");
+        ServletUtils.getRequest().setAttribute("dataParam", "");
         SysDictData dictData = new SysDictData();
         dictData.setDictType("his_body_part");
         List<SysDictData> lstSysDictData = dictDataService.selectDictDataList(dictData);
@@ -173,12 +183,14 @@ public class HisCommonApi extends BaseController
      * 根据身体部位获取对应的病症
      * @return
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("根据身体部位获取对应的病症")
     @PostMapping(value = "/getOrganList")
     @ResponseBody
 //    @Cacheable(value="#bodyPart", key="#sex+'-'+#age")
     public AjaxResult getOrganList(@RequestBody SymptomsOrganBO symptomsOrganBO) {
+        ServletUtils.getRequest().setAttribute("api", "getOrganList");
+        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(symptomsOrganBO));
         String sexCode = BodySymptomsEnum.getCodeByName(symptomsOrganBO.getSex()+"_"+symptomsOrganBO.getAge());
         SymptomsOrgan symptomsOrgan = new SymptomsOrgan();
         symptomsOrgan.setBodyPart(symptomsOrganBO.getBodyPart());

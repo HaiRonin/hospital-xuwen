@@ -49,10 +49,10 @@ public class HisOrderApi extends BaseController
 
 
     /**
-     * 新增支付挂号的记录
+     * 新增预约挂号的记录
      */
     @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
-    @ApiOperation("新增支付挂号的记录")
+    @ApiOperation("新增预约挂号的记录")
     @PostMapping("/outpatientPayment")
     @ResponseBody
     public AjaxResult outpatientPayment(@RequestBody DoregInfo doregInfo)
@@ -68,14 +68,14 @@ public class HisOrderApi extends BaseController
         doregInfo.setSuccessfulPayment("0");
         doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"+doregInfo.getPatientNo()+"_"));
         int iResult = doregInfoService.insertDoregInfo(doregInfo);
-        return iResult>0?AjaxResult.success(doregInfo):AjaxResult.error("挂号失败");
+        return iResult>0?AjaxResult.success(doregInfo):AjaxResult.error("预约挂号失败");
     }
 
     /**
-     * 新增支付挂号的记录
+     * 新增缴费支付的记录
      */
     @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
-    @ApiOperation("新增支付挂号的记录")
+    @ApiOperation("新增缴费支付的记录")
     @PostMapping("/newPayment")
     @ResponseBody
     public AjaxResult newPayment(@RequestBody DopayInfo dopayInfo)
@@ -91,7 +91,7 @@ public class HisOrderApi extends BaseController
         dopayInfo.setSuccessfulPayment("0");
         dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"+dopayInfo.getHiFeeNos()+"_"));
         int iResult = dopayInfoService.insertDopayInfo(dopayInfo);
-        return iResult>0?AjaxResult.success(dopayInfo):AjaxResult.error("挂号失败");
+        return iResult>0?AjaxResult.success(dopayInfo):AjaxResult.error("缴费支付失败");
     }
 
     /**
@@ -114,15 +114,15 @@ public class HisOrderApi extends BaseController
         depositPayment.setSuccessfulPayment("0");
         depositPayment.setOutTradeNo(IdUtils.getOrderNo("DP"+depositPayment.getBedNo()+"_"));
         int iResult = depositPaymentService.insertDepositPayment(depositPayment);
-        return iResult>0?AjaxResult.success(depositPayment):AjaxResult.error("挂号失败");
+        return iResult>0?AjaxResult.success(depositPayment):AjaxResult.error("押金补缴失败");
     }
 
 
     /**
-     * 新增押金补缴的记录
+     * 新增出院结算的记录
      */
     @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
-    @ApiOperation("新增押金补缴的记录")
+    @ApiOperation("新增出院结算记录")
     @PostMapping("/leaveHosPay")
     @ResponseBody
     public AjaxResult leaveHosPay(@RequestBody LeaveHosPay leaveHosPay)
@@ -138,7 +138,7 @@ public class HisOrderApi extends BaseController
         leaveHosPay.setSuccessfulPayment("0");
         leaveHosPay.setOutTradeNo(IdUtils.getOrderNo("LH"+leaveHosPay.getInHosNo()+"_"));
         int iResult = leaveHosPayService.insertLeaveHosPay(leaveHosPay);
-        return iResult>0?AjaxResult.success(leaveHosPay):AjaxResult.error("挂号失败");
+        return iResult>0?AjaxResult.success(leaveHosPay):AjaxResult.error("出院结算失败");
     }
 
 }
