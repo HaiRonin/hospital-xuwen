@@ -60,4 +60,8 @@ public enum BusinessType
      * HIS接口调用
      */
     HIS,
+    /**
+     * 本地调用
+     */
+    HIS_LOCALHOST,
 }

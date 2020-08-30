@@ -17,7 +17,7 @@ public interface LeaveHosPayMapper
      * @param id 出院结算ID
      * @return 出院结算
      */
-    public LeaveHosPay selectLeaveHosPayById(Integer id);
+    public LeaveHosPay selectLeaveHosPayById(Long id);
 
     /**
      * 查询出院结算列表

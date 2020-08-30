@@ -18,7 +18,7 @@ public class LeaveHosPay extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** null */
-    private Integer id;
+    private Long id;
 
     /** app_id */
     @Excel(name = "app_id")
@@ -128,12 +128,12 @@ public class LeaveHosPay extends BaseEntity
     @Excel(name = "his接口返回信息")
     private String resultCode;
 
-    public void setId(Integer id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Integer getId() 
+    public Long getId()
     {
         return id;
     }

@@ -31,16 +31,19 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
 
     @Override
     public HisBusinessTypeEnum getBusinessType() {
-        return HisBusinessTypeEnum.DOREG;
+        return HisBusinessTypeEnum.DOPAY;
     }
 
     @Override
     boolean checkData(Long id) {
         DopayInfo dopayInfo = dopayInfoService.selectDopayInfoById(id);
+        if(null == dopayInfo){
+            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",id));
+        }
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(dopayInfo.getSuccessfulPayment())){
             throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
         }
-        if(StringUtils.isEmpty(dopayInfo.getOutTradeNo())){
+        if(StringUtils.isEmpty(dopayInfo.getTransactionId())){
             throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",id));
         }
         return true;
@@ -75,19 +78,11 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
         }
         DoPayIn doPayIn = new DoPayIn();
         doPayIn.setHiFeeNos(dopayInfo.getHiFeeNos());
-        doPayIn.setSocialsecurityNO(dopayInfo.getSocialsecurityNO());
-        doPayIn.setOverMoney(dopayInfo.getOverMoney());
-        doPayIn.setOverRecord(dopayInfo.getOverRecord());
-        doPayIn.setMedicareReturn(dopayInfo.getMedicareReturn());
-        doPayIn.setBankReturn(dopayInfo.getBankReturn());
-        doPayIn.setTerminalCode(dopayInfo.getTerminalCode());
-        doPayIn.setUserNo(dopayInfo.getUserNo());
-        doPayIn.setMedicareType(String.valueOf(dopayInfo.getMedicareType()));
         doPayIn.setPayType(dopayInfo.getPayType());
-        doPayIn.setPayCardNo(dopayInfo.getPayCardNo());
         //支付流水号
         doPayIn.setPayNo(dopayInfo.getTransactionId());
         doPayIn.setPayAmount(dopayInfo.getPayMoney().toString());
+        doPayIn.setMedicareType(String.valueOf(dopayInfo.getMedicareType()));
         return doPayIn;
     }
 

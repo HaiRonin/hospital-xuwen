@@ -93,7 +93,7 @@ public class LeaveHosPayController extends BaseController
      * 修改出院结算
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, ModelMap mmap)
+    public String edit(@PathVariable("id") Long id, ModelMap mmap)
     {
         LeaveHosPay leaveHosPay = leaveHosPayService.selectLeaveHosPayById(id);
         mmap.put("leaveHosPay", leaveHosPay);

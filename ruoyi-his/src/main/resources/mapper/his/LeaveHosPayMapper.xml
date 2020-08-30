@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectLeaveHosPayById" parameterType="Integer" resultMap="LeaveHosPayResult">
+    <select id="selectLeaveHosPayById" parameterType="Long" resultMap="LeaveHosPayResult">
         <include refid="selectLeaveHosPayVo"/>
         where id = #{id}
     </select>
@@ -173,7 +173,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteLeaveHosPayById" parameterType="Integer">
+    <delete id="deleteLeaveHosPayById" parameterType="Long">
         delete from his_leave_hos_pay where id = #{id}
     </delete>
 

@@ -33,6 +33,9 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
     @Override
     boolean checkData(Long id) {
         DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
+        if(null == doregInfoNew){
+            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",id));
+        }
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(doregInfoNew.getSuccessfulPayment())){
             throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
         }
@@ -48,7 +51,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         if(null == doregInfoNew){
             throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
         }
-        DoRequestInfo doRegInInfo = new DoRequestInfo();
+        DoRegIn doRegInInfo = new DoRegIn();
         //医生编号
         doRegInInfo.setOrgandoctorId(doregInfoNew.getOrgandoctorId());
         //科室编号
@@ -57,25 +60,22 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         doRegInInfo.setCardNo(doregInfoNew.getCardNo());
         //患者编号
         doRegInInfo.setPatientNo(doregInfoNew.getPatientNo());
-        //社保号
-        doRegInInfo.setSocialsecurityNO(doregInfoNew.getSocialsecurityNO());
         //取号时间（号源日期）
         doRegInInfo.setSourceDate(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD,doregInfoNew.getSourceDate()));
         //时间段标识 0表示无时间段
-        doRegInInfo.setTimestypeNo(doregInfoNew.getTimestypeNo());
+        if(null != doregInfoNew.getTimestypeNo()){
+            doRegInInfo.setTimestypeNo(doregInfoNew.getTimestypeNo());
+        }
         //1,上午 2，中午3 下午 4，晚上 5，凌晨
         doRegInInfo.setSourceTimeType(doregInfoNew.getSourceTimeType());
         //1,银联，2支付宝 3，现场支付 4、医保账户，5、微信，6、云医院微信，7、云医院支付宝，8、诊疗卡
         doRegInInfo.setPayType(Integer.parseInt(doregInfoNew.getPayType()));
-        //支付卡号
-        doRegInInfo.setPayCardNo(doregInfoNew.getPayNo());
-        //支付金额
-        doRegInInfo.setPayAmount(String.valueOf(doregInfoNew.getPayAmount()));
         //支付流水号
         doRegInInfo.setPayNo(doregInfoNew.getPayNo());
-        DoRegIn doRegIn = new DoRegIn();
-        doRegIn.setDoRegIn(JSON.toJSONString(doRegInInfo));
-        return doRegIn;
+        //支付金额
+        doRegInInfo.setPayAmount(String.valueOf(doregInfoNew.getPayAmount()));
+
+        return doRegInInfo;
     }
 
     @Override

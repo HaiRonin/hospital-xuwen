@@ -27,7 +27,7 @@ public class LeaveHosPayServiceImpl implements ILeaveHosPayService
      * @return 出院结算
      */
     @Override
-    public LeaveHosPay selectLeaveHosPayById(Integer id)
+    public LeaveHosPay selectLeaveHosPayById(Long id)
     {
         return leaveHosPayMapper.selectLeaveHosPayById(id);
     }
