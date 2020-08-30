@@ -146,28 +146,6 @@ public class HisOrderApi extends BaseController
         return iResult>0?AjaxResult.success(leaveHosPay):AjaxResult.error("出院结算失败");
     }
 
-    /**
-     * 新增出院结算的记录
-     */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
-    @ApiOperation("新增出院结算记录")
-    @PostMapping("/leaveHosPay")
-    @ResponseBody
-    public AjaxResult orderDoPayCallBack(@RequestBody LeaveHosPay leaveHosPay)
-    {
-        ServletUtils.getRequest().setAttribute("api", "leaveHosPay");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(leaveHosPay));
-        if(StringUtils.isEmpty(leaveHosPay.getPayType())){
-            leaveHosPay.setPayType("5");
-        }
-        leaveHosPay.setAppId(WechatConfig.appId);
-        leaveHosPay.setCreateBy(leaveHosPay.getSynUserName());
-        leaveHosPay.setCreateTime(new Date());
-        leaveHosPay.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        leaveHosPay.setOutTradeNo(IdUtils.getOrderNo("LH"+leaveHosPay.getInHosNo()+"_"));
-        int iResult = leaveHosPayService.insertLeaveHosPay(leaveHosPay);
-        return iResult>0?AjaxResult.success(leaveHosPay):AjaxResult.error("出院结算失败");
-    }
 
     /**
      * 支付失败/取消支付/超时支付
