@@ -6,10 +6,14 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
+import com.ruoyi.his.domain.DopayInfo;
 import com.ruoyi.his.domain.DoregInfo;
+import com.ruoyi.his.remote.request.DoPayIn;
 import com.ruoyi.his.remote.request.DoRegIn;
 import com.ruoyi.his.remote.request.DoRequestInfo;
+import com.ruoyi.his.remote.response.DoPayOut;
 import com.ruoyi.his.remote.response.DoRegOut;
+import com.ruoyi.his.service.IDopayInfoService;
 import com.ruoyi.his.service.IDoregInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +25,9 @@ import org.springframework.stereotype.Service;
  * @date 2020-08-28
  */
 @Service
-public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn, DoRegOut> {
+public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn, DoPayOut> {
     @Autowired
-    private IDoregInfoService doregInfoService;
+    private IDopayInfoService dopayInfoService;
 
     @Override
     public HisBusinessTypeEnum getBusinessType() {
@@ -32,68 +36,80 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
 
     @Override
     boolean checkData(Long id) {
-        DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
-        if(PayStatusEnum.PAY_SUCCESS.getCode().equals(doregInfoNew.getSuccessfulPayment())){
+        DopayInfo dopayInfo = dopayInfoService.selectDopayInfoById(id);
+        if(PayStatusEnum.PAY_SUCCESS.getCode().equals(dopayInfo.getSuccessfulPayment())){
             throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",id));
         }
-        if(StringUtils.isEmpty(doregInfoNew.getPayNo())){
+        if(StringUtils.isEmpty(dopayInfo.getOutTradeNo())){
             throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",id));
         }
         return true;
     }
 
+    /***
+     * {
+     *     "socialsecurityNO":"",
+     *     "userNo":"",
+     *     "overMoney":"",
+     *     "medicareReturn":"",
+     *     "payCardNo":"",
+     *     "synKey":"",
+     *     "overRecord":"",
+     *     "synUserName":"",
+     *     "payNo":"4200000596202008020458500188",
+     *     "payType":"5",
+     *     "payAmount":211.8,
+     *     "bankReturn":"",
+     *     "hiFeeNos":"2020073111931",
+     *     "medicareType":1,
+     *     "terminalCode":""
+     * }
+     * @param id
+     * @return
+     */
     @Override
-    public DoRegIn buildRequestData(Long id) {
-        DoregInfo doregInfoNew = doregInfoService.selectDoregInfoById(id);
-        if(null == doregInfoNew){
+    public DoPayIn buildRequestData(Long id) {
+        DopayInfo dopayInfo = dopayInfoService.selectDopayInfoById(id);
+        if(null == dopayInfo){
             throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",id));
         }
-        DoRequestInfo doRegInInfo = new DoRequestInfo();
-        //医生编号
-        doRegInInfo.setOrgandoctorId(doregInfoNew.getOrgandoctorId());
-        //科室编号
-        doRegInInfo.setDepartmentorganId(doregInfoNew.getDepartmentorganId());
-        //患者身份证号
-        doRegInInfo.setCardNo(doregInfoNew.getCardNo());
-        //患者编号
-        doRegInInfo.setPatientNo(doregInfoNew.getPatientNo());
-        //社保号
-        doRegInInfo.setSocialsecurityNO(doregInfoNew.getSocialsecurityNO());
-        //取号时间（号源日期）
-        doRegInInfo.setSourceDate(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD,doregInfoNew.getSourceDate()));
-        //时间段标识 0表示无时间段
-        doRegInInfo.setTimestypeNo(doregInfoNew.getTimestypeNo());
-        //1,上午 2，中午3 下午 4，晚上 5，凌晨
-        doRegInInfo.setSourceTimeType(doregInfoNew.getSourceTimeType());
-        //1,银联，2支付宝 3，现场支付 4、医保账户，5、微信，6、云医院微信，7、云医院支付宝，8、诊疗卡
-        doRegInInfo.setPayType(Integer.parseInt(doregInfoNew.getPayType()));
-        //支付卡号
-        doRegInInfo.setPayCardNo(doregInfoNew.getPayNo());
-        //支付金额
-        doRegInInfo.setPayAmount(String.valueOf(doregInfoNew.getPayAmount()));
+        DoPayIn doPayIn = new DoPayIn();
+        doPayIn.setHiFeeNos(dopayInfo.getHiFeeNos());
+        doPayIn.setSocialsecurityNO(dopayInfo.getSocialsecurityNO());
+        doPayIn.setOverMoney(dopayInfo.getOverMoney());
+        doPayIn.setOverRecord(dopayInfo.getOverRecord());
+        doPayIn.setMedicareReturn(dopayInfo.getMedicareReturn());
+        doPayIn.setBankReturn(dopayInfo.getBankReturn());
+        doPayIn.setTerminalCode(dopayInfo.getTerminalCode());
+        doPayIn.setUserNo(dopayInfo.getUserNo());
+        doPayIn.setMedicareType(String.valueOf(dopayInfo.getMedicareType()));
+        doPayIn.setPayType(dopayInfo.getPayType());
+        doPayIn.setPayCardNo(dopayInfo.getPayCardNo());
         //支付流水号
-        doRegInInfo.setPayNo(doregInfoNew.getPayNo());
-        DoRegIn doRegIn = new DoRegIn();
-        doRegIn.setDoRegIn(JSON.toJSONString(doRegInInfo));
-        return doRegIn;
+        doPayIn.setPayNo(dopayInfo.getTransactionId());
+        doPayIn.setPayAmount(dopayInfo.getPayMoney().toString());
+        return doPayIn;
     }
 
     @Override
-    protected DoRegOut transResult(String result) {
-        return JSON.toJavaObject(JSON.parseObject(result), DoRegOut.class);
+    protected DoPayOut transResult(String result) {
+        return JSON.toJavaObject(JSON.parseObject(result), DoPayOut.class);
     }
 
 
     @Override
-    public boolean afterInvokeCallSumbit(Long id, DoRegOut regOut) {
-        DoregInfo doregInfo = new DoregInfo();
-        doregInfo.setId(id);
-        doregInfo.setMedicalCode(regOut.getMedicalCode());
-        doregInfo.setSourceMark(regOut.getSourceMark());
-        doregInfo.setConsultationFee(regOut.getConsultationFee());
-        doregInfo.setUpdateTime(DateUtils.getNowDate());
-        doregInfo.setSuccessfulPayment(regOut.isOk()?PayStatusEnum.ORDER_SUCCESS.getCode():PayStatusEnum.ORDER_FAIL.getCode());
-        doregInfoService.updateDoregInfo(doregInfo);
+    public boolean afterInvokeCallSumbit(Long id, DoPayOut doPayOut) {
+        DopayInfo dopayInfo = new DopayInfo();
+        dopayInfo.setId(id);
+        dopayInfo.setUpdateTime(DateUtils.getNowDate());
+        dopayInfo.setResultCode(doPayOut.getResultCode());
+        dopayInfo.setResultMsg(doPayOut.getResultMsg());
+        dopayInfo.setSuccessfulPayment(doPayOut.isOk()?PayStatusEnum.ORDER_SUCCESS.getCode():PayStatusEnum.ORDER_FAIL.getCode());
+        if(doPayOut.isOk()){
+            dopayInfo.setResultMessage(JSON.toJSONString(doPayOut.getResultmessage()));
+            dopayInfo.setCheckInfo(doPayOut.getCheckInfo());
+        }
+        dopayInfoService.updateDopayInfo(dopayInfo);
         return true;
     }
 

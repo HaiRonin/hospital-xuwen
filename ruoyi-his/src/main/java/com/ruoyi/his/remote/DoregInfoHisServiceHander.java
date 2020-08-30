@@ -88,11 +88,14 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
     public boolean afterInvokeCallSumbit(Long id, DoRegOut regOut) {
         DoregInfo doregInfo = new DoregInfo();
         doregInfo.setId(id);
-        doregInfo.setMedicalCode(regOut.getMedicalCode());
-        doregInfo.setSourceMark(regOut.getSourceMark());
-        doregInfo.setConsultationFee(regOut.getConsultationFee());
+        doregInfo.setResultMsg(regOut.getResultMsg());
         doregInfo.setUpdateTime(DateUtils.getNowDate());
         doregInfo.setSuccessfulPayment(regOut.isOk()?PayStatusEnum.ORDER_SUCCESS.getCode():PayStatusEnum.ORDER_FAIL.getCode());
+        if(regOut.isOk()){
+            doregInfo.setMedicalCode(regOut.getMedicalCode());
+            doregInfo.setSourceMark(regOut.getSourceMark());
+            doregInfo.setConsultationFee(regOut.getConsultationFee());
+        }
         doregInfoService.updateDoregInfo(doregInfo);
         return true;
     }

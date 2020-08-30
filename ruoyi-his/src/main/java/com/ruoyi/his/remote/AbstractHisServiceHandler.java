@@ -91,7 +91,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
      * @return
      */
     public static HisWebServices servicesInstance(HisBusinessTypeEnum businessTypeEnum){
-        HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByCode(businessTypeEnum.getCode());
+        HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(businessTypeEnum.getKey());
         return (HisWebServices)SpringUtils.getBean(hisBusinessTypeEnum.getClazz());
     }
 

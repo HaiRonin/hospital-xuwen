@@ -9,13 +9,10 @@ import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.BodySymptomsEnum;
-import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.domain.HisUser;
 import com.ruoyi.his.domain.SymptomsOrgan;
-import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.HisBaseServices;
-import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDoregInfoService;
 import com.ruoyi.his.service.IHisUserService;
 import com.ruoyi.his.service.ISmsService;
@@ -79,6 +76,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @GetMapping("/user/sendMsg")
     @ResponseBody
     @ApiOperation("获取验证码短信")
@@ -91,6 +89,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("用户注册")
     @PostMapping("/user/register")
     @ResponseBody
@@ -108,6 +107,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("修改密码")
     @PostMapping("/user/modifyPassword")
     @ResponseBody
@@ -124,6 +124,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("发送短信")
     @PostMapping("/user/shortMessage")
     @ResponseBody
@@ -139,6 +140,7 @@ public class HisCommonApi extends BaseController
      * 生成条形码
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("生成条形码")
     @GetMapping("/user/barCode")
     @ResponseBody
@@ -152,6 +154,7 @@ public class HisCommonApi extends BaseController
      * 获取所有的身体部位
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("获取所有的身体部位")
     @PostMapping(value = "/getBodyListPart")
     @ResponseBody
@@ -176,6 +179,7 @@ public class HisCommonApi extends BaseController
      * 根据身体部位获取对应的病症
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("根据身体部位获取对应的病症")
     @PostMapping(value = "/getOrganList")
     @ResponseBody
@@ -203,6 +207,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("新增挂号的记录")
     @ResponseBody
     @PostMapping(value = "/outpatientPayment")
@@ -220,17 +225,4 @@ public class HisCommonApi extends BaseController
         return AjaxResult.error("支付挂号操作失败");
     }
 
-    /**
-     * 2020.8.26
-     * 测试预约挂号推his
-     *
-     * @return
-     */
-    @ApiOperation("测试预约挂号推his")
-    @ResponseBody
-    @PostMapping(value = "/testDoregInfo")
-    public AjaxResult testDoregInfo(@RequestBody DoregInfo doregInfo){
-        DoRegOut doRegOut = (DoRegOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG).invokeCallSubmit(doregInfo.getId());
-        return AjaxResult.success(doRegOut);
-    }
 }
