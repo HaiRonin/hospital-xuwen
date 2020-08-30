@@ -49,6 +49,11 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
      */
     abstract public boolean afterInvokeCallSumbit(String outTradeNo, R r);
 
+    @Transient
+    public BaseResponse invokeCallWechatRefund(String outTradeNo) {
+        return new BaseResponse("00","退款成功");
+    }
+
     /***
      * 发送His接口请求
      * @return
@@ -94,6 +99,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(businessTypeEnum.getKey());
         return (HisWebServices)SpringUtils.getBean(hisBusinessTypeEnum.getClazz());
     }
+
 
 
 }

@@ -26,6 +26,7 @@ public class BaseResponse implements Serializable{
         this.resultMsg = resultMsg;
     }
 
+
     public String getResultCode() {
         return resultCode;
     }

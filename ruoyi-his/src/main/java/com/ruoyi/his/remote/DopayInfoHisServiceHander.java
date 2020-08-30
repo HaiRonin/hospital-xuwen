@@ -11,12 +11,14 @@ import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.remote.request.DoPayIn;
 import com.ruoyi.his.remote.request.DoRegIn;
 import com.ruoyi.his.remote.request.DoRequestInfo;
+import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoPayOut;
 import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDopayInfoService;
 import com.ruoyi.his.service.IDoregInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 缴费Service业务层处理
@@ -112,4 +114,40 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
         return true;
     }
 
+
+    @Override
+    public BaseResponse paySuccessful(String outTradeNo, String transactionId) {
+        BaseResponse baseResponse = new BaseResponse("00","操作成功");
+        DopayInfo dopayInfoTemp = dopayInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == dopayInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DopayInfo dopayInfo = new DopayInfo();
+        dopayInfo.setId(dopayInfoTemp.getId());
+        dopayInfo.setUpdateTime(DateUtils.getNowDate());
+        dopayInfo.setTransactionId(transactionId);
+        dopayInfo.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
+        dopayInfoService.updateDopayInfo(dopayInfo);
+        try {
+            baseResponse = invokeCallSubmit(outTradeNo);
+        }catch (HisException ex){
+            throw ex;
+        }catch (Exception ex){
+            new BaseResponse("00","缴费支付时发生错误,支付的金额稍后会自动原路返回，请注意查收");
+        }
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse payFailed(String outTradeNo) {
+        DopayInfo dopayInfoTemp = dopayInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == dopayInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DopayInfo dopayInfo = new DopayInfo();
+        dopayInfo.setId(dopayInfoTemp.getId());
+        dopayInfo.setUpdateTime(DateUtils.getNowDate());
+        dopayInfo.setSuccessfulPayment(PayStatusEnum.PAY_FAIL.getCode());
+        return new BaseResponse("00","操作成功");
+    }
 }

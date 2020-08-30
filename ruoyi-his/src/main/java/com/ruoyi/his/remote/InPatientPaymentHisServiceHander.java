@@ -11,12 +11,14 @@ import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.remote.request.DoRegIn;
 import com.ruoyi.his.remote.request.DoRequestInfo;
 import com.ruoyi.his.remote.request.InPatientPaymentIn;
+import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.remote.response.InPatientPaymentOut;
 import com.ruoyi.his.service.IDepositPaymentService;
 import com.ruoyi.his.service.IDoregInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -95,4 +97,40 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
         return true;
     }
 
+    @Override
+    public BaseResponse paySuccessful(String outTradeNo, String transactionId) {
+        BaseResponse baseResponse = new BaseResponse("00","操作成功");
+        DepositPayment depositPaymentTemp = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
+        if(null == depositPaymentTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DepositPayment depositPayment = new DepositPayment();
+        depositPayment.setId(depositPaymentTemp.getId());
+        depositPayment.setUpdateTime(DateUtils.getNowDate());
+        depositPayment.setTransactionId(transactionId);
+        depositPayment.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
+        depositPaymentService.updateDepositPayment(depositPayment);
+        try {
+            baseResponse = invokeCallSubmit(outTradeNo);
+        }catch (HisException ex){
+            throw ex;
+        }catch (Exception ex){
+            new BaseResponse("00","缴费押金时发生错误,支付的金额稍后会自动原路返回，请注意查收");
+        }
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse payFailed(String outTradeNo) {
+        DepositPayment depositPaymentTemp = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
+        if(null == depositPaymentTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DepositPayment depositPayment = new DepositPayment();
+        depositPayment.setId(depositPaymentTemp.getId());
+        depositPayment.setUpdateTime(DateUtils.getNowDate());
+        depositPayment.setSuccessfulPayment(PayStatusEnum.PAY_FAIL.getCode());
+        depositPaymentService.updateDepositPayment(depositPayment);
+        return new BaseResponse("00","操作成功");
+    }
 }

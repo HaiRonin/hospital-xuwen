@@ -8,10 +8,12 @@ import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.LeaveHosPay;
 import com.ruoyi.his.remote.request.LeaveHosPayIn;
+import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.LeaveHosPayOut;
 import com.ruoyi.his.service.ILeaveHosPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 离院结算Service业务层处理
@@ -99,4 +101,41 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
         return true;
     }
 
+
+    @Override
+    public BaseResponse paySuccessful(String outTradeNo, String transactionId) {
+        BaseResponse baseResponse = new BaseResponse("00","操作成功");
+        LeaveHosPay leaveHosPayTemp = leaveHosPayService.getDetailByOutTradeNo(outTradeNo);
+        if(null == leaveHosPayTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        LeaveHosPay leaveHosPay = new LeaveHosPay();
+        leaveHosPay.setId(leaveHosPayTemp.getId());
+        leaveHosPay.setUpdateTime(DateUtils.getNowDate());
+        leaveHosPay.setTransactionId(transactionId);
+        leaveHosPay.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
+        leaveHosPayService.updateLeaveHosPay(leaveHosPay);
+        try {
+            baseResponse = invokeCallSubmit(outTradeNo);
+        }catch (HisException ex){
+            throw ex;
+        }catch (Exception ex){
+            new BaseResponse("00","出院缴费发生错误,支付的金额稍后会自动原路返回，请注意查收");
+        }
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse payFailed(String outTradeNo) {
+        LeaveHosPay leaveHosPayTemp = leaveHosPayService.getDetailByOutTradeNo(outTradeNo);
+        if(null == leaveHosPayTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        LeaveHosPay leaveHosPay = new LeaveHosPay();
+        leaveHosPay.setId(leaveHosPayTemp.getId());
+        leaveHosPay.setUpdateTime(DateUtils.getNowDate());
+        leaveHosPay.setSuccessfulPayment(PayStatusEnum.PAY_FAIL.getCode());
+        leaveHosPayService.updateLeaveHosPay(leaveHosPay);
+        return new BaseResponse("00","操作成功");
+    }
 }

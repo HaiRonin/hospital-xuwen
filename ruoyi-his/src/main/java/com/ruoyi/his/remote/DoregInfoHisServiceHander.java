@@ -6,13 +6,15 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
+import com.ruoyi.his.domain.DopayInfo;
 import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.remote.request.DoRegIn;
-import com.ruoyi.his.remote.request.DoRequestInfo;
+import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDoregInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 预约挂号Service业务层处理
@@ -102,6 +104,44 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         }
         doregInfoService.updateDoregInfo(doregInfo);
         return true;
+    }
+
+
+    @Override
+    public BaseResponse paySuccessful(String outTradeNo, String transactionId) {
+        BaseResponse baseResponse = new BaseResponse("00","操作成功");
+        DoregInfo doregInfoTemp = doregInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == doregInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DoregInfo doregInfo = new DoregInfo();
+        doregInfo.setId(doregInfoTemp.getId());
+        doregInfo.setUpdateTime(DateUtils.getNowDate());
+        doregInfo.setTransactionId(transactionId);
+        doregInfo.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
+        doregInfoService.updateDoregInfo(doregInfo);
+        try {
+            baseResponse = invokeCallSubmit(outTradeNo);
+        }catch (HisException ex){
+            throw ex;
+        }catch (Exception ex){
+            new BaseResponse("00","预约挂号支付时发生错误,支付的金额稍后会自动原路返回，请注意查收");
+        }
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse payFailed(String outTradeNo) {
+        DoregInfo doregInfoTemp = doregInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == doregInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DoregInfo doregInfo = new DoregInfo();
+        doregInfo.setId(doregInfoTemp.getId());
+        doregInfo.setUpdateTime(DateUtils.getNowDate());
+        doregInfo.setSuccessfulPayment(PayStatusEnum.PAY_FAIL.getCode());
+        doregInfoService.updateDoregInfo(doregInfo);
+        return new BaseResponse("00","操作成功");
     }
 
 }
