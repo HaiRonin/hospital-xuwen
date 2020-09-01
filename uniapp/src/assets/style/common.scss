@@ -99,9 +99,23 @@ image, img {
 
 
 
-
-
-
+.z-btn-default {
+    font-size: 30rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.z-btn-primary {
+    color: #ffffff;
+    border-color: $main-color;
+    background-color: $main-color;
+}
+.z-btn-default::after{
+    border: none;
+}
+.u-radio__icon-wrap--checked{
+    border-color:$u-type-primary !important;
+    background-color:$u-type-primary !important;
+}
 uni-button[disabled]:not([type]), uni-button[disabled][type=default]{
     color: rgba(0,0,0,.3) !important;
     background-color: #f7f7f7 !important;

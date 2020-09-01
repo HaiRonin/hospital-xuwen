@@ -1,8 +1,8 @@
 
 <template>
-    <view>
+    <view class="box">
         <image class="top-bg" :src="require('@/assets/image/br01.png')" />
-        <view class="flex-box align-center box-1">
+        <view class="flex-box align-center box-1 common-block">
             <view
                 class="flex-box align-center justify-center flex-1"
                 v-for="(item, index) in quickEntry1"
@@ -16,7 +16,7 @@
                 </view>
             </view>
         </view>
-        <u-grid :col="3">
+        <u-grid :col="3" class="common-block" :border="false">
             <u-grid-item v-for="(item, index) in quickEntry2" :key="index" @tap="link(item.url)">
                 <image class="q-e-img" :src="item.imgUrl" mode="aspectFit" />
                 <view class="q-e-text">{{item.text}}</view>
@@ -51,17 +51,22 @@
             {
                 text: '智能导诊',
                 url: '/pages/registration/departmentDoctorList/index',
-                imgUrl: require('@/assets/image/icon/icon_92.png'),
+                imgUrl: require('@/assets/image/icon/icon_89.png'),
             },
             {
                 text: '门诊缴费',
-                url: '',
+                url: '/pages/outpatient/index?toUrl=',
                 imgUrl: require('@/assets/image/icon/icon_106.png'),
             },
             {
                 text: '报告查询',
-                url: '',
+                url: '/pages/outpatient/index?toUrl=',
                 imgUrl: require('@/assets/image/icon/icon_87.png'),
+            },
+            {
+                text: '排队候诊',
+                url: '/pages/outpatient/index?toUrl=',
+                imgUrl: require('@/assets/image/icon/icon_92.png'),
             },
             {
                 text: '信息查询',
@@ -69,10 +74,15 @@
                 imgUrl: require('@/assets/image/icon/icon_81.png'),
             },
             {
-                text: '科室介绍',
-                url: '/pages/info/departmentIsIntroduced',
+                text: '出诊安排',
+                url: '/pages/info/doctorTimeing',
                 imgUrl: require('@/assets/image/icon/icon_91.png'),
             },
+            // {
+            //     text: '科室介绍',
+            //     url: '/pages/info/departmentIsIntroduced',
+            //     imgUrl: require('@/assets/image/icon/icon_91.png'),
+            // },
         ];
 
         link = link;
@@ -83,10 +93,15 @@
 </script>
 
 <style lang="scss" scoped>
+    // .box {
+    //     background: #fff;
+    //     min-height: 100%;
+    // }
     .top-bg {
         display: block;
         height: 400rpx;
         width: 100%;
+        margin-bottom: 32rpx;
     }
 
     .q-e-3 {
@@ -103,11 +118,13 @@
     }
 
     .box-1 {
-        padding: 32rpx 0;
-        background: #fff -webkit-linear-gradient(left, #ebedf0, #ebedf0) no-repeat center/2rpx
-            50%;
-        border-bottom: 32rpx solid #ebedf0;
+        background: #fff -webkit-linear-gradient(left, #ebedf0, #ebedf0) no-repeat center/2rpx 50%;
     }
+
+    .box-1>view{
+        height: 150rpx;
+    }
+
     .b-img {
         width: 96rpx;
         height: 96rpx;
@@ -118,8 +135,15 @@
     }
     .b-text-2 {
         color: #999;
-        margin-top: 8rpx;
+        margin-top: 14rpx;
         font-size: 24rpx;
+    }
+    .common-block{
+        width: auto;
+        padding: 0;
+        // border: 20rpx solid #f6f6f6;
+        border-radius:20rpx;
+        overflow: hidden;
     }
 </style>
 

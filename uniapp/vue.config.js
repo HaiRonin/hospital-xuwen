@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     devServer: {
-        open: true,
+        // open: true,
         host: '0.0.0.0',
         // hot: true,
         // disableHostCheck: true,

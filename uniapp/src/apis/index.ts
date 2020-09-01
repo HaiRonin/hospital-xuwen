@@ -3,11 +3,14 @@
 // console.log(apiGet, apiPost, apiPut, apiDel);
 
 // 日期和时间统一格式为yyyy-MM-dd HH:mm:SS
+
+// #ifdef H5
 import * as baseInfo from './module/baseInfo';
 import * as publicInfo from './module/publicInfo';
 import * as regApi from './module/regApi';
 import * as orderApi from './module/orderApi';
 import * as inHospitalApi from './module/inHospitalApi';
+// #endif
 
 export * from './module/baseInfo';
 export * from './module/publicInfo';
@@ -15,6 +18,7 @@ export * from './module/regApi';
 export * from './module/orderApi';
 export * from './module/inHospitalApi';
 
+// #ifdef H5
 const api: IOBJ = {};
 [
     ...Object.entries(baseInfo),
@@ -31,7 +35,5 @@ const api: IOBJ = {};
     }
 });
 
-// console.log(api);
-
-// export default {...api};
-// module.exports = api;
+console.log(api);
+// #endif

@@ -2,7 +2,7 @@
 <template>
     <view>
         <image class="top-bg" :src="require('@/assets/image/br01.png')" alt />
-        <u-grid :col="2" class="q-e-3">
+        <u-grid :col="2" class="common-block" :border="false">
             <u-grid-item v-for="(item, index) in quickEntry2" :key="index">
                 <image class="q-e-img" :src="item.imgUrl" mode="aspectFit"/>
                 <view class="q-e-text">{{item.text}}</view>
@@ -58,8 +58,16 @@
         width: 100%;
     }
 
-    .q-e-3{margin-top: 32rpx;}
+    // .q-e-3{margin-top: 32rpx;}
     .q-e-img{width: 64rpx;height: 64rpx;}
     .q-e-text{color: #666;font-size: 24rpx;margin-top: 16rpx;}
+    .common-block{
+        width: auto;
+        padding: 0;
+        // border: 20rpx solid #f6f6f6;
+        border-radius:20rpx;
+        overflow: hidden;
+        margin-top: 32rpx;
+    }
 </style>
 

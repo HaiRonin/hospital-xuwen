@@ -17,4 +17,9 @@ declare module globalConfig {
      * 强制跳转白名单
      */
     const whiteList: string[];
+
+    /**
+     * 挂号的时间段
+     */
+    const sourceTimeType: {text: string, value: number}[];
 }

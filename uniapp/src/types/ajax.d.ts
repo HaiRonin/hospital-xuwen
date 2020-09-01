@@ -9,13 +9,16 @@ interface IMyResponse extends IOBJ {
     /**
      * 状态码
      */
-    resultCode: string;
-    resultMsg: string;
+    resultCode?: string;
+    resultMsg?: string;
+
+    code?: number;
+    msg?: string;
 }
 
 interface IMyOptions {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    action?: 'json' | 'formData';
+    action?: 'formData' | 'json';
     params?: IOBJ;
     /**
      * 不取消之前同接口的请求

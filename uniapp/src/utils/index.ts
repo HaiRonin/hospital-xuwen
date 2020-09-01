@@ -41,15 +41,31 @@ export const jsCopyObj: TJsCopyObj = (data: any, cache = []) => {
     return obj;
 };
 
-export const toast: TToast = (message, duration = 2000, forbidClick = false) => {
-    return uni.showToast({
-        title: message,
-        duration,
-        mask: forbidClick,
-        position: 'center',
-        icon: 'none'
-    }) as unknown as Promise<void>;
-};
+export const toast: TToast = (() => {
+    let t: number | null = null;
+
+    return ((message, duration = 2000, forbidClick = false) => {
+        return new Promise((rel, rej) => {
+            uni.showToast({
+                title: message,
+                duration,
+                mask: forbidClick,
+                position: 'center',
+                icon: 'none',
+                success: () => {
+                    if (t) {
+                        clearTimeout(t);
+                        t = null;
+                    }
+                    t = setTimeout(() => {
+                        rel();
+                    }, duration);
+                },
+                fail: rej
+            });
+        });
+    }) as TToast;
+})();
 
 export const showLoad: TShowToast = (message = '请求中', forbidClick = true) => {
     return uni.showLoading({
@@ -252,5 +268,21 @@ export const removeStorage: TRemoveStorage = (key) => {
 
 export const clearStorage: TClearStorage = () => {
     return uni.clearStorageSync();
+};
+
+export const confirm: TConfirm = ({content = '', title = '提示', cancelText = '取消', confirmText = '确认', showCancel = true} = {}) => {
+    return new Promise((rel, rej) => {
+        uni.showModal({
+            content,
+            title,
+            cancelText,
+            confirmText,
+            showCancel,
+            success (res) {
+                res.confirm ? rel(res.confirm) : rej(res.cancel);
+            }
+        });
+    });
+
 };
 

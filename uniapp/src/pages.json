@@ -38,6 +38,7 @@
 		}
     ],
     "subPackages": [
+        // info
         {
             "root": "pages/info",
             "pages": [
@@ -86,9 +87,20 @@
                         // #endif
                         "navigationBarTitleText": "科室介绍"
                     }
+                },
+                {
+                    "path": "doctorTimeing",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "出诊安排",
+                        "enablePullDownRefresh": true
+                    }
                 }
             ]
         },
+        // registration
         {
             "root": "pages/registration",
             "pages": [
@@ -119,6 +131,55 @@
                         // #endif
                         "navigationBarTitleText": "医生"
                     }
+                },
+                {
+                    "path": "searchDoctor",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "搜索医生"
+                    }
+                },
+                {
+                    "path": "confirmOrder",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "确认挂号信息"
+                    }
+                }
+            ]
+        },
+        // other
+        {
+            "root": "pages/other",
+            "pages": [
+                {
+                    "path": "questionnaire",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "问卷调查"
+                    }
+                }
+            ]
+        },
+        // outpatient
+        {
+            "root": "pages/outpatient",
+            "pages": [
+                {
+                    "path": "index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "选择就诊卡号"
+                    }
                 }
             ]
         }
@@ -139,7 +200,7 @@
     },
     "tabBar": {
 		"color": "#333333",
-		"selectedColor": "#94c0ff",
+		"selectedColor": "#299ff7",
         "backgroundColor": "#FFFFFF",
 		"list": [
 			{

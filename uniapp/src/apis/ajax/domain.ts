@@ -11,20 +11,20 @@ if (process.env.NODE_ENV === 'development') {
 
         // #ifdef H5
         // vueconfig proxy 代理
-        baseApi: '',
+        // baseApi: '',
         // #endif
     };
 
 } else if (process.env.NODE_ENV === 'test') {
 
     apiServer = {
-        baseApi: '',
+        baseApi: 'http://120.76.246.196',
     };
 
 } else if (process.env.NODE_ENV === 'production') {
 
     apiServer = {
-        baseApi: '',
+        baseApi: 'http://120.76.246.196',
     };
 
 }

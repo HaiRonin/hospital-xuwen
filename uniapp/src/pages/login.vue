@@ -7,9 +7,10 @@
                 <view>欢迎登录</view>
             </view>
             <input class="u-border-bottom" type="number" maxlength="11" v-model="params.UserName" placeholder="请输入手机号" />
-            <input class="u-border-bottom" type="password" v-model="params.PassWord" placeholder="请输入密码" />
+            <input class="u-border-bottom" type="password" maxlength="18" v-model="params.PassWord" placeholder="请输入密码" />
+            <!-- <u-input class="u-border-bottom" placeholder="请输入密码" v-model="params.PassWord" :clearable="false" type="password"></u-input> -->
             <view class="rel" v-if="isReg">
-                <input class="u-border-bottom" type="number" maxlength="8" v-model="params.loginCode" placeholder="请输入验证码" />
+                <input class="u-border-bottom" type="number" maxlength="6" v-model="params.verificationCode" placeholder="请输入验证码" />
                 <button class="abs code-btn" :class="{val: codeStatus}" @tap="getCode">{{codeBtnText}}</button>
             </view>
             <button @tap="submit" class="getCaptcha" :class="{val: submitStatus}">{{isReg ? '注册' : '登录'}}</button>
@@ -34,9 +35,10 @@
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
-    import {validateLogon, register} from '@/apis';
+    import {validateLogon, registerCur, sendMsg} from '@/apis';
+    import md5 from 'md5';
 
-    const countDown = function (this: IOBJ, key: string, parentS = 5) {
+    const countDown = function (this: IOBJ, key: string, parentS = 60) {
         const keyText = key;
         let s = parentS;
         let time: any = null;
@@ -89,11 +91,13 @@
             const c = new utils.CheckVal({
                 UserName: '请输入手机号',
                 PassWord: '请输入密码',
-                loginCode: '',
+                verificationCode: '',
             });
 
             c.UserName = c.phone;
-            c._addRule('loginCode', (val, data) => {
+
+            c._addRule('PassWord', (val) => val.length >= 6 ? '' : '密码长度大于等于6');
+            c._addRule('verificationCode', (val, data) => {
                 if (!data._isReg) return '';
                 return utils.zEmpty(val) ? '请输入验证码' : '';
             });
@@ -110,15 +114,18 @@
         get submitStatus () {
             const params = this.params;
             const isReg = this.isReg;
-            return (isReg ? !utils.zEmpty(params.loginCode) : true) && !utils.zEmpty(params.UserName) && !utils.zEmpty(params.PassWord);
+            return (isReg ? !utils.zEmpty(params.verificationCode) : true) && !utils.zEmpty(params.UserName) && !utils.zEmpty(params.PassWord);
         }
 
-        getCode () {
+        async getCode () {
             if (!this.codeStatus || this.countDown.getStatus()) return;
-            // this.countDown.open();
-            // this.countDown.stop();
+
+            const data = utils.jsCopyObj(this.params);
+            if (this.check.run(data)) return;
+
             try {
                 this.countDown.open();
+                await sendMsg({phone: data.UserName});
             } catch (error) {
                 this.countDown.stop();
             }
@@ -126,12 +133,20 @@
 
         async submit () {
             const isReg = this.isReg;
-            const data = this.params;
+            const data = utils.jsCopyObj(this.params);
             data._isReg = isReg;
             if (this.check.run(data)) return;
 
+            data.PassWord = md5(data.PassWord);
             data._isReg = undefined;
-            const fn = isReg ? register : validateLogon;
+
+            const fn = isReg ? registerCur : validateLogon;
+
+            if (isReg) {
+                data.password = data.PassWord;
+                data.phone = data.UserName;
+            }
+
             const res = await fn(data, {isLoad: true});
 
             if (isReg) {

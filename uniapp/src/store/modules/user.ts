@@ -2,12 +2,15 @@
 import {MutationTree, ActionTree, Module} from 'vuex';
 
 const state: IOBJ = {
-    userInfo: null
+    userInfo: {}
 };
 
 const mutations: MutationTree<IOBJ> = {
     setState (state, data) {
         state.userInfo = data;
+    },
+    clearState (state) {
+        state.userInfo = {};
     }
 };
 

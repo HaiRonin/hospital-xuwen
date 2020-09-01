@@ -29,7 +29,8 @@ export default new Vuex.Store({
         },
         // 是否登录了
         isLogin (state: IOBJ) {
-            return !utils.zEmpty(state.user.userInfo);
+            const len = Object.keys(state.user.userInfo).length;
+            return !!len;
         },
         // 用户信息
         userInfo (state: IOBJ) {

@@ -1,7 +1,8 @@
 import {Plugin} from 'vuex';
 
 const cacheStore = [
-    'user/setState'
+    'user/setState',
+    'user/clearState'
 ];
 
 export default function () {
@@ -11,7 +12,7 @@ export default function () {
         const cache = utils.getStorage('cache') || {};
 
         Object.keys(cache).forEach((key: string) => {
-            store.commit(`${key}/setState`, cache[key] || null);
+            store.commit(`${key}/setState`, cache[key] || {});
         });
 
         const storageFn = utils.throttle((payload: any) => {
@@ -26,7 +27,7 @@ export default function () {
             // console.log(mutation, state);
             const {type, payload} = mutation;
             if (!~cacheStore.indexOf(type)) return;
-            storageFn(payload);
+            storageFn(payload || {});
         });
     };
 

@@ -21,11 +21,18 @@ interface IDateData extends IOBJ{
     // 秒
     s: number | string;
     // 时间戳
-    time: number | string;
+    time: number;
     // 周几
     week: number | string;
     // 2002-01-01
     text: string;
+}
+interface IConfirmData {
+    content?: string;
+    title?: string | '提示'
+    cancelText?: string | '取消';
+    confirmText?: string | '确认';
+    showCancel?: boolean | true;
 }
 type TLinkMethods = 'navigateTo' | 'redirectTo' | 'reLaunch' | 'switchTab' | 'navigateBack';
 
@@ -50,6 +57,7 @@ type TGetStorage = (str: string) => any;
 type TSetStorage = (str: string, val: any) => void;
 type TRemoveStorage = (str: string) => void;
 type TClearStorage = () => void;
+type TConfirm = (duration: IConfirmData) => Promise<boolean>;
 
 declare module utils {
 
@@ -151,5 +159,10 @@ declare module utils {
     const setStorage: TSetStorage;
     const removeStorage: TRemoveStorage;
     const clearStorage: TClearStorage;
+
+    /**
+     * 系统自带弹窗
+     */
+    const confirm: TConfirm;
 }
 

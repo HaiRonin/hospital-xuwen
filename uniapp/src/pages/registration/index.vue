@@ -14,6 +14,7 @@
             type="warning"
             :description="tips"
             :show-icon="true"
+            v-if="tips"
         ></u-alert-tips>
 
         <view id="zLine"></view>
@@ -48,6 +49,9 @@
                 </view>
             </view>
         </template>
+
+        <view class="fake-view"></view>
+        <view class="bottom-btn" @tap="linkSearchDoctor">查找医生</view>
     </view>
 </template>
 
@@ -60,7 +64,7 @@
     export default class DepartmentIsIntroduced extends Vue {
 
         activeName: string = '';
-        tips = '提示信息-提示信息-提示信息-提示信息-提示信息-提示信息-提示信息-提示信息-提示信息-提示信息-提示信息-';
+        tips = '';
         topVal = '';
         options: IOBJ = {};
         list: IOBJ[] = [];
@@ -107,6 +111,11 @@
             utils.link(`/pages/registration/departmentDoctorList/index?${strData}`);
         }
 
+        linkSearchDoctor () {
+            const type = this.options.type;
+            utils.link(`/pages/registration/searchDoctor?type=${type}`);
+        }
+
         setTopVal () {
             // line
             uni.createSelectorQuery().select('#zLine').boundingClientRect((res) => {
@@ -117,6 +126,9 @@
         onLoad (options: IOBJ) {
             // type 0今日 2预约
             this.options = options;
+            uni.setNavigationBarTitle({
+                title: `科室选择(${this.options.type === '0' ? '今日' : '七日内'})`
+            });
         }
 
         created () {
@@ -149,7 +161,7 @@
         top: 0;
         background: #fff;
         left: 0;
-        z-index:2;
+        z-index:3;
     }
     .w-tips {
         border: none;
@@ -178,5 +190,24 @@
         // padding-right: 20rpx;
         line-height: 1.6;
         letter-spacing: 2rpx;
+    }
+
+    .fake-view{
+        height: 100rpx;
+    }
+
+    .bottom-btn{
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        line-height: 90rpx;
+        font-size: 34rpx;
+        letter-spacing: 2rpx;
+        background: $main-cur-color;
+        color: #fff;
+        text-align: center;
+        z-index: 2;
     }
 </style>

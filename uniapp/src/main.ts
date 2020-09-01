@@ -11,7 +11,10 @@ Vue.use(uView as any);
 Vue.prototype.$store = store;
 
 Vue.mixin({
-    onLoad () {
+    onLoad (options: IOBJ) {
+        if (typeof options.type === 'number') {
+            options.type = `${options.type}`;
+        }
         // console.log(store.getters.isLogin);
         store.dispatch('time/ajaxGetTime');
         forcedToLogin();
@@ -30,9 +33,11 @@ new App({
 // console.log(uni.showToast('13'));
 // console.log(queryDepartmentList());
 
+// #ifdef H5
 if (process.env.NODE_ENV === 'development') {
-    global.globalConfig = globalConfig;
-    global.utils = utils;
-    global.ajax = ajax;
-    global.store = store;
+    (global as any).globalConfig = globalConfig;
+    (global as any).utils = utils;
+    (global as any).ajax = ajax;
+    (global as any).store = store;
 }
+// #endif

@@ -21,22 +21,22 @@ const action = (action?: string) => {
     let contentType = null;
     let handleRequest = null;
     switch (action) {
-        case 'json':
-            contentType = 'application/json;charset=UTF-8';
-            handleRequest = (data: IOBJ) => {
-                return JSON.stringify(data);
-            };
-            break;
         case 'formData':
-            contentType = 'multipart/form-data';
-            handleRequest = (data: IOBJ) => {
-                return data;
-            };
-            break;
-        default:
             contentType = 'application/x-www-form-urlencoded;charset=UTF-8';
             handleRequest = (data: IOBJ) => {
                 return data;
+            };
+            break;
+        // case 'formData':
+        //     contentType = 'multipart/form-data';
+        //     handleRequest = (data: IOBJ) => {
+        //         return data;
+        //     };
+        //     break;
+        default:
+            contentType = 'application/json;charset=UTF-8';
+            handleRequest = (data: IOBJ) => {
+                return JSON.stringify(data);
             };
             break;
     }
@@ -72,17 +72,21 @@ const get: TMyGet = (url, params, options) => {
             success (res) {
                 const data = res.data as IMyResponse;
 
-                if (data.resultCode === '00') {
+                // data.resultMsg === '00' 部分接口有问题，出现这种情况
+                if (data.resultCode === '00' || data.resultMsg === '00') {
                     // 这里主要把处理成统一的输出方式
                     const dataKey = Object.keys(data).find((key: string) => !['resultCode', 'resultMsg', 'countnum'].includes(key));
                     data.data = data[dataKey || ''];
+                    resolve(data);
+                } else if (data.code === 0) {
                     resolve(data);
                 } else {
                     reject({type: 'thenError', data, oldRes: res} as IMyRejectObj);
                 }
             },
             fail (error) {
-                if (error && error.errMsg && !~error.errMsg.indexOf('abort')) {
+                // debugger;
+                if (error && error.errMsg && !!~error.errMsg.indexOf('abort')) {
                     return;
                 }
                 reject({type: 'catchError', data: error} as IMyRejectObj);

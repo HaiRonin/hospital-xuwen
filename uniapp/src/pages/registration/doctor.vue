@@ -4,7 +4,7 @@
         <view class="common-block common-block-1">
             <view class="flex-box info-box">
                 <view class="info-img">
-                    <u-image :src="info.photoUrl || queryInfo.photoUrl || require('@/assets/image/d-male.png')" height="100%" mode="widthFix" ></u-image>
+                    <u-image :src="(info.photoUrl) || queryInfo.photoUrl || require('@/assets/image/d-male.png')" height="100%" mode="widthFix" ></u-image>
                 </view>
                 <view class="flex-1">
                     <view class="info-text-1">{{info.name || queryInfo.name}}</view>
@@ -32,8 +32,9 @@
             :key="index"
             class="common-block flex-box align-center rel"
             v-show="item.show"
+            @tap="linkDownOrder(item)"
         >
-            <view class="flex-1 item-text-1">{{item.text}}</view>
+            <view class="flex-1 item-text-1">{{item.timestypeNoName}}</view>
             <view class="flex-1">
                 剩余
                 <span class="num-text">{{item.num}}</span>个号
@@ -47,50 +48,109 @@
             </view>
             <view class="abs item-disabled" v-show="item.disabled"></view>
         </view>
+
+        <view class="error-text" v-if="!oneLoad && !list.length">没有相关信息</view>
     </view>
 </template>
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import {queryDoctorById, queryToRegDoctorListByDoctorId} from '@/apis';
+    import {queryDoctorById, queryToRegDoctorTimes, queryDepartmentById} from '@/apis';
 
 
     @Component
     export default class Doctor extends Vue {
-        @Prop() readonly departmentorganId!: string;
 
         options: IOBJ = {};
         dateText: string = '';
         toDay: boolean = true;
         info: IOBJ = {};
         queryInfo: IOBJ = {};
+        departmentInfo: IOBJ = {};
         reserveTimeList: IOBJ[] = [];
+        oneLoad = true;
+
         list: IOBJ[] = [
-            {show: true, num: 0, price: 0, disabled: true, key: 'morningNum', text: '上午'},
-            {show: true, num: 0, price: 0, disabled: true, key: 'noonNum', text: '中午'},
-            {show: true, num: 0, price: 0, disabled: true, key: 'afternoonNum', text: '下午'},
-            {show: true, num: 0, price: 0, disabled: true, key: 'eveningNum', text: '晚上'},
-            {show: true, num: 0, price: 0, disabled: true, key: 'earlymorningNum', text: '凌晨'},
+            // {show: true, num: 0, price: 0, disabled: true, key: 1, text: '上午'},
+            // {show: true, num: 0, price: 0, disabled: true, key: 2, text: '中午'},
+            // {show: true, num: 0, price: 0, disabled: true, key: 3, text: '下午'},
+            // {show: true, num: 0, price: 0, disabled: true, key: 4, text: '晚上'},
+            // {show: true, num: 0, price: 0, disabled: true, key: 5, text: '凌晨'},
         ];
+
+        linkDownOrder (item: IOBJ) {
+            const {organdoctorId, departmentorganId, timestypeNo, sourceDate, sourceTimeType, consultationFee, timestypeNoName} = item;
+            const toDay = this.toDay;
+            const departmentorganName = this.departmentInfo.name;
+            const doctorName = this.info.name;
+            const sourceItem = globalConfig.sourceTimeType.find(ii => ii.value === +sourceTimeType);
+            const sourceDateText = `${item.sourceDate.split(' ')[0]}　${toDay ? sourceItem!.text : timestypeNoName}`;
+            // organdoctorId: 6461
+            // departmentorganId: 687
+            // sourceDate: 2020-09-02
+            // timestypeNo: R4438083
+            // sourceTimeType: 5
+
+            // 支付金额
+            // payAmount: 3
+
+            // 下面两个 就诊卡上拿到
+            // patientNo: 99202008290495
+            // cardNo: 44058219930826557X
+
+            // 这个不清楚
+            // socialsecurityNO:
+
+            const strData = utils.serialize({
+                organdoctorId,
+                doctorName,
+                timestypeNo,
+                sourceDate,
+                sourceDateText,
+                sourceTimeType,
+                departmentorganId,
+                departmentorganName,
+                payAmount: consultationFee,
+                socialsecurityNO: ''
+            });
+
+            utils.link(`/pages/registration/confirmOrder?${strData}`);
+        }
+
+        // 判断预约携带时间是否无效的
+        isRegdateInvalid (regdate: string, startTime: number, endTime: number) {
+            // regdate 为空处理
+            if (!regdate) return true;
+            const {time} = utils.dateData(new Date(`${regdate.replace(/-/g, '/')} 00:00:00`));
+
+            if (time < startTime || time > endTime) {
+                return true;
+            }
+
+            return false;
+        }
 
         // 创建七天时间
         createSevenDay () {
+            const regdate = this.options.regdate;
+
             const date = new Date(this.$store.getters.systemTime);
-            // date.setDate();
             const arr = [];
             for (let i = 0; i < 7; i++) {
                 date.setDate(date.getDate() + 1);
-                const {text, week, d} = utils.dateData(date);
+                const {text, week, d, time} = utils.dateData(date);
                 arr.push({
                     date: text,
                     week,
                     day: d,
+                    time
                 });
             }
             // console.log(arr);
             this.reserveTimeList = arr;
-            // this.dateText = arr[0].date;
-            this.getReserveTime(arr[0].date);
+
+            const isInvalid = this.isRegdateInvalid(regdate, arr[0].time, arr[arr.length - 1].time);
+            this.getReserveTime(isInvalid ? arr[0].date : regdate);
         }
 
         // 获取医生信息
@@ -100,6 +160,7 @@
             const res = await queryDoctorById({organdoctorId});
 
             this.info = (res.data && res.data[0]) || {};
+            this.info.photoUrl = (this.info.photoUrl || '').trim();
         }
 
         // 根据医生查询号源
@@ -108,40 +169,103 @@
             if (date) {
                 this.dateText = date;
             } else {
-                const dObj = new Date();
+                const dObj = new Date(this.$store.getters.systemTime);
                 const {text, week} = utils.dateData(dObj);
                 date = text;
             }
-            const res = await queryToRegDoctorListByDoctorId({
-                startDate: date,
-                endDate: date,
-                organdoctorId: this.options.organdoctorId,
-            }).catch(() => {
-                this.list.forEach((item) => {
-                    item.show = false;
+            // const res = await queryToRegDoctorListByDoctorId({
+            //     startDate: date,
+            //     endDate: date,
+            //     organdoctorId: this.options.organdoctorId,
+            // }).catch(() => {
+            //     this.list.forEach((item) => {
+            //         item.show = false;
+            //     });
+            //     return Promise.reject();
+            // });
+
+            // const data: IOBJ = res.data[0];
+
+            // this.list.forEach((item) => {
+            //     const num: string | undefined = data[item.key];
+            //     // debugger;
+            //     if (utils.zEmpty(num)) {
+            //         item.show = false;
+            //         return;
+            //     }
+
+            //     item.show = true;
+            //     item.num = Math.max(+(num || 0), 0);
+            //     item.disabled = item.num <= 0;
+            //     item.price = data.consultationFee;
+            // });
+
+
+            const {departmentorganId, organdoctorId} = this.options;
+            const sourceTimeType = globalConfig.sourceTimeType;
+            // const fnArr: any[] = [];
+
+            utils.showLoad();
+
+            // sourceTimeType.forEach((item) => {
+            //     fnArr.push(
+            //         queryToRegDoctorTimes({
+            //             departmentorganId,
+            //             organdoctorId,
+            //             sourceTimeType: item.value,
+            //             sourceDate: date
+            //         }, {closeErrorTips: true})
+            //     );
+            // });
+            // const resList = await Promise.allSettled(fnArr);
+
+            const resList: IOBJ[] = [];
+            for (const item of sourceTimeType) {
+                await queryToRegDoctorTimes({
+                    departmentorganId,
+                    organdoctorId,
+                    sourceTimeType: item.value,
+                    sourceDate: date
+                }, {closeErrorTips: true}).then((value) => {
+                    resList.push({status: 'fulfilled', value});
+                }).catch((value) => {
+                    resList.push({status: 'rejected', value});
                 });
-                return Promise.reject();
+            }
+
+            const list: IOBJ[] = [];
+            resList.forEach((item: IOBJ) => {
+                if (item.status === 'rejected') return;
+                const data = item.value.data;
+                data.forEach((child: IOBJ) => {
+                    const sType = sourceTimeType.find(ii => ii.value === +child.sourceTimeType);
+                    if (!sType) return;
+
+                    list.push(Object.assign({
+                        show: true,
+                        num: child.SourceDateNum,
+                        price: child.consultationFee,
+                        // disabled: true,
+                        // key: 5,
+                        text: sType.text
+                    }, child));
+                });
             });
 
-            const data: IOBJ = res.data[0];
+            this.list = list;
+            this.oneLoad = false;
+            utils.hideLoad();
+        }
 
-            this.list.forEach((item) => {
-                const num: string | undefined = data[item.key];
-                // debugger;
-                if (utils.zEmpty(num)) {
-                    item.show = false;
-                    return;
-                }
-
-                item.show = true;
-                item.num = Math.max(+(num || 0), 0);
-                item.disabled = item.num <= 0;
-                item.price = data.consultationFee;
-            });
+        // 获取部门信息
+        async getDepartmentInfo () {
+            const departmentorganId = this.options.departmentorganId;
+            const res = await queryDepartmentById({organId: departmentorganId}, {closeErrorTips: true}).catch((res) => ({data: res.data}));
+            this.departmentInfo = res.data;
         }
 
         onLoad (options: IOBJ) {
-            // photoUrl, name, job, departmentorganId, type
+            // photoUrl, name, job, departmentorganId, type, regdate, organdoctorId
             this.options = options;
         }
 
@@ -149,11 +273,11 @@
             // const {photoUrl, name, job, type} = this.$route.query;
             const {photoUrl, name, job, type, organdoctorId} = this.options;
             const toDay = this.toDay = (type || '2') + '' === '0';
-            // console.log(this.departmentorganId);
 
             utils.setPageTitle(toDay ? '挂号列表' : '预约列表');
 
             this.queryInfo = {photoUrl, name, job};
+            this.getDepartmentInfo();
             this.getDoctorInfo(organdoctorId);
             toDay ? this.getReserveTime() : this.createSevenDay();
         }
@@ -191,7 +315,7 @@
         line-height: 1.5;
     }
 
-    // .item-text-1{width: 40%;}
+    .item-text-1{min-width: 220rpx;}
     .item-text-3 {
         min-width: 96rpx;
     }
@@ -230,6 +354,12 @@
         background: $main-cur-color;
         color: #fff;
         font-size: 25.6rpx;
+    }
+
+    .error-text{
+        color: rgb(96, 98, 102);
+        font-size: 28rpx;
+        text-align: center;
     }
 </style>
 
