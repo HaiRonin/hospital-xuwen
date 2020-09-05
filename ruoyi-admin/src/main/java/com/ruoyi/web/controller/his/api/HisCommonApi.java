@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.his.api;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -91,7 +92,7 @@ public class HisCommonApi extends BaseController
     @ResponseBody
     public AjaxResult userRegister(@Validated @RequestBody UserRegBO userRegBO){
         ServletUtils.getRequest().setAttribute("api", "register");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(userRegBO));
+        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(userRegBO));
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
@@ -111,7 +112,7 @@ public class HisCommonApi extends BaseController
     @ResponseBody
     public AjaxResult modifyPassword(@Validated @RequestBody UserRegBO userRegBO){
         ServletUtils.getRequest().setAttribute("api", "modifyPassword");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(userRegBO));
+        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(userRegBO));
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
@@ -130,7 +131,7 @@ public class HisCommonApi extends BaseController
     @ResponseBody
     public AjaxResult shortMessage(@Validated @RequestBody SmsMsgBO smsMsgBO) {
         ServletUtils.getRequest().setAttribute("api", "/user/shortMessage");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(smsMsgBO));
+        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(smsMsgBO));
         if(StringUtils.isEmpty(smsMsgBO.getMessage())){
             return AjaxResult.error("短信内容不能为空");
         }
@@ -190,7 +191,7 @@ public class HisCommonApi extends BaseController
 //    @Cacheable(value="#bodyPart", key="#sex+'-'+#age")
     public AjaxResult getOrganList(@RequestBody SymptomsOrganBO symptomsOrganBO) {
         ServletUtils.getRequest().setAttribute("api", "getOrganList");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(symptomsOrganBO));
+        ServletUtils.getRequest().setAttribute("dataParam", JSON.toJSONString(symptomsOrganBO));
         String sexCode = BodySymptomsEnum.getCodeByName(symptomsOrganBO.getSex()+"_"+symptomsOrganBO.getAge());
         SymptomsOrgan symptomsOrgan = new SymptomsOrgan();
         symptomsOrgan.setBodyPart(symptomsOrganBO.getBodyPart());
