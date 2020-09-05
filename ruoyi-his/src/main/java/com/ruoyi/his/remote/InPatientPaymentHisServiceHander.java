@@ -44,6 +44,10 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
         if(null == depositPayment){
             throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",outTradeNo));
         }
+        if(PayStatusEnum.ORDER_SUCCESS.getCode().equals(depositPayment.getSuccessfulPayment()) ||
+                PayStatusEnum.ORDER_FAIL.getCode().equals(depositPayment.getSuccessfulPayment())){
+            throw new HisException(String.format("%1$s记录状态为[%1$s]，不能重复此操作:",outTradeNo,PayStatusEnum.getByCode(depositPayment.getSuccessfulPayment())));
+        }
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(depositPayment.getSuccessfulPayment())){
             throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
         }
@@ -130,6 +134,35 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
         depositPayment.setId(depositPaymentTemp.getId());
         depositPayment.setUpdateTime(DateUtils.getNowDate());
         depositPayment.setSuccessfulPayment(PayStatusEnum.PAY_FAIL.getCode());
+        depositPaymentService.updateDepositPayment(depositPayment);
+        return new BaseResponse("00","操作成功");
+    }
+
+    @Override
+    protected BaseResponse refundSuccessful(String outTradeNo, String transactionId) {
+        DepositPayment depositPaymentTemp = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
+        if(null == depositPaymentTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DepositPayment depositPayment = new DepositPayment();
+        depositPayment.setId(depositPaymentTemp.getId());
+        depositPayment.setUpdateTime(DateUtils.getNowDate());
+        depositPayment.setTransactionId(depositPaymentTemp.getTransactionId()+"||"+transactionId);
+        depositPayment.setSuccessfulPayment(PayStatusEnum.REFUND_SUCCESS.getCode());
+        depositPaymentService.updateDepositPayment(depositPayment);
+        return new BaseResponse("00","操作成功");
+    }
+
+    @Override
+    protected BaseResponse refundFailed(String outTradeNo) {
+        DepositPayment depositPaymentTemp = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
+        if(null == depositPaymentTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DepositPayment depositPayment = new DepositPayment();
+        depositPayment.setId(depositPaymentTemp.getId());
+        depositPayment.setUpdateTime(DateUtils.getNowDate());
+        depositPayment.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
         depositPaymentService.updateDepositPayment(depositPayment);
         return new BaseResponse("00","操作成功");
     }

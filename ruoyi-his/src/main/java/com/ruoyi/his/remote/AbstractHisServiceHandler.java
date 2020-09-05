@@ -1,6 +1,7 @@
 package com.ruoyi.his.remote;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
@@ -44,14 +45,54 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
     abstract protected R transResult(String result);
 
     /***
+     * 支付成功，更新本地支付状态并调用his接口下单
+     * @param outTradeNo 订单号
+     * @param transactionId 交易流水id
+     * @return
+     */
+    abstract protected BaseResponse paySuccessful(String outTradeNo,String transactionId);
+
+    /***
+     * 支付失败，更新本地支付状态并调用微信退款接口
+     * @param outTradeNo 订单号
+     * @return
+     */
+    abstract protected BaseResponse payFailed(String outTradeNo);
+
+
+    /***
+     * 支付成功，更新本地支付状态并调用his接口下单
+     * @param outTradeNo 订单号
+     * @param transactionId 交易流水id
+     * @return
+     */
+    abstract protected BaseResponse refundSuccessful(String outTradeNo,String transactionId);
+
+    /***
+     * 支付失败，更新本地支付状态并调用微信退款接口
+     * @param outTradeNo 订单号
+     * @return
+     */
+    abstract protected BaseResponse refundFailed(String outTradeNo);
+
+    /***
      * 接口调用完后处理
      * @return
      */
     abstract public boolean afterInvokeCallSumbit(String outTradeNo, R r);
 
-    @Transient
-    public BaseResponse invokeCallWechatRefund(String outTradeNo) {
-        return new BaseResponse("00","退款成功");
+    @Override
+    public BaseResponse payedNotify(boolean isSucceed, String outTradeNo, String transactionId) {
+        logger.info("AbstractHisServiceHandler.{}.payedNotify.outTradeNo={},transactionId={},isSucceed={}",
+                getBusinessType().getDesc(),outTradeNo,transactionId,isSucceed);
+        return isSucceed?paySuccessful(outTradeNo,transactionId):payFailed(outTradeNo);
+    }
+
+    @Override
+    public BaseResponse refundNotify(boolean isSucceed, String outTradeNo, String transactionId) {
+        logger.info("AbstractHisServiceHandler.{}.refundNotify.outTradeNo={},transactionId={},isSucceed={}",
+                getBusinessType().getDesc(),outTradeNo,transactionId,isSucceed);
+        return isSucceed?refundSuccessful(outTradeNo,transactionId):refundFailed(outTradeNo);
     }
 
     /***
@@ -69,6 +110,10 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
         String response = calltHisService(JSON.toJSONString(t));
         //返回结果数据转换本地对象
         R r = transResult(response);
+        if(r.isReTry()){
+            r.setResultMsg("网络出现异常，请稍后进入个人中心查看订单支付结果");
+            return r;
+        }
         //更新本地对象
         this.afterInvokeCallSumbit(outTradeNo,r);
         return r;
@@ -85,7 +130,8 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
     private String calltHisService(String dataParam) {
         String result = requestHisService(getBusinessType().getApiUrl(),dataParam);
         if(StringUtils.isBlank(result)){
-            throw new BusinessException(String.format("无法调用His接口"));
+            logger.error("AbstractHisServiceHandler.{}.calltHisService.error.nodata.return",getBusinessType().getDesc());
+            JSON.toJSONString(new BaseResponse("-9999","无法调用His接口"));
         }
         return result;
     }

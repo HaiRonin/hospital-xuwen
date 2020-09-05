@@ -40,4 +40,14 @@ public enum PayStatusEnum {
 		this.desc = desc;
 	}
 
+	public static String getByCode(String code){
+		PayStatusEnum[] values = PayStatusEnum.values();
+		for(PayStatusEnum payStatusEnum : values  ){
+			if(payStatusEnum.getCode().equals(code)){
+				return payStatusEnum.getCode();
+			}
+		}
+		return null;
+	}
+
 }

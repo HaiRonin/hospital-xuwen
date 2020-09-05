@@ -42,6 +42,10 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
         if(null == dopayInfo){
             throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",outTradeNo));
         }
+        if(PayStatusEnum.ORDER_SUCCESS.getCode().equals(dopayInfo.getSuccessfulPayment()) ||
+                PayStatusEnum.ORDER_FAIL.getCode().equals(dopayInfo.getSuccessfulPayment())){
+            throw new HisException(String.format("%1$s记录状态为[%1$s]，不能重复此操作:",outTradeNo,PayStatusEnum.getByCode(dopayInfo.getSuccessfulPayment())));
+        }
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(dopayInfo.getSuccessfulPayment())){
             throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
         }
@@ -115,6 +119,8 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
     }
 
 
+
+
     @Override
     public BaseResponse paySuccessful(String outTradeNo, String transactionId) {
         BaseResponse baseResponse = new BaseResponse("00","操作成功");
@@ -149,5 +155,36 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
         dopayInfo.setUpdateTime(DateUtils.getNowDate());
         dopayInfo.setSuccessfulPayment(PayStatusEnum.PAY_FAIL.getCode());
         return new BaseResponse("00","操作成功");
+    }
+
+    @Override
+    protected BaseResponse refundSuccessful(String outTradeNo, String transactionId) {
+        BaseResponse baseResponse = new BaseResponse("00","操作成功");
+        DopayInfo dopayInfoTemp = dopayInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == dopayInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DopayInfo dopayInfo = new DopayInfo();
+        dopayInfo.setId(dopayInfoTemp.getId());
+        dopayInfo.setUpdateTime(DateUtils.getNowDate());
+        dopayInfo.setTransactionId(dopayInfoTemp.getTransactionId()+"||"+transactionId);
+        dopayInfo.setSuccessfulPayment(PayStatusEnum.REFUND_SUCCESS.getCode());
+        dopayInfoService.updateDopayInfo(dopayInfo);
+        return baseResponse;
+    }
+
+    @Override
+    protected BaseResponse refundFailed(String outTradeNo) {
+        BaseResponse baseResponse = new BaseResponse("00","操作成功");
+        DopayInfo dopayInfoTemp = dopayInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == dopayInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DopayInfo dopayInfo = new DopayInfo();
+        dopayInfo.setId(dopayInfoTemp.getId());
+        dopayInfo.setUpdateTime(DateUtils.getNowDate());
+        dopayInfo.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
+        dopayInfoService.updateDopayInfo(dopayInfo);
+        return baseResponse;
     }
 }

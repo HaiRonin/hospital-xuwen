@@ -38,6 +38,10 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         if(null == doregInfoNew){
             throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",outTradeNo));
         }
+        if(PayStatusEnum.ORDER_SUCCESS.getCode().equals(doregInfoNew.getSuccessfulPayment()) ||
+                PayStatusEnum.ORDER_FAIL.getCode().equals(doregInfoNew.getSuccessfulPayment())){
+            throw new HisException(String.format("%1$s记录状态为[%1$s]，不能重复此操作:",outTradeNo,PayStatusEnum.getByCode(doregInfoNew.getSuccessfulPayment())));
+        }
         if(PayStatusEnum.PAY_SUCCESS.getCode().equals(doregInfoNew.getSuccessfulPayment())){
             throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
         }
@@ -140,6 +144,35 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         doregInfo.setId(doregInfoTemp.getId());
         doregInfo.setUpdateTime(DateUtils.getNowDate());
         doregInfo.setSuccessfulPayment(PayStatusEnum.PAY_FAIL.getCode());
+        doregInfoService.updateDoregInfo(doregInfo);
+        return new BaseResponse("00","操作成功");
+    }
+
+    @Override
+    protected BaseResponse refundSuccessful(String outTradeNo, String transactionId) {
+        DoregInfo doregInfoTemp = doregInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == doregInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DoregInfo doregInfo = new DoregInfo();
+        doregInfo.setId(doregInfoTemp.getId());
+        doregInfo.setUpdateTime(DateUtils.getNowDate());
+        doregInfo.setTransactionId(doregInfoTemp.getTransactionId()+"||"+transactionId);
+        doregInfo.setSuccessfulPayment(PayStatusEnum.REFUND_SUCCESS.getCode());
+        doregInfoService.updateDoregInfo(doregInfo);
+        return new BaseResponse("00","操作成功");
+    }
+
+    @Override
+    protected BaseResponse refundFailed(String outTradeNo) {
+        DoregInfo doregInfoTemp = doregInfoService.getDetailByOutTradeNo(outTradeNo);
+        if(null == doregInfoTemp){
+            throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
+        }
+        DoregInfo doregInfo = new DoregInfo();
+        doregInfo.setId(doregInfoTemp.getId());
+        doregInfo.setUpdateTime(DateUtils.getNowDate());
+        doregInfo.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
         doregInfoService.updateDoregInfo(doregInfo);
         return new BaseResponse("00","操作成功");
     }

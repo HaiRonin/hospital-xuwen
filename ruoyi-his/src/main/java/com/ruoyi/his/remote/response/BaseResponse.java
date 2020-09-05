@@ -9,6 +9,8 @@ public class BaseResponse implements Serializable{
     /**
      * 00：表示成功，
         其他表示失败
+
+     -9999:自定义的返回码，代表调用his失败，需要重新尝试
      */
    private String resultCode;
 
@@ -24,6 +26,10 @@ public class BaseResponse implements Serializable{
     public BaseResponse(String resultCode, String resultMsg){
         this.resultCode=resultCode;
         this.resultMsg = resultMsg;
+    }
+
+    public boolean isReTry(){
+        return "-999".equals(this.getResultCode());
     }
 
 
