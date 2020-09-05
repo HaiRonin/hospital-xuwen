@@ -3,6 +3,7 @@ package com.ruoyi.his.remote;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.exception.BusinessException;
+import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
@@ -79,7 +80,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
      * 接口调用完后处理
      * @return
      */
-    abstract public boolean afterInvokeCallSumbit(String outTradeNo, R r);
+    abstract public BaseResponse afterInvokeCallSumbit(String outTradeNo, R r);
 
     @Override
     public BaseResponse payedNotify(boolean isSucceed, String outTradeNo, String transactionId) {
@@ -111,12 +112,11 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
         //返回结果数据转换本地对象
         R r = transResult(response);
         if(r.isReTry()){
-            r.setResultMsg("网络出现异常，请稍后进入个人中心查看订单支付结果");
-            return r;
+            throw new HisException(-9999,"网络出现异常，稍后请进入个人中心查看订单支付结果");
         }
         //更新本地对象
-        this.afterInvokeCallSumbit(outTradeNo,r);
-        return r;
+        R result = (R) this.afterInvokeCallSumbit(outTradeNo,r);
+        return result;
     }
 
 

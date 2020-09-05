@@ -80,7 +80,7 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
 
 
     @Override
-    public boolean afterInvokeCallSumbit(String outTradeNo, LeaveHosPayOut leaveHosPayOut) {
+    public BaseResponse afterInvokeCallSumbit(String outTradeNo, LeaveHosPayOut leaveHosPayOut) {
         LeaveHosPay leaveHosPayTemp = leaveHosPayService.getDetailByOutTradeNo(outTradeNo);
         if(null == leaveHosPayTemp){
             throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
@@ -102,7 +102,7 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
             leaveHosPay.setReminder(leaveHosPayOut.getReminder());
         }
         leaveHosPayService.updateLeaveHosPay(leaveHosPay);
-        return true;
+        return new BaseResponse("00",leaveHosPayOut.isOk()?"操作成功":"操作失败，支付金额稍后将会原路返回");
     }
 
 
@@ -118,14 +118,18 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
         leaveHosPay.setUpdateTime(DateUtils.getNowDate());
         leaveHosPay.setTransactionId(transactionId);
         leaveHosPay.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
-        leaveHosPayService.updateLeaveHosPay(leaveHosPay);
         try {
             baseResponse = invokeCallSubmit(outTradeNo);
         }catch (HisException ex){
-            throw ex;
+            if(ex.getCode() != -9999){
+                leaveHosPay.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+                baseResponse.setResultMsg(ex.getMessage());
+            }
         }catch (Exception ex){
-            new BaseResponse("00","出院缴费发生错误,支付的金额稍后会自动原路返回，请注意查收");
+            leaveHosPay.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+            baseResponse.setResultMsg("缴费支付时发生错误,支付的金额稍后会自动原路返回，请注意查收");
         }
+        leaveHosPayService.updateLeaveHosPay(leaveHosPay);
         return baseResponse;
     }
 

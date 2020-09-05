@@ -80,7 +80,7 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
 
 
     @Override
-    public boolean afterInvokeCallSumbit(String outTradeNo, InPatientPaymentOut inPatientPaymentOut) {
+    public BaseResponse afterInvokeCallSumbit(String outTradeNo, InPatientPaymentOut inPatientPaymentOut) {
         DepositPayment depositPaymentTemp = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
         if(null == depositPaymentTemp){
             throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
@@ -98,7 +98,7 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
             depositPayment.setMedicalTypeName(inPatientPaymentOut.getMedicalTypeNmae());
         }
         depositPaymentService.updateDepositPayment(depositPayment);
-        return true;
+        return new BaseResponse("00",inPatientPaymentOut.isOk()?"操作成功":"操作失败，支付金额稍后将会原路返回");
     }
 
     @Override
@@ -113,14 +113,19 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
         depositPayment.setUpdateTime(DateUtils.getNowDate());
         depositPayment.setTransactionId(transactionId);
         depositPayment.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
-        depositPaymentService.updateDepositPayment(depositPayment);
         try {
             baseResponse = invokeCallSubmit(outTradeNo);
         }catch (HisException ex){
-            throw ex;
+            if(ex.getCode() != -9999){
+                depositPayment.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+                baseResponse.setResultMsg(ex.getMessage());
+            }
+
         }catch (Exception ex){
-            new BaseResponse("00","缴费押金时发生错误,支付的金额稍后会自动原路返回，请注意查收");
+            depositPayment.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+            baseResponse.setResultMsg("缴费支付时发生错误,支付的金额稍后会自动原路返回，请注意查收");
         }
+        depositPaymentService.updateDepositPayment(depositPayment);
         return baseResponse;
     }
 

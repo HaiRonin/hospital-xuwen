@@ -91,7 +91,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
 
 
     @Override
-    public boolean afterInvokeCallSumbit(String outTradeNo, DoRegOut regOut) {
+    public BaseResponse afterInvokeCallSumbit(String outTradeNo, DoRegOut regOut) {
         DoregInfo doregInfoTemp = doregInfoService.getDetailByOutTradeNo(outTradeNo);
         if(null == doregInfoTemp){
             throw new HisException(String.format("%1$s记录已经不存在，不能进行此操作:",outTradeNo));
@@ -107,7 +107,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
             doregInfo.setConsultationFee(regOut.getConsultationFee());
         }
         doregInfoService.updateDoregInfo(doregInfo);
-        return true;
+        return new BaseResponse("00",regOut.isOk()?"操作成功":"操作失败，支付金额稍后将会原路返回");
     }
 
 
@@ -123,14 +123,20 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         doregInfo.setUpdateTime(DateUtils.getNowDate());
         doregInfo.setTransactionId(transactionId);
         doregInfo.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
-        doregInfoService.updateDoregInfo(doregInfo);
+
         try {
             baseResponse = invokeCallSubmit(outTradeNo);
         }catch (HisException ex){
-            throw ex;
+            if(ex.getCode() != -9999){
+                doregInfo.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+                baseResponse.setResultMsg(ex.getMessage());
+            }
+
         }catch (Exception ex){
-            new BaseResponse("00","预约挂号支付时发生错误,支付的金额稍后会自动原路返回，请注意查收");
+            doregInfo.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+            baseResponse.setResultMsg("缴费支付时发生错误,支付的金额稍后会自动原路返回，请注意查收");
         }
+        doregInfoService.updateDoregInfo(doregInfo);
         return baseResponse;
     }
 

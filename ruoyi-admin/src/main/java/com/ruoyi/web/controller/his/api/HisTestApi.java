@@ -84,4 +84,41 @@ public class HisTestApi extends BaseController
         LeaveHosPayOut leaveHosPayOut = (LeaveHosPayOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.LEAVEHOSPAY).invokeCallSubmit(outTradeNo);
         return AjaxResult.success(leaveHosPayOut);
     }
+
+
+    /**
+     * 2020.9.05
+     * 支付成功后更新本地业务单据
+     *
+     * @return
+     */
+    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("支付成功后更新本地业务单据")
+    @ResponseBody
+    @GetMapping(value = "/payedNotify")
+    public AjaxResult payedNotify(@RequestParam("orderType") String orderType,@RequestParam("isSucceed") boolean isSucceed,
+                                  @RequestParam("outTradeNo") String outTradeNo,@RequestParam("outTradeNo") String transactionId){
+        LeaveHosPayOut leaveHosPayOut = (LeaveHosPayOut)AbstractHisServiceHandler
+                .servicesInstance(HisBusinessTypeEnum.getTypeByKey(orderType))
+                .payedNotify(isSucceed,outTradeNo,transactionId);
+        return AjaxResult.success(leaveHosPayOut);
+    }
+
+    /**
+     * 2020.9.05
+     * 退款成功后更新本地业务单据
+     *
+     * @return
+     */
+    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("退款成功后更新本地业务单据")
+    @ResponseBody
+    @GetMapping(value = "/refundNotify")
+    public AjaxResult refundNotify(@RequestParam("orderType") String orderType,@RequestParam("isSucceed") boolean isSucceed,
+                                  @RequestParam("outTradeNo") String outTradeNo,@RequestParam("outTradeNo") String transactionId){
+        LeaveHosPayOut leaveHosPayOut = (LeaveHosPayOut)AbstractHisServiceHandler
+                .servicesInstance(HisBusinessTypeEnum.getTypeByKey(orderType))
+                .refundNotify(isSucceed,outTradeNo,transactionId);
+        return AjaxResult.success(leaveHosPayOut);
+    }
 }
