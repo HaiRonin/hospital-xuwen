@@ -2,11 +2,15 @@ package com.ruoyi.his.remote;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.exception.HisException;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
+import com.ruoyi.his.constant.PayStatusEnum;
+import com.ruoyi.his.domain.HisBaseEntity;
 import com.ruoyi.his.remote.request.BaseRequest;
 import com.ruoyi.his.remote.response.BaseResponse;
 import org.slf4j.Logger;
@@ -17,7 +21,7 @@ import java.beans.Transient;
 /***
  * his接口抽象类
  */
-public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends BaseResponse> extends HisBaseServices implements HisWebServices{
+public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends HisBaseEntity, R extends BaseResponse> extends HisBaseServices implements HisWebServices{
 
     private static Logger logger = LoggerFactory.getLogger(AbstractHisServiceHandler.class);
     /**
@@ -27,11 +31,40 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
     abstract public HisBusinessTypeEnum getBusinessType();
 
     /***
-     * 数据检查
+     * 获取订单详情
      * @param outTradeNo
      * @return
      */
-    abstract boolean checkData(String outTradeNo);
+    abstract D getOrderDetail(String outTradeNo);
+
+    /***
+     * 更新订单
+     * @param d
+     * @return
+     */
+    abstract int updateOrder(D d);
+
+    /***
+     * 检查状态
+     * @param outTradeNo
+     */
+    protected void checkData(String outTradeNo){
+        D d = getOrderDetail(outTradeNo);
+        if(null == d){
+            throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",outTradeNo));
+        }
+        if(PayStatusEnum.ORDER_SUCCESS.getCode().equals(d.getSuccessfulPayment()) ||
+                PayStatusEnum.ORDER_FAIL.getCode().equals(d.getSuccessfulPayment())){
+            throw new HisException(String.format("%1$s记录状态为[%2$s]，不能重复此操作:",
+                    outTradeNo,PayStatusEnum.getPayStatusEnumByCode(d.getSuccessfulPayment()).getDesc()));
+        }
+        if(!PayStatusEnum.PAY_SUCCESS.getCode().equals(d.getSuccessfulPayment())){
+            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
+        }
+        if(StringUtils.isEmpty(d.getSuccessfulPayment())){
+            throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",outTradeNo));
+        }
+    }
 
     /***
      * 构建需要请求的消息体
@@ -51,14 +84,43 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
      * @param transactionId 交易流水id
      * @return
      */
-    abstract protected BaseResponse paySuccessful(String outTradeNo,String transactionId);
+    protected BaseResponse paySuccessful(String outTradeNo,String transactionId){
+        BaseResponse baseResponse = BaseResponse.success();
+        D d = getOrderDetail(outTradeNo);
+        d.setUpdateTime(DateUtils.getNowDate());
+        d.setTransactionId(transactionId);
+        d.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
+        try {
+            int iResult = updateOrder(d);
+            if(iResult > 0){
+                baseResponse = invokeCallSubmit(outTradeNo);
+            }
+        }catch (HisException ex){
+            if(ex.getCode() != -9999){
+                d.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+                updateOrder(d);
+                baseResponse.error(ex.getMessage());
+            }
+        }catch (Exception ex){
+            d.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+            updateOrder(d);
+            baseResponse.error("缴费支付时发生错误,支付的金额稍后会自动原路返回，请注意查收");
+        }
+        return baseResponse;
+    }
 
     /***
      * 支付失败，更新本地支付状态并调用微信退款接口
      * @param outTradeNo 订单号
      * @return
      */
-    abstract protected BaseResponse payFailed(String outTradeNo);
+    protected BaseResponse payFailed(String outTradeNo){
+        D d = getOrderDetail(outTradeNo);
+        d.setUpdateTime(DateUtils.getNowDate());
+        d.setSuccessfulPayment(PayStatusEnum.PAY_FAIL.getCode());
+        int iResult = updateOrder(d);
+        return iResult>0?BaseResponse.success():BaseResponse.fail();
+    }
 
 
     /***
@@ -67,14 +129,27 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,R extends 
      * @param transactionId 交易流水id
      * @return
      */
-    abstract protected BaseResponse refundSuccessful(String outTradeNo,String transactionId);
+    protected BaseResponse refundSuccessful(String outTradeNo,String transactionId){
+        D d = getOrderDetail(outTradeNo);
+        d.setUpdateTime(DateUtils.getNowDate());
+        d.setTransactionId(d.getTransactionId()+"||"+transactionId);
+        d.setSuccessfulPayment(PayStatusEnum.REFUND_SUCCESS.getCode());
+        int iResult = updateOrder(d);
+        return iResult>0?BaseResponse.success():BaseResponse.fail();
+    }
 
     /***
      * 支付失败，更新本地支付状态并调用微信退款接口
      * @param outTradeNo 订单号
      * @return
      */
-    abstract protected BaseResponse refundFailed(String outTradeNo);
+    protected BaseResponse refundFailed(String outTradeNo){
+        D d = getOrderDetail(outTradeNo);
+        d.setUpdateTime(DateUtils.getNowDate());
+        d.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
+        int iResult = updateOrder(d);
+        return iResult>0?BaseResponse.success():BaseResponse.fail();
+    }
 
     /***
      * 接口调用完后处理

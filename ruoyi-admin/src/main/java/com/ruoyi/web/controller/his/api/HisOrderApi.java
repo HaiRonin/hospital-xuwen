@@ -1,11 +1,10 @@
 package com.ruoyi.web.controller.his.api;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.json.JSONObject;
-import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
@@ -62,8 +61,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult outpatientPayment(@RequestBody DoregInfo doregInfo)
     {
-        ServletUtils.getRequest().setAttribute("api", "outpatientPayment");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(doregInfo));
+        getRequest().setAttribute("api", "outpatientPayment");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(doregInfo));
         if(StringUtils.isEmpty(doregInfo.getPayType())){
             doregInfo.setPayType("5");
         }
@@ -85,8 +84,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult newPayment(@RequestBody DopayInfo dopayInfo)
     {
-        ServletUtils.getRequest().setAttribute("api", "newPayment");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(dopayInfo));
+        getRequest().setAttribute("api", "newPayment");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(dopayInfo));
         if(StringUtils.isEmpty(dopayInfo.getPayType())){
             dopayInfo.setPayType("5");
         }
@@ -108,8 +107,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult payment(@RequestBody DepositPayment depositPayment)
     {
-        ServletUtils.getRequest().setAttribute("api", "payment");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(depositPayment));
+        getRequest().setAttribute("api", "payment");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(depositPayment));
         if(StringUtils.isEmpty(depositPayment.getPayType())){
             depositPayment.setPayType("5");
         }
@@ -132,8 +131,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult leaveHosPay(@RequestBody LeaveHosPay leaveHosPay)
     {
-        ServletUtils.getRequest().setAttribute("api", "leaveHosPay");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(leaveHosPay));
+        getRequest().setAttribute("api", "leaveHosPay");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(leaveHosPay));
         if(StringUtils.isEmpty(leaveHosPay.getPayType())){
             leaveHosPay.setPayType("5");
         }
@@ -148,34 +147,38 @@ public class HisOrderApi extends BaseController
 
 
     /**
-     * 支付失败/取消支付/超时支付
+     * 支付成功或失败回调
      */
     @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
-    @ApiOperation("支付失败/取消支付/超时支付/撤单退款")
-    @PostMapping("/orderDoPayCallBack/failed")
+    @ApiOperation("支付成功或失败回调")
+    @PostMapping("/order/payCallBack")
     @ResponseBody
-    public AjaxResult orderDoPayCallBackFailed(@RequestBody OrderPayResultBO orderPayResultBO)
+    public AjaxResult orderPayCallBack(@RequestBody OrderPayResultBO orderPayResultBO)
     {
-        ServletUtils.getRequest().setAttribute("api", "orderDoPayCallBack/failed");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(orderPayResultBO));
+        getRequest().setAttribute("api", "/order/payCallBack");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(orderPayResultBO.getOrderType());
-        BaseResponse baseResponse = AbstractHisServiceHandler.servicesInstance(hisBusinessTypeEnum).payFailed(orderPayResultBO.getOutTradeNo());
+        BaseResponse baseResponse = AbstractHisServiceHandler
+                .servicesInstance(hisBusinessTypeEnum)
+                .payedNotify(orderPayResultBO.isPaymentResults(),orderPayResultBO.getOutTradeNo(),orderPayResultBO.getTransactionId());
         return baseResponse.isOk()?AjaxResult.success():AjaxResult.error();
     }
 
     /**
-     * 支付成功并下单
+     * 退款成功或失败回调
      */
     @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("支付成功")
-    @PostMapping("/orderDoPayCallBack/succeed")
+    @PostMapping("/order/refundCallBack")
     @ResponseBody
-    public AjaxResult orderDoPayCallBackSucceed(@RequestBody OrderPayResultBO orderPayResultBO)
+    public AjaxResult orderRefundCallBack(@RequestBody OrderPayResultBO orderPayResultBO)
     {
-        ServletUtils.getRequest().setAttribute("api", "orderDoPayCallBack/succeed");
-        ServletUtils.getRequest().setAttribute("dataParam", JSONObject.valueAsStr(orderPayResultBO));
+        getRequest().setAttribute("api", "/order/refundCallBack");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(orderPayResultBO.getOrderType());
-        BaseResponse baseResponse = AbstractHisServiceHandler.servicesInstance(hisBusinessTypeEnum).paySuccessful(orderPayResultBO.getOutTradeNo(),orderPayResultBO.getTransactionId());
+        BaseResponse baseResponse = AbstractHisServiceHandler
+                .servicesInstance(hisBusinessTypeEnum)
+                .refundNotify(orderPayResultBO.isPaymentResults(),orderPayResultBO.getOutTradeNo(),orderPayResultBO.getTransactionId());
         return baseResponse.isOk()?AjaxResult.success():AjaxResult.error();
     }
 

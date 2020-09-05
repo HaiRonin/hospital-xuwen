@@ -5,7 +5,6 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.json.JSONObject;
 import com.ruoyi.common.utils.BarcodeUtil;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -13,7 +12,6 @@ import com.ruoyi.his.constant.BodySymptomsEnum;
 import com.ruoyi.his.domain.HisUser;
 import com.ruoyi.his.domain.SymptomsOrgan;
 import com.ruoyi.his.remote.HisBaseServices;
-import com.ruoyi.his.service.IDoregInfoService;
 import com.ruoyi.his.service.IHisUserService;
 import com.ruoyi.his.service.ISmsService;
 import com.ruoyi.his.service.ISymptomsOrganService;
@@ -206,6 +204,26 @@ public class HisCommonApi extends BaseController
             listSymptomsOrganExd.add(symptomsOrganExd);
         }
         return AjaxResult.success(listSymptomsOrganExd);
+    }
+
+    /**
+     * 科室介绍
+     *
+     * @return
+     */
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("根据病症获取科室")
+    @PostMapping(value = "/diagnosis")
+    @ResponseBody
+    public AjaxResult diagnosis(@RequestBody SymptomsOrganBO symptomsOrganBO) {
+        getRequest().setAttribute("api", "diagnosis");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(symptomsOrganBO));
+        SymptomsOrgan symptomsOrgan = new SymptomsOrgan();
+        symptomsOrgan.setBodyPart(symptomsOrganBO.getBodyPart());
+        symptomsOrgan.setSex(symptomsOrganBO.getSex());
+        symptomsOrgan.setSymptoms(symptomsOrganBO.getSymptoms());
+        List<SymptomsOrgan> list = symptomsOrganService.selectSymptomsOrganList(symptomsOrgan);
+        return AjaxResult.success(list);
     }
 
 }

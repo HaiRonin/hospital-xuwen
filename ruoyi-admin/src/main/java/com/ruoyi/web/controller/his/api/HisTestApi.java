@@ -6,10 +6,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
-import com.ruoyi.his.remote.response.DoPayOut;
-import com.ruoyi.his.remote.response.DoRegOut;
-import com.ruoyi.his.remote.response.InPatientPaymentOut;
-import com.ruoyi.his.remote.response.LeaveHosPayOut;
+import com.ruoyi.his.remote.response.BaseResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +33,8 @@ public class HisTestApi extends BaseController
     @ResponseBody
     @GetMapping(value = "/doregInfo")
     public AjaxResult doregInfo(@RequestParam("outTradeNo") String outTradeNo){
-        DoRegOut doRegOut = (DoRegOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG).invokeCallSubmit(outTradeNo);
-        return AjaxResult.success(doRegOut);
+        BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG).invokeCallSubmit(outTradeNo);
+        return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
     }
 
     /**
@@ -51,8 +48,8 @@ public class HisTestApi extends BaseController
     @ResponseBody
     @GetMapping(value = "/doPay")
     public AjaxResult doPay(@RequestParam("outTradeNo") String outTradeNo){
-        DoPayOut doPayOut = (DoPayOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOPAY).invokeCallSubmit(outTradeNo);
-        return AjaxResult.success(doPayOut);
+        BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOPAY).invokeCallSubmit(outTradeNo);
+        return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
     }
 
     /**
@@ -66,8 +63,8 @@ public class HisTestApi extends BaseController
     @ResponseBody
     @GetMapping(value = "/inpatientpayment")
     public AjaxResult inpatientpayment(@RequestParam("outTradeNo") String outTradeNo){
-        InPatientPaymentOut inPatientPaymentOut = (InPatientPaymentOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.INPATIENTPAYMENT).invokeCallSubmit(outTradeNo);
-        return AjaxResult.success(inPatientPaymentOut);
+        BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.INPATIENTPAYMENT).invokeCallSubmit(outTradeNo);
+        return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
     }
 
     /**
@@ -81,8 +78,8 @@ public class HisTestApi extends BaseController
     @ResponseBody
     @GetMapping(value = "/leavehospay")
     public AjaxResult leavehospay(@RequestParam("outTradeNo") String outTradeNo){
-        LeaveHosPayOut leaveHosPayOut = (LeaveHosPayOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.LEAVEHOSPAY).invokeCallSubmit(outTradeNo);
-        return AjaxResult.success(leaveHosPayOut);
+        BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.LEAVEHOSPAY).invokeCallSubmit(outTradeNo);
+        return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
     }
 
 
@@ -98,10 +95,8 @@ public class HisTestApi extends BaseController
     @GetMapping(value = "/payedNotify")
     public AjaxResult payedNotify(@RequestParam("orderType") String orderType,@RequestParam("isSucceed") boolean isSucceed,
                                   @RequestParam("outTradeNo") String outTradeNo,@RequestParam("outTradeNo") String transactionId){
-        LeaveHosPayOut leaveHosPayOut = (LeaveHosPayOut)AbstractHisServiceHandler
-                .servicesInstance(HisBusinessTypeEnum.getTypeByKey(orderType))
-                .payedNotify(isSucceed,outTradeNo,transactionId);
-        return AjaxResult.success(leaveHosPayOut);
+        BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.getTypeByKey(orderType)).payedNotify(isSucceed,outTradeNo,transactionId);
+        return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
     }
 
     /**
@@ -116,9 +111,7 @@ public class HisTestApi extends BaseController
     @GetMapping(value = "/refundNotify")
     public AjaxResult refundNotify(@RequestParam("orderType") String orderType,@RequestParam("isSucceed") boolean isSucceed,
                                   @RequestParam("outTradeNo") String outTradeNo,@RequestParam("outTradeNo") String transactionId){
-        LeaveHosPayOut leaveHosPayOut = (LeaveHosPayOut)AbstractHisServiceHandler
-                .servicesInstance(HisBusinessTypeEnum.getTypeByKey(orderType))
-                .refundNotify(isSucceed,outTradeNo,transactionId);
-        return AjaxResult.success(leaveHosPayOut);
+        BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.getTypeByKey(orderType)).refundNotify(isSucceed,outTradeNo,transactionId);
+        return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
     }
 }

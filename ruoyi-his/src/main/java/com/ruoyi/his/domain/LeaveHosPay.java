@@ -1,11 +1,11 @@
 package com.ruoyi.his.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import com.ruoyi.common.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 出院结算对象 his_leave_hos_pay
@@ -13,7 +13,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author whl
  * @date 2020-08-29
  */
-public class LeaveHosPay extends BaseEntity
+public class LeaveHosPay extends HisBaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -67,18 +67,6 @@ public class LeaveHosPay extends BaseEntity
     /** 创建时间 */
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date creatTime;
-
-    /** 支付状态 */
-    @Excel(name = "支付状态")
-    private String successfulPayment;
-
-    /** 支付交易流水号 */
-    @Excel(name = "支付交易流水号")
-    private String outTradeNo;
-
-    /** 微信订单号 */
-    @Excel(name = "微信订单号")
-    private String transactionId;
 
     /** 银行返回信息 */
     @Excel(name = "银行返回信息")
@@ -245,33 +233,7 @@ public class LeaveHosPay extends BaseEntity
     {
         return creatTime;
     }
-    public void setSuccessfulPayment(String successfulPayment) 
-    {
-        this.successfulPayment = successfulPayment;
-    }
 
-    public String getSuccessfulPayment() 
-    {
-        return successfulPayment;
-    }
-    public void setOutTradeNo(String outTradeNo) 
-    {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public String getOutTradeNo() 
-    {
-        return outTradeNo;
-    }
-    public void setTransactionId(String transactionId) 
-    {
-        this.transactionId = transactionId;
-    }
-
-    public String getTransactionId() 
-    {
-        return transactionId;
-    }
     public void setBankReturn(String bankReturn) 
     {
         this.bankReturn = bankReturn;

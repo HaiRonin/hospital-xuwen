@@ -23,6 +23,27 @@ public class BaseResponse implements Serializable{
        return "00".equals(this.getResultCode());
    }
 
+   public void error(String errorMsg){
+       this.resultCode="-1";
+       this.resultMsg = errorMsg;
+   }
+
+    public static BaseResponse success(){
+        return new BaseResponse("00","操作成功");
+    }
+    public static BaseResponse success(String msg){
+        return new BaseResponse("00",msg);
+    }
+
+
+    public static BaseResponse fail(){
+        return new BaseResponse("-1","操作失败");
+    }
+    public static BaseResponse fail(String msg){
+        return new BaseResponse("-1",msg);
+    }
+
+
     public BaseResponse(String resultCode, String resultMsg){
         this.resultCode=resultCode;
         this.resultMsg = resultMsg;
@@ -48,5 +69,6 @@ public class BaseResponse implements Serializable{
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
     }
+
 
 }

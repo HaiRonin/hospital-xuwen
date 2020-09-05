@@ -160,9 +160,7 @@ public class LogAspect
      */
     private void setRequestValue(SysOperLog operLog) throws Exception{
         String params = "";
-        if(StringUtils.isNotEmpty(operLog.getOperUrl())
-                && "POST".equals(operLog.getRequestMethod())
-                && operLog.getOperUrl().indexOf("his/") > 0){
+        if(StringUtils.isNotNull(ServletUtils.getRequest().getAttribute("api"))){
             String api  = ServletUtils.getRequest().getAttribute("api").toString();
             String dataParam  = ServletUtils.getRequest().getAttribute("dataParam").toString();
             operLog.setOperName(api);
