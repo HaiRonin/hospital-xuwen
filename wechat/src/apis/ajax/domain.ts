@@ -2,7 +2,14 @@
 
 let apiServer: IApiServer | null = null;
 
-if (process.env.NODE_ENV === 'development') {
+
+let urlEnv: any = /env=(\w{1,})/.exec(window.location.hash);
+urlEnv && urlEnv.length && (urlEnv = urlEnv[1]);
+
+console.log(window.location.hash);
+console.log(urlEnv);
+
+if (process.env.NODE_ENV === 'development' || urlEnv === 'development') {
 
     apiServer = {
         // 正式
@@ -13,18 +20,24 @@ if (process.env.NODE_ENV === 'development') {
         baseApi: '',
     };
 
-} else if (process.env.NODE_ENV === 'test') {
+} else if (process.env.NODE_ENV === 'test' || urlEnv === 'test') {
 
     apiServer = {
-        baseApi: '',
+        baseApi: 'http://120.76.246.196:9090',
     };
 
-} else if (process.env.NODE_ENV === 'production') {
+} else if (process.env.NODE_ENV === 'production' || urlEnv === 'production') {
 
     apiServer = {
-        baseApi: '',
+        baseApi: 'http://120.76.246.196',
     };
 
 }
+
+// const win: any = window;
+// if (win.uni) {
+//     apiServer = win.uni.apiServer;
+//     alert(1);
+// }
 
 export default apiServer as IApiServer;

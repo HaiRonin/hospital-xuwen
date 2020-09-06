@@ -8,12 +8,14 @@ import * as publicInfo from './module/publicInfo';
 import * as regApi from './module/regApi';
 import * as orderApi from './module/orderApi';
 import * as inHospitalApi from './module/inHospitalApi';
+import * as graphSee from './module/graphSee';
 
 export * from './module/baseInfo';
 export * from './module/publicInfo';
 export * from './module/regApi';
 export * from './module/orderApi';
 export * from './module/inHospitalApi';
+export * from './module/graphSee';
 
 const api: IOBJ = {};
 [
@@ -22,6 +24,7 @@ const api: IOBJ = {};
     ...Object.entries(regApi),
     ...Object.entries(orderApi),
     ...Object.entries(inHospitalApi),
+    ...Object.entries(graphSee),
 ].forEach(([key, fn]: [string, TApi]) => {
     const item = api[key];
     if (!item) {

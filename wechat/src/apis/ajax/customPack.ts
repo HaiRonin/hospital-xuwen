@@ -35,11 +35,11 @@ const handleError = (err: IMyRejectObj) => {
     // console.log(data.msg);
     switch (true) {
         case type === 'catchError':
-            item = ajaxErr.find((ii) => ~data.message.indexOf(ii.key));
+            item = ajaxErr.find((ii) => ~(data.message || data.errMsg || '').indexOf(ii.key));
             item && (errorText = item.text);
             break;
-        case type === 'thenError' && !!data.resultMsg:
-            errorText = data.resultMsg;
+        case type === 'thenError' && (!!data.resultMsg || !!data.msg):
+            errorText = data.resultMsg || data.msg;
             break;
     }
 

@@ -60,11 +60,11 @@
             drP: {
                 imgUrl: require('@/assets/image/intelguide/dr1.png'),
                 partList: [
-                    {part: '耳', value: [159, 62, 173, 90]},
-                    {part: '耳', value: [220, 64, 234, 92]},
-                    {part: '眼', value: [176, 62, 218, 74]},
-                    {part: '口', value: [183, 91, 210, 103]},
-                    {part: '鼻', value: [192, 72, 204, 89]},
+                    {part: '耳眼口鼻', value: [220, 64, 234, 92]},
+                    {part: '耳眼口鼻', value: [159, 62, 173, 90]},
+                    {part: '耳眼口鼻', value: [176, 62, 218, 74]},
+                    {part: '耳眼口鼻', value: [183, 91, 210, 103]},
+                    {part: '耳眼口鼻', value: [192, 72, 204, 89]},
                     {part: '头部', value: [159, 17, 234, 118]},
 
                     {part: '颈部', value: [173, 113, 220, 134]},
@@ -120,11 +120,11 @@
             nrP: {
                 imgUrl: require('@/assets/image/intelguide/nr1.png'),
                 partList: [
-                    {part: '耳', value: [160, 65, 170, 85]},
-                    {part: '耳', value: [219, 61, 230, 88]},
-                    {part: '眼', value: [172, 62, 217, 74]},
-                    {part: '口', value: [184, 88, 203, 99]},
-                    {part: '鼻', value: [188, 66, 200, 88]},
+                    {part: '耳眼口鼻', value: [160, 65, 170, 85]},
+                    {part: '耳眼口鼻', value: [219, 61, 230, 88]},
+                    {part: '耳眼口鼻', value: [172, 62, 217, 74]},
+                    {part: '耳眼口鼻', value: [184, 88, 203, 99]},
+                    {part: '耳眼口鼻', value: [188, 66, 200, 88]},
                     {part: '头部', value: [160, 11, 231, 112]},
 
                     {part: '颈部', value: [174, 110, 213, 133]},
@@ -178,11 +178,11 @@
             nhP: {
                 imgUrl: require('@/assets/image/intelguide/nh1.png'),
                 partList: [
-                    {part: '耳', value: [107, 129, 137, 178]},
-                    {part: '耳', value: [233, 127, 261, 174]},
-                    {part: '眼', value: [146, 112, 231, 153]},
-                    {part: '口', value: [161, 173, 213, 192]},
-                    {part: '鼻', value: [176, 153, 192, 176]},
+                    {part: '耳眼口鼻', value: [107, 129, 137, 178]},
+                    {part: '耳眼口鼻', value: [233, 127, 261, 174]},
+                    {part: '耳眼口鼻', value: [146, 112, 231, 153]},
+                    {part: '耳眼口鼻', value: [161, 173, 213, 192]},
+                    {part: '耳眼口鼻', value: [176, 153, 192, 176]},
                     {part: '头部', value: [103, 28, 269, 212]},
 
                     {part: '颈部', value: [133, 207, 235, 222]},
@@ -234,11 +234,11 @@
             nhzP: {
                 imgUrl: require('@/assets/image/intelguide/nhz1.png'),
                 partList: [
-                    {part: '耳', value: [104, 134, 134, 181]},
-                    {part: '耳', value: [232, 133, 259, 177]},
-                    {part: '眼', value: [140, 121, 228, 158]},
-                    {part: '口', value: [154, 178, 209, 202]},
-                    {part: '鼻', value: [174, 159, 191, 179]},
+                    {part: '耳眼口鼻', value: [104, 134, 134, 181]},
+                    {part: '耳眼口鼻', value: [232, 133, 259, 177]},
+                    {part: '耳眼口鼻', value: [140, 121, 228, 158]},
+                    {part: '耳眼口鼻', value: [154, 178, 209, 202]},
+                    {part: '耳眼口鼻', value: [174, 159, 191, 179]},
                     {part: '头部', value: [26, 25, 348, 218]},
 
                     // {part: '颈部', value: [173, 113, 220, 134]},
@@ -392,11 +392,24 @@
 
             key += `${pn === 1 ? 'P' : 'N'}`;
             this.startLoadImg(this.data[key]);
+            this.igIndex.setChildParams(this.getAjaxParams());
+        }
+
+        // 获取请求参数
+        getAjaxParams () {
+            const {sex, age, pn} = this.params;
+            return {
+                age: age === 1 ? 'adult' : 'children',
+                sex: sex === 1 ? 'male' : 'female',
+            };
         }
 
         areaClick (item: IOBJ) {
             // console.log(this.igIndex);
-            this.igIndex.openFun(item);
+            // const {sex, age, pn} = this.params;
+            // const obj = this.getAjaxParams();
+            const obj = {bodyPart: item.part};
+            this.igIndex.openFun(obj);
         }
 
         created () {
@@ -460,7 +473,7 @@
         left: 25.6px;
     }
 
-    .bottom-box{
+    .bottom-box {
         background: $main-color;
         width: 83.2px;
         line-height: 1.5;
@@ -476,7 +489,7 @@
         font-size: 28.8px;
     }
 
-    .bottom-box>span{
+    .bottom-box > span {
         top: 0;
         right: 0;
         bottom: 0;
