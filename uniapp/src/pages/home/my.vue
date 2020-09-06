@@ -52,7 +52,7 @@
             },
             {
                 text: '预约挂号记录',
-                url: '/pages/outpatient/index?toUrl=',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/reportOrderList/index',
                 imgUrl: require('@/assets/image/icon/icon_41.png'),
             },
             {

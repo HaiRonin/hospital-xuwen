@@ -26,6 +26,7 @@
 
         openFun (item: IOBJ) {
             this.curItem = item;
+            this.offClose = false;
             this.show = true;
         }
 

@@ -36,15 +36,23 @@
 
         <view class="fake-view"></view>
         <view class="bottom-btn" @tap="commit">确认支付</view>
+
+        <pay ref="pay"/>
     </view>
 </template>
 
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
+    import pay from '@/components/pay.vue';
 
-    @Component
+    @Component({
+        components: {
+            pay
+        }
+    })
     export default class Name extends Vue {
+        @Ref('pay') readonly pay!: IOBJ;
 
         params: IOBJ = {};
 
@@ -57,6 +65,7 @@
             this.$set(params, 'cardNo', item.cardNo);
         }
 
+        // 选择就就诊人
         linkPatient () {
             utils.link('/pages/outpatient/index?sel=1');
         }
@@ -67,7 +76,8 @@
                 utils.toast('请选择就诊人');
                 return;
             }
-            console.log(data);
+            // console.log(data);
+            this.pay.startPay(data);
         }
 
         onLoad (options: IOBJ) {
@@ -92,18 +102,18 @@
 </script>
 
 <style lang="scss" scoped>
-    .z-box{
+    .z-box {
         overflow: initial;
         // background: #f5f5f5;
     }
 
-    .z-tips{
+    .z-tips {
         font-size: 30rpx;
         line-height: 1.8;
-        color:$main-error-color;
+        color: $main-error-color;
     }
 
-    .common-block-2{
+    .common-block-2 {
         padding-top: 0;
         padding-bottom: 0;
     }
@@ -112,24 +122,24 @@
         line-height: 3;
     }
 
-    .item + .item{
-        border-top:$border-line;
+    .item + .item {
+        border-top: $border-line;
     }
 
-    .item-icon{
+    .item-icon {
         color: $color-grey;
         margin-left: 10rpx;
     }
 
-    .text-3{
+    .text-3 {
         color: $color-grey;
     }
 
-    .fake-view{
+    .fake-view {
         height: 100rpx;
     }
 
-    .bottom-btn{
+    .bottom-btn {
         position: fixed;
         left: 0;
         bottom: 0;

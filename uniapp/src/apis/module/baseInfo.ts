@@ -158,3 +158,29 @@ export const getDoctorRegList: TApi = (params = {}, options = {}) => {
     params.api = '/GetDoctorRegList';
     return ajax.apiPost(url, params, options);
 };
+
+// 获取所有的身体部位
+export const getBodyListPart: TApi = (params = {}, options = {}) => {
+    const url = '/his/getBodyListPart';
+    return ajax.apiPost(url, params, options);
+};
+
+// 根据身体部位获取对应的病症
+export const getOrganList: TApi = (params = {}, options = {}) => {
+    const url = '/his/getOrganList';
+    return ajax.apiPost(url, params, options);
+};
+
+// 根据病症获取科室
+export const diagnosis: TApi = (params = {}, options = {}) => {
+    const url = '/his/diagnosis';
+    return ajax.apiPost(url, params, options);
+};
+
+// 3.1.9获取检查、检验数据（微信公众号，app）
+export const uspGetPacsApp: TApi = (params = {}, options = {}) => {
+    const url = '/his/request';
+    params.api = '/uspGetPacsApp';
+    return ajax.apiPost(url, params, options);
+};
+

@@ -2,19 +2,6 @@
 <template>
     <view class="box">
         <view class="top-box">
-            <!-- <van-dropdown-menu>
-                <van-dropdown-item
-                    v-model="params.departmentorganId"
-                    :options="subjects"
-                    @change="subjectsChange"
-                />
-                <van-dropdown-item v-model="params.theTitle" :options="theTitleList" @change="theTitleChange"/>
-            </van-dropdown-menu> -->
-            <!-- <van-viewider class="z-custom">{{this.params.type ? '今日' : '七日内'}}可预约</van-viewider> -->
-            <!-- <u-dropdown close-on-click-mask close-on-click-self>
-                <u-dropdown-item title="科室" v-model="params.departmentorganId" :options="subjects" @change="subjectsChange"></u-dropdown-item>
-                <u-dropdown-item title="医生职称" v-model="params.theTitle" :options="theTitleList" @change="theTitleChange"></u-dropdown-item>
-            </u-dropdown> -->
             <view class="flex-box tap-style">
                 <view class="flex-box align-center justify-center flex-1" @tap="leftModal.openFun()">
                     {{(leftModal && leftModal.curText) || '科室'}}
@@ -25,12 +12,32 @@
                     <u-icon name="arrow-down" class="tap-icon" v-if="theTitleList.length"></u-icon>
                 </view>
             </view>
-            <view class="line-text"><text>{{this.params.type === '2' ? '七日内' : '今日'}}可预约</text></view>
+            <view class="line-text">
+                <text>{{this.params.type === '2' ? '七日内' : '今日'}}可预约</text>
+            </view>
+
+            <template v-if="this.params.type === '2'">
+                <view class="common-block flex-box align-center tiem-box">
+                    <view
+                        v-for="(item, index) in reserveTimeList"
+                        :key="index"
+                        class="flex-1 tb-item"
+                        :class="{cur: params.startDate === item.date}"
+                        @tap="getList(item.date)"
+                    >
+                        <view class="tb-text-1">{{item.week}}</view>
+                        <view class="tb-text-2">{{item.day}}</view>
+                    </view>
+                </view>
+                <view class="fake-height"></view>
+            </template>
         </view>
+
+
         <view>
-            <view v-for="(item, index) in list" :key="index" class="flex-box align-center justify-s-b common-block item">
+            <view v-for="(item, index) in list" :key="index" class="flex-box align-center justify-s-b common-block item" @tap="link(item)">
                 <view class="item-img">
-                    <u-image :src="item.photoUrl || require('@/assets/image/d-male.png')" height="100%" mode="widthFix" ></u-image>
+                    <u-image :src="item.photoUrl || require('@/assets/image/d-male.png')" height="100%" mode="widthFix"></u-image>
                 </view>
                 <view class="flex-1">
                     <view class="item-text-1">{{item.name}}</view>
@@ -42,8 +49,8 @@
 
         <u-empty text="没有查到相关医生" mode="list" margin-top="150" icon-size="200" font-size="36" v-show="loadCount === 1 && !list.length"></u-empty>
 
-        <leftModal ref="leftModal" v-model="params.departmentorganId" @change="getList"/>
-        <leftModal2 ref="leftModal2" :list="theTitleList" v-model="params.theTitle" @change="theTitleChange"/>
+        <leftModal ref="leftModal" v-model="params.departmentorganId" @change="getList" />
+        <leftModal2 ref="leftModal2" :list="theTitleList" v-model="params.theTitle" @change="theTitleChange" />
     </view>
 </template>
 
@@ -64,6 +71,7 @@
         @Ref('leftModal2') readonly leftModal2!: IOBJ;
 
         options: IOBJ = {};
+        reserveTimeList: IOBJ[] = [];
         show = true;
         params: IOBJ = {
             departmentorganId: '',
@@ -80,10 +88,10 @@
         list: IOBJ[] = [];
 
         link (item: IOBJ) {
-            const {type, departmentorganId} = this.params;
+            const {type, departmentorganId, startDate} = this.params;
             const {photoUrl, name, job, organdoctorId} = item;
             const dataStr = utils.serialize({
-                photoUrl, name, job, organdoctorId, type, departmentorganId
+                photoUrl, name, job, organdoctorId, type, departmentorganId, regdate: startDate
             });
             utils.link(`/pages/registration/doctor?${dataStr}`);
         }
@@ -105,7 +113,30 @@
             this.theTitleList = Array.from(set).map((value: any | string) => ({label: value, value}));
         }
 
-        async getList () {
+        // 创建七天时间
+        createSevenDay () {
+            const date = new Date(this.$store.getters.systemTime);
+            const arr = [];
+            for (let i = 0; i < 7; i++) {
+                date.setDate(date.getDate() + 1);
+                const {text, week, d, time} = utils.dateData(date);
+                arr.push({
+                    date: text,
+                    week,
+                    day: d,
+                    time
+                });
+            }
+            this.reserveTimeList = arr;
+
+            this.getList(arr[0].date);
+        }
+
+        async getList (dateText?: string) {
+            if (dateText) {
+                this.params.startDate = dateText;
+                this.params.endDate = dateText;
+            }
             // queryDoctorlistSource
             // const departmentorganId = this.params.departmentorganId;
             this.loadCount = 0;
@@ -120,12 +151,16 @@
             this.loadCount = 1;
         }
 
-        setTime (type: string) {
+        // 初始化请求时间
+        initTime (type: string) {
             // console.log(type === '0');
             const arr = (type === '0') ? this.$store.getters.day : this.$store.getters.sevenDay;
-            console.log(this.$store.getters);
+            // console.log(this.$store.getters);
             this.params.startDate = arr[0];
             this.params.endDate = arr[1];
+            // this.$set(this.params, 'startDate', arr[0]);
+            // this.$set(this.params, 'endDate', arr[1]);
+            // console.log(this.params);
         }
 
         onPullDownRefresh () {
@@ -143,26 +178,40 @@
             const {departmentorganId, type} = this.options;
             this.params.departmentorganId = (departmentorganId || '') + '';
             this.params.type = (type || '2') + '';
-            this.setTime(this.params.type);
+            this.initTime(this.params.type);
 
-            // console.log(this.loadCount);
-            this.params.departmentorganId && this.getList();
+            // this.params.type === '2' && this.createSevenDay();
+            // this.params.departmentorganId && this.getList();
+
+            if (this.params.type === '2') {
+                this.createSevenDay();
+            } else if (this.params.departmentorganId) {
+                this.getList();
+            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .box{
+    .box {
         // padding:0;
         background: #fff;
         min-height: 100%;
         padding-bottom: 20rpx;
     }
 
-    .tap-style{font-size: 32rpx;padding: 20rpx 0;box-shadow: 0 0 8rpx rgba(100,101,102,.08)}
-    .tap-icon{font-size: 16rpx;color: $color-grey;margin-left: 18rpx;}
+    .tap-style {
+        font-size: 32rpx;
+        padding: 20rpx 0;
+        box-shadow: 0 0 8rpx rgba(100, 101, 102, 0.08);
+    }
+    .tap-icon {
+        font-size: 16rpx;
+        color: $color-grey;
+        margin-left: 18rpx;
+    }
 
-    .top-box{
+    .top-box {
         position: sticky;
         top: 0;
         left: 0;
@@ -171,12 +220,50 @@
         z-index: 2;
     }
 
-    .line-text{margin-top: 10rpx;}
+    .line-text {
+        margin-top: 10rpx;
+    }
 
     // .item{box-shadow: 0 64rpx 24rpx rgb(100 101 102 / 5%);}
-    .item-img{width: 96rpx;height: 96rpx;border-radius: 50%;object-fit: cover;object-position: top;margin-right: 32rpx;overflow: hidden;}
-    .item-text-1{font-size: 35.2rpx;}
-    .item-text-2{color: $color-grey;margin-top: 6.4rpx;}
-    .item-btn{min-width: 160rpx;}
+    .item-img {
+        width: 96rpx;
+        height: 96rpx;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: top;
+        margin-right: 32rpx;
+        overflow: hidden;
+    }
+    .item-text-1 {
+        font-size: 35.2rpx;
+    }
+    .item-text-2 {
+        color: $color-grey;
+        margin-top: 6.4rpx;
+    }
+    .item-btn {
+        min-width: 160rpx;
+    }
+
+    .tiem-box {
+        text-align: center;
+        margin-top: 32rpx;
+        margin-bottom: 0;
+    }
+    .tb-text-2 {
+        width: 48rpx;
+        height: 48rpx;
+        line-height: 48rpx;
+        // background: #000;
+        margin: 16rpx auto 0;
+        border-radius: 50%;
+        color: $main-color;
+    }
+    .tb-item.cur .tb-text-2 {
+        background: $main-cur-color;
+        color: #fff;
+        font-size: 25.6rpx;
+    }
+    .fake-height{height: 32rpx;}
 </style>
 

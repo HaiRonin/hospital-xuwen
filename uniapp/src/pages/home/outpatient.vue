@@ -50,7 +50,7 @@
         quickEntry2: IOBJ[] = [
             {
                 text: '智能导诊',
-                url: '/pages/registration/departmentDoctorList/index',
+                url: '/pages/outpatient/intelligentGuidance/index',
                 imgUrl: require('@/assets/image/icon/icon_89.png'),
             },
             {
@@ -60,12 +60,12 @@
             },
             {
                 text: '报告查询',
-                url: '/pages/outpatient/index?toUrl=',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/reportData/index?lsInOut=1',
                 imgUrl: require('@/assets/image/icon/icon_87.png'),
             },
             {
                 text: '排队候诊',
-                url: '/pages/outpatient/index?toUrl=',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/waitingList',
                 imgUrl: require('@/assets/image/icon/icon_92.png'),
             },
             {

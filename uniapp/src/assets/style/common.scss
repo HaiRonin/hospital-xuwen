@@ -37,6 +37,12 @@ image, img {
 .rel{position: relative;}
 .abs{position: absolute;}
 
+.old-ellipsis{
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .z-title{padding: 25.6rpx 16rpx;color: $main-color;border-bottom: $border-line;text-align: center;}
 .z-list{background-color: #fff;font-size: 32rpx;}
 .z-l-item{
@@ -86,6 +92,19 @@ image, img {
     right: 0;
     bottom: 0;
 }
+.main-color{color:$main-color;}
+
+.top-line{
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2rpx;
+    // background:$color-weak-grey;
+    margin-bottom: 32rpx;
+    box-shadow: 0 2rpx 6rpx 0px $color-weak-grey;
+    z-index: 2;
+}
 
 
 
@@ -116,9 +135,17 @@ image, img {
     border-color:$u-type-primary !important;
     background-color:$u-type-primary !important;
 }
+
+.u-calendar__content--start-date,.u-calendar__content--end-date{
+    background-color:$u-type-primary !important;
+}
+
 uni-button[disabled]:not([type]), uni-button[disabled][type=default]{
     color: rgba(0,0,0,.3) !important;
     background-color: #f7f7f7 !important;
 }
 
+button::after{
+    border:none;
+}
 

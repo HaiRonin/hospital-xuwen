@@ -83,7 +83,7 @@
             const toDay = this.toDay;
             const departmentorganName = this.departmentInfo.name;
             const doctorName = this.info.name;
-            const sourceItem = globalConfig.sourceTimeType.find(ii => ii.value === +sourceTimeType);
+            const sourceItem = globalConfig.sourceTimeType.find(ii => ii.value === sourceTimeType);
             const sourceDateText = `${item.sourceDate.split(' ')[0]}　${toDay ? sourceItem!.text : timestypeNoName}`;
             // organdoctorId: 6461
             // departmentorganId: 687
@@ -238,7 +238,7 @@
                 if (item.status === 'rejected') return;
                 const data = item.value.data;
                 data.forEach((child: IOBJ) => {
-                    const sType = sourceTimeType.find(ii => ii.value === +child.sourceTimeType);
+                    const sType = sourceTimeType.find(ii => ii.value === child.sourceTimeType);
                     if (!sType) return;
 
                     list.push(Object.assign({

@@ -12,7 +12,7 @@
 
         <view class="fake-height"></view>
 
-        <view v-for="(item, index) in list" :key="index" class="flex-box align-center justify-s-b common-block item">
+        <view v-for="(item, index) in list" :key="index" class="flex-box align-center justify-s-b common-block item" @tap="link(item)">
             <view class="item-img">
                 <u-image :src="item.photoUrl || require('@/assets/image/d-male.png')" height="100%" mode="widthFix" ></u-image>
             </view>

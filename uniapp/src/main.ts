@@ -3,6 +3,7 @@ import App from './App.vue';
 import store from './store/index';
 import uView from 'uview-ui';
 import forcedToLogin, {handleHomeShow} from '@/assets/js/forcedToLogin';
+// import '@/assets/js/intelligentGuidanceApi';
 
 
 Vue.config.productionTip = false;
@@ -12,8 +13,8 @@ Vue.prototype.$store = store;
 
 Vue.mixin({
     onLoad (options: IOBJ) {
-        if (typeof options.type === 'number') {
-            options.type = `${options.type}`;
+        for (const key in options) {
+            typeof options[key] === 'number' && (options[key] = `${options[key]}`);
         }
         // console.log(store.getters.isLogin);
         store.dispatch('time/ajaxGetTime');

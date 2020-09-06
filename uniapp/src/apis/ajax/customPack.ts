@@ -25,9 +25,9 @@ const specialHandl = (url: string, params: IOBJ, options: IMyOptions) => {
         // debugger;
         if (store && store.getters.isLogin) {
             const user = store.getters.userInfo;
-            synUserName = user.userName;
-            synKey = user.synKey;
-            UserName = user.userName;
+            synUserName = user.userName || '';
+            synKey = user.synKey || '';
+            UserName = user.userName || '';
         }
 
         newParams = {

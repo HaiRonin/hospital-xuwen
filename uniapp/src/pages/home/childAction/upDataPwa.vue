@@ -8,6 +8,7 @@
         :content-style="{padding: 0}"
         async-close
         @confirm="confirm"
+        @cancel="cancel"
         ref="modal"
     >
         <u-form :model="params" class="content" ref="uForm">
@@ -96,6 +97,9 @@
         })();
 
         openFun () {
+            this.closeBtn = true;
+            this.codeBtnText = '获取验证码';
+            this.params = {};
             this.show = true;
         }
 
@@ -125,19 +129,27 @@
             const userName = this.userInfo.userName;
             const data = utils.jsCopyObj(this.params);
             if (this.check.run(data)) {
-                this.modal.loading = false;
+                this.modal.clearLoading();
                 return;
             }
 
             this.closeBtn = false;
             data.UserName = userName;
             data.newPassWord = md5(data.newPassWord);
-            await modifyPassword(data);
+            await modifyPassword(data).catch(() => {
+                this.modal.clearLoading();
+                return Promise.reject();
+            });
 
             await utils.toast('请重新登录', 1000);
+            this.countDown.stop();
 
             this.$store.commit('user/clearState');
             utils.link('/pages/home/outpatient', 2);
+        }
+
+        cancel () {
+            this.countDown.stop();
         }
 
         created () {

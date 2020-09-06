@@ -45,8 +45,9 @@
             this.curItem = item;
             this.imgUrl = '';
             this.load = true;
-            this.getBarCode();
+            this.error = false;
             this.show = true;
+            this.getBarCode();
         }
 
         created () {}

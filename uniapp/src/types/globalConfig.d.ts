@@ -22,4 +22,10 @@ declare module globalConfig {
      * 挂号的时间段
      */
     const sourceTimeType: {text: string, value: number}[];
+
+    const gFilter: (val: any, list: IOBJ[], key?: string | 'value') => string;
+    const reportType: IOBJ[];
+    const reportStatus: IOBJ[];
+    const regStatus: IOBJ[];
+    const payType: IOBJ[];
 }

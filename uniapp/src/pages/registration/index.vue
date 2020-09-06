@@ -1,7 +1,7 @@
 <template>
     <view class="z-box">
         <u-search
-            placeholder="请输入搜索关键词"
+            placeholder="请输入科室名称"
             shape="round"
             :clearabled="false"
             :show-action="false"
@@ -93,13 +93,13 @@
             this.oldList = res.data;
             this.list = [
                 {
+                    title: '门诊科室',
+                    list: type2
+                },
+                {
                     title: '住院科室',
                     list: type1
                 },
-                {
-                    title: '门诊科室',
-                    list: type2
-                }
             ];
         }
 

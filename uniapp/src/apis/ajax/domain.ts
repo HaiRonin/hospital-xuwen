@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
 
         // #ifdef H5
         // vueconfig proxy 代理
-        // baseApi: '',
+        baseApi: '',
         // #endif
     };
 

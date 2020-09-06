@@ -149,6 +149,44 @@
                         // #endif
                         "navigationBarTitleText": "确认挂号信息"
                     }
+                },
+                {
+                    "path": "diagnosis",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "诊断"
+                    }
+                },
+                {
+                    "path": "reportData/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "报告查询"
+                    }
+                },
+                {
+                    "path": "reportOrderList/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "预约挂号记录",
+                        "enablePullDownRefresh": true
+                    }
+                },
+                {
+                    "path": "waitingList",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "排队候诊",
+                        "enablePullDownRefresh": true
+                    }
                 }
             ]
         },
@@ -180,6 +218,15 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "选择就诊卡号"
                     }
+                },
+                {
+                    "path": "intelligentGuidance/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "智能导诊"
+                    }
                 }
             ]
         }
@@ -187,7 +234,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#ffffff",
         "backgroundColor": "#F8F8F8",
         "navigationBarShadow": {
             "colorType": "grey"

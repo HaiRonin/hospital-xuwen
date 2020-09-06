@@ -4,7 +4,7 @@
             <view class="flex-box align-center justify-s-b">
                 <view class="flex-1">{{item.Name}}</view>
                 <view class="text-2">(就诊卡号{{item.CardNo}})</view>
-                <u-icon name="arrow-right" class="text-icon" v-if="isToUrl"></u-icon>
+                <u-icon name="arrow-right" class="text-icon" v-if="isToUrl || isSelModel"></u-icon>
             </view>
             <view class="flex-box align-center justify-s-b action-box" v-if="!isSelModel">
                 <view class="text-action text-del" @tap.stop="delPatientCard.openFun(item)">
@@ -73,16 +73,28 @@
         isSelModel = false;
         loadCount = 0;
 
+        // 提供给下单时候使用的
+        confirmOrderPatient (item: IOBJ) {
+            if (!this.isSelModel) return;
+            uni.$emit('upDataPatient', {
+                patientNo: item.CardNo,
+                patientName: item.Name,
+                cardNo: item.IDCardno,
+            });
+            utils.link(1);
+        }
+
+        // 跳转下一页
+        linkToUrl (item: IOBJ) {
+            const toUrl = this.options.toUrl;
+            if (!this.isToUrl && !toUrl) return;
+            const is = ~toUrl.indexOf('?');
+            utils.link(`${toUrl}${is ? '&' : '?'}patientNo=${item.CardNo}`);
+        }
+
         selItem (item: IOBJ) {
-            if (this.isSelModel) {
-                uni.$emit('upDataPatient', {
-                    patientNo: item.CardNo,
-                    patientName: item.Name,
-                    cardNo: item.IDCardno,
-                });
-                utils.link(1);
-                return;
-            }
+            this.confirmOrderPatient(item);
+            this.linkToUrl(item);
         }
 
         async getList () {
@@ -102,7 +114,9 @@
         onLoad (options: IOBJ) {
             // toUrl 下一步的跳转路径
             this.options = options;
-            this.isToUrl = !!options.sel || !!options.toUrl;
+            // 携带跳转的链接
+            this.isToUrl = !!options.toUrl;
+            // 下单时候选择诊疗卡
             this.isSelModel = !!options.sel;
         }
 
