@@ -35,7 +35,7 @@ import java.util.List;
  * @date 2020-08-08
  */
 @RestController
-@Api("his接口")
+@Api(value="His公共接口",tags={"His公共接口"})
 @RequestMapping("/his")
 public class HisCommonApi extends BaseController
 {

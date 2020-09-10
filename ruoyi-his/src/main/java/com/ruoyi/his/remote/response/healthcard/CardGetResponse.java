@@ -1,9 +1,11 @@
 package com.ruoyi.his.remote.response.healthcard;
 
+import java.io.Serializable;
+
 /**
  * Created by ASUS on 2019/1/25.
  */
-public class HealthCardGetResponse extends HealthCardBaseResponse {
+public class CardGetResponse implements Serializable {
 
     /**
      * card : {"qrCodeText":"C7DA29345B6DF90A6F5BBEBD73EBE2EDA26F341A6CFEEEB121XXX:1","name":"张三","gender":"男","nation":"汉族","birthday":"1998-09-08","idNumber":"101102199809089988","idType":"01","address":"地址","phone1":"18808808808","phone2":"18808808808","phid":"36078220180818113110003XXXX","patid":"院内ID","healthCardId":"A4E0374BCBEAB40E4D66AB5078B44XXX","adminExt":"{\"qr_code\":\"C7DA29345B6DF90A6F5BBEBD73EBE2EDA26F341A6CFEEEB121XXX:1\",\"ecardId\":\"C7DA29345B6DF90A6F5BBEBD73EBE2EDA26F341A6CFEEEB121XXX\",\"main_index\":\"36078220180818113110003XXXX\",\"id_type\":\"居民身份证\",\"id_number\":\"101102199809089988\",\"name\":\"张三\",\"sex\":\"男\",\"birthday\":\"1998-09-08\",\"telephone\":\"18808808808\",\"nation\":\"汉族\",\"unit\":\"null\",\"address\":\"地址\"}"}

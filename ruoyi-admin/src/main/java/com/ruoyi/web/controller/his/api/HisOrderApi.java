@@ -35,7 +35,7 @@ import java.util.Date;
  * @date 2020-08-08
  */
 @RestController
-@Api("his接口")
+@Api(value="his下单接口",tags={"his下单接口"})
 @RequestMapping("/his/order")
 public class HisOrderApi extends BaseController
 {

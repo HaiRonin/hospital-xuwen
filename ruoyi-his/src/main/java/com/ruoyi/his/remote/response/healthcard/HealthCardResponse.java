@@ -7,15 +7,15 @@ import java.io.Serializable;
  */
 public class HealthCardResponse  implements Serializable{
 
-    private HealthCardCommonResponse commonOut;
+    private CommonResponse commonOut;
 
     private String rsp;
 
-    public HealthCardCommonResponse getCommonOut() {
+    public CommonResponse getCommonOut() {
         return commonOut;
     }
 
-    public void setCommonOut(HealthCardCommonResponse commonOut) {
+    public void setCommonOut(CommonResponse commonOut) {
         this.commonOut = commonOut;
     }
 

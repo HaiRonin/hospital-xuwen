@@ -5,12 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.RedisUtil;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.his.config.HealthCarConfig;
 import com.ruoyi.his.constant.Constants;
-import com.ruoyi.his.remote.response.healthcard.HealthCardGetResponse;
-import com.ruoyi.his.remote.response.healthcard.HealthCardRegisterResponse;
-import com.ruoyi.his.remote.response.healthcard.HealthCardResponse;
-import com.ruoyi.his.remote.response.healthcard.HealthCardTokenResponse;
+import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
+import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
+import com.ruoyi.his.remote.response.healthcard.*;
 import com.tencent.healthcard.impl.HealthCardServerImpl;
 import com.tencent.healthcard.model.CommonIn;
 import com.tencent.healthcard.model.HealthCardInfo;
@@ -66,14 +66,17 @@ public class HealthCardServicelmpl implements HealthCardService {
         if(!response.getCommonOut().isOk()){
             throw new HisException("获取健康码token时发生异常:"+response.getCommonOut().getErrMsg());
         }
-        HealthCardTokenResponse tokenResponse = JSON.parseObject(response.getRsp(),HealthCardTokenResponse.class);
+        TokenResponse tokenResponse = JSON.parseObject(response.getRsp(), TokenResponse.class);
         redisUtil.set(Constants.HEALTHOPEN_HEALTHCARD_HEALTHOPENAUTH_TOKEN,tokenResponse.getAppToken(),tokenResponse.getExpiresIn()-60);
         return tokenResponse.getAppToken();
     }
 
 
     @Override
-    public HealthCardRegisterResponse registerHealthCard(HealthCardInfo healthCardInfo) {
+    public RegisterResponse registerHealthCard(RegisterResquest registerResquest) {
+        HealthCardInfo healthCardInfo = new HealthCardInfo();
+        BeanUtils.copyBeanProp(healthCardInfo,registerResquest);
+
         JSONObject json = gethealthCard().registerHealthCard(buildCommonIn(),healthCardInfo);
         if(StringUtils.isEmpty(json)){
             throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
@@ -82,13 +85,13 @@ public class HealthCardServicelmpl implements HealthCardService {
         if(!response.getCommonOut().isOk()){
             throw new HisException("注册健康码时发生异常:"+response.getCommonOut().getErrMsg());
         }
-        HealthCardRegisterResponse registerResponse = JSON.parseObject(response.getRsp(),HealthCardRegisterResponse.class);
+        RegisterResponse registerResponse = JSON.parseObject(response.getRsp(), RegisterResponse.class);
         return registerResponse;
     }
 
 
     @Override
-    public HealthCardGetResponse getHealthCardByHealthCode(String healthCode) {
+    public CardGetResponse getHealthCardByHealthCode(String healthCode) {
         JSONObject json = gethealthCard().getHealthCardByHealthCode(buildCommonIn(),healthCode);
         if(StringUtils.isEmpty(json)){
             throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
@@ -97,7 +100,25 @@ public class HealthCardServicelmpl implements HealthCardService {
         if(!response.getCommonOut().isOk()){
             throw new HisException("获取健康码时发生异常:"+response.getCommonOut().getErrMsg());
         }
-        HealthCardGetResponse healthCardGetResponse = JSON.parseObject(response.getRsp(),HealthCardGetResponse.class);
-        return healthCardGetResponse;
+        CardGetResponse cardGetResponse = JSON.parseObject(response.getRsp(), CardGetResponse.class);
+        return cardGetResponse;
     }
+
+
+    @Override
+    public DynamicQRCodeResponse getDynamicQRCode(DynamicQRCodeResquest dynamicQRCodeResquest) {
+        JSONObject json = gethealthCard().getDynamicQRCode(buildCommonIn(),
+                dynamicQRCodeResquest.getHealthCardId(),dynamicQRCodeResquest.getIdType(),
+                dynamicQRCodeResquest.getIdNumber(),dynamicQRCodeResquest.getCodeType());
+        if(StringUtils.isEmpty(json)){
+            throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
+        }
+        HealthCardResponse response = JSON.parseObject(json.toJSONString(),HealthCardResponse.class);
+        if(!response.getCommonOut().isOk()){
+            throw new HisException("获取健康卡二维码时发生异常:"+response.getCommonOut().getErrMsg());
+        }
+        DynamicQRCodeResponse qrCodeResponse = JSON.parseObject(response.getRsp(), DynamicQRCodeResponse.class);
+        return qrCodeResponse;
+    }
+
 }
