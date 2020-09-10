@@ -2,10 +2,9 @@ package com.ruoyi.his.remote;
 
 import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
 import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
-import com.ruoyi.his.remote.response.healthcard.DynamicQRCodeResponse;
 import com.ruoyi.his.remote.response.healthcard.CardGetResponse;
+import com.ruoyi.his.remote.response.healthcard.DynamicQRCodeResponse;
 import com.ruoyi.his.remote.response.healthcard.RegisterResponse;
-import com.tencent.healthcard.model.HealthCardInfo;
 
 public interface HealthCardService {
 
