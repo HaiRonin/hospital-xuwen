@@ -6,6 +6,7 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
+import com.ruoyi.his.domain.DepositPayment;
 import com.ruoyi.his.domain.LeaveHosPay;
 import com.ruoyi.his.remote.request.LeaveHosPayIn;
 import com.ruoyi.his.remote.response.BaseResponse;
@@ -13,6 +14,8 @@ import com.ruoyi.his.remote.response.LeaveHosPayOut;
 import com.ruoyi.his.service.ILeaveHosPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 离院结算Service业务层处理
@@ -90,4 +93,12 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
         return leaveHosPayOut.isOk()?BaseResponse.success():BaseResponse.fail("操作失败，支付金额稍后将会原路返回");
     }
 
+
+    @Override
+    protected List<LeaveHosPay> getRefundOrderList() {
+        LeaveHosPay query = new LeaveHosPay();
+        query.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+        List<LeaveHosPay> lstDopayInfo =leaveHosPayService.selectLeaveHosPayList(query);
+        return lstDopayInfo;
+    }
 }

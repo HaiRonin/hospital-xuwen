@@ -5,6 +5,7 @@ import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
+import com.ruoyi.his.domain.DopayInfo;
 import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.remote.request.DoRegIn;
 import com.ruoyi.his.remote.response.BaseResponse;
@@ -12,6 +13,8 @@ import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDoregInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 预约挂号Service业务层处理
@@ -93,4 +96,11 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         return regOut.isOk()?BaseResponse.success():BaseResponse.fail("操作失败，支付金额稍后将会原路返回");
     }
 
+    @Override
+    protected List<DoregInfo> getRefundOrderList() {
+        DoregInfo query = new DoregInfo();
+        query.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+        List<DoregInfo> lstDopayInfo =doregInfoService.selectDoregInfoList(query);
+        return lstDopayInfo;
+    }
 }

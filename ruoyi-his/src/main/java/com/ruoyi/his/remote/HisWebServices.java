@@ -1,6 +1,7 @@
 package com.ruoyi.his.remote;
 
 import com.ruoyi.his.remote.response.BaseResponse;
+import org.springframework.scheduling.annotation.Async;
 
 public interface HisWebServices {
 
@@ -27,5 +28,12 @@ public interface HisWebServices {
      * @return
      */
     BaseResponse payedNotify(boolean isSucceed,String outTradeNo,String transactionId);
+
+    /***
+     * 定时扫描下单失败的订单执行退款
+     * @return
+     */
+    @Async
+    boolean autoScanningRefund();
 
 }

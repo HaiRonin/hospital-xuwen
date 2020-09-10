@@ -1,5 +1,7 @@
 package com.ruoyi.quartz.task;
 
+import com.ruoyi.his.constant.HisBusinessTypeEnum;
+import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.utils.StringUtils;
 
@@ -24,5 +26,16 @@ public class RyTask
     public void ryNoParams()
     {
         System.out.println("执行无参方法");
+        for(HisBusinessTypeEnum businessTypeEnum : HisBusinessTypeEnum.values()  ){
+            AbstractHisServiceHandler.servicesInstance(businessTypeEnum).autoScanningRefund();
+        }
+    }
+
+    public void refundParams()
+    {
+        System.out.println("执行无参方法");
+        for(HisBusinessTypeEnum businessTypeEnum : HisBusinessTypeEnum.values()  ){
+            AbstractHisServiceHandler.servicesInstance(businessTypeEnum).autoScanningRefund();
+        }
     }
 }

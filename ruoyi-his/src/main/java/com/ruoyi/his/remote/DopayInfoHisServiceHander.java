@@ -12,6 +12,8 @@ import com.ruoyi.his.service.IDopayInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 缴费Service业务层处理
  * 
@@ -94,6 +96,14 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
         }
         dopayInfoService.updateDopayInfo(dopayInfo);
         return doPayOut.isOk()?BaseResponse.success():BaseResponse.fail("操作失败，支付金额稍后将会原路返回");
+    }
+
+    @Override
+    protected List<DopayInfo> getRefundOrderList() {
+        DopayInfo dopayInfo = new DopayInfo();
+        dopayInfo.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+        List<DopayInfo> lstDopayInfo =dopayInfoService.selectDopayInfoList(dopayInfo);
+        return lstDopayInfo;
     }
 
 

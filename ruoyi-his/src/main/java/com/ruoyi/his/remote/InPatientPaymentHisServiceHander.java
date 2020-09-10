@@ -6,6 +6,7 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.DepositPayment;
+import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.remote.request.InPatientPaymentIn;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.InPatientPaymentOut;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 预约挂号Service业务层处理
@@ -80,4 +82,11 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
         return inPatientPaymentOut.isOk()?BaseResponse.success():BaseResponse.fail("操作失败，支付金额稍后将会原路返回");
     }
 
+    @Override
+    protected List<DepositPayment> getRefundOrderList() {
+        DepositPayment query = new DepositPayment();
+        query.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+        List<DepositPayment> lstDopayInfo =depositPaymentService.selectDepositPaymentList(query);
+        return lstDopayInfo;
+    }
 }

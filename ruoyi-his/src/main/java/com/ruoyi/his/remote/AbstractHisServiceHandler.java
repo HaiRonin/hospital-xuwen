@@ -13,17 +13,19 @@ import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.HisBaseEntity;
 import com.ruoyi.his.remote.request.BaseRequest;
 import com.ruoyi.his.remote.response.BaseResponse;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.beans.Transient;
+import java.util.List;
 
 /***
  * his接口抽象类
  */
 public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends HisBaseEntity, R extends BaseResponse> extends HisBaseServices implements HisWebServices{
 
-    private static Logger logger = LoggerFactory.getLogger(AbstractHisServiceHandler.class);
+    protected static Logger logger = LoggerFactory.getLogger(AbstractHisServiceHandler.class);
     /**
      * 接口apiCode
      * @return
@@ -222,5 +224,23 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     }
 
 
+    @Override
+    public boolean autoScanningRefund() {
+       List<D> list = getRefundOrderList();
+        logger.info("autoScanningRefund.order={}查找到size={}条件记录，需要退款",getBusinessType().getDesc(),
+                CollectionUtils.isEmpty(list)?0:list.size());
+       if(CollectionUtils.isEmpty(list)){
+           return true;
+       }
+        list.stream().forEach(item->{
+           //执行退款操作
+        });
+        return true;
+    }
 
+    /***
+     * 获取指定时间之前的失败订单
+     * @return
+     */
+    abstract protected List<D> getRefundOrderList();
 }
