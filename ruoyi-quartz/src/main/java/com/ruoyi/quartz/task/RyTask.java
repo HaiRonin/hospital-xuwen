@@ -35,7 +35,6 @@ public class RyTask {
 
     public void refund()
     {
-
         for(HisBusinessTypeEnum businessTypeEnum : HisBusinessTypeEnum.values()  ){
             logger.info("task.run.name={}.start",businessTypeEnum.getDesc());
             AbstractHisServiceHandler.servicesInstance(businessTypeEnum).autoScanningRefund();

@@ -49,10 +49,6 @@ public class BaseResponse implements Serializable{
         this.resultMsg = resultMsg;
     }
 
-    public boolean isReTry(){
-        return "-999".equals(this.getResultCode());
-    }
-
 
     public String getResultCode() {
         return resultCode;

@@ -63,9 +63,10 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         if(!PayStatusEnum.PAY_SUCCESS.getCode().equals(d.getSuccessfulPayment())){
             throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
         }
-        if(StringUtils.isEmpty(d.getSuccessfulPayment())){
+        if(StringUtils.isEmpty(d.getTransactionId())){
             throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",outTradeNo));
         }
+
     }
 
     /***
@@ -93,15 +94,10 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         d.setTransactionId(transactionId);
         d.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
         try {
+            //更新支付流水与支付状态
             int iResult = updateOrder(d);
             if(iResult > 0){
                 baseResponse = invokeCallSubmit(outTradeNo);
-            }
-        }catch (HisException ex){
-            if(ex.getCode() != -9999){
-                d.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
-                updateOrder(d);
-                baseResponse.error(ex.getMessage());
             }
         }catch (Exception ex){
             d.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
@@ -188,12 +184,9 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         String response = calltHisService(JSON.toJSONString(t));
         //返回结果数据转换本地对象
         R r = transResult(response);
-        if(r.isReTry()){
-            throw new HisException(-9999,"网络出现异常，稍后请进入个人中心查看订单支付结果");
-        }
         //更新本地对象
-        R result = (R) this.afterInvokeCallSumbit(outTradeNo,r);
-        return result;
+        r = (R) this.afterInvokeCallSumbit(outTradeNo,r);
+        return r;
     }
 
 
@@ -208,7 +201,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         String result = requestHisService(getBusinessType().getApiUrl(),dataParam);
         if(StringUtils.isBlank(result)){
             logger.error("AbstractHisServiceHandler.{}.calltHisService.error.nodata.return",getBusinessType().getDesc());
-            JSON.toJSONString(new BaseResponse("-9999","无法调用His接口"));
+            JSON.toJSONString(BaseResponse.fail("无法调用His接口"));
         }
         return result;
     }
@@ -239,8 +232,9 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     }
 
     /***
-     * 获取指定时间之前的失败订单
+     * 获取下单失败的订单退款
      * @return
      */
     abstract protected List<D> getRefundOrderList();
+
 }
