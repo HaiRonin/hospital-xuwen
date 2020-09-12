@@ -25,6 +25,12 @@
                     <input name="password" th:field="*{password}" class="form-control" type="text" required>
                 </div>
             </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">微信openId：</label>
+                <div class="col-sm-8">
+                    <input name="openId" th:field="*{openId}" class="form-control" type="text">
+                </div>
+            </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />

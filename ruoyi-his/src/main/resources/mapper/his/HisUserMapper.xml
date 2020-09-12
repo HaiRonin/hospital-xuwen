@@ -14,10 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="openId"    column="openId"    />
     </resultMap>
 
     <sql id="selectHisUserVo">
-        select id, name, phone, password, del_flag, create_by, create_time, update_by, update_time from his_user
+        select id, name, phone, password, del_flag, create_by, create_time, update_by, update_time, openId from his_user
     </sql>
 
     <select id="selectHisUserList" parameterType="HisUser" resultMap="HisUserResult">
@@ -26,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="phone != null  and phone != ''"> and phone like concat('%', #{phone}, '%')</if>
             <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="openId != null  and openId != ''"> and openId = #{openId}</if>
         </where>
     </select>
     
@@ -45,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
+            <if test="openId != null">openId,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">#{name},</if>
@@ -55,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="openId != null">#{openId},</if>
          </trim>
     </insert>
 
@@ -69,6 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="openId != null">openId = #{openId},</if>
         </trim>
         where id = #{id}
     </update>
