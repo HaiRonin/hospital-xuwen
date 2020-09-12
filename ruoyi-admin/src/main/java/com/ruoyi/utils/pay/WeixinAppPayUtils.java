@@ -1,6 +1,6 @@
 package com.ruoyi.utils.pay;
 
-import com.ruoyi.web.core.config.WechatConfig;
+import com.ruoyi.web.core.config.WxAppConfig;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -36,15 +36,15 @@ public class WeixinAppPayUtils {
     public static String getPrePayId(String strBody, String orderNo, String totalFee) {
         WxSignCode sign = new WxSignCode();
         // 获取商户的配置参数
-        sign.setAppid(WechatConfig.appId);
-        sign.setMch_id(WechatConfig.mchid);
+        sign.setAppid(WxAppConfig.appId);
+        sign.setMch_id(WxAppConfig.mchid);
         sign.setBody(strBody);
         sign.setNonce_str(WeixinAppPayUtils.createNoncestr());
         //sign.setOpenid(UserUtils.getOpenId());
         sign.setOut_trade_no(orderNo);// 需要考虑一个订是否能发起多次支付，导致订单号重复问题
         sign.setSpbill_create_ip("127.0.0.1");
         sign.setTotal_fee(totalFee);
-        sign.setNotify_url(WechatConfig.baseUrl);
+        sign.setNotify_url(WxAppConfig.baseUrl);
         sign.setAttach("");// 传递电话号码，订单详情，用于回调更新详情信息
         LOG.info(">>>>>>>>>>>>>>>微信支付预支付签名参数：" + sign);
         String code = WeixinAppPayUtils.getWxUnifiedOrderParamsXML(sign);
@@ -232,7 +232,7 @@ public class WeixinAppPayUtils {
     private static String WxSignMD5(String sign) {
         String signstr = sign
                 + "&key="
-                + WechatConfig.key;
+                + WxAppConfig.key;
         String m = "";
         try {
             m = getMessageDigest(signstr.getBytes("UTF-8")).toUpperCase();

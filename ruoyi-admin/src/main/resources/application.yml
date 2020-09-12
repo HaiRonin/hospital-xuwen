@@ -164,10 +164,39 @@ his:
       #商户号
       mchid: 1433629902
       #key值
-      key: 1433629902
+      key: A44de8673b0f2d1603a6ff33b18b81EF
       #回调地址
-      baseUrl: http://app.gdsnkzxyy.cn/hospital/wechat/notify_weixin
+      baseUrl: http://app.gdsnkzxyy.cn/hospital/pay/notify_weixin
       #退款地址
       refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
       #支付地址
       unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+
+  wxapp:
+      #AppID
+      appId: wx50617d578b93801d
+      #appSecret
+      appsecret: d2258bd67e9ef6bb8a795c723f483301
+      #商户号
+      mchid: 1433629902
+      #key值
+      key: d2258bd67e9ef6bb8a795c723f483301
+      #回调地址
+      baseUrl: http://app.gdsnkzxyy.cn/hospital/pay/notify_weixin
+      #退款地址
+      refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
+      #支付地址
+      unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+  aliapp:
+        #合作身份者ID
+        partner: 2088521631668130
+        #商户的支付宝账号
+        seller_account: gdsnkzxyy@qq.com
+        #商户的私钥
+        private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC8W3wCnCCyp1lpNqGB/EQFy2zC9+ZWW+nyelV7pG+ryDxL9fZj0pOdnqSZUG3J0K6genPmwLoMJYGdTdMOHaL6yQJni25ptfu7DbitroHLhLW5cR3UaXd7GA2IAdopj64DqQ0hiCCWSOmBR5MVoLY+sgw2Pr2bo8l0D7rr1a+YkRzYHUL69X9L9fqEdBu2Qxgm0FILZJc3BEKB5L3prf6XCkgYh5S4KtuNbqQcH3uOGgMZZbVgfSXTxjTqe0oua3PFt+MiLRwwYG0AnhorT8yuBwMyU9JCXb5YauWteC5QAwQ8vRZ8dUE8Fihn0f4MfA7gqtQ8Z4C4M/S8lDPtg6aDAgMBAAECggEAXb+/AmGJGMKYiviI/HR9utCcKpJOT89hqrFe2LJobny0Hi6m2tpVZI8wZ6qTam52bCNmioSEVUVZtNymXpE7rEzd6IGKjAzq5RgYQkHoEk7UUB9P9Igl0tuO6JHbbvI3b1T11ym05ngV2KWyPIKIEr51u44Qu2WTADRQGc96nZlJtLOn7vznT460nCLkhWEsfwI77vrt0lm1tq/jNpyQHrvjonnPzOeJtbrSC/d3XRzFjDBixR0hRROW3yN+dQ5vUJ612EYnJWdaXDZTCXG5UDKlp++QEZfI/dZiE4hdMvhN35pnUF5i1wfqSrj4lunbAp20WJFU0339MMgvcQSESQKBgQDhEo9hrTgRieJsYtPLFgJAz1NECgVcFJZHYiAO8ULnK9iUlKGI96/pl8d8KIjYZkXC03sboEHQ7RK9S0jyVq9JzcWkkNVZSnzaRXAf1WMMM0tTzcIT24wDusvYnS9zi95sFZqAn1c/61Bip5rGS5ZNs5CEmNv5nU7+8JRutyfMJQKBgQDWPWKltRQL/ViEEjtj1A/CdM+6W5KBN3NjSjroyrpaOFyCnD18/NyOWyxFWj0aRVRSCKtwTv22Z8oD+R5JTbW1toIFAF0AKBWheTXQ9jnUsGpA5MaL26wLlJ/UJDEFtLWfSaAuOu/RIdmkO+yyYeBA7N4bonbqUr5XeinBo8tThwKBgFN9phCOyCjBZGvecUB5xpYyEmo/6WMSA/kw7kF8v9uvSSU8yXtcnjXh5s8o3jKgJaqy9oz18tREzVnI7qNvApE3MuTsESiRWCVD8ubsKlThRkUtI5xoKdVMWsfc7zhGn1iq3uhts1jzupsOH30Flxj1zltRtPAwqZgquHUlni69AoGBAI5jK/4gNFunnL3idDBsD7FY+3rLQ7q3xOvXuQFhQ6uUy/9OohtA38GJXQoW6IdeTqVa975j8YHax0wOtQ9ZI4zK6O00CZuCCKZSLe9cxqDSQzwwELmBXX4w4G0ZRK+bJB7iyyAOsbbX/ZOG9FC2dloQU6ogN1KTfcgb/Eajew5fAoGAGkAYnW9u2SMpFmQYuoF6bSXZaiRzppfI27zh0btK7vGJdem3Mdgt4GA0qX9OFuGlF8UtUbJptDgh9k3MSxBsqJH1EwJumPMLiVTRjliYUn3O8DGXsqrSfwLXKWEBQakJ10kwJAQFUKcQEVWoiFEk46iNzni4ZLGSF6D57migt24=
+        #支付宝的公钥
+        ali_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi1bw+zczwfg8/WpCkg8L9LHvMWvQ5Y+I8JP9O5vHV9gBY8EZ/1ahWPHqbPPXi4NlTZSc7co5fbtERM7x2gvCc+hXN9TXKM66MeNFpHcu/bMbEezKWrEFHpBffHSb82XR6ldnr14v1tDf2Q59kth2U/7LENaiLr3Y7aDSBuOIW7TSacMfpSbAit+ibfz1XRMiOVQlLK/Gpcu20w4kDS7UMYEkkhQIA0Nd/FwRoNgIVm/PySwCjI8UZCX3OuX1xUjo8dzkTJ1uK7888AEbF1SwFNNKSN1NzyRpzmBborpCDPxqEjog3sjjR2b87qY3uLwID9Cb06GA1ie42L9/GBdhYQIDAQAB
+        #回调地址
+        baseUrl: http://app.gdsnkzxyy.cn/hospital/pay/notify_alipay
+        #退款地址
+        refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund

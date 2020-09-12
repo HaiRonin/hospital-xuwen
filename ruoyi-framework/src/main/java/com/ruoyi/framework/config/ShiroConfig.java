@@ -286,6 +286,7 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/login", "anon,captchaValidate");
         //his接口不需要做权限控制
         filterChainDefinitionMap.put("/his/**", "anon");
+        filterChainDefinitionMap.put("/hospital/pay/**", "anon");
         // 注册相关
         filterChainDefinitionMap.put("/register", "anon,captchaValidate");
         // 系统权限列表

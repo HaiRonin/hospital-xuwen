@@ -2,20 +2,20 @@ package com.ruoyi.web.controller.his.controller;
 
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.utils.pay.WeixinMessageUtil;
-import com.ruoyi.utils.pay.WeixinAppPayUtils;
-import com.ruoyi.utils.pay.WeixinPayUtils;
-import com.ruoyi.utils.pay.WxSignCode;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.utils.pay.*;
+import com.ruoyi.web.core.config.AlipayConfig;
 import com.ruoyi.web.core.config.WechatConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @Date: 2020-09-04 23:59
  */
 @Controller
-@RequestMapping("/his")
+@RequestMapping("/hospital/pay/")
 public class PayController extends BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(PayController.class);
@@ -39,7 +39,7 @@ public class PayController extends BaseController {
      * @param request
      * @return
      */
-    @PostMapping("/wechat/apppay")
+    @PostMapping("/wechat_apppay")
     @ResponseBody
     public AjaxResult wxAppPay(Double orderPrice, HttpServletRequest request) {
 
@@ -72,7 +72,39 @@ public class PayController extends BaseController {
         wxPayParams.put("sign", sign);
         wxPayParams.put("packageValue", "Sign=WXPay");
 
-        return AjaxResult.success("支付成功", wxPayParams);
+        return AjaxResult.success("微信APP预支付成功", wxPayParams);
+    }
+
+    /**
+     * 支付宝支付
+     *
+     * @param orderPrice
+     * @param request
+     * @return
+     */
+    @PostMapping("/ali_apppay")
+    @ResponseBody
+    public AjaxResult aliAppPay(Double orderPrice, HttpServletRequest request) {
+
+        String orderId = new Date().getTime() + "_aliapp_" + WeixinAppPayUtils.createNoncestr(3);
+        Map<String, String> payParams = new HashMap<String, String>();// 里面的参数有用于签名，不能随便添加参数
+        //金额单位是元
+        String orderInfo = AlipayUtil.getOrderInfo("预约支付",
+                "预约支付", orderPrice,
+                orderId);
+        String sign = AlipayUtil.alipaySign(orderInfo);
+        try {
+            // 仅需对sign 做URL编码
+            sign = URLEncoder.encode(sign, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        payParams.put("orderInfo", orderInfo);
+        payParams.put("sign", sign);
+        payParams.put("signType", AlipayConfig.sign_type);
+        payParams.put("orderId", orderId);
+
+        return AjaxResult.success("支付宝预支付成功", payParams);
     }
 
     /**
@@ -82,9 +114,9 @@ public class PayController extends BaseController {
      * @param request
      * @return
      */
-    @PostMapping("/wechat/pay")
+    @PostMapping("/wechat_pay")
     @ResponseBody
-    public AjaxResult weixinPay(Double orderPrice, HttpServletRequest request) {
+    public AjaxResult weixinPay(Double orderPrice, HttpServletRequest request, HttpServletResponse response) {
 
         String orderId = new Date().getTime() + "_wx_" + WeixinAppPayUtils.createNoncestr(3);
 
@@ -94,10 +126,14 @@ public class PayController extends BaseController {
         sign.setMch_id(WechatConfig.mchid);
         sign.setBody("预约支付");
         sign.setNonce_str(WeixinPayUtils.createNoncestr());
-        sign.setOpenid("openId");
+        String openId = WeixinLoginUtils.getOpenIdFromCookie(request, response);
+        if (StringUtils.isEmpty(openId)) {
+            return AjaxResult.error("openId获取失败");
+        }
+        sign.setOpenid(openId);
         sign.setOut_trade_no(orderId);//解决一个订单多个详情发起多个支付，导致订单号重复问题
         sign.setSpbill_create_ip("127.0.0.1");
-        sign.setTotal_fee(String.valueOf((orderPrice * 100)));
+        sign.setTotal_fee(String.valueOf(BigDecimal.valueOf(orderPrice * 100).setScale(0, BigDecimal.ROUND_HALF_UP).intValue()));
         sign.setNotify_url(WechatConfig.baseUrl);
 //        sign.setAttach(phone);//传递电话号码，用于回调更新详情信息
         String code = WeixinPayUtils.getWxUnifiedOrderParamsXML(sign);
@@ -113,7 +149,7 @@ public class PayController extends BaseController {
         wxPayParams.put("paySign", WeixinPayUtils.WxSignCreate(wxPayParams));
         wxPayParams.put("prepayid", prepayid);
 
-        return AjaxResult.success("支付成功", wxPayParams);
+        return AjaxResult.success("微信预支付成功", wxPayParams);
     }
 
     /**
@@ -123,8 +159,8 @@ public class PayController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/wechat/notify_weixin", method = RequestMethod.POST)
-    public String WxPayCallBackNotify(HttpServletRequest request) {
+    @RequestMapping(value = "/notify_weixin", method = RequestMethod.POST)
+    public String wxPayCallBackNotify(HttpServletRequest request) {
         try {
             Map<String, String> map = WeixinMessageUtil.parseXml(request);
 
@@ -143,5 +179,34 @@ public class PayController extends BaseController {
         }
 
         return "SUCCESS";
+    }
+
+    /**
+     * 支付宝支付回调
+     *
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/notify_alipay", method = RequestMethod.POST)
+    public String alipayCallBackNotify(HttpServletRequest request) {
+        try {
+            Map<String, String> map = WeixinMessageUtil.parseXml(request);
+
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调解析结果=" + map);
+
+            // 交易订单号
+            String trade_no = request.getParameter("trade_no");
+            // 系统订单号
+            String orderId = request.getParameter("out_trade_no");
+
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调订单ID=" + LOG);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
+
+        return "success";
     }
 }
