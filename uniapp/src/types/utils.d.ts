@@ -26,6 +26,8 @@ interface IDateData extends IOBJ{
     week: number | string;
     // 2002-01-01
     text: string;
+    // 2002-01-01 00:00:00
+    textTime: string;
 }
 interface IConfirmData {
     content?: string;
@@ -37,6 +39,34 @@ interface IConfirmData {
 type TLinkMethods = 'navigateTo' | 'redirectTo' | 'reLaunch' | 'switchTab' | 'navigateBack';
 
 
+interface IRenderData {
+    /**
+     * 存放数据的数组，
+     */
+    list: IOBJ[];
+    /**
+     * 要被渲染的数据源，
+     */
+    data: IOBJ[];
+    /**
+     * 每次渲染条数
+     */
+    num?: number | 10;
+    /**
+     * 间隔时间
+     */
+    interval?: number | 200;
+    /**
+     * 处理数据的函数
+     * item 单条数据
+     * index 循环的下标
+     * count 累计循环的次数
+     */
+    cb?: (item: IOBJ, index: number, count: number) => IOBJ;
+}
+
+type TClearRenderList = () => void;
+type TRenderList = (data: IRenderData) => TClearRenderList;
 type TJsCopyObj = <T>(data: T, cache?: any[]) => T;
 type TToast = (message: string, duration?: number, forbidClick?: boolean) => Promise<void>;
 type TShowToast = (message?: string, forbidClick?: boolean) => IOBJ;
@@ -164,5 +194,15 @@ declare module utils {
      * 系统自带弹窗
      */
     const confirm: TConfirm;
+
+    /**
+     * 数据列表渲染（断续渲染）
+     * list 要插入数据的列表
+     * data 数据源
+     * num 每次插入数目
+     * interval 间隔时间
+     * cb 每次插入时执行的函数
+     */
+    const renderList: TRenderList;
 }
 

@@ -12,6 +12,7 @@ export const whiteList = [
     '/pages/home/outpatient',
 
     '/pages/outpatient/intelligentGuidance',
+    '/pages/outpatient/intelligentGuidance/index',
 
     '/pages/info/index',
     '/pages/info/drugSearch',
@@ -20,6 +21,7 @@ export const whiteList = [
     '/pages/info/departmentIsIntroduced',
     '/pages/info/doctorTimeing',
 
+    '/pages/registration/diagnosis',
     '/pages/registration/index',
     '/pages/registration/departmentDoctorList/index',
     '/pages/registration/doctor',
@@ -58,7 +60,7 @@ export const reportType = [
     {value: '11', text: 'DSA'},
     {value: '12', text: '普放'},
     {value: '13', text: '病理'},
-    {value: '14', text: '其他'},
+    {value: '14', text: '其它'},
 ];
 
 // 报告的各种状态
@@ -85,4 +87,17 @@ export const payType = [
     {value: '6', text: '云医院微信'},
     {value: '7', text: '云医院支付宝'},
     {value: '8', text: '诊疗卡'},
+];
+
+export const inHosState = [
+    {value: '0', text: '无住院'},
+    {value: '1', text: '申请中'},
+    {value: '2', text: '入院中'},
+    {value: '3', text: '已出院'},
+];
+
+export const sexState = [
+    {value: '0', text: '女'},
+    {value: '1', text: '男'},
+    {value: '2', text: '其他'},
 ];

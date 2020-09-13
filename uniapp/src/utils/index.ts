@@ -2,6 +2,8 @@
  * vue.config.js 全局引入
  */
 import throttleFun from './throttle';
+import renderListFun from './renderList';
+// export * from './module/renderList';
 
 // export const winSize = () => {
 //     var scale = 1 / (window.devicePixelRatio || 1);
@@ -14,6 +16,7 @@ import throttleFun from './throttle';
 // };
 
 export const throttle = throttleFun;
+export const renderList = renderListFun;
 
 export const jsCopyObj: TJsCopyObj = (data: any, cache = []) => {
     // debugger
@@ -109,12 +112,19 @@ export const dateData: TDateData = (() => {
             time: date.getTime(),
             week: WEEK_ARR[date.getDay()],
             text: '',
+            textTime: '',
         };
 
         const text = format.replace(/[ymd]/g, (str) => {
             return o[str || ''];
         });
         o.text = text;
+
+        const textTime = `${format} h:M:s`.replace(/[ymdhMs]/g, (str) => {
+            str === 'M' && (str = 'mm');
+            return o[str || ''];
+        });
+        o.textTime = textTime;
 
         return o;
     };

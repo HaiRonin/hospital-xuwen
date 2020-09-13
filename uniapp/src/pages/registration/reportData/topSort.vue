@@ -33,7 +33,7 @@
             <u-icon name="arrow-down" v-else class="z-icon"></u-icon>
         </view>
 
-        <u-calendar v-model="timeShow" mode="range" @change="timeChange" class="z-calendar"></u-calendar>
+        <u-calendar v-model="timeShow" active-bg-color="#299ff7" mode="range" @change="timeChange" class="z-calendar"></u-calendar>
     </view>
 </template>
 

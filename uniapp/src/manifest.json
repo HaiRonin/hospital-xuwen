@@ -1,7 +1,7 @@
 {
     "name" : "农垦医院",
     "appid" : "__UNI__BBEF366",
-    "description" : "",
+    "description" : "农垦医院",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -51,7 +51,7 @@
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
                         "appid" : "wx50617d578b93801d",
-                        "UniversalLinks" : ""
+                        "UniversalLinks" : "https://ask.dcloud.net.cn/article/309#ulink"
                     }
                 }
             },

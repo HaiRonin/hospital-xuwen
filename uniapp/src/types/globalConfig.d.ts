@@ -28,4 +28,6 @@ declare module globalConfig {
     const reportStatus: IOBJ[];
     const regStatus: IOBJ[];
     const payType: IOBJ[];
+    const inHosState: IOBJ[];
+    const sexState: IOBJ[];
 }

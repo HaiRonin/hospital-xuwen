@@ -7,10 +7,13 @@
                 <u-icon name="arrow-right" class="text-icon" v-if="isToUrl || isSelModel"></u-icon>
             </view>
             <view class="flex-box align-center justify-s-b action-box" v-if="!isSelModel">
-                <view class="text-action text-del" @tap.stop="delPatientCard.openFun(item)">
-                    <u-icon name="trash" class="del-icon"></u-icon>删除
+                <view v-if="isToUrl || isSelModel"></view>
+                <view v-else class="text-del flex-1">
+                    <view class="text-action" @tap.stop="delPatientCard.openFun(item)">
+                        <u-icon name="trash" class="del-icon"></u-icon>删除
+                    </view>
                 </view>
-                <view class="flex-box align-center">
+                <view class="flex-box align-center flex-1 justify-s-b">
                     <view class="text-action" @tap.stop="lookPatientCardInfo.openFun(item)">
                         <u-icon name="list-dot" class="del-icon"></u-icon>卡号信息
                     </view>
@@ -89,7 +92,16 @@
             const toUrl = this.options.toUrl;
             if (!this.isToUrl && !toUrl) return;
             const is = ~toUrl.indexOf('?');
-            utils.link(`${toUrl}${is ? '&' : '?'}patientNo=${item.CardNo}`);
+            // {"bankCardNumber":"","synUserName":"","synKey":"","cardNo":"440822195306247118","visitCardNo":"52400200199564","socialsecurityNO":""}
+            const strData = utils.serialize({
+                patientNo: item.CardNo,
+                name: item.Name,
+                idCardno: item.IDCardno,
+                // patientNo: '52400200199564',
+                // name: item.Name,
+                // idCardno: '440822195306247118'
+            });
+            utils.link(`${toUrl}${is ? '&' : '?'}${strData}`);
         }
 
         selItem (item: IOBJ) {
@@ -170,7 +182,8 @@
 
     .text-action {
         padding: 26rpx 0 24rpx;
-        margin-left: 40rpx;
+        // margin-left: 40rpx;
+        display: inline-block;
     }
 
     .text-del {

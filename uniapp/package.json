@@ -56,6 +56,7 @@
     "@vue/shared": "^3.0.0-rc.4",
     "core-js": "^3.6.5",
     "flyio": "^0.6.2",
+    "jweixin-module": "^1.6.0",
     "md5": "^2.3.0",
     "regenerator-runtime": "^0.12.1",
     "uview-ui": "^1.6.4",

@@ -14,6 +14,8 @@ image, img {
     object-fit: contain;
 }
 
+.flex-50{flex-basis: 50%;}
+.flex-100{flex-basis: 100%;}
 .flex-box { display: flex; }
 
 .f-v { flex-direction: column; }
@@ -93,6 +95,7 @@ image, img {
     bottom: 0;
 }
 .main-color{color:$main-color;}
+.red-color{color:$main-error-color;}
 
 .top-line{
     position: sticky;
@@ -131,14 +134,16 @@ image, img {
 .z-btn-default::after{
     border: none;
 }
+// .u-tab-item[style~='bold']{color: $main-color !important;}
+// .u-tab-bar{background-color: $main-color !important;}
 .u-radio__icon-wrap--checked{
     border-color:$u-type-primary !important;
     background-color:$u-type-primary !important;
 }
 
-.u-calendar__content--start-date,.u-calendar__content--end-date{
-    background-color:$u-type-primary !important;
-}
+// .u-calendar__content--start-date,.u-calendar__content--end-date{
+//     background-color:$u-type-primary !important;
+// }
 
 uni-button[disabled]:not([type]), uni-button[disabled][type=default]{
     color: rgba(0,0,0,.3) !important;

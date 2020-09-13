@@ -3,7 +3,7 @@
         <topSort v-model="modalShow" @commit="getData" ref="topSort" class="top-sort" />
 
         <view class="common-block" v-for="(item, index) in list" :key="index">
-            <view class="flex-box align-center justify-s-b">
+            <view class="flex-box justify-s-b">
                 <view class="text-1">检查名称:</view>
                 <view class="text-2">{{item.checkName}}</view>
             </view>
@@ -35,13 +35,14 @@
                 <view class="text-1">检查时间:</view>
                 <view class="text-2">{{item.reportDate}}</view>
             </view>
-            <view class="flex-box align-center justify-s-b">
+            <view class="flex-box justify-s-b">
                 <view class="text-1">描述:</view>
                 <view class="text-2">{{item.checkDesc}}</view>
             </view>
-            <view class="flex-box align-center justify-s-b">
+            <view class="flex-box justify-s-b">
                 <view class="text-1">结果:</view>
-                <view class="text-2">{{item.checkResult}}</view>
+                <view class="text-2 main-color" v-if="item.contentpicsrcText" @tap="down(item.contentpicsrc)">{{item.contentpicsrcText}}</view>
+                <view class="text-2" v-else>{{item.checkResult}}</view>
             </view>
         </view>
 
@@ -60,8 +61,8 @@
             topSort
         },
         filters: {
-            f_reportStatus: (val: any) => globalConfig.gFilter(val, globalConfig.reportType),
-            f_reportType: (val: any) => globalConfig.gFilter(val, globalConfig.reportStatus),
+            f_reportStatus: (val: any) => globalConfig.gFilter(val, globalConfig.reportStatus),
+            f_reportType: (val: any) => globalConfig.gFilter(val, globalConfig.reportType),
         }
     })
     export default class Index extends Vue {
@@ -73,15 +74,32 @@
         list: IOBJ[] = [];
         options: IOBJ = {};
 
+        down (url: string) {
+            if (utils.zEmpty(url)) return;
+
+            // #ifdef H5
+            window.open(url);
+            // #endif
+
+            // #ifdef APP-PLUS
+            plus.runtime.openURL(url);
+            // #endif
+        }
+
         async getData (data: IOBJ) {
             console.log(data);
             if (!data) return;
             Object.assign(data, this.params);
             const res = await uspGetPacsApp(data, {isLoad: true, closeErrorTips: true}).catch(() => ({data: []}));
 
-            // res.data.forEach((item: IOBJ) => {
-            //     const {reportType, reportStatus} = item;
-            // });
+
+            res.data.forEach((item: IOBJ) => {
+                item.reportDate = (item.reportDate || '').replace(/\//g, '-');
+                if (item.contentpicsrc) {
+                    const arr = item.contentpicsrc.split('/');
+                    item.contentpicsrcText = arr[arr.length - 1];
+                }
+            });
 
             this.oneLoad = false;
             this.list = res.data;
@@ -117,5 +135,20 @@
         top: 0;
         left: 0;
         right: 0;
+        margin-bottom: 32rpx;
     }
+
+    .common-block{
+        line-height: 60rpx;
+    }
+
+    .text-1{
+        color:$color-grey;
+        padding-right: 20rpx;
+        min-width: 180rpx;
+    }
+
+    .text-2{text-align: right;}
+
+    .check-name{line-height: 40rpx;padding-bottom: 10rpx;}
 </style>

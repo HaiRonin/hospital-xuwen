@@ -23,6 +23,14 @@ export default new Vuex.Store({
         sevenDay (state: IOBJ) {
             return state.time.sevenDay;
         },
+        // 近一年时间范围
+        yearDay (state: IOBJ) {
+            return state.time.yearDay;
+        },
+        // 近一月时间范围
+        monthDay (state: IOBJ) {
+            return state.time.monthDay;
+        },
         // 系统时间
         systemTime (state: IOBJ) {
             return state.time.systemTime;

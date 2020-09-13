@@ -187,6 +187,51 @@
                         "navigationBarTitleText": "排队候诊",
                         "enablePullDownRefresh": true
                     }
+                },
+                {
+                    "path": "totalCostStatement",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "总费用清单"
+                    }
+                },
+                {
+                    "path": "depositHospitalList",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "押金缴纳记录"
+                    }
+                },
+                {
+                    "path": "paymentPrescriptionRecord/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "缴费处方记录"
+                    }
+                },
+                {
+                    "path": "hospitalizationDayList",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "住院一日清单"
+                    }
+                },
+                {
+                    "path": "hospitalInfo",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "住院信息"
+                    }
                 }
             ]
         },
@@ -271,6 +316,7 @@
 		]
 	},
     "easycom": {
-		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+		"autoscan": false
 	}
 }

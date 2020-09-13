@@ -19,6 +19,7 @@ module.exports = {
                 globalConfig: path.resolve(__dirname, './', 'src/assets/js/globalConfig.ts'),
                 utils: path.resolve(__dirname, './', 'src/utils/index.ts'),
                 ajax: path.resolve(__dirname, './', 'src/apis/ajax/index.ts'),
+                wx: [path.resolve(__dirname, './', 'src/assets/js/wxUtils.ts'), 'default'],
             }),
         );
 

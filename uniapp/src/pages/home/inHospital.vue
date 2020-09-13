@@ -20,8 +20,8 @@
         quickEntry2: IOBJ[] = [
             {
                 text: '住院信息',
-                url: '',
-                imgUrl: require('@/assets/image/icon/icon_95.png'),
+                url: '/pages/outpatient/index?toUrl=/pages/registration/hospitalInfo',
+                imgUrl: require('@/assets/image/icon/icon_84.png'),
             },
             {
                 text: '住院检验/检测报告',
@@ -35,17 +35,17 @@
             // },
             {
                 text: '押金缴纳记录',
-                url: '',
-                imgUrl: require('@/assets/image/icon/icon_106.png'),
+                url: '/pages/outpatient/index?toUrl=/pages/registration/depositHospitalList',
+                imgUrl: require('@/assets/image/icon/icon_111.png'),
             },
             {
                 text: '住院一日清单',
-                url: '',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/hospitalizationDayList',
                 imgUrl: require('@/assets/image/icon/icon_117.png'),
             },
             {
                 text: '总费用清单',
-                url: '',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/totalCostStatement',
                 imgUrl: require('@/assets/image/icon/icon_109.png'),
             },
         ];

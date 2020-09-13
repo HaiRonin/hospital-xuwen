@@ -55,7 +55,7 @@
             },
             {
                 text: '门诊缴费',
-                url: '/pages/outpatient/index?toUrl=',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/paymentPrescriptionRecord/index',
                 imgUrl: require('@/assets/image/icon/icon_106.png'),
             },
             {

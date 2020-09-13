@@ -3,6 +3,7 @@ import App from './App.vue';
 import store from './store/index';
 import uView from 'uview-ui';
 import forcedToLogin, {handleHomeShow} from '@/assets/js/forcedToLogin';
+import '@/assets/js/wxUtils';
 // import '@/assets/js/intelligentGuidanceApi';
 
 
@@ -33,6 +34,7 @@ new App({
 // console.log(ajax.apiGet);
 // console.log(uni.showToast('13'));
 // console.log(queryDepartmentList());
+
 
 // #ifdef H5
 if (process.env.NODE_ENV === 'development') {
