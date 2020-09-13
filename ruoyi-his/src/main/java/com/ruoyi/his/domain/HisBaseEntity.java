@@ -54,6 +54,9 @@ public class HisBaseEntity extends BaseEntity {
     //预支付签名参数
     private Map<String, String> prePaySign;
 
+    //用户OPENID
+    private String openId;
+
     public String getSuccessfulPayment() {
         return successfulPayment;
     }
@@ -108,5 +111,13 @@ public class HisBaseEntity extends BaseEntity {
 
     public void setPrePaySign(Map<String, String> prePaySign) {
         this.prePaySign = prePaySign;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }
