@@ -2,6 +2,8 @@ package com.ruoyi.pay.service;
 
 import com.ruoyi.common.model.HisPayOrder;
 
+import java.util.Map;
+
 public interface PayService {
 
     /***
@@ -9,7 +11,7 @@ public interface PayService {
      * @param hisPayOrder
      * @return
      */
-    boolean pay(HisPayOrder hisPayOrder);
+    Map<String, String> pay(HisPayOrder hisPayOrder);
 
     /***
      * 退款
