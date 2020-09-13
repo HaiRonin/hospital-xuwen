@@ -1,5 +1,6 @@
 package com.ruoyi.pay.service;
 
+import com.ruoyi.common.enums.HisOrderType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.pay.config.WechatConfig;
 import com.ruoyi.pay.utils.WeixinAppPayUtils;
@@ -17,13 +18,13 @@ public class WxAppPayServiceImp extends AbstractPayService {
     private static final Logger LOG = LoggerFactory.getLogger(WxAppPayServiceImp.class);
 
     @Override
-    public Map<String, String> pay(HisPayOrder hisPayOrder) {
-        String orderId = new Date().getTime() + "_wxapp_" + WeixinAppPayUtils.createNoncestr(3);
+    public Map<String, String> prePay(HisPayOrder hisPayOrder) {
+        String orderId = hisPayOrder.getOutTradeNo() + "_" + new Date().getTime();
 
         Map<String, String> wxPayParams = new HashMap<String, String>();// 里面的参数有用于微信的签名，不能随便添加参数
         Double price = new Double(hisPayOrder.getAmount().doubleValue() * 100);//支付金额 单位是分
         String prepayid = WeixinAppPayUtils.getPrePayId(
-                "预约支付", orderId,
+                HisOrderType.getDescByKey(hisPayOrder.getOrderType()), orderId,
                 String.valueOf(price.longValue()));
 
         LOG.info(">>>>>>>>>>>>>>>>>>微信支付prepayid=" + prepayid);
@@ -48,6 +49,11 @@ public class WxAppPayServiceImp extends AbstractPayService {
         wxPayParams.put("packageValue", "Sign=WXPay");
 
         return wxPayParams;
+    }
+
+    @Override
+    public boolean pay(HisPayOrder hisPayOrder) {
+        return false;
     }
 
     @Override

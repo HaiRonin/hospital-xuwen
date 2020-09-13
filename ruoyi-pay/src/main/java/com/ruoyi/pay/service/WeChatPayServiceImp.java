@@ -1,6 +1,7 @@
 package com.ruoyi.pay.service;
 
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.enums.HisOrderType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.pay.config.WechatConfig;
@@ -20,15 +21,14 @@ public class WeChatPayServiceImp extends AbstractPayService {
 
 
     @Override
-    public Map<String, String> pay(HisPayOrder hisPayOrder) {
+    public Map<String, String> prePay(HisPayOrder hisPayOrder) {
         Map<String, String> wxPayParams = new HashMap<String, String>();
-        String orderId = new Date().getTime() + "_wx_" + WeixinAppPayUtils.createNoncestr(3);
-
+        String orderId = hisPayOrder.getOutTradeNo() + "_" + new Date().getTime();
         WxSignCode sign = new WxSignCode();
         //获取商户的配置参数
         sign.setAppid(WechatConfig.appId);
         sign.setMch_id(WechatConfig.mchid);
-        sign.setBody("预约支付");
+        sign.setBody(HisOrderType.getDescByKey(hisPayOrder.getOrderType()));
         sign.setNonce_str(WeixinPayUtils.createNoncestr());
         sign.setOpenid(hisPayOrder.getOpenId());
         sign.setOut_trade_no(orderId);//解决一个订单多个详情发起多个支付，导致订单号重复问题
@@ -47,6 +47,11 @@ public class WeChatPayServiceImp extends AbstractPayService {
         wxPayParams.put("paySign", WeixinPayUtils.WxSignCreate(wxPayParams));
         wxPayParams.put("prepayid", prepayid);
         return wxPayParams;
+    }
+
+    @Override
+    public boolean pay(HisPayOrder hisPayOrder) {
+        return false;
     }
 
     @Override

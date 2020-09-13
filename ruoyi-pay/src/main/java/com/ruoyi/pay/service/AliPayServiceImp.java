@@ -1,5 +1,6 @@
 package com.ruoyi.pay.service;
 
+import com.ruoyi.common.enums.HisOrderType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.pay.config.AlipayConfig;
 import com.ruoyi.pay.utils.AlipayUtil;
@@ -17,12 +18,12 @@ public class AliPayServiceImp extends AbstractPayService {
 
 
     @Override
-    public Map<String, String> pay(HisPayOrder hisPayOrder) {
-        String orderId = new Date().getTime() + "_aliapp_" + WeixinAppPayUtils.createNoncestr(3);
+    public Map<String, String> prePay(HisPayOrder hisPayOrder) {
+        String orderId = hisPayOrder.getOutTradeNo() + "_" + new Date().getTime();
         Map<String, String> payParams = new HashMap<String, String>();// 里面的参数有用于签名，不能随便添加参数
         //金额单位是元
-        String orderInfo = AlipayUtil.getOrderInfo("预约支付",
-                "预约支付", hisPayOrder.getAmount().doubleValue(),
+        String orderInfo = AlipayUtil.getOrderInfo(HisOrderType.getDescByKey(hisPayOrder.getOrderType()),
+                HisOrderType.getDescByKey(hisPayOrder.getOrderType()), hisPayOrder.getAmount().doubleValue(),
                 orderId);
         String sign = AlipayUtil.alipaySign(orderInfo);
         try {
@@ -36,6 +37,11 @@ public class AliPayServiceImp extends AbstractPayService {
         payParams.put("signType", AlipayConfig.sign_type);
         payParams.put("orderId", orderId);
         return payParams;
+    }
+
+    @Override
+    public boolean pay(HisPayOrder hisPayOrder) {
+        return false;
     }
 
     @Override

@@ -41,16 +41,16 @@ public class PayController extends BaseController {
     public AjaxResult pay(HisPayOrder order, HttpServletRequest request, HttpServletResponse response) {
         PayService payService = AbstractPayService.servicesInstance(order.getPayType());
 
-        if (HisPayType.WECHAT.getKey().equals(order.getPayType())) {
-            String openId = WeixinLoginUtils.getOpenIdFromCookie(request, response);
-            if (StringUtils.isEmpty(openId)) {
-                return AjaxResult.error("openId获取失败");
-            } else {
-                order.setOpenId(openId);
-            }
-        }
-        order.setOpenId("oKXcuv9lyoCnjrQQ8HqZROiiV4BI");
-        Map<String, String> result = payService.pay(order);
+//        if (HisPayType.WECHAT.getKey().equals(order.getPayType())) {
+//            String openId = WeixinLoginUtils.getOpenIdFromCookie(request, response);
+//            if (StringUtils.isEmpty(openId)) {
+//                return AjaxResult.error("openId获取失败");
+//            } else {
+//                order.setOpenId(openId);
+//            }
+//        }
+        //order.setOpenId("oKXcuv9lyoCnjrQQ8HqZROiiV4BI");
+        Map<String, String> result = payService.prePay(order);
 
         return AjaxResult.success("预支付成功[" + HisPayType.getDescByKey(order.getPayType()) + "]", result);
     }

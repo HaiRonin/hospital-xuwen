@@ -11,7 +11,7 @@ public interface PayService {
      * @param hisPayOrder
      * @return
      */
-    Map<String, String> pay(HisPayOrder hisPayOrder);
+    boolean pay(HisPayOrder hisPayOrder);
 
     /***
      * 退款
@@ -19,4 +19,12 @@ public interface PayService {
      * @return
      */
     boolean refund(HisPayOrder hisPayOrder);
+
+    /**
+     * 预支付
+     *
+     * @param hisPayOrder
+     * @return
+     */
+    Map<String, String> prePay(HisPayOrder hisPayOrder);
 }
