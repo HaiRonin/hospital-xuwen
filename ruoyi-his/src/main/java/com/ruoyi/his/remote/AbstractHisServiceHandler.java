@@ -13,9 +13,11 @@ import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.HisBaseEntity;
 import com.ruoyi.his.remote.request.BaseRequest;
 import com.ruoyi.his.remote.response.BaseResponse;
+import com.ruoyi.pay.service.WeChatPayServiceImp;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.beans.Transient;
 import java.util.List;
@@ -24,6 +26,9 @@ import java.util.List;
  * his接口抽象类
  */
 public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends HisBaseEntity, R extends BaseResponse> extends HisBaseServices implements HisWebServices{
+
+    @Autowired
+    private WeChatPayServiceImp weChatPayService;
 
     protected static Logger logger = LoggerFactory.getLogger(AbstractHisServiceHandler.class);
     /**
