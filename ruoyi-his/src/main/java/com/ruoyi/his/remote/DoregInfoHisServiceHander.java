@@ -35,7 +35,9 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
 
     @Override
     DoregInfo getOrderDetail(String outTradeNo) {
-        return doregInfoService.getDetailByOutTradeNo(outTradeNo);
+        DoregInfo doregInfo = doregInfoService.getDetailByOutTradeNo(outTradeNo);
+        doregInfo.setAmount(doregInfo.getPayAmount());
+        return doregInfo;
     }
 
     @Override

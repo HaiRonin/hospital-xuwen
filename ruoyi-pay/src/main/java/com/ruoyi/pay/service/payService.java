@@ -1,25 +1,20 @@
 package com.ruoyi.pay.service;
 
-import com.ruoyi.common.enums.HisOrderType;
-import com.ruoyi.common.enums.HisPayType;
+import com.ruoyi.common.model.HisPayOrder;
 
 public interface PayService {
 
     /***
      * 支付
-     * @param orderType
-     * @param payType
-     * @param orderNo
+     * @param hisPayOrder
      * @return
      */
-    boolean pay(HisOrderType orderType, HisPayType payType, String orderNo);
+    boolean pay(HisPayOrder hisPayOrder);
 
     /***
      * 退款
-     * @param orderType
-     * @param payType
-     * @param orderNo
+     * @param hisPayOrder
      * @return
      */
-    boolean refund(HisOrderType orderType, HisPayType payType, String orderNo);
+    boolean refund(HisPayOrder hisPayOrder);
 }

@@ -13,6 +13,20 @@ public interface HisWebServices {
     BaseResponse invokeCallSubmit(String outTradeNo);
 
     /***
+     * 支付下单
+     * @param outTradeNo
+     * @return
+     */
+    BaseResponse callPay(String outTradeNo);
+
+    /***
+     * 支付下单
+     * @param outTradeNo
+     * @return
+     */
+    BaseResponse callRefund(String outTradeNo);
+
+    /***
      * 退款通知
      * @param outTradeNo 订单号
      * @param transactionId 退款成功流水号

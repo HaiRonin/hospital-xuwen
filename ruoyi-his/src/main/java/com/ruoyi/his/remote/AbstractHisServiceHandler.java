@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.exception.HisException;
+import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
@@ -13,6 +14,8 @@ import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.HisBaseEntity;
 import com.ruoyi.his.remote.request.BaseRequest;
 import com.ruoyi.his.remote.response.BaseResponse;
+import com.ruoyi.pay.service.AbstractPayService;
+import com.ruoyi.pay.service.PayService;
 import com.ruoyi.pay.service.WeChatPayServiceImp;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -27,8 +30,6 @@ import java.util.List;
  */
 public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends HisBaseEntity, R extends BaseResponse> extends HisBaseServices implements HisWebServices{
 
-    @Autowired
-    private WeChatPayServiceImp weChatPayService;
 
     protected static Logger logger = LoggerFactory.getLogger(AbstractHisServiceHandler.class);
     /**
@@ -242,4 +243,34 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
      */
     abstract protected List<D> getRefundOrderList();
 
+    @Override
+    public BaseResponse callPay(String outTradeNo) {
+        D d = getOrderDetail(outTradeNo);
+        HisPayOrder hisPayOrder = buildHisPayOrder(d);
+        boolean isOK = AbstractPayService.servicesInstance(hisPayOrder.getOrderType()).pay(hisPayOrder);
+        return isOK?BaseResponse.success():BaseResponse.fail("支付失败"+getBusinessType().getDesc()+"失败");
+    }
+
+    @Override
+    public BaseResponse callRefund(String outTradeNo) {
+        D d = getOrderDetail(outTradeNo);
+        HisPayOrder hisPayOrder = buildHisPayOrder(d);
+        boolean isOK = AbstractPayService.servicesInstance(hisPayOrder.getOrderType()).refund(hisPayOrder);
+        return isOK?BaseResponse.success():BaseResponse.fail(getBusinessType().getDesc()+"退款失败");
+    }
+
+    /***
+     * 构建支付对象
+     * @param d
+     * @return
+     */
+    private HisPayOrder buildHisPayOrder(D d){
+        HisPayOrder hisPayOrder = new HisPayOrder();
+        hisPayOrder.setOrderType(getBusinessType().getKey());
+        hisPayOrder.setPayType(d.getPayType());
+        hisPayOrder.setAmount(d.getAmount());
+        hisPayOrder.setOutTradeNo(d.getOutTradeNo());
+        hisPayOrder.setTransactionId(d.getTransactionId());
+        return hisPayOrder;
+    }
 }

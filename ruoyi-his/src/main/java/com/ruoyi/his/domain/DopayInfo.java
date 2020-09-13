@@ -1,11 +1,11 @@
 package com.ruoyi.his.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import com.ruoyi.common.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 门诊支付对象 his_dopay_info
@@ -68,9 +68,6 @@ public class DopayInfo extends HisBaseEntity
     @Excel(name = "医保卡类型")
     private Long medicareType;
 
-    /** 支付类型 */
-    @Excel(name = "支付类型")
-    private String payType;
 
     /** 支付卡号 */
     @Excel(name = "支付卡号")
@@ -221,15 +218,7 @@ public class DopayInfo extends HisBaseEntity
     {
         return medicareType;
     }
-    public void setPayType(String payType) 
-    {
-        this.payType = payType;
-    }
 
-    public String getPayType() 
-    {
-        return payType;
-    }
     public void setPayCardNo(String payCardNo) 
     {
         this.payCardNo = payCardNo;

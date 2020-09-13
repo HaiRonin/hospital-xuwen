@@ -29,10 +29,6 @@ public class DepositPayment extends HisBaseEntity
     @Excel(name = "住院号")
     private String inHosNo;
 
-    /** 支付类型 */
-    @Excel(name = "支付类型")
-    private String payType;
-
     /** 支付交易流水号 */
     @Excel(name = "支付交易流水号")
     private String payRecord;
@@ -117,15 +113,7 @@ public class DepositPayment extends HisBaseEntity
     {
         return inHosNo;
     }
-    public void setPayType(String payType) 
-    {
-        this.payType = payType;
-    }
 
-    public String getPayType() 
-    {
-        return payType;
-    }
     public void setPayRecord(String payRecord) 
     {
         this.payRecord = payRecord;

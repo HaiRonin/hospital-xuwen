@@ -33,7 +33,9 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
 
     @Override
     DopayInfo getOrderDetail(String outTradeNo) {
-        return dopayInfoService.getDetailByOutTradeNo(outTradeNo);
+        DopayInfo dopayInfo = dopayInfoService.getDetailByOutTradeNo(outTradeNo);
+        dopayInfo.setAmount(dopayInfo.getPayMoney());
+        return dopayInfo;
     }
 
     @Override

@@ -1,19 +1,19 @@
 package com.ruoyi.pay.service;
 
-import com.ruoyi.common.enums.HisOrderType;
-import com.ruoyi.common.enums.HisPayType;
+import com.ruoyi.common.model.HisPayOrder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WeChatPayServiceImp implements PayService {
+public class WeChatPayServiceImp extends AbstractPayService {
+
 
     @Override
-    public boolean pay(HisOrderType orderType, HisPayType payType, String orderNo) {
+    public boolean pay(HisPayOrder hisPayOrder) {
         return false;
     }
 
     @Override
-    public boolean refund(HisOrderType orderType, HisPayType payType, String orderNo) {
+    public boolean refund(HisPayOrder hisPayOrder) {
         return false;
     }
 }

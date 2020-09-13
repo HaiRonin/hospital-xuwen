@@ -36,7 +36,9 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
 
     @Override
     DepositPayment getOrderDetail(String outTradeNo) {
-        return depositPaymentService.getDetailByOutTradeNo(outTradeNo);
+        DepositPayment depositPayment = depositPaymentService.getDetailByOutTradeNo(outTradeNo);
+        depositPayment.setAmount(depositPayment.getPayMoney());
+        return depositPayment;
     }
 
     @Override

@@ -36,7 +36,9 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
 
     @Override
     LeaveHosPay getOrderDetail(String outTradeNo) {
-        return leaveHosPayService.getDetailByOutTradeNo(outTradeNo);
+        LeaveHosPay leaveHosPay = leaveHosPayService.getDetailByOutTradeNo(outTradeNo);
+        leaveHosPay.setAmount(leaveHosPay.getPayMoney());
+        return leaveHosPay;
     }
 
     @Override

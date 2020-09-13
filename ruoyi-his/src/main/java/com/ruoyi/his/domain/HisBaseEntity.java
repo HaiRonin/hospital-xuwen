@@ -3,6 +3,8 @@ package com.ruoyi.his.domain;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.math.BigDecimal;
+
 /**
  * Entity基类
  * 
@@ -22,6 +24,24 @@ public class HisBaseEntity extends BaseEntity
     /** 微信订单号 */
     @Excel(name = "微信订单号")
     private String transactionId;
+
+    /***
+     * 枚举类：HisPayType
+     */
+    /** 支付类型 */
+    @Excel(name = "支付类型")
+    private String payType;
+
+    /**
+     * 交易金额
+     */
+    private BigDecimal amount;
+
+    /***
+     * 订单类型
+     * 枚举类型：HisBusinessTypeEnum
+     */
+    private String orderType;
 
     public String getSuccessfulPayment() {
         return successfulPayment;
@@ -45,5 +65,29 @@ public class HisBaseEntity extends BaseEntity
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 }

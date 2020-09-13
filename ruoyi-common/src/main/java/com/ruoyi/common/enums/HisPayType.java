@@ -7,8 +7,8 @@ package com.ruoyi.common.enums;
  */
 public enum HisPayType
 {
-    Ali("2", "支付宝" ),
-    WeChat("5", "微信"),;
+    ALI("2", "支付宝"),
+    WECHAT("5", "微信"),;
     private String key;
     private String desc;
 

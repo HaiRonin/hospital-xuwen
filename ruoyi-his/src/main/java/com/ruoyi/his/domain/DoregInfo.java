@@ -60,10 +60,6 @@ public class DoregInfo extends HisBaseEntity
     @Excel(name = "时间段标识")
     private Integer sourceTimeType;
 
-    /** 支付方式 */
-    @Excel(name = "支付方式")
-    private String payType;
-
     /** 支付流水号 */
     @Excel(name = "支付流水号")
     private String payNo;
@@ -191,15 +187,7 @@ public class DoregInfo extends HisBaseEntity
     {
         return sourceTimeType;
     }
-    public void setPayType(String payType) 
-    {
-        this.payType = payType;
-    }
 
-    public String getPayType() 
-    {
-        return payType;
-    }
     public void setPayNo(String payNo) 
     {
         this.payNo = payNo;
