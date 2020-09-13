@@ -31,6 +31,7 @@ public enum HisPayType
     HisPayType(String key, String desc, Class clazz) {
         this.key=key;
         this.desc=desc;
+        this.clazz=clazz;
     }
 
     public static HisPayType getTypeByKey(String key){

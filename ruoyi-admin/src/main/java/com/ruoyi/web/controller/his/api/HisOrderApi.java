@@ -145,6 +145,23 @@ public class HisOrderApi extends BaseController
         return iResult>0?AjaxResult.success(leaveHosPay):AjaxResult.error("出院结算失败");
     }
 
+    /**
+     * 退款操作
+     */
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("订单支付")
+    @PostMapping("/order/orderPay")
+    @ResponseBody
+    public AjaxResult orderPay(@RequestBody OrderPayResultBO orderPayResultBO)
+    {
+        getRequest().setAttribute("api", "/order/orderPay");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
+        HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(orderPayResultBO.getOrderType());
+        BaseResponse baseResponse = AbstractHisServiceHandler
+                .servicesInstance(hisBusinessTypeEnum)
+                .callPay(orderPayResultBO.getOutTradeNo());
+        return baseResponse.isOk()?AjaxResult.success():AjaxResult.error();
+    }
 
     /**
      * 支付成功或失败回调
@@ -165,10 +182,28 @@ public class HisOrderApi extends BaseController
     }
 
     /**
+     * 退款操作
+     */
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("订单退款")
+    @PostMapping("/order/refund")
+    @ResponseBody
+    public AjaxResult orderRefund(@RequestBody OrderPayResultBO orderPayResultBO)
+    {
+        getRequest().setAttribute("api", "/order/refund");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
+        HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(orderPayResultBO.getOrderType());
+        BaseResponse baseResponse = AbstractHisServiceHandler
+                .servicesInstance(hisBusinessTypeEnum)
+                .callRefund(orderPayResultBO.getOutTradeNo());
+        return baseResponse.isOk()?AjaxResult.success():AjaxResult.error();
+    }
+
+    /**
      * 退款成功或失败回调
      */
     @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
-    @ApiOperation("支付成功")
+    @ApiOperation("退款成功或失败")
     @PostMapping("/order/refundCallBack")
     @ResponseBody
     public AjaxResult orderRefundCallBack(@RequestBody OrderPayResultBO orderPayResultBO)

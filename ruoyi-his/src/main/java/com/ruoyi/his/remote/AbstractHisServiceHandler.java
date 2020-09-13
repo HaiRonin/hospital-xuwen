@@ -253,7 +253,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     public BaseResponse callPay(String outTradeNo) {
         D d = getOrderDetail(outTradeNo);
         HisPayOrder hisPayOrder = buildHisPayOrder(d);
-        boolean isOK = AbstractPayService.servicesInstance(hisPayOrder.getOrderType()).pay(hisPayOrder);
+        boolean isOK = AbstractPayService.servicesInstance(hisPayOrder.getPayType()).pay(hisPayOrder);
         return isOK?BaseResponse.success():BaseResponse.fail("支付失败"+getBusinessType().getDesc()+"失败");
     }
 
@@ -266,7 +266,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     public BaseResponse callRefund(String outTradeNo) {
         D d = getOrderDetail(outTradeNo);
         HisPayOrder hisPayOrder = buildHisPayOrder(d);
-        boolean isOK = AbstractPayService.servicesInstance(hisPayOrder.getOrderType()).refund(hisPayOrder);
+        boolean isOK = AbstractPayService.servicesInstance(hisPayOrder.getPayType()).refund(hisPayOrder);
         return isOK?BaseResponse.success():BaseResponse.fail(getBusinessType().getDesc()+"退款失败");
     }
 
