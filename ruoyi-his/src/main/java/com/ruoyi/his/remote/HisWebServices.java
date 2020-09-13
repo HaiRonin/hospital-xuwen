@@ -13,14 +13,14 @@ public interface HisWebServices {
     BaseResponse invokeCallSubmit(String outTradeNo);
 
     /***
-     * 支付下单
+     * 调用支付接口
      * @param outTradeNo
      * @return
      */
     BaseResponse callPay(String outTradeNo);
 
     /***
-     * 支付下单
+     * 调用退款接口
      * @param outTradeNo
      * @return
      */

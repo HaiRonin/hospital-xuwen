@@ -243,6 +243,12 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
      */
     abstract protected List<D> getRefundOrderList();
 
+
+    /***
+     * 调用支付接口
+     * @param outTradeNo
+     * @return
+     */
     @Override
     public BaseResponse callPay(String outTradeNo) {
         D d = getOrderDetail(outTradeNo);
@@ -251,6 +257,11 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         return isOK?BaseResponse.success():BaseResponse.fail("支付失败"+getBusinessType().getDesc()+"失败");
     }
 
+    /***
+     * 调用退款接口
+     * @param outTradeNo
+     * @return
+     */
     @Override
     public BaseResponse callRefund(String outTradeNo) {
         D d = getOrderDetail(outTradeNo);
