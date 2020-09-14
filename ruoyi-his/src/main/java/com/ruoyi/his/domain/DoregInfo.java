@@ -2,6 +2,8 @@ package com.ruoyi.his.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -18,10 +20,12 @@ public class DoregInfo extends HisBaseEntity
     private static final long serialVersionUID = 1L;
 
     /** null */
+    @ApiModelProperty(value = "id",hidden = true)
     private Long id;
 
     /** 商户ID */
     @Excel(name = "商户ID")
+    @ApiModelProperty(value = "appId",hidden = true)
     private String appId;
 
     /** 用户名 */
@@ -72,9 +76,6 @@ public class DoregInfo extends HisBaseEntity
     @Excel(name = "科室id")
     private String departmentorganId;
 
-    /** 返回信息 */
-    @Excel(name = "返回信息")
-    private String resultMsg;
 
     /** 号源编号 */
     @Excel(name = "号源编号")
@@ -216,15 +217,7 @@ public class DoregInfo extends HisBaseEntity
     {
         return departmentorganId;
     }
-    public void setResultMsg(String resultMsg) 
-    {
-        this.resultMsg = resultMsg;
-    }
 
-    public String getResultMsg() 
-    {
-        return resultMsg;
-    }
     public void setSourceMark(String sourceMark) 
     {
         this.sourceMark = sourceMark;
