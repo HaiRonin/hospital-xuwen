@@ -1,7 +1,9 @@
 package com.ruoyi.his.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -13,30 +15,22 @@ import java.util.Map;
  */
 public class HisBaseEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
-    /**
-     * 支付状态
-     */
+    /** 支付状态 */
     @Excel(name = "支付状态")
     private String successfulPayment;
 
-    /**
-     * 支付交易流水号
-     */
+    /** 支付交易流水号 */
     @Excel(name = "支付交易流水号")
     private String outTradeNo;
 
-    /**
-     * 微信订单号
-     */
+    /** 微信订单号 */
     @Excel(name = "微信订单号")
     private String transactionId;
 
     /***
      * 枚举类：HisPayType
      */
-    /**
-     * 支付类型
-     */
+    /** 支付类型 */
     @Excel(name = "支付类型")
     private String payType;
 
@@ -105,19 +99,19 @@ public class HisBaseEntity extends BaseEntity {
         this.orderType = orderType;
     }
 
-    public Map<String, String> getPrePaySign() {
-        return prePaySign;
-    }
-
-    public void setPrePaySign(Map<String, String> prePaySign) {
-        this.prePaySign = prePaySign;
-    }
-
     public String getOpenId() {
         return openId;
     }
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public Map<String, String> getPrePaySign() {
+        return prePaySign;
+    }
+
+    public void setPrePaySign(Map<String, String> prePaySign) {
+        this.prePaySign = prePaySign;
     }
 }

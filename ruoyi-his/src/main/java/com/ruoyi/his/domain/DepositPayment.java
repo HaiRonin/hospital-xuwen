@@ -1,6 +1,7 @@
 package com.ruoyi.his.domain;
 
 import com.ruoyi.common.annotation.Excel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
 
@@ -15,6 +16,7 @@ public class DepositPayment extends HisBaseEntity
     private static final long serialVersionUID = 1L;
 
     /** null */
+    @ApiModelProperty(value = "id",hidden = true)
     private Long id;
 
     /** 用户名 */
@@ -47,6 +49,7 @@ public class DepositPayment extends HisBaseEntity
 
     /** 商户id */
     @Excel(name = "商户id")
+    @ApiModelProperty(value = "appId",hidden = true)
     private String appId;
 
     /** 床号 */
@@ -69,13 +72,6 @@ public class DepositPayment extends HisBaseEntity
     @Excel(name = "医保类型名称")
     private String medicalTypeName;
 
-    /** his接口返回信息 */
-    @Excel(name = "his接口返回信息")
-    private String resultMsg;
-
-    /** his接口返回信息 */
-    @Excel(name = "his接口返回信息")
-    private String resultCode;
 
     public void setId(Long id) 
     {
@@ -195,24 +191,6 @@ public class DepositPayment extends HisBaseEntity
     public String getMedicalTypeName() 
     {
         return medicalTypeName;
-    }
-    public void setResultMsg(String resultMsg) 
-    {
-        this.resultMsg = resultMsg;
-    }
-
-    public String getResultMsg() 
-    {
-        return resultMsg;
-    }
-    public void setResultCode(String resultCode) 
-    {
-        this.resultCode = resultCode;
-    }
-
-    public String getResultCode() 
-    {
-        return resultCode;
     }
 
 }

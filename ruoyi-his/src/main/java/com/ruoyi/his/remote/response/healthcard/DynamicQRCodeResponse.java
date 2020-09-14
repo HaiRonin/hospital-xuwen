@@ -8,46 +8,46 @@ import java.io.Serializable;
 public class DynamicQRCodeResponse implements Serializable {
 
     /**
-     * healthCardId : C220AE414CE6EE581037C311AE24518FCFE19C429BECD478C1A13976260FXXXX
-     * idType : 01
-     * idNumber : 432901198810228888
-     * codeType : 0
+     * ext :
+     * qrCodeImg : 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
+     * color : 0
+     * qrCodeText : B5A28173356BB199962ABE0493ED0416CC17A9DF801CBE416B08CAB5A97D4AB6:0:521666C5CB4A25B1EC1CD66CACD28191:4400A0062FWHB0187
      */
 
-    private String healthCardId;
-    private String idType;
-    private String idNumber;
-    private String codeType;
+    private String ext;
+    private String qrCodeImg;
+    private int color;
+    private String qrCodeText;
 
-    public String getHealthCardId() {
-        return healthCardId;
+    public String getExt() {
+        return ext;
     }
 
-    public void setHealthCardId(String healthCardId) {
-        this.healthCardId = healthCardId;
+    public void setExt(String ext) {
+        this.ext = ext;
     }
 
-    public String getIdType() {
-        return idType;
+    public String getQrCodeImg() {
+        return qrCodeImg;
     }
 
-    public void setIdType(String idType) {
-        this.idType = idType;
+    public void setQrCodeImg(String qrCodeImg) {
+        this.qrCodeImg = qrCodeImg;
     }
 
-    public String getIdNumber() {
-        return idNumber;
+    public int getColor() {
+        return color;
     }
 
-    public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
+    public void setColor(int color) {
+        this.color = color;
     }
 
-    public String getCodeType() {
-        return codeType;
+    public String getQrCodeText() {
+        return qrCodeText;
     }
 
-    public void setCodeType(String codeType) {
-        this.codeType = codeType;
+    public void setQrCodeText(String qrCodeText) {
+        this.qrCodeText = qrCodeText;
     }
 }

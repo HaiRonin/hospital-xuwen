@@ -73,7 +73,7 @@ public class HisOrderApi extends BaseController
         doregInfo.setCreateBy(doregInfo.getSynUserName());
         doregInfo.setCreateTime(new Date());
         doregInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"+doregInfo.getPatientNo()+"_"));
+        doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"));
         int iResult = doregInfoService.insertDoregInfo(doregInfo);
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
@@ -106,7 +106,7 @@ public class HisOrderApi extends BaseController
         dopayInfo.setCreateBy(dopayInfo.getSynUserName());
         dopayInfo.setCreateTime(new Date());
         dopayInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"+dopayInfo.getHiFeeNos()+"_"));
+        dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"));
         int iResult = dopayInfoService.insertDopayInfo(dopayInfo);
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
@@ -139,7 +139,7 @@ public class HisOrderApi extends BaseController
         depositPayment.setCreateBy(depositPayment.getSynUserName());
         depositPayment.setCreateTime(new Date());
         depositPayment.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        depositPayment.setOutTradeNo(IdUtils.getOrderNo("DP"+depositPayment.getBedNo()+"_"));
+        depositPayment.setOutTradeNo(IdUtils.getOrderNo("DP"));
         int iResult = depositPaymentService.insertDepositPayment(depositPayment);
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
@@ -173,7 +173,7 @@ public class HisOrderApi extends BaseController
         leaveHosPay.setCreateBy(leaveHosPay.getSynUserName());
         leaveHosPay.setCreateTime(new Date());
         leaveHosPay.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        leaveHosPay.setOutTradeNo(IdUtils.getOrderNo("LH"+leaveHosPay.getInHosNo()+"_"));
+        leaveHosPay.setOutTradeNo(IdUtils.getOrderNo("LH"));
         int iResult = leaveHosPayService.insertLeaveHosPay(leaveHosPay);
 
         if(iResult>0) {

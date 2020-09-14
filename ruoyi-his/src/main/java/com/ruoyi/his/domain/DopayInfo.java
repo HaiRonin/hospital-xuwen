@@ -1,6 +1,7 @@
 package com.ruoyi.his.domain;
 
 import com.ruoyi.common.annotation.Excel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -18,10 +19,12 @@ public class DopayInfo extends HisBaseEntity
     private static final long serialVersionUID = 1L;
 
     /** null */
+    @ApiModelProperty(value = "id",hidden = true)
     private Long id;
 
     /** 商户id */
     @Excel(name = "商户id")
+    @ApiModelProperty(value = "appId",hidden = true)
     private String appId;
 
     /** 用户名 */
@@ -50,10 +53,12 @@ public class DopayInfo extends HisBaseEntity
 
     /** 医保返回信息 */
     @Excel(name = "医保返回信息")
+    @ApiModelProperty(value = "医保返回信息",hidden = true)
     private String medicareReturn;
 
     /** 银行返回信息 */
     @Excel(name = "银行返回信息")
+    @ApiModelProperty(value = "银行返回信息",hidden = true)
     private String bankReturn;
 
     /** 终端号 */
@@ -83,23 +88,18 @@ public class DopayInfo extends HisBaseEntity
 
     /** 创建时间 */
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @ApiModelProperty(value = "创建时间",hidden = true)
     private Date creatTime;
 
     /** 返回信息 */
     @Excel(name = "返回信息")
+    @ApiModelProperty(value = "返回信息",hidden = true)
     private String resultMessage;
 
     /** 检验条码信息 */
     @Excel(name = "检验条码信息")
     private String checkInfo;
 
-    /** 返回信息 */
-    @Excel(name = "返回信息")
-    private String resultMsg;
-
-    /** his接口返回信息 */
-    @Excel(name = "his接口返回信息")
-    private String resultCode;
 
     public void setId(Long id) 
     {
@@ -273,24 +273,6 @@ public class DopayInfo extends HisBaseEntity
     public String getCheckInfo() 
     {
         return checkInfo;
-    }
-    public void setResultMsg(String resultMsg) 
-    {
-        this.resultMsg = resultMsg;
-    }
-
-    public String getResultMsg() 
-    {
-        return resultMsg;
-    }
-    public void setResultCode(String resultCode) 
-    {
-        this.resultCode = resultCode;
-    }
-
-    public String getResultCode() 
-    {
-        return resultCode;
     }
 
     @Override
