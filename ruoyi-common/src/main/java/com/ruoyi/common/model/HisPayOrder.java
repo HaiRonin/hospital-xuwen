@@ -33,6 +33,11 @@ public class HisPayOrder implements Serializable {
      */
     private BigDecimal amount;
 
+    /**
+     * 微信公众号用户OPENID
+     */
+    private String openId;
+
     public String getPayType() {
         return payType;
     }
@@ -71,5 +76,14 @@ public class HisPayOrder implements Serializable {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }
