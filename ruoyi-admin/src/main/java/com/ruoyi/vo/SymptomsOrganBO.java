@@ -26,6 +26,11 @@ public class SymptomsOrganBO implements Serializable {
      */
     private String age;
 
+    /***
+     * 病症
+     */
+    private String symptoms;
+
     public String getAge() {
         return age;
     }
@@ -48,5 +53,13 @@ public class SymptomsOrganBO implements Serializable {
 
     public void setBodyPart(String bodyPart) {
         this.bodyPart = bodyPart;
+    }
+
+    public String getSymptoms() {
+        return symptoms;
+    }
+
+    public void setSymptoms(String symptoms) {
+        this.symptoms = symptoms;
     }
 }

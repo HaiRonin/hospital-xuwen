@@ -23,6 +23,10 @@
                                 <input type="text" name="password"/>
                             </li>
                             <li>
+                                <label>微信openId：</label>
+                                <input type="text" name="openId"/>
+                            </li>
+                            <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
@@ -84,6 +88,10 @@
                 {
                     field: 'password',
                     title: '密码'
+                },
+                {
+                    field: 'openId',
+                    title: '微信openId'
                 },
                 {
                     title: '操作',

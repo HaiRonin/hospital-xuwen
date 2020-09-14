@@ -60,7 +60,19 @@ public interface IHisUserService
     public int deleteHisUserById(Integer id);
 
 
-
-    //注册验证
+    /**
+     * 注册验证
+     * @param hisUser
+     * @param verificationCode
+     * @return
+     */
     boolean userRegister(HisUser hisUser, String verificationCode);
+
+    /**
+     * 修改密码
+     * @param hisUser
+     * @param verificationCode
+     * @return
+     */
+    boolean modifyPassword(HisUser hisUser, String verificationCode);
 }

@@ -1,6 +1,9 @@
 package com.ruoyi.his.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.his.domain.DoregInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.his.mapper.LeaveHosPayMapper;
@@ -27,7 +30,7 @@ public class LeaveHosPayServiceImpl implements ILeaveHosPayService
      * @return 出院结算
      */
     @Override
-    public LeaveHosPay selectLeaveHosPayById(Integer id)
+    public LeaveHosPay selectLeaveHosPayById(Long id)
     {
         return leaveHosPayMapper.selectLeaveHosPayById(id);
     }
@@ -90,5 +93,22 @@ public class LeaveHosPayServiceImpl implements ILeaveHosPayService
     public int deleteLeaveHosPayById(Integer id)
     {
         return leaveHosPayMapper.deleteLeaveHosPayById(id);
+    }
+
+    /**
+     * 查询出院结算
+     *
+     * @param outTradeNo 订单号
+     * @return 出院结算
+     */
+    @Override
+    public LeaveHosPay getDetailByOutTradeNo(String outTradeNo) {
+        LeaveHosPay query = new LeaveHosPay();
+        query.setOutTradeNo(outTradeNo);
+        List<LeaveHosPay> list = selectLeaveHosPayList(query);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
+        return list.stream().findFirst().get();
     }
 }

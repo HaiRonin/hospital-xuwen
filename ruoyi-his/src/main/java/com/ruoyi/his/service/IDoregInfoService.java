@@ -58,4 +58,12 @@ public interface IDoregInfoService
      * @return 结果
      */
     public int deleteDoregInfoById(Long id);
+
+    /**
+     * 查询预约挂号
+     *
+     * @param outTradeNo 预约挂号ID
+     * @return 预约挂号
+     */
+    public DoregInfo getDetailByOutTradeNo(String outTradeNo);
 }

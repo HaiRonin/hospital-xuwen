@@ -11,9 +11,26 @@ public class HisException extends RuntimeException
 
     protected final String message;
 
+    protected int code;
+
+
     public HisException(String message)
     {
+        this.code = -1;
         this.message = message;
+    }
+    public HisException(int code,String message)
+    {
+        this.code = code;
+        this.message = message;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public HisException(String message, Throwable e)

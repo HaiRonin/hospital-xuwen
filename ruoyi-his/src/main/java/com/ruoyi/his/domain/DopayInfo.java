@@ -1,11 +1,11 @@
 package com.ruoyi.his.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import com.ruoyi.common.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 门诊支付对象 his_dopay_info
@@ -13,7 +13,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author whl
  * @date 2020-08-29
  */
-public class DopayInfo extends BaseEntity
+public class DopayInfo extends HisBaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -68,9 +68,6 @@ public class DopayInfo extends BaseEntity
     @Excel(name = "医保卡类型")
     private Long medicareType;
 
-    /** 支付类型 */
-    @Excel(name = "支付类型")
-    private String payType;
 
     /** 支付卡号 */
     @Excel(name = "支付卡号")
@@ -87,18 +84,6 @@ public class DopayInfo extends BaseEntity
     /** 创建时间 */
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date creatTime;
-
-    /** 支付状态 */
-    @Excel(name = "支付状态")
-    private String successfulPayment;
-
-    /** 商户订单号 */
-    @Excel(name = "商户订单号")
-    private String outTradeNo;
-
-    /** 微信订单号 */
-    @Excel(name = "微信订单号")
-    private String transactionId;
 
     /** 返回信息 */
     @Excel(name = "返回信息")
@@ -233,15 +218,7 @@ public class DopayInfo extends BaseEntity
     {
         return medicareType;
     }
-    public void setPayType(String payType) 
-    {
-        this.payType = payType;
-    }
 
-    public String getPayType() 
-    {
-        return payType;
-    }
     public void setPayCardNo(String payCardNo) 
     {
         this.payCardNo = payCardNo;
@@ -278,33 +255,7 @@ public class DopayInfo extends BaseEntity
     {
         return creatTime;
     }
-    public void setSuccessfulPayment(String successfulPayment) 
-    {
-        this.successfulPayment = successfulPayment;
-    }
 
-    public String getSuccessfulPayment() 
-    {
-        return successfulPayment;
-    }
-    public void setOutTradeNo(String outTradeNo) 
-    {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public String getOutTradeNo() 
-    {
-        return outTradeNo;
-    }
-    public void setTransactionId(String transactionId) 
-    {
-        this.transactionId = transactionId;
-    }
-
-    public String getTransactionId() 
-    {
-        return transactionId;
-    }
     public void setResultMessage(String resultMessage) 
     {
         this.resultMessage = resultMessage;

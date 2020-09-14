@@ -218,6 +218,7 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>ruoyi-his</module>
+        <module>ruoyi-pay</module>
     </modules>
     <packaging>pom</packaging>
 

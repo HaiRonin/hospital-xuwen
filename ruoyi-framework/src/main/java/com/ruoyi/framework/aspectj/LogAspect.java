@@ -1,7 +1,12 @@
 package com.ruoyi.framework.aspectj;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -22,6 +27,8 @@ import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.domain.SysUser;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 操作日志记录处理
@@ -151,10 +158,18 @@ public class LogAspect
      * @param operLog 操作日志
      * @throws Exception 异常
      */
-    private void setRequestValue(SysOperLog operLog) throws Exception
-    {
+    private void setRequestValue(SysOperLog operLog) throws Exception{
+        String params = "";
+        if(StringUtils.isNotNull(ServletUtils.getRequest().getAttribute("api"))){
+            String api  = ServletUtils.getRequest().getAttribute("api").toString();
+            String dataParam  = ServletUtils.getRequest().getAttribute("dataParam").toString();
+            operLog.setOperName(api);
+            operLog.setOperUrl("/his/request/"+api);
+            operLog.setOperParam(StringUtils.substring(dataParam, 0, 2000));
+            return;
+        }
         Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
-        String params = JSON.marshal(map);
+        params = JSON.marshal(map);
         operLog.setOperParam(StringUtils.substring(params, 0, 2000));
     }
 
@@ -173,4 +188,5 @@ public class LogAspect
         }
         return null;
     }
+
 }

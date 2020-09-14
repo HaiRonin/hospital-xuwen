@@ -5,15 +5,15 @@ import java.io.Serializable;
 
 public class DoRequestInfo implements Serializable {
 
-    private String organdoctorId;
+    private String organdoctorId ="";
 
-    private String departmentorganId;
+    private String departmentorganId ="";
 
-    private String cardNo;
+    private String cardNo ="";
 
-    private String patientNo;
+    private String patientNo ="";
 
-    private String socialsecurityNO;
+    private String socialsecurityNO ="";
 
     private String sourceDate;
 
@@ -23,9 +23,9 @@ public class DoRequestInfo implements Serializable {
 
     private Integer payType;
 
-    private String payCardNo;
+    private String payCardNo ="";
 
-    private String payNo;
+    private String payNo ="";
 
     private String payAmount;
 

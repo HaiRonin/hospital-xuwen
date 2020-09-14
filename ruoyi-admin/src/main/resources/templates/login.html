@@ -25,25 +25,25 @@
         <div class="row">
             <div class="col-sm-7">
                 <div class="signin-info">
-                    <div class="logopanel m-b">
-                        <h1><img alt="[ 您好 ]" src="../static/ruoyi.png" th:src="@{/ruoyi.png}"></h1>
-                    </div>
+<!--                    <div class="logopanel m-b">-->
+<!--                        <h1><img alt="[ 您好 ]" src="../static/ruoyi.png" th:src="@{/ruoyi.png}"></h1>-->
+<!--                    </div>-->
                     <div class="m-b"></div>
-                    <h4>欢迎使用 <strong>后台管理系统</strong></h4>
-                    <ul class="m-b">
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> SpringBoot</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> Mybatis</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> Shiro</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> Thymeleaf</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> Bootstrap</li>
-                    </ul>
+<!--                    <h4>欢迎使用 <strong>医院后台管理系统</strong></h4>-->
+<!--                    <ul class="m-b">-->
+<!--                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> SpringBoot</li>-->
+<!--                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> Mybatis</li>-->
+<!--                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> Shiro</li>-->
+<!--                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> Thymeleaf</li>-->
+<!--                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> Bootstrap</li>-->
+<!--                    </ul>-->
                     <strong th:if="${@config.getKey('sys.account.registerUser')}">还没有账号？ <a th:href="@{/register}">立即注册&raquo;</a></strong>
                 </div>
             </div>
             <div class="col-sm-5">
                 <form id="signupForm" autocomplete="off">
-                    <h4 class="no-margins">登录：</h4>
-                    <p class="m-t-md">你若不离不弃，我必生死相依</p>
+<!--                    <h4 class="no-margins">登录：</h4>-->
+<!--                    <p class="m-t-md">你若不离不弃，我必生死相依</p>-->
                     <input type="text"     name="username" class="form-control uname"     placeholder="用户名" value="admin"    />
                     <input type="password" name="password" class="form-control pword"     placeholder="密码"   value="admin123" />
 					<div class="row m-t" th:if="${captchaEnabled==true}">
@@ -65,7 +65,7 @@
         </div>
         <div class="signup-footer">
             <div class="pull-left">
-                &copy; 2019 All Rights Reserved. RuoYi <br>
+                &copy; 2019 All Rights Reserved. jingbao <br>
             </div>
         </div>
     </div>

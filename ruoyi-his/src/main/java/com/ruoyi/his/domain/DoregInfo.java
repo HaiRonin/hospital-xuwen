@@ -13,7 +13,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author whl
  * @date 2020-08-29
  */
-public class DoregInfo extends BaseEntity
+public class DoregInfo extends HisBaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -60,10 +60,6 @@ public class DoregInfo extends BaseEntity
     @Excel(name = "时间段标识")
     private Integer sourceTimeType;
 
-    /** 支付方式 */
-    @Excel(name = "支付方式")
-    private String payType;
-
     /** 支付流水号 */
     @Excel(name = "支付流水号")
     private String payNo;
@@ -71,18 +67,6 @@ public class DoregInfo extends BaseEntity
     /** 已支金额 */
     @Excel(name = "已支金额")
     private BigDecimal payAmount;
-
-    /** 支付状态 */
-    @Excel(name = "支付状态")
-    private String successfulPayment;
-
-    /** 商户订单号 */
-    @Excel(name = "商户订单号")
-    private String outTradeNo;
-
-    /** 微信订单号 */
-    @Excel(name = "微信订单号")
-    private String transactionId;
 
     /** 科室id */
     @Excel(name = "科室id")
@@ -203,15 +187,7 @@ public class DoregInfo extends BaseEntity
     {
         return sourceTimeType;
     }
-    public void setPayType(String payType) 
-    {
-        this.payType = payType;
-    }
 
-    public String getPayType() 
-    {
-        return payType;
-    }
     public void setPayNo(String payNo) 
     {
         this.payNo = payNo;
@@ -230,33 +206,7 @@ public class DoregInfo extends BaseEntity
     {
         return payAmount;
     }
-    public void setSuccessfulPayment(String successfulPayment) 
-    {
-        this.successfulPayment = successfulPayment;
-    }
 
-    public String getSuccessfulPayment() 
-    {
-        return successfulPayment;
-    }
-    public void setOutTradeNo(String outTradeNo) 
-    {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public String getOutTradeNo() 
-    {
-        return outTradeNo;
-    }
-    public void setTransactionId(String transactionId) 
-    {
-        this.transactionId = transactionId;
-    }
-
-    public String getTransactionId() 
-    {
-        return transactionId;
-    }
     public void setDepartmentorganId(String departmentorganId) 
     {
         this.departmentorganId = departmentorganId;

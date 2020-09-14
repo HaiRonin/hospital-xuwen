@@ -1,10 +1,8 @@
 package com.ruoyi.his.domain;
 
-import java.math.BigDecimal;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.math.BigDecimal;
 
 /**
  * 押金补缴对象 his_deposit_payment
@@ -12,7 +10,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author whl
  * @date 2020-08-29
  */
-public class DepositPayment extends BaseEntity
+public class DepositPayment extends HisBaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -31,10 +29,6 @@ public class DepositPayment extends BaseEntity
     @Excel(name = "住院号")
     private String inHosNo;
 
-    /** 支付类型 */
-    @Excel(name = "支付类型")
-    private String payType;
-
     /** 支付交易流水号 */
     @Excel(name = "支付交易流水号")
     private String payRecord;
@@ -47,21 +41,9 @@ public class DepositPayment extends BaseEntity
     @Excel(name = "支付交易返回")
     private String payReturn;
 
-    /** 支付状态 */
-    @Excel(name = "支付状态")
-    private String successfulPayment;
-
     /** 终端号 */
     @Excel(name = "终端号")
     private String terminalCode;
-
-    /** 商户订单号 */
-    @Excel(name = "商户订单号")
-    private String outTradeNo;
-
-    /** 微信订单号 */
-    @Excel(name = "微信订单号")
-    private String transactionId;
 
     /** 商户id */
     @Excel(name = "商户id")
@@ -131,15 +113,7 @@ public class DepositPayment extends BaseEntity
     {
         return inHosNo;
     }
-    public void setPayType(String payType) 
-    {
-        this.payType = payType;
-    }
 
-    public String getPayType() 
-    {
-        return payType;
-    }
     public void setPayRecord(String payRecord) 
     {
         this.payRecord = payRecord;
@@ -167,42 +141,7 @@ public class DepositPayment extends BaseEntity
     {
         return payReturn;
     }
-    public void setSuccessfulPayment(String successfulPayment) 
-    {
-        this.successfulPayment = successfulPayment;
-    }
 
-    public String getSuccessfulPayment() 
-    {
-        return successfulPayment;
-    }
-    public void setTerminalCode(String terminalCode) 
-    {
-        this.terminalCode = terminalCode;
-    }
-
-    public String getTerminalCode() 
-    {
-        return terminalCode;
-    }
-    public void setOutTradeNo(String outTradeNo) 
-    {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public String getOutTradeNo() 
-    {
-        return outTradeNo;
-    }
-    public void setTransactionId(String transactionId) 
-    {
-        this.transactionId = transactionId;
-    }
-
-    public String getTransactionId() 
-    {
-        return transactionId;
-    }
     public void setAppId(String appId) 
     {
         this.appId = appId;
@@ -276,31 +215,4 @@ public class DepositPayment extends BaseEntity
         return resultCode;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("synUserName", getSynUserName())
-            .append("synKey", getSynKey())
-            .append("inHosNo", getInHosNo())
-            .append("payType", getPayType())
-            .append("payRecord", getPayRecord())
-            .append("payMoney", getPayMoney())
-            .append("payReturn", getPayReturn())
-            .append("successfulPayment", getSuccessfulPayment())
-            .append("terminalCode", getTerminalCode())
-            .append("outTradeNo", getOutTradeNo())
-            .append("transactionId", getTransactionId())
-            .append("appId", getAppId())
-            .append("createTime", getCreateTime())
-            .append("updateTime", getUpdateTime())
-            .append("bedNo", getBedNo())
-            .append("patientName", getPatientName())
-            .append("departmentName", getDepartmentName())
-            .append("depositMoney", getDepositMoney())
-            .append("medicalTypeName", getMedicalTypeName())
-            .append("resultMsg", getResultMsg())
-            .append("resultCode", getResultCode())
-            .toString();
-    }
 }

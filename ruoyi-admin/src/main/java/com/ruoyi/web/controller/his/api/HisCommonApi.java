@@ -1,27 +1,23 @@
 package com.ruoyi.web.controller.his.api;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.BarcodeUtil;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.BodySymptomsEnum;
-import com.ruoyi.his.constant.HisBusinessTypeEnum;
-import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.domain.HisUser;
 import com.ruoyi.his.domain.SymptomsOrgan;
-import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.HisBaseServices;
-import com.ruoyi.his.remote.response.DoRegOut;
-import com.ruoyi.his.service.IDoregInfoService;
 import com.ruoyi.his.service.IHisUserService;
 import com.ruoyi.his.service.ISmsService;
 import com.ruoyi.his.service.ISymptomsOrganService;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.vo.*;
-import com.ruoyi.web.core.config.WechatConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +26,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,9 +35,9 @@ import java.util.List;
  * @date 2020-08-08
  */
 @RestController
-@Api("his接口")
+@Api(value="His公共接口",tags={"His公共接口"})
 @RequestMapping("/his")
-public class HisCommonApi
+public class HisCommonApi extends BaseController
 {
 
     @Autowired
@@ -54,18 +49,17 @@ public class HisCommonApi
     @Autowired
     private ISymptomsOrganService symptomsOrganService;
     @Autowired
-    private IDoregInfoService doregInfoService;
-    @Autowired
     private IHisUserService hisUserService;
     /**
      * his接口调用
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+    @Log(title = "his远程接口", businessType = BusinessType.HIS)
     @ApiOperation("his接口调用")
     @PostMapping("/request")
     @ResponseBody
-    public String invokeCall(@RequestBody HisRequestBO hisRequestBO)
-    {
+    public String invokeCall(@RequestBody HisRequestBO hisRequestBO){
+        ServletUtils.getRequest().setAttribute("api", hisRequestBO.getApi());
+        ServletUtils.getRequest().setAttribute("dataParam", hisRequestBO.getDataParam());
         return hisBaseServices.requestHisService("/"+hisRequestBO.getApi().trim(),hisRequestBO.getDataParam());
     }
 
@@ -75,26 +69,53 @@ public class HisCommonApi
      *
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @GetMapping("/user/sendMsg")
     @ResponseBody
     @ApiOperation("获取验证码短信")
-    public AjaxResult sendMsg(@Validated String phone) {
+    public AjaxResult sendMsg(@RequestParam("phone") @Validated String phone) {
+        ServletUtils.getRequest().setAttribute("api", "/user/sendMsg");
+        ServletUtils.getRequest().setAttribute("dataParam", phone);
         return smsService.sendVerificationCode(phone);
     }
 
     /**
-     * 验证码是否正确
+     * 用户注册
      *
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("用户注册")
     @PostMapping("/user/register")
     @ResponseBody
     public AjaxResult userRegister(@Validated @RequestBody UserRegBO userRegBO){
+        ServletUtils.getRequest().setAttribute("api", "register");
+        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(userRegBO));
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
-        return AjaxResult.error(hisUserService.userRegister(hisUser,userRegBO.getVerificationCode())?"注册成功":"注册失败");
+        boolean isOK = hisUserService.userRegister(hisUser,userRegBO.getVerificationCode());
+        return isOK?AjaxResult.success("注册成功"):AjaxResult.error("注册失败");
+    }
+
+
+    /**
+     * 修改密码
+     *
+     * @return
+     */
+    @Log(title = "his远程接口", businessType = BusinessType.HIS)
+    @ApiOperation("修改密码")
+    @PostMapping("/user/modifyPassword")
+    @ResponseBody
+    public AjaxResult modifyPassword(@Validated @RequestBody UserRegBO userRegBO){
+        ServletUtils.getRequest().setAttribute("api", "modifyPassword");
+        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(userRegBO));
+        HisUser hisUser = new HisUser();
+        hisUser.setPhone(userRegBO.getPhone());
+        hisUser.setPassword(userRegBO.getPassword());
+        boolean isOK = hisUserService.modifyPassword(hisUser,userRegBO.getVerificationCode());
+        return isOK?AjaxResult.success("修改成功"):AjaxResult.error("修改失败");
     }
 
     /**
@@ -102,10 +123,13 @@ public class HisCommonApi
      *
      * @return
      */
+    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("发送短信")
     @PostMapping("/user/shortMessage")
     @ResponseBody
     public AjaxResult shortMessage(@Validated @RequestBody SmsMsgBO smsMsgBO) {
+        ServletUtils.getRequest().setAttribute("api", "/user/shortMessage");
+        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(smsMsgBO));
         if(StringUtils.isEmpty(smsMsgBO.getMessage())){
             return AjaxResult.error("短信内容不能为空");
         }
@@ -117,6 +141,7 @@ public class HisCommonApi
      * 生成条形码
      * @return
      */
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("生成条形码")
     @GetMapping("/user/barCode")
     @ResponseBody
@@ -130,10 +155,13 @@ public class HisCommonApi
      * 获取所有的身体部位
      * @return
      */
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("获取所有的身体部位")
     @PostMapping(value = "/getBodyListPart")
     @ResponseBody
     public AjaxResult getBodyListPart() {
+        ServletUtils.getRequest().setAttribute("api", "getBodyListPart");
+        ServletUtils.getRequest().setAttribute("dataParam", "");
         SysDictData dictData = new SysDictData();
         dictData.setDictType("his_body_part");
         List<SysDictData> lstSysDictData = dictDataService.selectDictDataList(dictData);
@@ -154,11 +182,14 @@ public class HisCommonApi
      * 根据身体部位获取对应的病症
      * @return
      */
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("根据身体部位获取对应的病症")
     @PostMapping(value = "/getOrganList")
     @ResponseBody
 //    @Cacheable(value="#bodyPart", key="#sex+'-'+#age")
     public AjaxResult getOrganList(@RequestBody SymptomsOrganBO symptomsOrganBO) {
+        ServletUtils.getRequest().setAttribute("api", "getOrganList");
+        ServletUtils.getRequest().setAttribute("dataParam", JSON.toJSONString(symptomsOrganBO));
         String sexCode = BodySymptomsEnum.getCodeByName(symptomsOrganBO.getSex()+"_"+symptomsOrganBO.getAge());
         SymptomsOrgan symptomsOrgan = new SymptomsOrgan();
         symptomsOrgan.setBodyPart(symptomsOrganBO.getBodyPart());
@@ -176,39 +207,23 @@ public class HisCommonApi
     }
 
     /**
-     * 2020.8.26
-     * 新增支付挂号的记录
+     * 科室介绍
      *
      * @return
      */
-    @ApiOperation("新增挂号的记录")
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("根据病症获取科室")
+    @PostMapping(value = "/diagnosis")
     @ResponseBody
-    @PostMapping(value = "/outpatientPayment")
-    public AjaxResult outpatientPayment(@RequestBody DoregInfo doregInfo){
-        doregInfo.setAppId(WechatConfig.appId);
-        doregInfo.setCreateTime(new Date());
-        doregInfo.setPayType("5");
-        doregInfo.setSuccessfulPayment("0");
-        String orderNo = IdUtils.getOrderNo("RE");
-        doregInfo.setOutTradeNo(orderNo);
-        int iCount = doregInfoService.insertDoregInfo(doregInfo);
-        if (iCount > 0){
-            return AjaxResult.success(doregInfo);
-        }
-        return AjaxResult.error("支付挂号操作失败");
+    public AjaxResult diagnosis(@RequestBody SymptomsOrganBO symptomsOrganBO) {
+        getRequest().setAttribute("api", "diagnosis");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(symptomsOrganBO));
+        SymptomsOrgan symptomsOrgan = new SymptomsOrgan();
+        symptomsOrgan.setBodyPart(symptomsOrganBO.getBodyPart());
+        symptomsOrgan.setSex(symptomsOrganBO.getSex());
+        symptomsOrgan.setSymptoms(symptomsOrganBO.getSymptoms());
+        List<SymptomsOrgan> list = symptomsOrganService.selectSymptomsOrganList(symptomsOrgan);
+        return AjaxResult.success(list);
     }
 
-    /**
-     * 2020.8.26
-     * 测试预约挂号推his
-     *
-     * @return
-     */
-    @ApiOperation("测试预约挂号推his")
-    @ResponseBody
-    @PostMapping(value = "/testDoregInfo")
-    public AjaxResult testDoregInfo(@RequestBody DoregInfo doregInfo){
-        DoRegOut doRegOut = (DoRegOut)AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG).invokeCallSubmit(doregInfo.getId());
-        return AjaxResult.success(doRegOut);
-    }
 }

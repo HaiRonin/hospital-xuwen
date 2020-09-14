@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * his用户对象 his_user
  * 
  * @author whl
- * @date 2020-08-29
+ * @date 2020-09-11
  */
 public class HisUser extends BaseEntity
 {
@@ -30,8 +30,12 @@ public class HisUser extends BaseEntity
     @Excel(name = "密码")
     private String password;
 
-    /** 状态标志 */
+    /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
+
+    /** 微信openId */
+    @Excel(name = "微信openId")
+    private String openId;
 
     public void setId(Integer id) 
     {
@@ -78,6 +82,15 @@ public class HisUser extends BaseEntity
     {
         return delFlag;
     }
+    public void setOpenId(String openId) 
+    {
+        this.openId = openId;
+    }
+
+    public String getOpenId() 
+    {
+        return openId;
+    }
 
     @Override
     public String toString() {
@@ -91,6 +104,7 @@ public class HisUser extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
+            .append("openId", getOpenId())
             .toString();
     }
 }

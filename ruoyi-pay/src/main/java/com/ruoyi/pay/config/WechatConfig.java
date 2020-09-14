@@ -1,9 +1,7 @@
-package com.ruoyi.web.core.config;
+package com.ruoyi.pay.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 /**
  * Swagger2的接口配置
@@ -13,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Configuration
 @ConfigurationProperties(prefix = "his.wechat")
-public class  WechatConfig
+public class WechatConfig
 {
 
     public static String appId;
