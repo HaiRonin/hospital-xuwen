@@ -75,7 +75,7 @@ public class WeixinLoginUtils {
      * @param code
      * @return
      */
-    private static String getOpenIdFromWeixin(String code) {
+    public static String getOpenIdFromWeixin(String code) {
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=" + WechatConfig.appId + "" +
                 "&secret=" + WechatConfig.appsecret + "" +

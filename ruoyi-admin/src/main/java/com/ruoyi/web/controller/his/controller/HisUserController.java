@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.his.controller;
 
 import java.util.List;
+
+import com.ruoyi.pay.utils.WeixinLoginUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -122,5 +124,16 @@ public class HisUserController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(hisUserService.deleteHisUserByIds(ids));
+    }
+
+    /**
+     * 获取openId
+     */
+    @Log(title = "获取openId", businessType = BusinessType.HIS)
+    @PostMapping( "/getOpenId")
+    @ResponseBody
+    public AjaxResult getOpenId(String code)
+    {
+        return AjaxResult.success(WeixinLoginUtils.getOpenIdFromWeixin(code));
     }
 }
