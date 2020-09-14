@@ -59,7 +59,7 @@ public class HisHealthCardApi extends BaseController
 
     /**
      * 2020.8.26
-     * 获取健康码
+     * 获取健康码 17E578A4C7DAE1E49DEC2A70E6AA179B
      *
      * @return
      */
