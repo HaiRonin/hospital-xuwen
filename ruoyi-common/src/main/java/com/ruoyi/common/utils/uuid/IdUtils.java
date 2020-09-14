@@ -58,9 +58,9 @@ public class IdUtils
      * @return String
      */
     public static String getOrderNo(String prefix){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         Date date = new Date();
-        return prefix + sdf.format(date) + getRandomStringByLength(7);
+        return prefix+"_" + sdf.format(date) + getRandomStringByLength(6);
     }
 
     public static String getRandomStringByLength(int length) {

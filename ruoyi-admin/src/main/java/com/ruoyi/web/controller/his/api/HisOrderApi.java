@@ -70,7 +70,7 @@ public class HisOrderApi extends BaseController
         doregInfo.setCreateBy(doregInfo.getSynUserName());
         doregInfo.setCreateTime(new Date());
         doregInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"+doregInfo.getPatientNo()+"_"));
+        doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"));
         int iResult = doregInfoService.insertDoregInfo(doregInfo);
         return iResult>0?AjaxResult.success(doregInfo):AjaxResult.error("预约挂号失败");
     }
@@ -93,7 +93,7 @@ public class HisOrderApi extends BaseController
         dopayInfo.setCreateBy(dopayInfo.getSynUserName());
         dopayInfo.setCreateTime(new Date());
         dopayInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"+dopayInfo.getHiFeeNos()+"_"));
+        dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"));
         int iResult = dopayInfoService.insertDopayInfo(dopayInfo);
         return iResult>0?AjaxResult.success(dopayInfo):AjaxResult.error("缴费支付失败");
     }
@@ -116,7 +116,7 @@ public class HisOrderApi extends BaseController
         depositPayment.setCreateBy(depositPayment.getSynUserName());
         depositPayment.setCreateTime(new Date());
         depositPayment.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        depositPayment.setOutTradeNo(IdUtils.getOrderNo("DP"+depositPayment.getBedNo()+"_"));
+        depositPayment.setOutTradeNo(IdUtils.getOrderNo("DP"));
         int iResult = depositPaymentService.insertDepositPayment(depositPayment);
         return iResult>0?AjaxResult.success(depositPayment):AjaxResult.error("押金补缴失败");
     }
@@ -140,7 +140,7 @@ public class HisOrderApi extends BaseController
         leaveHosPay.setCreateBy(leaveHosPay.getSynUserName());
         leaveHosPay.setCreateTime(new Date());
         leaveHosPay.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        leaveHosPay.setOutTradeNo(IdUtils.getOrderNo("LH"+leaveHosPay.getInHosNo()+"_"));
+        leaveHosPay.setOutTradeNo(IdUtils.getOrderNo("LH"));
         int iResult = leaveHosPayService.insertLeaveHosPay(leaveHosPay);
         return iResult>0?AjaxResult.success(leaveHosPay):AjaxResult.error("出院结算失败");
     }
