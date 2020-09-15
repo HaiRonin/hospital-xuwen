@@ -125,15 +125,4 @@ public class HisUserController extends BaseController
     {
         return toAjax(hisUserService.deleteHisUserByIds(ids));
     }
-
-    /**
-     * 获取openId
-     */
-    @Log(title = "获取openId", businessType = BusinessType.HIS)
-    @PostMapping( "/getOpenId")
-    @ResponseBody
-    public AjaxResult getOpenId(String code)
-    {
-        return AjaxResult.success(WeixinLoginUtils.getOpenIdFromWeixin(code));
-    }
 }
