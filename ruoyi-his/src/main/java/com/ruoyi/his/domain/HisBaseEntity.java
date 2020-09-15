@@ -79,7 +79,7 @@ public class HisBaseEntity extends BaseEntity {
     private Map<String, String> prePaySign;
 
     //用户OPENID
-    @ApiModelProperty(value = "用户OPENID", hidden = true)
+    @ApiModelProperty(value = "用户OPENID")
     private String openId;
 
     public String getSuccessfulPayment() {

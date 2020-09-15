@@ -21,13 +21,15 @@ public class WeixinLoginUtils {
 
     private final static String UTF_8 = "UTF-8";
 
-    public static void thirtypartyUserLogin(HttpServletRequest request, HttpServletResponse response) {
+    public static String thirtypartyUserLogin(HttpServletRequest request, HttpServletResponse response) {
         // 微信，alipay登录入口
         String openId = CookieUtils.getCookieValue(request, "TOKEN_OPENID");
 
         if (StringUtils.isEmpty(openId) && StringUtils.isNotEmpty(request.getParameter("code"))) {
-            weixinLogin(request, response);
+            openId = weixinLogin(request, response);
         }
+
+        return openId;
     }
 
     /**
@@ -36,7 +38,7 @@ public class WeixinLoginUtils {
      * @param request
      * @param response
      */
-    private static void weixinLogin(HttpServletRequest request, HttpServletResponse response) {
+    private static String weixinLogin(HttpServletRequest request, HttpServletResponse response) {
         String code = request.getParameter("code");
         String openId = getOpenIdFromWeixin(code);
         if (StringUtils.isNotEmpty(openId)) {
@@ -48,6 +50,7 @@ public class WeixinLoginUtils {
                 e.printStackTrace();
             }
         }
+        return openId;
     }
 
     /**
@@ -80,7 +83,7 @@ public class WeixinLoginUtils {
                 "appid=" + WechatConfig.appId + "" +
                 "&secret=" + WechatConfig.appsecret + "" +
                 "&code=" + code + "&grant_type=authorization_code";
-        JSONObject jsonObject = WeixinPayUtils.httpRequestForSSL(url, "POST", null);
+        JSONObject jsonObject = WeixinMessageUtil.httpRequestForSSL(url, "POST", null);
         String openId = null;
         if (jsonObject != null) {
             Map map = (Map) JSONObject.parseObject(JSONObject.toJSONString(jsonObject), Map.class);

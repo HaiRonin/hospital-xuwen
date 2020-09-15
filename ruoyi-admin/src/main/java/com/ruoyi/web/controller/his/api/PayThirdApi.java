@@ -1,7 +1,10 @@
-package com.ruoyi.web.controller.his.controller;
+package com.ruoyi.web.controller.his.api;
 
+import com.google.common.collect.Maps;
+import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.enums.HisPayType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.StringUtils;
@@ -10,6 +13,8 @@ import com.ruoyi.pay.service.PayService;
 import com.ruoyi.pay.utils.*;
 import com.ruoyi.pay.config.AlipayConfig;
 import com.ruoyi.pay.config.WechatConfig;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -26,16 +31,41 @@ import java.util.Map;
 
 
 /**
- * @Description : 支付请求
+ * @Description : 第三方支付请求
  * @Author : yuanhualiang
  * @Date: 2020-09-04 23:59
  */
 @Controller
-@RequestMapping("/his/pay/")
-public class PayController extends BaseController {
+@Api(value = "第三方支付请求", tags = {"第三方支付请求"})
+@RequestMapping("/hospital/wechat/")
+public class PayThirdApi extends BaseController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PayController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PayThirdApi.class);
 
+
+    /**
+     * 获取openId
+     * 微信授权code只能用一次，下次从cookie取
+     */
+    @Log(title = "获取openId", businessType = BusinessType.HIS)
+    @ApiOperation("获取OPENID")
+    @GetMapping("/getOpenid")
+    @ResponseBody
+    public AjaxResult getOpenId(String code, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, String> resultData = Maps.newHashMap();
+        resultData.put("openId", WeixinLoginUtils.thirtypartyUserLogin(request, response));
+        return AjaxResult.success("获取OPENID", resultData);
+    }
+
+    /**
+     * 预支付
+     *
+     * @param order
+     * @param request
+     * @param response
+     * @return
+     */
+    @ApiOperation("预支付")
     @PostMapping("")
     @ResponseBody
     public AjaxResult pay(HisPayOrder order, HttpServletRequest request, HttpServletResponse response) {
@@ -62,6 +92,7 @@ public class PayController extends BaseController {
      * @param request
      * @return
      */
+    @ApiOperation("微信APP预支付")
     @PostMapping("/wechat_apppay")
     @ResponseBody
     public AjaxResult wxAppPay(Double orderPrice, HttpServletRequest request) {
@@ -105,6 +136,7 @@ public class PayController extends BaseController {
      * @param request
      * @return
      */
+    @ApiOperation("支付宝预支付")
     @PostMapping("/ali_apppay")
     @ResponseBody
     public AjaxResult aliAppPay(Double orderPrice, HttpServletRequest request) {
@@ -137,6 +169,7 @@ public class PayController extends BaseController {
      * @param request
      * @return
      */
+    @ApiOperation("微信公众号预支付")
     @PostMapping("/wechat_pay")
     @ResponseBody
     public AjaxResult weixinPay(Double orderPrice, HttpServletRequest request, HttpServletResponse response) {
