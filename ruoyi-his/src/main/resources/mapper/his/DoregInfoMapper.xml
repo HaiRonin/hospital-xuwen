@@ -14,7 +14,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="patientNo"    column="patient_no"    />
         <result property="socialsecurityNO"    column="socialsecurityNO"    />
         <result property="sourceDate"    column="source_date"    />
-        <result property="timestypeNo"    column="timestype_no"    />
+        <result property="timestypeNo"    column="
+"    />
         <result property="sourceTimeType"    column="source_time_type"    />
         <result property="payType"    column="pay_type"    />
         <result property="payNo"    column="pay_no"    />
