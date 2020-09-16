@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.his.api;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
@@ -13,10 +14,12 @@ import com.ruoyi.pay.service.PayService;
 import com.ruoyi.pay.utils.*;
 import com.ruoyi.pay.config.AlipayConfig;
 import com.ruoyi.pay.config.WechatConfig;
+import com.ruoyi.vo.OrderPayResultBO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +44,12 @@ import java.util.Map;
 public class PayThirdApi extends BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(PayThirdApi.class);
+
+    /**
+     * 订单请求
+     */
+    @Autowired
+    private HisOrderApi hisOrderApi;
 
 
     /**
@@ -225,16 +234,28 @@ public class PayThirdApi extends BaseController {
             // 微信交易订单号
             String transaction_id = map.get("transaction_id");
             // 系统订单号
-            String orderId = map.get("out_trade_no");
+            String out_trade_no = map.get("out_trade_no");
+            String orderId = out_trade_no.split("_")[0];
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调out_trade_no=" + orderId + ",transaction_id=" + transaction_id);
 
-            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调订单ID=" + LOG);
+            OrderPayResultBO bo = new OrderPayResultBO();
+            bo.setOrderType(HisPayType.WECHAT.getKey());
+            bo.setOutTradeNo(orderId);
+            bo.setTransactionId(transaction_id);
+            bo.setPaymentResults(true);
+            AjaxResult result = hisOrderApi.orderPayCallBack(bo);
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调下单结果：" + JSON.toJSONString(result));
+            if(result.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
+                return "SUCCESS";
+            } else {
+                return "FAIL";
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
             return "FAIL";
         }
-
-        return "SUCCESS";
     }
 
     /**
