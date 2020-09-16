@@ -165,7 +165,7 @@ his:
     #key值
     key: A44de8673b0f2d1603a6ff33b18b81EF
     #回调地址
-    baseUrl: http://app.gdsnkzxyy.cn/hospital/wechat/notify_weixin
+    baseUrl: http://nktest.free.idcfengye.com/hospital/wechat/notify_weixin
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     #支付地址
