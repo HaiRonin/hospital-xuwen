@@ -17,7 +17,7 @@ public class DoRegIn extends BaseRequest implements Serializable {
 
     private String sourceDate;
 
-    private Integer timestypeNo;
+    private String timestypeNo;
 
     private Integer sourceTimeType;
 
@@ -53,7 +53,7 @@ public class DoRegIn extends BaseRequest implements Serializable {
         return sourceDate;
     }
 
-    public int getTimestypeNo() {
+    public String getTimestypeNo() {
         return timestypeNo;
     }
 
@@ -97,7 +97,7 @@ public class DoRegIn extends BaseRequest implements Serializable {
         this.sourceDate = sourceDate;
     }
 
-    public void setTimestypeNo(Integer timestypeNo) {
+    public void setTimestypeNo(String timestypeNo) {
         this.timestypeNo = timestypeNo;
     }
 

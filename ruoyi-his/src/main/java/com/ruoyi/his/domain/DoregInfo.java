@@ -58,7 +58,7 @@ public class DoregInfo extends HisBaseEntity
 
     /** 时间段标识 */
     @Excel(name = "时间段标识")
-    private Integer timestypeNo;
+    private String timestypeNo;
 
     /** 时间段标识 */
     @Excel(name = "时间段标识")
@@ -170,12 +170,12 @@ public class DoregInfo extends HisBaseEntity
     {
         return sourceDate;
     }
-    public void setTimestypeNo(Integer timestypeNo) 
+    public void setTimestypeNo(String timestypeNo)
     {
         this.timestypeNo = timestypeNo;
     }
 
-    public Integer getTimestypeNo() 
+    public String getTimestypeNo()
     {
         return timestypeNo;
     }
