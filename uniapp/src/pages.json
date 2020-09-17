@@ -1,0 +1,322 @@
+{
+    "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        {
+			"path": "pages/home/outpatient",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+				// #endif
+                "navigationBarTitleText": "门诊"
+			}
+        },
+        {
+			"path": "pages/home/inHospital",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+				// #endif
+                "navigationBarTitleText": "住院"
+			}
+        },
+        {
+			"path": "pages/home/my",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+				// #endif
+                "navigationBarTitleText": "我的"
+			}
+        },
+        {
+			"path": "pages/login",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "登录"
+			}
+		}
+    ],
+    "subPackages": [
+        // info
+        {
+            "root": "pages/info",
+            "pages": [
+                {
+                    "path": "index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "信息查询"
+                    }
+                },
+                {
+                    "path": "drugSearch",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "药品/非药品查询",
+                        "enablePullDownRefresh": true
+                    }
+                },
+                {
+                    "path": "expertIntroduction",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "专家介绍"
+                    }
+                },
+                {
+                    "path": "hospitalntroduction",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "医院简介"
+                    }
+                },
+                {
+                    "path": "departmentIsIntroduced",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "科室介绍"
+                    }
+                },
+                {
+                    "path": "doctorTimeing",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "出诊安排",
+                        "enablePullDownRefresh": true
+                    }
+                }
+            ]
+        },
+        // registration
+        {
+            "root": "pages/registration",
+            "pages": [
+                {
+                    "path": "index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "科室选择"
+                    }
+                },
+                {
+                    "path": "departmentDoctorList/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "医生列表",
+                        "enablePullDownRefresh": true
+                    }
+                },
+                {
+                    "path": "doctor",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "医生"
+                    }
+                },
+                {
+                    "path": "searchDoctor",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "搜索医生"
+                    }
+                },
+                {
+                    "path": "confirmOrder",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "确认挂号信息"
+                    }
+                },
+                {
+                    "path": "diagnosis",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "诊断"
+                    }
+                },
+                {
+                    "path": "reportData/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "报告查询"
+                    }
+                },
+                {
+                    "path": "reportOrderList/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "预约挂号记录",
+                        "enablePullDownRefresh": true
+                    }
+                },
+                {
+                    "path": "waitingList",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "排队候诊",
+                        "enablePullDownRefresh": true
+                    }
+                },
+                {
+                    "path": "totalCostStatement",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "总费用清单"
+                    }
+                },
+                {
+                    "path": "depositHospitalList",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "押金缴纳记录"
+                    }
+                },
+                {
+                    "path": "paymentPrescriptionRecord/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "缴费处方记录"
+                    }
+                },
+                {
+                    "path": "hospitalizationDayList",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "住院一日清单"
+                    }
+                },
+                {
+                    "path": "hospitalInfo",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "住院信息"
+                    }
+                }
+            ]
+        },
+        // other
+        {
+            "root": "pages/other",
+            "pages": [
+                {
+                    "path": "questionnaire",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "问卷调查"
+                    }
+                }
+            ]
+        },
+        // outpatient
+        {
+            "root": "pages/outpatient",
+            "pages": [
+                {
+                    "path": "index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "选择就诊卡号"
+                    }
+                },
+                {
+                    "path": "intelligentGuidance/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "智能导诊"
+                    }
+                }
+            ]
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#ffffff",
+        "backgroundColor": "#F8F8F8",
+        "navigationBarShadow": {
+            "colorType": "grey"
+        },
+        "app-plus": { /* 5+App特有相关 */
+            "pullToRefresh": {
+                "color": "#6dbcf6"
+            }
+        }
+    },
+    "tabBar": {
+		"color": "#333333",
+		"selectedColor": "#299ff7",
+        "backgroundColor": "#FFFFFF",
+		"list": [
+			{
+				"pagePath": "pages/home/outpatient",
+				"text": "门诊",
+				"iconPath": "static/image/icon_58.png",
+				"selectedIconPath": "static/image/icon_60.png"
+			},
+			{
+				"pagePath": "pages/home/inHospital",
+				"text": "住院",
+				"iconPath": "static/image/icon_50.png",
+				"selectedIconPath": "static/image/icon_54.png"
+			},
+			{
+				"pagePath": "pages/home/my",
+				"text": "我的",
+				"iconPath": "static/image/icon_52.png",
+				"selectedIconPath": "static/image/icon_56.png"
+			}
+		]
+	},
+    "easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+		"autoscan": false
+	}
+}

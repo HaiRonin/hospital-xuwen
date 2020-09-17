@@ -1,0 +1,14 @@
+$main-color: #299ff7;
+$main-cur-color: #0092ff;
+$bg-main-color: #ecf9ff;
+$color-grey: #999;
+$border-line: 2px solid #ebedf0;
+$border-width: 2px;
+
+
+#app .van-tabbar-item{color: #7f7f7f;}
+#app .van-tabbar-item--active{color: $main-cur-color;}
+
+#app .van-tabs__line{background-color: $main-cur-color;}
+#app .z-btn {color: $main-color;border-color: $main-cur-color;}
+#app .z-btn + .z-btn{margin-left: 16px;}
