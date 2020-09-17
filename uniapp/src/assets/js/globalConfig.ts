@@ -1,4 +1,7 @@
 
+// 公众号id
+export const APPID = 'wx50617d578b93801d';
+
 // 首页的几个路径
 export const homeUrl = [
     '/pages/home/outpatient',

@@ -16,7 +16,7 @@
                 <u-input placeholder="请输入手机号" disabled :value="userInfo.userName" type="number"></u-input>
             </u-form-item>
             <u-form-item label="新密码" label-width="150">
-                <u-input placeholder="请输入新密码" maxlength="18" v-model="params.newPassWord" :clearable="false" type="password"></u-input>
+                <u-input placeholder="请输入新密码" maxlength="18" v-model="params.password" :clearable="false" type="password"></u-input>
             </u-form-item>
             <u-form-item label="验证码" label-width="150">
                 <u-input placeholder="请输入验证码" :clearable="false" maxlength="6" v-model="params.verificationCode" type="number"></u-input>
@@ -31,7 +31,7 @@
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import md5 from 'md5';
     import {Getter} from 'vuex-class';
-    import {modifyPassword, sendMsg} from '@/apis';
+    import {modifyPassword2, sendMsg} from '@/apis';
 
     const countDown = function (this: IOBJ, key: string, parentS = 5) {
         const keyText = key;
@@ -87,11 +87,11 @@
         countDown: IOBJ = {};
         check = (() => {
             const c = new utils.CheckVal({
-                newPassWord: '请输入新密码',
+                password: '请输入新密码',
                 verificationCode: '请输入验证码',
             });
 
-            c._addRule('newPassWord', (val) => val.length >= 6 ? '' : '密码长度大于等于6');
+            c._addRule('password', (val) => val.length >= 6 ? '' : '密码长度大于等于6');
 
             return c;
         })();
@@ -106,13 +106,13 @@
         async getCode () {
             if (this.countDown.getStatus()) return;
             const data = this.params;
-            const newPassWord = data.newPassWord;
+            const password = data.password;
             let errText = '';
 
-            if (utils.zEmpty(newPassWord)) {
+            if (utils.zEmpty(password)) {
                 utils.toast('请输入新密码');
                 return;
-            } else if ((errText = this.check.newPassWord(newPassWord))) {
+            } else if ((errText = this.check.password(password))) {
                 utils.toast(errText);
                 return;
             }
@@ -134,9 +134,9 @@
             }
 
             this.closeBtn = false;
-            data.UserName = userName;
-            data.newPassWord = md5(data.newPassWord);
-            await modifyPassword(data).catch(() => {
+            data.phone = userName;
+            data.password = md5(data.password);
+            await modifyPassword2(data).catch(() => {
                 this.modal.clearLoading();
                 return Promise.reject();
             });

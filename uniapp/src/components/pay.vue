@@ -102,6 +102,7 @@
 
         async selPay (type: 'alipay' | 'wxpay') {
             // 请求接口，得到相应的数据
+
             try {
                 // 调起支付
                 await this.requestPayment(type, {});

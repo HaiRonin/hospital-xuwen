@@ -81,7 +81,7 @@
                     </view>
                 </view>
             </scroll-view>
-            <view class="z-btn-box rel">
+            <view class="z-btn-box rel" v-if="showBtn">
                 <view class="red-color zbb-text-1">医院门诊缴费</view>
                 <view>合计: <text class="red-color zbb-text-2">{{curItem.settleAmount}}元</text></view>
                 <view class="zbb-btn abs flex-box align-center justify-center" @tap="pay">支付</view>
@@ -98,10 +98,12 @@
     export default class OrderDetail extends Vue {
 
         show = false;
+        showBtn = false;
         curItem: IOBJ | null = null;
 
         openFun (item: IOBJ) {
             this.curItem = item;
+            this.showBtn = this.curItem.status === '0';
             this.show = true;
         }
 

@@ -7,6 +7,7 @@ const immediateFun: TImmediateFun = (fn, interval, fakeInterval) => {
         if (look) return;
 
         if (Date.now() - prev > interval) {
+            look = true;
             prev = Date.now();
             fn.apply(this, arg);
             setTimeout(() => {

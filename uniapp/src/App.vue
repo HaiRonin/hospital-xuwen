@@ -1,10 +1,16 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import wxObj from '@/assets/js/wxUtils';
+
     export default Vue.extend({
         mpType: 'app',
-        onLaunch () {
-            console.log('App Launch');
+        onLaunch (options: any) {
+            console.log('App Launch', options);
+
+            // #ifdef H5
+            wxObj.cWxAuth.init(options.query, this);
+            // #endif
         },
         onShow () {
             console.log('App Show');

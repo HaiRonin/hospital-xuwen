@@ -45,6 +45,7 @@
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import pay from '@/components/pay.vue';
+    import {orderOutpatientPayment} from '@/apis';
 
     @Component({
         components: {
@@ -70,14 +71,20 @@
             utils.link('/pages/outpatient/index?sel=1');
         }
 
-        commit () {
+        async h5Pay (data: IOBJ) {
+            await orderOutpatientPayment(data);
+        }
+
+        async commit () {
             const data = utils.jsCopyObj(this.params);
+            data.openId = utils.getStorage('openId');
             if (utils.zEmpty(data.patientNo)) {
                 utils.toast('请选择就诊人');
                 return;
             }
             // console.log(data);
-            this.pay.startPay(data);
+            this.h5Pay(data);
+            // this.pay.startPay(data);
         }
 
         onLoad (options: IOBJ) {

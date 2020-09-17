@@ -132,6 +132,13 @@ export const modifyPassword: TApi = (params = {}, options = {}) => {
     return ajax.apiPost(url, params, options);
 };
 
+// 3.16修改密码2
+export const modifyPassword2: TApi = (params = {}, options = {}) => {
+    const url = '/his/user/modifyPassword';
+    return ajax.apiPost(url, params, options);
+};
+
+
 // 5.28满意度问题获取
 export const getDocCallBack: TApi = (params = {}, options = {}) => {
     const url = '/his/request';

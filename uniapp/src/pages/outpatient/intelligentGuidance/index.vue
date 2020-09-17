@@ -19,6 +19,7 @@
 
         created () {
             this.src = `${this.src}?env=build`;
+            console.log(this.src);
         }
 
         mounted () {

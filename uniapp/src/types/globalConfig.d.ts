@@ -30,4 +30,5 @@ declare module globalConfig {
     const payType: IOBJ[];
     const inHosState: IOBJ[];
     const sexState: IOBJ[];
+    const APPID: string;
 }
