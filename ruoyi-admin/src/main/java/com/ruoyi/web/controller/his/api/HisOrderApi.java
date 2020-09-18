@@ -5,6 +5,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
@@ -20,6 +21,8 @@ import com.ruoyi.his.service.IDopayInfoService;
 import com.ruoyi.his.service.IDoregInfoService;
 import com.ruoyi.his.service.ILeaveHosPayService;
 import com.ruoyi.pay.config.WechatConfig;
+import com.ruoyi.pay.service.AbstractPayService;
+import com.ruoyi.pay.service.PayService;
 import com.ruoyi.vo.OrderPayResultBO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,8 +73,18 @@ public class HisOrderApi extends BaseController
         doregInfo.setCreateBy(doregInfo.getSynUserName());
         doregInfo.setCreateTime(new Date());
         doregInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"+doregInfo.getPatientNo()+"_"));
+        doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"));
         int iResult = doregInfoService.insertDoregInfo(doregInfo);
+        if(iResult>0) {
+            HisPayOrder order = new HisPayOrder();
+            order.setPayType(doregInfo.getPayType());
+            order.setAmount(doregInfo.getPayAmount());
+            order.setOrderType("outpatientPayment");
+            order.setOutTradeNo(doregInfo.getOutTradeNo());
+            order.setOpenId(doregInfo.getOpenId());
+            PayService payService = AbstractPayService.servicesInstance(order.getPayType());
+            doregInfo.setPrePaySign(payService.prePay(order));
+        }
         return iResult>0?AjaxResult.success(doregInfo):AjaxResult.error("预约挂号失败");
     }
 
@@ -93,8 +106,18 @@ public class HisOrderApi extends BaseController
         dopayInfo.setCreateBy(dopayInfo.getSynUserName());
         dopayInfo.setCreateTime(new Date());
         dopayInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"+dopayInfo.getHiFeeNos()+"_"));
+        dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"));
         int iResult = dopayInfoService.insertDopayInfo(dopayInfo);
+        if(iResult>0) {
+            HisPayOrder order = new HisPayOrder();
+            order.setPayType(dopayInfo.getPayType());
+            order.setAmount(dopayInfo.getPayMoney());
+            order.setOrderType("newPayment");
+            order.setOutTradeNo(dopayInfo.getOutTradeNo());
+            order.setOpenId(dopayInfo.getOpenId());
+            PayService payService = AbstractPayService.servicesInstance(order.getPayType());
+            dopayInfo.setPrePaySign(payService.prePay(order));
+        }
         return iResult>0?AjaxResult.success(dopayInfo):AjaxResult.error("缴费支付失败");
     }
 
@@ -116,8 +139,18 @@ public class HisOrderApi extends BaseController
         depositPayment.setCreateBy(depositPayment.getSynUserName());
         depositPayment.setCreateTime(new Date());
         depositPayment.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        depositPayment.setOutTradeNo(IdUtils.getOrderNo("DP"+depositPayment.getBedNo()+"_"));
+        depositPayment.setOutTradeNo(IdUtils.getOrderNo("DP"));
         int iResult = depositPaymentService.insertDepositPayment(depositPayment);
+        if(iResult>0) {
+            HisPayOrder order = new HisPayOrder();
+            order.setPayType(depositPayment.getPayType());
+            order.setAmount(depositPayment.getPayMoney());
+            order.setOrderType("payment");
+            order.setOutTradeNo(depositPayment.getOutTradeNo());
+            order.setOpenId(depositPayment.getOpenId());
+            PayService payService = AbstractPayService.servicesInstance(order.getPayType());
+            depositPayment.setPrePaySign(payService.prePay(order));
+        }
         return iResult>0?AjaxResult.success(depositPayment):AjaxResult.error("押金补缴失败");
     }
 
@@ -140,8 +173,20 @@ public class HisOrderApi extends BaseController
         leaveHosPay.setCreateBy(leaveHosPay.getSynUserName());
         leaveHosPay.setCreateTime(new Date());
         leaveHosPay.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        leaveHosPay.setOutTradeNo(IdUtils.getOrderNo("LH"+leaveHosPay.getInHosNo()+"_"));
+        leaveHosPay.setOutTradeNo(IdUtils.getOrderNo("LH"));
         int iResult = leaveHosPayService.insertLeaveHosPay(leaveHosPay);
+
+        if(iResult>0) {
+            HisPayOrder order = new HisPayOrder();
+            order.setPayType(leaveHosPay.getPayType());
+            order.setAmount(leaveHosPay.getPayMoney());
+            order.setOrderType("leaveHosPay");
+            order.setOutTradeNo(leaveHosPay.getOutTradeNo());
+            order.setOpenId(leaveHosPay.getOpenId());
+            PayService payService = AbstractPayService.servicesInstance(order.getPayType());
+            leaveHosPay.setPrePaySign(payService.prePay(order));
+        }
+
         return iResult>0?AjaxResult.success(leaveHosPay):AjaxResult.error("出院结算失败");
     }
 

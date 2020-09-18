@@ -1,6 +1,7 @@
 package com.ruoyi.his.domain;
 
 import com.ruoyi.common.annotation.Excel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -18,10 +19,12 @@ public class LeaveHosPay extends HisBaseEntity
     private static final long serialVersionUID = 1L;
 
     /** null */
+    @ApiModelProperty(value = "id",hidden = true)
     private Long id;
 
     /** app_id */
     @Excel(name = "app_id")
+    @ApiModelProperty(value = "appId",hidden = true)
     private String appId;
 
     /** 用户名 */
@@ -62,10 +65,12 @@ public class LeaveHosPay extends HisBaseEntity
 
     /** 创建时间 */
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @ApiModelProperty(value = "创建时间",hidden = true)
     private Date creatTime;
 
     /** 银行返回信息 */
     @Excel(name = "银行返回信息")
+    @ApiModelProperty(value = "银行返回信息",hidden = true)
     private String bankReturn;
 
     /** 医院出院流水号 */
@@ -102,15 +107,8 @@ public class LeaveHosPay extends HisBaseEntity
 
     /** 出院温馨提醒 */
     @Excel(name = "出院温馨提醒")
+    @ApiModelProperty(value = "出院温馨提醒",hidden = true)
     private String reminder;
-
-    /** his接口返回信息 */
-    @Excel(name = "his接口返回信息")
-    private String resultMsg;
-
-    /** his接口返回信息 */
-    @Excel(name = "his接口返回信息")
-    private String resultCode;
 
     public void setId(Long id)
     {
@@ -311,24 +309,6 @@ public class LeaveHosPay extends HisBaseEntity
     public String getReminder() 
     {
         return reminder;
-    }
-    public void setResultMsg(String resultMsg) 
-    {
-        this.resultMsg = resultMsg;
-    }
-
-    public String getResultMsg() 
-    {
-        return resultMsg;
-    }
-    public void setResultCode(String resultCode) 
-    {
-        this.resultCode = resultCode;
-    }
-
-    public String getResultCode() 
-    {
-        return resultCode;
     }
 
     @Override
