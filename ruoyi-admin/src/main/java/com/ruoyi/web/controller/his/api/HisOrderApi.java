@@ -79,7 +79,7 @@ public class HisOrderApi extends BaseController
             HisPayOrder order = new HisPayOrder();
             order.setPayType(doregInfo.getPayType());
             order.setAmount(doregInfo.getPayAmount());
-            order.setOrderType("outpatientPayment");
+            order.setOrderType("doreg");
             order.setOutTradeNo(doregInfo.getOutTradeNo());
             order.setOpenId(doregInfo.getOpenId());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
@@ -112,7 +112,7 @@ public class HisOrderApi extends BaseController
             HisPayOrder order = new HisPayOrder();
             order.setPayType(dopayInfo.getPayType());
             order.setAmount(dopayInfo.getPayMoney());
-            order.setOrderType("newPayment");
+            order.setOrderType("dopay");
             order.setOutTradeNo(dopayInfo.getOutTradeNo());
             order.setOpenId(dopayInfo.getOpenId());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
@@ -145,7 +145,7 @@ public class HisOrderApi extends BaseController
             HisPayOrder order = new HisPayOrder();
             order.setPayType(depositPayment.getPayType());
             order.setAmount(depositPayment.getPayMoney());
-            order.setOrderType("payment");
+            order.setOrderType("inpatientpayment");
             order.setOutTradeNo(depositPayment.getOutTradeNo());
             order.setOpenId(depositPayment.getOpenId());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
@@ -180,7 +180,7 @@ public class HisOrderApi extends BaseController
             HisPayOrder order = new HisPayOrder();
             order.setPayType(leaveHosPay.getPayType());
             order.setAmount(leaveHosPay.getPayMoney());
-            order.setOrderType("leaveHosPay");
+            order.setOrderType("leavehospay");
             order.setOutTradeNo(leaveHosPay.getOutTradeNo());
             order.setOpenId(leaveHosPay.getOpenId());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
