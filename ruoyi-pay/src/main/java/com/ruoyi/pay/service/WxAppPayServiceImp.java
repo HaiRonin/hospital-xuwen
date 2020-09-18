@@ -19,7 +19,7 @@ public class WxAppPayServiceImp extends AbstractPayService {
 
     @Override
     public Map<String, String> prePay(HisPayOrder hisPayOrder) {
-        String orderId = hisPayOrder.getOutTradeNo() + "_" + new Date().getTime();
+        String orderId = hisPayOrder.getOutTradeNo();
 
         Map<String, String> wxPayParams = new HashMap<String, String>();// 里面的参数有用于微信的签名，不能随便添加参数
         Double price = new Double(hisPayOrder.getAmount().doubleValue() * 100);//支付金额 单位是分
