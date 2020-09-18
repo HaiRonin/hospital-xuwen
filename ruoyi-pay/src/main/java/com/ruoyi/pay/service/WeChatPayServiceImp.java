@@ -23,7 +23,7 @@ public class WeChatPayServiceImp extends AbstractPayService {
     @Override
     public Map<String, String> prePay(HisPayOrder hisPayOrder) {
         Map<String, String> wxPayParams = new HashMap<String, String>();
-        String orderId = hisPayOrder.getOutTradeNo() + "_" + new Date().getTime();
+        String orderId = hisPayOrder.getOutTradeNo();
         WxSignCode sign = new WxSignCode();
         //获取商户的配置参数
         sign.setAppid(WechatConfig.appId);
