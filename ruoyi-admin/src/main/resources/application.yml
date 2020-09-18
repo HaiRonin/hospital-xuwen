@@ -165,7 +165,7 @@ his:
     #key值
     key: A44de8673b0f2d1603a6ff33b18b81EF
     #回调地址
-    baseUrl: http://app.gdsnkzxyy.cn/hospital/pay/notify_weixin
+    baseUrl: http://nktest.free.idcfengye.com/hospital/wechat/notify_weixin
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     #支付地址
@@ -178,9 +178,9 @@ his:
     #商户号
     mchid: 1433629902
     #key值
-    key: d2258bd67e9ef6bb8a795c723f483301
+    key: A44de8673b0f2d1603a6ff33b18b81EF
     #回调地址
-    baseUrl: http://app.gdsnkzxyy.cn/hospital/pay/notify_weixin
+    baseUrl: http://app.gdsnkzxyy.cn/hospital/wechat/notify_weixin
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     #支付地址
@@ -195,7 +195,7 @@ his:
     #支付宝的公钥
     ali_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi1bw+zczwfg8/WpCkg8L9LHvMWvQ5Y+I8JP9O5vHV9gBY8EZ/1ahWPHqbPPXi4NlTZSc7co5fbtERM7x2gvCc+hXN9TXKM66MeNFpHcu/bMbEezKWrEFHpBffHSb82XR6ldnr14v1tDf2Q59kth2U/7LENaiLr3Y7aDSBuOIW7TSacMfpSbAit+ibfz1XRMiOVQlLK/Gpcu20w4kDS7UMYEkkhQIA0Nd/FwRoNgIVm/PySwCjI8UZCX3OuX1xUjo8dzkTJ1uK7888AEbF1SwFNNKSN1NzyRpzmBborpCDPxqEjog3sjjR2b87qY3uLwID9Cb06GA1ie42L9/GBdhYQIDAQAB
     #回调地址
-    baseUrl: http://app.gdsnkzxyy.cn/hospital/pay/notify_alipay
+    baseUrl: http://app.gdsnkzxyy.cn/hospital/wechat/notify_alipay
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
   healthcard:
