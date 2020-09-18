@@ -52,6 +52,8 @@ public class WxSignCode {
      */
     private String attach;
 
+    private String scene_info;
+
     public String getProduct_id() {
         return product_id;
     }
@@ -140,4 +142,11 @@ public class WxSignCode {
         this.spbill_create_ip = spbill_create_ip;
     }
 
+    public String getScene_info() {
+        return scene_info;
+    }
+
+    public void setScene_info(String scene_info) {
+        this.scene_info = scene_info;
+    }
 }

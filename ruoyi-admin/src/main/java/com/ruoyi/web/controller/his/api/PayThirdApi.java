@@ -6,6 +6,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.enums.HisOrderType;
 import com.ruoyi.common.enums.HisPayType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.StringUtils;
@@ -75,23 +76,13 @@ public class PayThirdApi extends BaseController {
      * @return
      */
     @ApiOperation("预支付")
-    @PostMapping("")
+    @PostMapping("pay")
     @ResponseBody
     public AjaxResult pay(HisPayOrder order, HttpServletRequest request, HttpServletResponse response) {
         PayService payService = AbstractPayService.servicesInstance(order.getPayType());
-
-//        if (HisPayType.WECHAT.getKey().equals(order.getPayType())) {
-//            String openId = WeixinLoginUtils.getOpenIdFromCookie(request, response);
-//            if (StringUtils.isEmpty(openId)) {
-//                return AjaxResult.error("openId获取失败");
-//            } else {
-//                order.setOpenId(openId);
-//            }
-//        }
-        //order.setOpenId("oKXcuv9lyoCnjrQQ8HqZROiiV4BI");
         Map<String, String> result = payService.prePay(order);
 
-        return AjaxResult.success("预支付成功[" + HisPayType.getDescByKey(order.getPayType()) + "]", result);
+        return AjaxResult.success("预支付成功[" + HisOrderType.getDescByKey(order.getOrderType()) + "]", result);
     }
 
     /**

@@ -178,7 +178,7 @@ his:
     #商户号
     mchid: 1433629902
     #key值
-    key: d2258bd67e9ef6bb8a795c723f483301
+    key: A44de8673b0f2d1603a6ff33b18b81EF
     #回调地址
     baseUrl: http://app.gdsnkzxyy.cn/hospital/wechat/notify_weixin
     #退款地址
