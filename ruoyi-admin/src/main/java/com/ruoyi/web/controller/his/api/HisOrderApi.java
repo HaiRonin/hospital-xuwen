@@ -78,7 +78,7 @@ public class HisOrderApi extends BaseController
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
             order.setPayType(doregInfo.getPayType());
-            order.setAmount(doregInfo.getAmount());
+            order.setAmount(doregInfo.getPayAmount());
             order.setOrderType("outpatientPayment");
             order.setOutTradeNo(doregInfo.getOutTradeNo());
             order.setOpenId(doregInfo.getOpenId());
@@ -111,7 +111,7 @@ public class HisOrderApi extends BaseController
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
             order.setPayType(dopayInfo.getPayType());
-            order.setAmount(dopayInfo.getAmount());
+            order.setAmount(dopayInfo.getPayMoney());
             order.setOrderType("newPayment");
             order.setOutTradeNo(dopayInfo.getOutTradeNo());
             order.setOpenId(dopayInfo.getOpenId());
@@ -144,7 +144,7 @@ public class HisOrderApi extends BaseController
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
             order.setPayType(depositPayment.getPayType());
-            order.setAmount(depositPayment.getAmount());
+            order.setAmount(depositPayment.getPayMoney());
             order.setOrderType("payment");
             order.setOutTradeNo(depositPayment.getOutTradeNo());
             order.setOpenId(depositPayment.getOpenId());
@@ -179,7 +179,7 @@ public class HisOrderApi extends BaseController
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
             order.setPayType(leaveHosPay.getPayType());
-            order.setAmount(leaveHosPay.getAmount());
+            order.setAmount(leaveHosPay.getPayMoney());
             order.setOrderType("leaveHosPay");
             order.setOutTradeNo(leaveHosPay.getOutTradeNo());
             order.setOpenId(leaveHosPay.getOpenId());
