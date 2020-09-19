@@ -19,7 +19,7 @@ public class AliPayServiceImp extends AbstractPayService {
 
     @Override
     public Map<String, String> prePay(HisPayOrder hisPayOrder) {
-        String orderId = hisPayOrder.getOutTradeNo() + "_" + new Date().getTime();
+        String orderId = hisPayOrder.getOutTradeNo();
         Map<String, String> payParams = new HashMap<String, String>();// 里面的参数有用于签名，不能随便添加参数
         //金额单位是元
         String orderInfo = AlipayUtil.getOrderInfo(HisOrderType.getDescByKey(hisPayOrder.getOrderType()),
