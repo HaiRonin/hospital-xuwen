@@ -40,6 +40,7 @@ import java.util.Date;
 @RestController
 @Api(value="his下单接口",tags={"his下单接口"})
 @RequestMapping("/his/order")
+@CrossOrigin
 public class HisOrderApi extends BaseController
 {
     @Autowired

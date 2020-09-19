@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(value="模拟下单调用His接口测试",tags={"模拟下单调用His接口测试"})
 @RequestMapping("/his/test")
+@CrossOrigin
 public class HisTestApi extends BaseController
 {
 

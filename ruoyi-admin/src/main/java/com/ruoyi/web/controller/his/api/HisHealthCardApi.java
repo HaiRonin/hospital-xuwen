@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(value="His健康卡接口",tags={"His健康卡接口"})
 @RequestMapping("/his/healthCard")
+@CrossOrigin
 public class HisHealthCardApi extends BaseController
 {
     @Autowired

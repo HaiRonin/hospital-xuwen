@@ -37,6 +37,7 @@ import java.util.List;
 @RestController
 @Api(value="His公共接口",tags={"His公共接口"})
 @RequestMapping("/his")
+@CrossOrigin
 public class HisCommonApi extends BaseController
 {
 

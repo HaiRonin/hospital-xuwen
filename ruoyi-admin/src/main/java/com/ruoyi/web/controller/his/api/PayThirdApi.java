@@ -42,6 +42,7 @@ import java.util.Map;
 @Controller
 @Api(value = "第三方支付请求", tags = {"第三方支付请求"})
 @RequestMapping("/hospital/wechat/")
+@CrossOrigin
 public class PayThirdApi extends BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(PayThirdApi.class);
