@@ -92,6 +92,8 @@ public class PayThirdApi extends BaseController {
      * @param request
      * @return
      */
+    @Log(title = "微信支付回调", businessType = BusinessType.HIS)
+    @ApiOperation("微信支付回调")
     @ResponseBody
     @RequestMapping(value = "/notify_weixin", method = RequestMethod.POST)
     public String wxPayCallBackNotify(HttpServletRequest request) {
