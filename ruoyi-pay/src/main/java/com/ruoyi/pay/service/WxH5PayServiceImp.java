@@ -41,6 +41,6 @@ public class WxH5PayServiceImp extends AbstractPayService {
 
     @Override
     public boolean refund(HisPayOrder hisPayOrder) {
-        return false;
+        return WeixinH5PayUtils.refund(hisPayOrder.getTransactionId(), hisPayOrder.getOutTradeNo(), hisPayOrder.getAmount());
     }
 }
