@@ -6,7 +6,7 @@ import java.io.Serializable;
 /***
  * 取消预约
  */
-public class DoRegCanceln extends BaseRequest implements Serializable {
+public class DoRegCancel extends BaseRequest implements Serializable {
 
     /**
      * UserName : 13418803185

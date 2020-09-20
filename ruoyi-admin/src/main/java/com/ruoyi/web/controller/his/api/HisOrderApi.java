@@ -15,6 +15,7 @@ import com.ruoyi.his.domain.DopayInfo;
 import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.domain.LeaveHosPay;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
+import com.ruoyi.his.remote.request.DoRegCancel;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.service.IDepositPaymentService;
 import com.ruoyi.his.service.IDopayInfoService;
@@ -56,36 +57,19 @@ public class HisOrderApi extends BaseController
     private ILeaveHosPayService leaveHosPayService;
 
     /**
-     * 新增预约挂号的记录
+     * 取消预约
      */
     @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("新增预约挂号的记录")
-    @PostMapping("/outpatientPayment")
+    @PostMapping("/doRegCancel")
     @ResponseBody
-    public AjaxResult doRegCancel(@RequestBody DoregInfo doregInfo)
+    public AjaxResult doRegCancel(@RequestBody DoRegCancel doRegCancel)
     {
-        getRequest().setAttribute("api", "outpatientPayment");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(doregInfo));
-        if(StringUtils.isEmpty(doregInfo.getPayType())){
-            doregInfo.setPayType("5");
-        }
-        doregInfo.setAppId(WechatConfig.appId);
-        doregInfo.setCreateBy(doregInfo.getSynUserName());
-        doregInfo.setCreateTime(new Date());
-        doregInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
-        doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"));
-        int iResult = doregInfoService.insertDoregInfo(doregInfo);
-        if(iResult>0) {
-            HisPayOrder order = new HisPayOrder();
-            order.setPayType(doregInfo.getPayType());
-            order.setAmount(doregInfo.getPayAmount());
-            order.setOrderType("doreg");
-            order.setOutTradeNo(doregInfo.getOutTradeNo());
-            order.setOpenId(doregInfo.getOpenId());
-            PayService payService = AbstractPayService.servicesInstance(order.getPayType());
-            doregInfo.setPrePaySign(payService.prePay(order));
-        }
-        return iResult>0?AjaxResult.success(doregInfo):AjaxResult.error("预约挂号失败");
+        getRequest().setAttribute("api", "doRegCancel");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(doRegCancel));
+
+        BaseResponse baseResponse = doregInfoService.doRegCancel(doRegCancel);
+        return baseResponse.isOk()?AjaxResult.success(baseResponse.getResultMsg()):AjaxResult.error(baseResponse.getResultMsg());
     }
 
     /**

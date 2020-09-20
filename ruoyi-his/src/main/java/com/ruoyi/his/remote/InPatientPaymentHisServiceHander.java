@@ -51,7 +51,7 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
         DepositPayment depositPayment = getOrderDetail(outTradeNo);
         InPatientPaymentIn inPatientPaymentIn = new InPatientPaymentIn();
         inPatientPaymentIn.setInHosNo(depositPayment.getInHosNo());
-        inPatientPaymentIn.setPayType(Integer.parseInt(depositPayment.getPayType()));
+        inPatientPaymentIn.setPayType(depositPayment.getPayType());
         inPatientPaymentIn.setPayRecord(depositPayment.getTransactionId());
         inPatientPaymentIn.setPayMoney(depositPayment.getPayMoney().doubleValue());
         inPatientPaymentIn.setBedNo(depositPayment.getBedNo());

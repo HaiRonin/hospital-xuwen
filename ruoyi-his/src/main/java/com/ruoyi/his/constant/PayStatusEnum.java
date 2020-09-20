@@ -15,6 +15,7 @@ public enum PayStatusEnum {
 	ORDER_FAIL("5","下单失败"),
 	REFUND_SUCCESS("6","退款成功"),
 	REFUND_FAIL("7","退款失败"),
+	REFUND_TODO("8","待退款"),
 	;
 	private String code;
 	private String desc;

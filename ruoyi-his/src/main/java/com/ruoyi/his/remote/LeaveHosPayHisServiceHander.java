@@ -51,7 +51,7 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
         LeaveHosPay leaveHosPay = getOrderDetail(outTradeNo);
         LeaveHosPayIn leaveHosPayIn = new LeaveHosPayIn();
         leaveHosPayIn.setInHosNo(leaveHosPay.getInHosNo());
-        leaveHosPayIn.setPayType(Integer.parseInt(leaveHosPay.getPayType()));
+        leaveHosPayIn.setPayType(leaveHosPay.getPayType());
         leaveHosPayIn.setPayRecord(leaveHosPay.getTransactionId());
         leaveHosPayIn.setPayMoney(leaveHosPay.getPayMoney().doubleValue());
         if(null != leaveHosPay.getOverMoney()){
