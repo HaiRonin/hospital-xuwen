@@ -1,13 +1,12 @@
 package com.ruoyi.his.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
+import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 预约挂号对象 his_doreg_info
