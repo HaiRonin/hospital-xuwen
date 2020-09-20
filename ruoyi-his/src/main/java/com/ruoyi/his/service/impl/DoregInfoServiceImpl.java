@@ -142,16 +142,21 @@ public class DoregInfoServiceImpl implements IDoregInfoService
 
     @Override
     public BaseResponse doRegCancel(DoRegCancel doRegCancel) {
+        //数据检查
+        DoregInfo doregInfo = getDetailByTransactionId(doRegCancel.getPayNo());
+        if(null == doregInfo){
+            throw new HisException(String.format("取消预约失败，订单不存在"));
+        }
+        //检查是否已经退过了
+        if(!PayStatusEnum.ORDER_SUCCESS.getCode().equals(doregInfo.getSuccessfulPayment())){
+            throw new HisException(String.format("订单已经退款或退款中，请不要重复操作"));
+        }
         String result = hisBaseServices.requestHisService("/doRegCancel", JSONObject.toJSONString(doRegCancel));
         BaseResponse baseResponse = JSONObject.parseObject(result,BaseResponse.class);
         if(!baseResponse.isOk()){
             throw new HisException(String.format("取消预约失败，原因为"+baseResponse.getResultMsg()));
         }
-        //更新本地订单信息
-        DoregInfo doregInfo = getDetailByTransactionId(doRegCancel.getPayNo());
-        if(null == doregInfo){
-            throw new HisException(String.format("取消预约失败，订单不存在"));
-        }
+
         //更新为待退款
         DoregInfo doregInfoUpdate = new DoregInfo();
         doregInfoUpdate.setId(doregInfo.getId());
