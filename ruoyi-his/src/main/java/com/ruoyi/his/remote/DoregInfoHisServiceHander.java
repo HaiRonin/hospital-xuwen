@@ -11,9 +11,11 @@ import com.ruoyi.his.remote.request.DoRegIn;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDoregInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,11 +98,25 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         return regOut.isOk()?BaseResponse.success():BaseResponse.fail("操作失败，支付金额稍后将会原路返回");
     }
 
+    /***
+     * 下单失败+退款失败
+     * @return
+     */
     @Override
     protected List<DoregInfo> getRefundOrderList() {
+        List<DoregInfo> refundList = new ArrayList<>();
         DoregInfo query = new DoregInfo();
         query.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
-        List<DoregInfo> lstDopayInfo =doregInfoService.selectDoregInfoList(query);
-        return lstDopayInfo;
+        List<DoregInfo> submitFail =doregInfoService.selectDoregInfoList(query);
+        if(CollectionUtils.isNotEmpty(submitFail)){
+            refundList.addAll(submitFail);
+        }
+        query = new DoregInfo();
+        query.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
+        List<DoregInfo> refundTodo =doregInfoService.selectDoregInfoList(query);
+        if(CollectionUtils.isNotEmpty(refundTodo)){
+            refundList.addAll(refundTodo);
+        }
+        return refundList;
     }
 }
