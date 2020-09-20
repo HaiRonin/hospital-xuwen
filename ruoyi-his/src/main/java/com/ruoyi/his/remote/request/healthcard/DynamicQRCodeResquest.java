@@ -20,7 +20,7 @@ public class DynamicQRCodeResquest implements Serializable {
     /**
      * 健康卡ID
      */
-    @ApiModelProperty(value="健康卡ID",name="healthCardId",example="C220AE414CE6EE581037C311AE24518FCFE19C429BECD478C1A13976260FXXXX")
+    @ApiModelProperty(value="健康卡ID",name="healthCardId",example="B5A28173356BB199962ABE0493ED0416CC17A9DF801CBE416B08CAB5A97D4AB6")
     private String healthCardId;
     /***
      * 证件类型:01-居民身份证
@@ -31,7 +31,7 @@ public class DynamicQRCodeResquest implements Serializable {
     /***
      * 证件号码
      */
-    @ApiModelProperty(value="证件号码",name="idNumber",example="101102199809089988")
+    @ApiModelProperty(value="证件号码",name="idNumber",example="450922198412064615")
     private String idNumber;
     /***
      * 二维码类型:传0或者1，0返回动态码，1返回静态码

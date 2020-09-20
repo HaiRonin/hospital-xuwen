@@ -18,4 +18,21 @@ public enum HisOrderType
         this.key=key;
         this.desc=desc;
     }
+
+    public static HisOrderType getByKey(String key) {
+        for (HisOrderType type : HisOrderType.values()) {
+            if (type.key.equals(key)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    public static String getDescByKey(String key) {
+        HisOrderType type = getByKey(key);
+        if (null != type) {
+            return type.desc;
+        }
+        return "";
+    }
 }

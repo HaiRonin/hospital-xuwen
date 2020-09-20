@@ -60,9 +60,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         //取号时间（号源日期）
         doRegInInfo.setSourceDate(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD,doregInfoNew.getSourceDate()));
         //时间段标识 0表示无时间段
-        if(null != doregInfoNew.getTimestypeNo()){
-            doRegInInfo.setTimestypeNo(doregInfoNew.getTimestypeNo());
-        }
+        doRegInInfo.setTimestypeNo(doregInfoNew.getTimestypeNo());
         //1,上午 2，中午3 下午 4，晚上 5，凌晨
         doRegInInfo.setSourceTimeType(doregInfoNew.getSourceTimeType());
         //1,银联，2支付宝 3，现场支付 4、医保账户，5、微信，6、云医院微信，7、云医院支付宝，8、诊疗卡

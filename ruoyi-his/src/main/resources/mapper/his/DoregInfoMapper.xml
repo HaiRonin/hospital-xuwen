@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="patientNo != null  and patientNo != ''"> and patient_no like concat('%', #{patientNo}, '%')</if>
             <if test="socialsecurityNO != null  and socialsecurityNO != ''"> and socialsecurityNO like concat('%', #{socialsecurityNO}, '%')</if>
             <if test="sourceDate != null "> and source_date = #{sourceDate}</if>
-            <if test="timestypeNo != null "> and timestype_no = #{timestypeNo}</if>
+            <if test="timestypeNo != null  and timestypeNo != ''"> and timestype_no = #{timestypeNo}</if>
             <if test="sourceTimeType != null "> and source_time_type = #{sourceTimeType}</if>
             <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
             <if test="payNo != null  and payNo != ''"> and pay_no like concat('%', #{payNo}, '%')</if>

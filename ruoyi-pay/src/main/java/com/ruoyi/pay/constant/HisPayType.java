@@ -2,6 +2,8 @@ package com.ruoyi.pay.constant;
 
 import com.ruoyi.pay.service.AliPayServiceImp;
 import com.ruoyi.pay.service.WeChatPayServiceImp;
+import com.ruoyi.pay.service.WxAppPayServiceImp;
+import com.ruoyi.pay.service.WxH5PayServiceImp;
 
 /**
  * His业务操作类型
@@ -11,7 +13,9 @@ import com.ruoyi.pay.service.WeChatPayServiceImp;
 public enum HisPayType
 {
     ALI("2", "支付宝", AliPayServiceImp.class),
-    WECHAT("5", "微信", WeChatPayServiceImp.class),;
+    WECHAT("5", "微信", WeChatPayServiceImp.class),
+    WXAPP("6", "微信APP", WxAppPayServiceImp.class),
+    WXH5("7", "微信H5", WxH5PayServiceImp.class);
     private String key;
     private String desc;
     private Class clazz;

@@ -46,10 +46,7 @@
                             </li>
                             <li>
                                 <label>时间段标识：</label>
-                                <select name="timestypeNo" th:with="type=${@dict.getType('his_source_time_type')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
+                                <input type="text" name="timestypeNo"/>
                             </li>
                             <li>
                                 <label>时间段标识：</label>
@@ -140,7 +137,6 @@
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('his:doreg:edit')}]];
         var removeFlag = [[${@permission.hasPermi('his:doreg:remove')}]];
-        var timestypeNoDatas = [[${@dict.getType('his_source_time_type')}]];
         var sourceTimeTypeDatas = [[${@dict.getType('his_source_time_type')}]];
         var payTypeDatas = [[${@dict.getType('his_pay_type')}]];
         var successfulPaymentDatas = [[${@dict.getType('his_payment_state')}]];
@@ -196,10 +192,7 @@
                 },
                 {
                     field: 'timestypeNo',
-                    title: '时间段标识',
-                    formatter: function(value, row, index) {
-                       return $.table.selectDictLabel(timestypeNoDatas, value);
-                    }
+                    title: '时间段标识'
                 },
                 {
                     field: 'sourceTimeType',

@@ -61,9 +61,7 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label">时间段标识：</label>
                 <div class="col-sm-8">
-                    <select name="timestypeNo" class="form-control m-b" th:with="type=${@dict.getType('his_source_time_type')}">
-                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                    </select>
+                    <input name="timestypeNo" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
