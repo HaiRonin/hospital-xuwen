@@ -5,14 +5,13 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Swagger2的接口配置
- * 
+ *
  * @author ruoyi
  */
 
 @Configuration
 @ConfigurationProperties(prefix = "his.wechat")
-public class WechatConfig
-{
+public class WechatConfig {
 
     public static String appId;
 
@@ -27,6 +26,8 @@ public class WechatConfig
     public static String refundUrl;
 
     public static String unifiedorderUrl;
+
+    public static String refundCert;
 
     public String getAppId() {
         return appId;
@@ -82,5 +83,13 @@ public class WechatConfig
 
     public void setUnifiedorderUrl(String unifiedorderUrl) {
         this.unifiedorderUrl = unifiedorderUrl;
+    }
+
+    public String getRefundCert() {
+        return refundCert;
+    }
+
+    public void setRefundCert(String refundCert) {
+        this.refundCert = refundCert;
     }
 }

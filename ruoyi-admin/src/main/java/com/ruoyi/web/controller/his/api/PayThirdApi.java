@@ -116,7 +116,7 @@ public class PayThirdApi extends BaseController {
             bo.setPaymentResults(true);
             AjaxResult result = hisOrderApi.orderPayCallBack(bo);
             LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调下单结果：" + JSON.toJSONString(result));
-            if(result.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
+            if (result.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
                 return "SUCCESS";
             } else {
                 return "FAIL";
@@ -156,5 +156,22 @@ public class PayThirdApi extends BaseController {
         }
 
         return "success";
+    }
+
+    /**
+     * 微信退款
+     *
+     * @return
+     */
+    @Log(title = "微信退款", businessType = BusinessType.HIS)
+    @ApiOperation("微信退款")
+    @ResponseBody
+    @RequestMapping(value = "/refund_weixin", method = RequestMethod.POST)
+    public AjaxResult weixinRefund(HisPayOrder hisPayOrder) {
+        PayService payService = AbstractPayService.servicesInstance(hisPayOrder.getPayType());
+        boolean result = payService.refund(hisPayOrder);
+
+        Map<String, String> map = new HashMap<String, String>();
+        return AjaxResult.success("微信退款完成", result);
     }
 }
