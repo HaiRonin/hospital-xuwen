@@ -1,3 +1,6 @@
 android
 别名: gdnkzxyy_android
 密码: 123456
+
+keytool -genkey -alias gdnkzxyy_android -keyalg RSA -keysize 2048 -validity 36500 -keystore gdnkzxyy_android.keystore
+CN=wu, OU=jingbao, O=jingbao, L=深圳, ST=广东, C=CN是否正确?
