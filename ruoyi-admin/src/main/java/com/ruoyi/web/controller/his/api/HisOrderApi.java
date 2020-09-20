@@ -60,7 +60,7 @@ public class HisOrderApi extends BaseController
      * 取消预约
      */
     @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
-    @ApiOperation("新增预约挂号的记录")
+    @ApiOperation("取消预约")
     @PostMapping("/doRegCancel")
     @ResponseBody
     public AjaxResult doRegCancel(@RequestBody DoRegCancel doRegCancel)
