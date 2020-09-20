@@ -1,7 +1,7 @@
 {
     "name" : "农垦医院",
     "appid" : "__UNI__BBEF366",
-    "description" : "农垦医院农垦医院",
+    "description" : "农垦医院",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -113,5 +113,10 @@
     },
     "mp-qq" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "router" : {
+            "mode" : "history"
+        }
     }
 }

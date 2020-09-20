@@ -23,6 +23,11 @@ declare module globalConfig {
      */
     const sourceTimeType: {text: string, value: number}[];
 
+    /**
+     * 以为支付的原因，需要刷新页面（ios上）
+     */
+    const refreshUrl: string[];
+
     const gFilter: (val: any, list: IOBJ[], key?: string | 'value') => string;
     const reportType: IOBJ[];
     const reportStatus: IOBJ[];

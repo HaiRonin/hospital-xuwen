@@ -35,7 +35,25 @@
                 // #endif
                 "navigationBarTitleText": "登录"
 			}
+		},
+        {
+			"path": "pages/wv",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": ""
+			}
 		}
+        // {
+		// 	"path": "pages/confirmOrder",
+		// 	"style": {
+        //         // #ifdef H5
+        //         "navigationStyle": "custom",
+        //         // #endif
+        //         "navigationBarTitleText": "确认挂号信息"
+		// 	}
+		// }
     ],
     "subPackages": [
         // info
