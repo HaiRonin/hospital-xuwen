@@ -1,0 +1,94 @@
+{
+    "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        {
+			"path": "pages/home",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+				// #endif
+                "navigationBarTitleText": "首页"
+			}
+        },
+        {
+			"path": "pages/login",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "登录"
+			}
+		},
+        {
+			"path": "pages/homeChild/reserveInfo",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "挂号患者"
+			}
+		},
+        {
+			"path": "pages/homeChild/caseHistoryList",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "患者门诊病历"
+			}
+		},
+        {
+			"path": "pages/homeChild/caseHistoryDetail",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "患者病历详情"
+			}
+		},
+        {
+			"path": "pages/homeChild/statistics",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "统计分析"
+			}
+		},
+        {
+			"path": "pages/homeChild/referralCenterRecordList",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "门诊医生转诊记录查询"
+			}
+		},
+        {
+			"path": "pages/homeChild/reportData/index",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "门诊报告查询"
+			}
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#ffffff",
+        "backgroundColor": "#F8F8F8",
+        "navigationBarShadow": {
+            "colorType": "grey"
+        },
+        "app-plus": { /* 5+App特有相关 */
+            "pullToRefresh": {
+                "color": "#6dbcf6"
+            }
+        }
+    },
+    "easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+		"autoscan": false
+	}
+}
