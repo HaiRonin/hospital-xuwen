@@ -5,10 +5,7 @@ import com.ruoyi.common.enums.HisOrderType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.pay.config.WechatConfig;
-import com.ruoyi.pay.utils.WeixinAppPayUtils;
-import com.ruoyi.pay.utils.WeixinLoginUtils;
-import com.ruoyi.pay.utils.WeixinPayUtils;
-import com.ruoyi.pay.utils.WxSignCode;
+import com.ruoyi.pay.utils.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -56,6 +53,6 @@ public class WeChatPayServiceImp extends AbstractPayService {
 
     @Override
     public boolean refund(HisPayOrder hisPayOrder) {
-        return false;
+        return WeixinH5PayUtils.refund(hisPayOrder.getTransactionId(), hisPayOrder.getOutTradeNo(), hisPayOrder.getAmount());
     }
 }
