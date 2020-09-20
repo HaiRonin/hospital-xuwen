@@ -6,25 +6,28 @@ if (process.env.NODE_ENV === 'development') {
 
     apiServer = {
         // 正式
+        // baseApi: 'http://120.76.246.196:8080',
+        baseApi: 'http://apptest.gdsnkzxyy.cn',
         // 测试
-        baseApi: 'http://120.76.246.196',
 
         // #ifdef H5
         // vueconfig proxy 代理
-        baseApi: '',
+        // baseApi: '/test',
+        // baseApi: '/yh',
+        // baseApi: '',
         // #endif
     };
 
 } else if (process.env.NODE_ENV === 'test') {
 
     apiServer = {
-        baseApi: 'http://120.76.246.196',
+        baseApi: 'http://apptest.gdsnkzxyy.cn',
     };
 
 } else if (process.env.NODE_ENV === 'production') {
 
     apiServer = {
-        baseApi: 'http://120.76.246.196',
+        baseApi: 'http://apptest.gdsnkzxyy.cn',
     };
 
 }

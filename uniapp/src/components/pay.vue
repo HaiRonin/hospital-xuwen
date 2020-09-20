@@ -27,10 +27,12 @@
 
 <script lang="ts">
 
-    import {Component, Vue, Ref} from 'vue-property-decorator';
+    import {Component, Vue, Ref, Prop} from 'vue-property-decorator';
+    import wxObj from '@/assets/js/wxUtils';
 
     @Component
     export default class Name extends Vue {
+        @Prop({type: Function, required: true}) readonly request!: TApi;
 
         params: IOBJ = {};
         show = false;
@@ -80,10 +82,10 @@
             });
         }
 
-        async startPay (data: IOBJ) {
-            this.params = utils.jsCopyObj(data);
-
+        // app开始支付
+        async appStart () {
             utils.showLoad('准备中');
+
             try {
                 const platformArr = await this.getProvider();
                 (platformArr as string[]).forEach((key) => {
@@ -100,18 +102,75 @@
             utils.hideLoad();
         }
 
+        // 浏览器支付（app内使用这种解决方案）
+        wxH5Pay () {
+            // alert('https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb');
+            // plus.webview.create('https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb');
+            const str = utils.serialize({
+                prepay_id: 'wx191526400451970269c41f3ab281230000',
+                package: 'prepay_id=wx191526400451970269c41f3ab281230000',
+                redirect_url: encodeURIComponent('http://apptest.gdsnkzxyy.cn/pages/wv')
+            });
+            const url = `https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?${str}`;
+            utils.link(`/pages/wv?url=${url}`);
+        }
+
         async selPay (type: 'alipay' | 'wxpay') {
             // 请求接口，得到相应的数据
 
             try {
                 // 调起支付
-                await this.requestPayment(type, {});
+                // await this.requestPayment(type, {});
+                const params = this.params;
+                params.payType = type === 'wxpay' ? 7 : 2;
+                const res = await this.request(params, {isLoad: true});
+                console.log(res);
+                // type === 'wxpay' && this.wxH5Pay();
 
                 this.show = false;
             } catch (error) {
                 console.error(error);
                 utils.toast('支付失败');
             }
+        }
+
+        // 微信内支付
+        async wxJsPay () {
+            try {
+                const params = this.params;
+                params.payType = 5;
+                const res = await this.request(params, {isLoad: true});
+
+                utils.showLoad('请稍后');
+                const prePaySign = res.data.prePaySign;
+
+                await wxObj.cChooseWXPayPromise2({
+                    appId: prePaySign.appId,
+                    timeStamp: prePaySign.timeStamp,
+                    nonceStr: prePaySign.nonceStr,
+                    package: prePaySign.package,
+                    signType: prePaySign.signType,
+                    paySign: prePaySign.paySign,
+                });
+
+                utils.hideLoad();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        handleData () {}
+
+        async startPay (data: IOBJ) {
+            this.params = utils.jsCopyObj(data);
+
+            // #ifdef H5
+            this.wxJsPay();
+            // #endif
+
+            // #ifdef APP-PLUS
+            this.appStart();
+            // #endif
         }
 
         created () {}

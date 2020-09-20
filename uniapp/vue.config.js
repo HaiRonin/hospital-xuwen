@@ -8,7 +8,22 @@ module.exports = {
         // hot: true,
         // disableHostCheck: true,
         port: 8090,
-        proxy: 'http://120.76.246.196'
+        // proxy: 'http://120.76.246.196',
+        // proxy: 'http://nktest.free.idcfengye.com',
+        proxy: {
+            '/test': {
+                target: 'http://120.76.246.196',
+                pathRewrite: {
+                    '^/test': ''
+                }
+            },
+            '/yh': {
+                target: 'http://nktest.free.idcfengye.com',
+                pathRewrite: {
+                    '^/yh': ''
+                }
+            }
+        }
     },
     // 重写原配置
     configureWebpack: (config) => {

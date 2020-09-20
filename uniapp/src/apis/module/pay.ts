@@ -1,4 +1,6 @@
 
+// payType 2-支付宝   5-公众号  7-H5  （暂定微信ap）
+
 // 新增预约挂号的记录
 export const orderOutpatientPayment: TApi = (params = {}, options = {}) => {
     const url = '/his/order/outpatientPayment';

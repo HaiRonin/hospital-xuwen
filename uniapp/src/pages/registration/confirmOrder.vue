@@ -37,7 +37,7 @@
         <view class="fake-view"></view>
         <view class="bottom-btn" @tap="commit">确认支付</view>
 
-        <pay ref="pay"/>
+        <pay ref="pay" :request="payRequest"/>
     </view>
 </template>
 
@@ -56,8 +56,8 @@
         @Ref('pay') readonly pay!: IOBJ;
 
         params: IOBJ = {};
-
         options: IOBJ = {};
+        payRequest = orderOutpatientPayment;
 
         upDataPatient (item: IOBJ) {
             const params = this.params;
@@ -71,20 +71,17 @@
             utils.link('/pages/outpatient/index?sel=1');
         }
 
-        async h5Pay (data: IOBJ) {
-            await orderOutpatientPayment(data);
-        }
-
         async commit () {
             const data = utils.jsCopyObj(this.params);
             data.openId = utils.getStorage('openId');
+
             if (utils.zEmpty(data.patientNo)) {
                 utils.toast('请选择就诊人');
                 return;
             }
-            // console.log(data);
-            this.h5Pay(data);
-            // this.pay.startPay(data);
+            this.pay.startPay(data);
+            // const res = await orderOutpatientPayment(data, {isLoad: true});
+            // this.pay.startPay(res.data);
         }
 
         onLoad (options: IOBJ) {

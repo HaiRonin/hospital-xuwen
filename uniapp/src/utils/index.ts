@@ -138,6 +138,7 @@ export const toFixed: TToFixed = (val, toNum = false, retain = 2) => {
 export const link: TLink = (() => {
     const linkMethods: TLinkMethods[] = ['navigateTo', 'redirectTo', 'reLaunch', 'switchTab', 'navigateBack'];
     const linkFlag = false;
+    const refreshUrl = globalConfig.refreshUrl;
 
     return function (objOrStr, index = 0) {
         // if (linkFlag) {
@@ -170,6 +171,13 @@ export const link: TLink = (() => {
                 delta: _delta,
                 success () {
                     rel();
+
+                    // #ifdef H5
+                    if (zEmpty(_url)) return;
+                    const u = _url as string;
+                    const r = refreshUrl.find(str => ~u.indexOf(str));
+                    r && window.location.reload();
+                    // #endif
                 },
                 fail (err: IOBJ) {
                     console.error('````````````跳转出错`````````````');

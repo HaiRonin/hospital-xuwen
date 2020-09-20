@@ -9,6 +9,11 @@ export const homeUrl = [
     '/pages/home/my',
 ];
 
+// 进入这几个路径需要刷新
+export const refreshUrl = [
+    '/pages/registration/confirmOrder',
+];
+
 // 强制登录，白名单
 export const whiteList = [
     '/pages/login',

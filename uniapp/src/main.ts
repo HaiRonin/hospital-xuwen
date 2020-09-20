@@ -38,6 +38,7 @@ new App({
 
 // #ifdef H5
 if (process.env.NODE_ENV === 'development') {
+    utils.setStorage('openId', 'oKXcuv5uoQ2Jj10xf0-JCnhG8I9o');
     (global as any).globalConfig = globalConfig;
     (global as any).utils = utils;
     (global as any).ajax = ajax;

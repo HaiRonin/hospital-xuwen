@@ -20,7 +20,7 @@
                 <view class="issue" @tap="isReg = !isReg;">{{isReg ? '账号密码登录' : '前往注册'}}</view>
             </view>
         </view>
-        <view class="buttom">
+        <!-- <view class="buttom">
             <view class="loginType flex-box justify-center">
                 <view class="wechat item">
                     <view class="icon">
@@ -28,7 +28,7 @@
                     </view>微信
                 </view>
             </view>
-        </view>
+        </view> -->
     </view>
 </template>
 

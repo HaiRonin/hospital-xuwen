@@ -114,6 +114,7 @@
                 socialsecurityNO: ''
             });
 
+            // utils.link(`/pages/confirmOrder?${strData}`);
             utils.link(`/pages/registration/confirmOrder?${strData}`);
         }
 
