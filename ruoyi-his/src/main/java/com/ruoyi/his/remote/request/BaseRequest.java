@@ -16,6 +16,9 @@ public class BaseRequest implements Serializable {
      */
     private String synKey = "";
 
+    /** 支付类型 */
+    private String payType="";
+
     public String getSynUserName() {
         return synUserName;
     }
@@ -31,4 +34,13 @@ public class BaseRequest implements Serializable {
     public void setSynKey(String synKey) {
         this.synKey = synKey;
     }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
 }

@@ -14,6 +14,7 @@ import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.HisBaseEntity;
 import com.ruoyi.his.remote.request.BaseRequest;
 import com.ruoyi.his.remote.response.BaseResponse;
+import com.ruoyi.pay.constant.HisPayType;
 import com.ruoyi.pay.service.AbstractPayService;
 import com.ruoyi.pay.service.PayService;
 import com.ruoyi.pay.service.WeChatPayServiceImp;
@@ -186,6 +187,8 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         checkData(outTradeNo);
         //his接口对象构造
         T t = buildRequestData(outTradeNo);
+        //付款方式转换
+        payTypeTransform(t);
         //his接口请求下单
         String response = calltHisService(JSON.toJSONString(t));
         //返回结果数据转换本地对象
@@ -283,5 +286,16 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         hisPayOrder.setOutTradeNo(d.getOutTradeNo());
         hisPayOrder.setTransactionId(d.getTransactionId());
         return hisPayOrder;
+    }
+
+    /***
+     * 因为前端区分了app/h5/jsAPI的支付方式
+     * @param t
+     */
+    private void payTypeTransform(T t){
+        if(StringUtils.equalsAny(t.getPayType(),HisPayType.WECHAT.getKey(),
+                HisPayType.WXAPP.getKey(),HisPayType.WXH5.getKey())){
+            t.setPayType(HisPayType.WECHAT.getKey());
+        }
     }
 }

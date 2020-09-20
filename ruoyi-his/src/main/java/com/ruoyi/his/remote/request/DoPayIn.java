@@ -44,8 +44,7 @@ public class DoPayIn extends BaseRequest implements Serializable {
      */
     private String userNo="";
 
-    /** 支付类型 */
-    private String payType="";
+
 
     /***
      *支付流水号
@@ -134,13 +133,6 @@ public class DoPayIn extends BaseRequest implements Serializable {
         this.userNo = userNo;
     }
 
-    public String getPayType() {
-        return payType;
-    }
-
-    public void setPayType(String payType) {
-        this.payType = payType;
-    }
 
     public String getPayNo() {
         return payNo;

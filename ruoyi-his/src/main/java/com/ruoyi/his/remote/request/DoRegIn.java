@@ -21,8 +21,6 @@ public class DoRegIn extends BaseRequest implements Serializable {
 
     private Integer sourceTimeType;
 
-    private Integer payType;
-
     private String payCardNo ="";
 
     private String payNo ="";
@@ -61,9 +59,6 @@ public class DoRegIn extends BaseRequest implements Serializable {
         return sourceTimeType;
     }
 
-    public int getPayType() {
-        return payType;
-    }
 
     public String getPayNo() {
         return payNo;
@@ -103,10 +98,6 @@ public class DoRegIn extends BaseRequest implements Serializable {
 
     public void setSourceTimeType(Integer sourceTimeType) {
         this.sourceTimeType = sourceTimeType;
-    }
-
-    public void setPayType(Integer payType) {
-        this.payType = payType;
     }
 
     public void setPayNo(String payNo) {

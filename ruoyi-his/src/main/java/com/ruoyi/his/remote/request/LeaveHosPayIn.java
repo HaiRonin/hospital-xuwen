@@ -10,10 +10,6 @@ public class LeaveHosPayIn extends BaseRequest implements Serializable {
      */
     private String inHosNo="";
     /***
-     * 支付类型
-     */
-    private Integer payType;
-    /***
      * 支付交易流水号
      */
     private String payRecord="";
@@ -65,14 +61,6 @@ public class LeaveHosPayIn extends BaseRequest implements Serializable {
 
     public void setInHosNo(String inHosNo) {
         this.inHosNo = inHosNo;
-    }
-
-    public Integer getPayType() {
-        return payType;
-    }
-
-    public void setPayType(Integer payType) {
-        this.payType = payType;
     }
 
     public String getPayRecord() {

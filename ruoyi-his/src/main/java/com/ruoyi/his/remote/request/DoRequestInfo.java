@@ -21,8 +21,6 @@ public class DoRequestInfo implements Serializable {
 
     private Integer sourceTimeType;
 
-    private Integer payType;
-
     private String payCardNo ="";
 
     private String payNo ="";
@@ -59,10 +57,6 @@ public class DoRequestInfo implements Serializable {
 
     public int getSourceTimeType() {
         return sourceTimeType;
-    }
-
-    public int getPayType() {
-        return payType;
     }
 
     public String getPayNo() {
@@ -103,10 +97,6 @@ public class DoRequestInfo implements Serializable {
 
     public void setSourceTimeType(Integer sourceTimeType) {
         this.sourceTimeType = sourceTimeType;
-    }
-
-    public void setPayType(Integer payType) {
-        this.payType = payType;
     }
 
     public void setPayNo(String payNo) {
