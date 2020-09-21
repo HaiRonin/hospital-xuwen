@@ -11,6 +11,7 @@ import com.ruoyi.common.enums.HisPayType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.pay.service.AbstractPayService;
+import com.ruoyi.pay.service.AliPayServiceImp;
 import com.ruoyi.pay.service.PayService;
 import com.ruoyi.pay.utils.*;
 import com.ruoyi.pay.config.AlipayConfig;
@@ -46,6 +47,9 @@ import java.util.Map;
 public class PayThirdApi extends BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(PayThirdApi.class);
+
+    @Autowired
+    private AliPayServiceImp aliPayServiceImp;
 
     /**
      * 订单请求
@@ -135,27 +139,43 @@ public class PayThirdApi extends BaseController {
      * @param request
      * @return
      */
+    @Log(title = "支付宝支付回调", businessType = BusinessType.HIS)
+    @ApiOperation("支付宝支付回调")
     @ResponseBody
     @RequestMapping(value = "/notify_alipay", method = RequestMethod.POST)
     public String alipayCallBackNotify(HttpServletRequest request) {
         try {
-            Map<String, String> map = WeixinMessageUtil.parseXml(request);
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调开始>>>>>>>>>>>>>>>>>>>>>");
+            Map<String, String> result = aliPayServiceImp.appAliPayNotify(request);
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调解析>>>>>>>>>>>>>>>>>>>>>" + result);
 
-            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调解析结果=" + map);
+            String status = result.get("status");
+            if ("SUCCESS".equals(status)) {
+                // 交易订单号
+                String orderId = result.get("trade_no");
+                // 系统订单号
+                String transaction_id = result.get("out_trade_no");
 
-            // 交易订单号
-            String trade_no = request.getParameter("trade_no");
-            // 系统订单号
-            String orderId = request.getParameter("out_trade_no");
-
-            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调订单ID=" + LOG);
+                OrderPayResultBO bo = new OrderPayResultBO();
+                bo.setOrderType(HisPayType.ALI.getKey());
+                bo.setOutTradeNo(orderId);
+                bo.setTransactionId(transaction_id);
+                bo.setPaymentResults(true);
+                AjaxResult callResult = hisOrderApi.orderPayCallBack(bo);
+                LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调下单结果：" + JSON.toJSONString(result));
+                if (callResult.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
+                    return "success";
+                } else {
+                    return "fail";
+                }
+            }
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调结束");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "fail";
         }
 
-        return "success";
+        return "fail";
     }
 
     /**
