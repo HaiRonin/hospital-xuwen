@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "his.aliapp")
 public class AlipayConfig {
 
+    public static String appid;
+
     public static String partner;
 
     public static String seller_account;
@@ -22,7 +24,7 @@ public class AlipayConfig {
 
     public static String baseUrl;
 
-    public static String sign_type = "RSA";
+    public static String sign_type = "RSA2";
 
     public static String input_charset = "utf-8";
 
@@ -32,6 +34,15 @@ public class AlipayConfig {
 
     public void setPartner(String partner) {
         this.partner = partner;
+    }
+
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
     }
 
     public String getSeller_account() {
