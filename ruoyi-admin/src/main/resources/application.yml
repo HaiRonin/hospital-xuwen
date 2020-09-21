@@ -188,6 +188,8 @@ his:
     #支付地址
     unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
   aliapp:
+    #应用Id
+    appid: 2017031306201007
     #合作身份者ID
     partner: 2088521631668130
     #商户的支付宝账号
