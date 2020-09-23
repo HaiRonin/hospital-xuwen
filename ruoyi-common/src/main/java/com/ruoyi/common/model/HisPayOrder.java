@@ -38,6 +38,11 @@ public class HisPayOrder implements Serializable {
      */
     private String openId;
 
+    /**
+     * H5支付重定向地址
+     */
+    private String redirectUrl;
+
     public String getPayType() {
         return payType;
     }
@@ -85,5 +90,13 @@ public class HisPayOrder implements Serializable {
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

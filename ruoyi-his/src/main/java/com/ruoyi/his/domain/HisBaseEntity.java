@@ -82,6 +82,10 @@ public class HisBaseEntity extends BaseEntity {
     @ApiModelProperty(value = "用户OPENID")
     private String openId;
 
+    //H5支付重定向地址
+    @ApiModelProperty(value = "H5支付重定向地址")
+    private String redirectUrl;
+
     public String getSuccessfulPayment() {
         return successfulPayment;
     }
@@ -160,5 +164,13 @@ public class HisBaseEntity extends BaseEntity {
 
     public void setPrePaySign(Map<String, String> prePaySign) {
         this.prePaySign = prePaySign;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

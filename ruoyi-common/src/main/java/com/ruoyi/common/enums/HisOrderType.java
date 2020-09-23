@@ -2,12 +2,11 @@ package com.ruoyi.common.enums;
 
 /**
  * His业务操作类型
- * 
+ *
  * @author ruoyi
  */
-public enum HisOrderType
-{
-    DOREG("doreg", "预约挂号" ),
+public enum HisOrderType {
+    DOREG("doreg", "预约挂号"),
     DOPAY("dopay", "缴费支付"),
     INPATIENTPAYMENT("inpatientpayment", "住院押金补缴"),
     LEAVEHOSPAY("leavehospay", "离院结算"),;
@@ -15,8 +14,8 @@ public enum HisOrderType
     private String desc;
 
     HisOrderType(String key, String desc) {
-        this.key=key;
-        this.desc=desc;
+        this.key = key;
+        this.desc = desc;
     }
 
     public static HisOrderType getByKey(String key) {
@@ -34,5 +33,25 @@ public enum HisOrderType
             return type.desc;
         }
         return "";
+    }
+
+    /**
+     * 根据订单前缀转换订单类型
+     *
+     * @param orderId
+     * @return
+     */
+    public static String tranferTypeByOrderPrex(String orderId) {
+        String orderType = "";
+        if (orderId.startsWith("LH")) {
+            orderType = LEAVEHOSPAY.key;
+        } else if (orderId.startsWith("RE")) {
+            orderType = DOREG.key;
+        } else if (orderId.startsWith("DO")) {
+            orderType = DOPAY.key;
+        } else if (orderId.startsWith("DP")) {
+            orderType = INPATIENTPAYMENT.key;
+        }
+        return orderType;
     }
 }

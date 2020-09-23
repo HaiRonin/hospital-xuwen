@@ -30,7 +30,7 @@ public class WxH5PayServiceImp extends AbstractPayService {
 
         LOG.info(">>>>>>>>>>>>>>>>>>微信支付payUrl=" + payUrl);
 
-        wxPayParams.put("payUrl", payUrl + "&redirect_url=" + WechatConfig.baseUrl);
+        wxPayParams.put("payUrl", payUrl + "&redirect_url=" + hisPayOrder.getRedirectUrl());
         return wxPayParams;
     }
 
