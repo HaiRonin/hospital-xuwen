@@ -96,7 +96,7 @@ public class HisTestApi extends BaseController
     @ResponseBody
     @GetMapping(value = "/payedNotify")
     public AjaxResult payedNotify(@RequestParam("orderType") String orderType,@RequestParam("isSucceed") boolean isSucceed,
-                                  @RequestParam("outTradeNo") String outTradeNo,@RequestParam("outTradeNo") String transactionId){
+                                  @RequestParam("outTradeNo") String outTradeNo,@RequestParam("transactionId") String transactionId){
         BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.getTypeByKey(orderType)).payedNotify(isSucceed,outTradeNo,transactionId);
         return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
     }
