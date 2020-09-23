@@ -119,9 +119,9 @@ public class PayThirdApi extends BaseController {
             bo.setTransactionId(transaction_id);
             bo.setPaymentResults(true);
             LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack调用入参：" + JSON.toJSONString(bo));
-            AjaxResult result = hisOrderApi.orderPayCallBack(bo);
-            LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack结果：" + JSON.toJSONString(result));
-            if (result.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
+            AjaxResult callResult = hisOrderApi.orderPayCallBack(bo);
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack结果：" + JSON.toJSONString(callResult));
+            if (Integer.parseInt(callResult.get(AjaxResult.CODE_TAG).toString()) == AjaxResult.Type.SUCCESS.value()) {
                 return "SUCCESS";
             } else {
                 return "FAIL";
@@ -162,8 +162,8 @@ public class PayThirdApi extends BaseController {
                 bo.setPaymentResults(true);
                 LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用入参：" + JSON.toJSONString(bo));
                 AjaxResult callResult = hisOrderApi.orderPayCallBack(bo);
-                LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用结果：" + JSON.toJSONString(result));
-                if (callResult.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
+                LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用结果：" + JSON.toJSONString(callResult));
+                if (Integer.parseInt(callResult.get(AjaxResult.CODE_TAG).toString()) == AjaxResult.Type.SUCCESS.value()) {
                     return "success";
                 } else {
                     return "fail";
