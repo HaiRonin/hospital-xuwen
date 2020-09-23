@@ -31,7 +31,7 @@ server:
 # 日志配置
 logging:
   level:
-    com.ruoyi: debug
+    com.ruoyi: info
     org.springframework: warn
 
 # 用户配置
@@ -170,6 +170,8 @@ his:
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     #支付地址
     unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+    #退款证书
+    refundCert: D:\apiclient_cert.p12
   wxapp:
     #AppID
     appId: wx50617d578b93801d
@@ -186,6 +188,8 @@ his:
     #支付地址
     unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
   aliapp:
+    #应用Id
+    appid: 2017031306201007
     #合作身份者ID
     partner: 2088521631668130
     #商户的支付宝账号

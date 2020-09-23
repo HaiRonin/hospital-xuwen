@@ -14,6 +14,12 @@ public class DoPayOut extends BaseResponse{
 
     private List<ResultmessageBean> resultmessage;
 
+    public DoPayOut(String resultCode, String resultMsg, String checkInfo, List<ResultmessageBean> resultmessage) {
+        super(resultCode, resultMsg);
+        this.checkInfo = checkInfo;
+        this.resultmessage = resultmessage;
+    }
+
     public DoPayOut(String resultCode, String resultMsg) {
         super(resultCode, resultMsg);
     }

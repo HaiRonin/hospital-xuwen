@@ -11,9 +11,11 @@ import com.ruoyi.his.remote.request.DoRegIn;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDoregInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +66,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         //1,上午 2，中午3 下午 4，晚上 5，凌晨
         doRegInInfo.setSourceTimeType(doregInfoNew.getSourceTimeType());
         //1,银联，2支付宝 3，现场支付 4、医保账户，5、微信，6、云医院微信，7、云医院支付宝，8、诊疗卡
-        doRegInInfo.setPayType(Integer.parseInt(doregInfoNew.getPayType()));
+        doRegInInfo.setPayType(doregInfoNew.getPayType());
         //支付流水号
         doRegInInfo.setPayNo(doregInfoNew.getPayNo());
         //支付金额
@@ -75,7 +77,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
 
     @Override
     protected DoRegOut transResult(String result) {
-        return JSON.toJavaObject(JSON.parseObject(result), DoRegOut.class);
+        return JSON.parseObject(result, DoRegOut.class);
     }
 
 
@@ -96,11 +98,25 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         return regOut.isOk()?BaseResponse.success():BaseResponse.fail("操作失败，支付金额稍后将会原路返回");
     }
 
+    /***
+     * 下单失败+退款失败
+     * @return
+     */
     @Override
     protected List<DoregInfo> getRefundOrderList() {
+        List<DoregInfo> refundList = new ArrayList<>();
         DoregInfo query = new DoregInfo();
         query.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
-        List<DoregInfo> lstDopayInfo =doregInfoService.selectDoregInfoList(query);
-        return lstDopayInfo;
+        List<DoregInfo> submitFail =doregInfoService.selectDoregInfoList(query);
+        if(CollectionUtils.isNotEmpty(submitFail)){
+            refundList.addAll(submitFail);
+        }
+        query = new DoregInfo();
+        query.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
+        List<DoregInfo> refundTodo =doregInfoService.selectDoregInfoList(query);
+        if(CollectionUtils.isNotEmpty(refundTodo)){
+            refundList.addAll(refundTodo);
+        }
+        return refundList;
     }
 }

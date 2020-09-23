@@ -9,6 +9,7 @@ import com.ruoyi.his.domain.DepositPayment;
 import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.remote.request.InPatientPaymentIn;
 import com.ruoyi.his.remote.response.BaseResponse;
+import com.ruoyi.his.remote.response.DoPayOut;
 import com.ruoyi.his.remote.response.InPatientPaymentOut;
 import com.ruoyi.his.service.IDepositPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
         DepositPayment depositPayment = getOrderDetail(outTradeNo);
         InPatientPaymentIn inPatientPaymentIn = new InPatientPaymentIn();
         inPatientPaymentIn.setInHosNo(depositPayment.getInHosNo());
-        inPatientPaymentIn.setPayType(Integer.parseInt(depositPayment.getPayType()));
+        inPatientPaymentIn.setPayType(depositPayment.getPayType());
         inPatientPaymentIn.setPayRecord(depositPayment.getTransactionId());
         inPatientPaymentIn.setPayMoney(depositPayment.getPayMoney().doubleValue());
         inPatientPaymentIn.setBedNo(depositPayment.getBedNo());
@@ -61,7 +62,7 @@ public class InPatientPaymentHisServiceHander extends AbstractHisServiceHandler<
 
     @Override
     protected InPatientPaymentOut transResult(String result) {
-        return JSON.toJavaObject(JSON.parseObject(result), InPatientPaymentOut.class);
+        return JSON.parseObject(result, InPatientPaymentOut.class);
     }
 
 

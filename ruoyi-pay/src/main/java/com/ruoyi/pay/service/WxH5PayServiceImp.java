@@ -30,7 +30,7 @@ public class WxH5PayServiceImp extends AbstractPayService {
 
         LOG.info(">>>>>>>>>>>>>>>>>>微信支付payUrl=" + payUrl);
 
-        wxPayParams.put("payUrl", payUrl + "&redirect_url=" + WechatConfig.baseUrl);
+        wxPayParams.put("payUrl", payUrl + "&redirect_url=" + hisPayOrder.getRedirectUrl());
         return wxPayParams;
     }
 
@@ -41,6 +41,6 @@ public class WxH5PayServiceImp extends AbstractPayService {
 
     @Override
     public boolean refund(HisPayOrder hisPayOrder) {
-        return false;
+        return WeixinH5PayUtils.refund(hisPayOrder.getTransactionId(), hisPayOrder.getOutTradeNo(), hisPayOrder.getAmount());
     }
 }

@@ -236,6 +236,10 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
        }
         list.stream().forEach(item->{
            //执行退款操作
+            BaseResponse baseResponse = callRefund(item.getOutTradeNo());
+            logger.info("autoScanningRefund.callRefund.order={}.OutTradeNo={}，baseResponse={}",
+                    getBusinessType().getDesc(),item.getOutTradeNo(),baseResponse.isOk());
+            refundNotify(baseResponse.isOk(),item.getOutTradeNo(),item.getTransactionId());
         });
         return true;
     }

@@ -2,6 +2,8 @@ package com.ruoyi.his.service;
 
 import java.util.List;
 import com.ruoyi.his.domain.DoregInfo;
+import com.ruoyi.his.remote.request.DoRegCancel;
+import com.ruoyi.his.remote.response.BaseResponse;
 
 /**
  * 预约挂号Service接口
@@ -66,4 +68,20 @@ public interface IDoregInfoService
      * @return 预约挂号
      */
     public DoregInfo getDetailByOutTradeNo(String outTradeNo);
+
+    /***
+     * 根据支付交易流水号查询记录
+     * @param transactionId
+     * @return
+     */
+    public DoregInfo getDetailByTransactionId(String transactionId);
+
+
+    public DoregInfo getDetailBySourceMark(String sourceMark);
+    /***
+     * 取消预约
+     * @param doRegCancel
+     * @return
+     */
+    public BaseResponse doRegCancel(DoRegCancel doRegCancel);
 }

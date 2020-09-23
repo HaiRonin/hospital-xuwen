@@ -1,6 +1,18 @@
 package com.ruoyi.pay.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.ruoyi.common.utils.uuid.IdUtils;
+import com.ruoyi.pay.config.WechatConfig;
 import com.ruoyi.pay.config.WxAppConfig;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -8,11 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import javax.net.ssl.SSLContext;
+import java.io.*;
+import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.URL;
+import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.util.*;
 
@@ -302,5 +315,52 @@ public class WeixinH5PayUtils {
 
     public static void main(String[] args) {
         System.out.println(createNoncestr(3));
+    }
+
+    /**
+     * 退款
+     *
+     * @param transactionId
+     * @param refundAmount
+     * @return
+     */
+    public static boolean refund(String transactionId, String outRefundNo, BigDecimal refundAmount) {
+        try {
+            long amount = refundAmount.multiply(BigDecimal.valueOf(100)).longValue(); //退款金额以分为单位
+            Map<String, String> sign = new HashMap<String, String>();
+
+            sign.put("appid", WechatConfig.appId);// 公众号标识,1
+            sign.put("mch_id", WechatConfig.mchid);// 商户编号
+            sign.put("nonce_str", createNoncestr());// 随机字符串
+            sign.put("out_refund_no", outRefundNo);// 订单编号
+            sign.put("refund_fee", String.valueOf(amount));// 提款金额
+            sign.put("total_fee", String.valueOf(amount));// 提款金额
+            sign.put("transaction_id", transactionId);// 微信退款单号
+            sign.put("sign", WxSignCreate(sign));// 签名
+            String xmlInfo = wxXml(sign);// 参数转化xml
+            String refundReturn = WeixinRefundClientCustomSSL.doRefund(WechatConfig.refundUrl, xmlInfo);
+            LOG.info(">>>>>>>>>>>>>>>>>>>发起退款结果：" + refundReturn);
+            Map<String, String> refundResult = parseXml(string2Inputstream(refundReturn));
+            LOG.info(">>>>>>>>>>>>>>>>>>>发起退款结果解析结果：" + JSON.toJSONString(refundReturn));
+            if ("SUCCESS".equals(refundResult.get("return_code"))) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.error(">>>>>>微信退款异常:" + e.getMessage(), e);
+        }
+        return false;
+    }
+
+    /**
+     * String转流
+     *
+     * @param str
+     * @return
+     */
+    private static InputStream string2Inputstream(String str) {
+        return new ByteArrayInputStream(str.getBytes());
     }
 }

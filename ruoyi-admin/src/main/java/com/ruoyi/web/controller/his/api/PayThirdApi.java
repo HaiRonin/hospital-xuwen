@@ -11,6 +11,7 @@ import com.ruoyi.common.enums.HisPayType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.pay.service.AbstractPayService;
+import com.ruoyi.pay.service.AliPayServiceImp;
 import com.ruoyi.pay.service.PayService;
 import com.ruoyi.pay.utils.*;
 import com.ruoyi.pay.config.AlipayConfig;
@@ -46,6 +47,9 @@ import java.util.Map;
 public class PayThirdApi extends BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(PayThirdApi.class);
+
+    @Autowired
+    private AliPayServiceImp aliPayServiceImp;
 
     /**
      * 订单请求
@@ -106,23 +110,22 @@ public class PayThirdApi extends BaseController {
             // 微信交易订单号
             String transaction_id = map.get("transaction_id");
             // 系统订单号
-            String orderId = map.get("out_trade_no");
-            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调out_trade_no=" + orderId + ",transaction_id=" + transaction_id);
+            String out_trade_no = map.get("out_trade_no");
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调out_trade_no=" + out_trade_no + ",transaction_id=" + transaction_id);
 
             OrderPayResultBO bo = new OrderPayResultBO();
-            bo.setOrderType(HisPayType.WECHAT.getKey());
-            bo.setOutTradeNo(orderId);
+            bo.setOrderType(HisOrderType.tranferTypeByOrderPrex(out_trade_no));
+            bo.setOutTradeNo(out_trade_no);
             bo.setTransactionId(transaction_id);
             bo.setPaymentResults(true);
-            AjaxResult result = hisOrderApi.orderPayCallBack(bo);
-            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调下单结果：" + JSON.toJSONString(result));
-            if(result.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack调用入参：" + JSON.toJSONString(bo));
+            AjaxResult callResult = hisOrderApi.orderPayCallBack(bo);
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack结果：" + JSON.toJSONString(callResult));
+            if (Integer.parseInt(callResult.get(AjaxResult.CODE_TAG).toString()) == AjaxResult.Type.SUCCESS.value()) {
                 return "SUCCESS";
             } else {
                 return "FAIL";
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
             return "FAIL";
@@ -135,26 +138,60 @@ public class PayThirdApi extends BaseController {
      * @param request
      * @return
      */
+    @Log(title = "支付宝支付回调", businessType = BusinessType.HIS)
+    @ApiOperation("支付宝支付回调")
     @ResponseBody
     @RequestMapping(value = "/notify_alipay", method = RequestMethod.POST)
     public String alipayCallBackNotify(HttpServletRequest request) {
         try {
-            Map<String, String> map = WeixinMessageUtil.parseXml(request);
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调开始>>>>>>>>>>>>>>>>>>>>>");
+            Map<String, String> result = aliPayServiceImp.appAliPayNotify(request);
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调解析>>>>>>>>>>>>>>>>>>>>>" + result);
 
-            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调解析结果=" + map);
+            String status = result.get("status");
+            if ("SUCCESS".equals(status)) {
+                // 交易订单号
+                String trade_no = result.get("trade_no");
+                // 系统订单号
+                String out_trade_no = result.get("out_trade_no");
 
-            // 交易订单号
-            String trade_no = request.getParameter("trade_no");
-            // 系统订单号
-            String orderId = request.getParameter("out_trade_no");
-
-            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调订单ID=" + LOG);
+                OrderPayResultBO bo = new OrderPayResultBO();
+                bo.setOrderType(HisOrderType.tranferTypeByOrderPrex(out_trade_no));
+                bo.setOutTradeNo(out_trade_no);
+                bo.setTransactionId(trade_no);
+                bo.setPaymentResults(true);
+                LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用入参：" + JSON.toJSONString(bo));
+                AjaxResult callResult = hisOrderApi.orderPayCallBack(bo);
+                LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用结果：" + JSON.toJSONString(callResult));
+                if (Integer.parseInt(callResult.get(AjaxResult.CODE_TAG).toString()) == AjaxResult.Type.SUCCESS.value()) {
+                    return "success";
+                } else {
+                    return "fail";
+                }
+            }
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调结束");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "fail";
         }
 
-        return "success";
+        return "fail";
+    }
+
+    /**
+     * 微信退款
+     *
+     * @return
+     */
+    @Log(title = "微信退款", businessType = BusinessType.HIS)
+    @ApiOperation("微信退款")
+    @ResponseBody
+    @RequestMapping(value = "/refund_weixin", method = RequestMethod.POST)
+    public AjaxResult weixinRefund(HisPayOrder hisPayOrder) {
+        PayService payService = AbstractPayService.servicesInstance(hisPayOrder.getPayType());
+        boolean result = payService.refund(hisPayOrder);
+
+        Map<String, String> map = new HashMap<String, String>();
+        return AjaxResult.success("微信退款完成", result);
     }
 }

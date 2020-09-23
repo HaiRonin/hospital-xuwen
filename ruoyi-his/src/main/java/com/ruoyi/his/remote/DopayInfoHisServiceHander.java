@@ -8,6 +8,7 @@ import com.ruoyi.his.domain.DopayInfo;
 import com.ruoyi.his.remote.request.DoPayIn;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoPayOut;
+import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDopayInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,7 +80,7 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
 
     @Override
     protected DoPayOut transResult(String result) {
-        return JSON.toJavaObject(JSON.parseObject(result), DoPayOut.class);
+        return JSON.parseObject(result, DoPayOut.class);
     }
 
 

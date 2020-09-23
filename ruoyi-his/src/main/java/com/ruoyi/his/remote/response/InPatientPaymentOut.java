@@ -28,6 +28,15 @@ public class InPatientPaymentOut extends BaseResponse implements Serializable {
      */
     private String medicalTypeNmae;
 
+    public InPatientPaymentOut(String resultCode, String resultMsg, String patientName, String departmentName, String bedNo, double depositMoney, String medicalTypeNmae) {
+        super(resultCode, resultMsg);
+        this.patientName = patientName;
+        this.departmentName = departmentName;
+        this.bedNo = bedNo;
+        this.depositMoney = depositMoney;
+        this.medicalTypeNmae = medicalTypeNmae;
+    }
+
     public InPatientPaymentOut(String resultCode, String resultMsg) {
         super(resultCode, resultMsg);
     }
