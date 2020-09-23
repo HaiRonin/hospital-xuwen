@@ -5,6 +5,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.DopayInfo;
@@ -161,6 +162,9 @@ public class DoregInfoServiceImpl implements IDoregInfoService
     @Override
     public BaseResponse doRegCancel(DoRegCancel doRegCancel) {
         //数据检查
+        if(StringUtils.isEmpty(doRegCancel.getSourceMark())){
+            throw new HisException(String.format("取消预约失败，号源不存在"));
+        }
         DoregInfo doregInfo = getDetailBySourceMark(doRegCancel.getSourceMark());
         if(null == doregInfo){
             throw new HisException(String.format("取消预约失败，订单不存在"));
