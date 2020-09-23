@@ -140,10 +140,28 @@ public class DoregInfoServiceImpl implements IDoregInfoService
     }
 
 
+    /**
+     * 查询预约挂号
+     *
+     * @param sourceMark 预约号码
+     * @return 预约挂号
+     */
+    @Override
+    public DoregInfo getDetailBySourceMark(String sourceMark) {
+        DoregInfo query = new DoregInfo();
+        query.setSourceMark(sourceMark);
+        List<DoregInfo> list = selectDoregInfoList(query);
+        if(CollectionUtils.isEmpty(list)){
+            return null;
+        }
+        return list.stream().findFirst().get();
+    }
+
+
     @Override
     public BaseResponse doRegCancel(DoRegCancel doRegCancel) {
         //数据检查
-        DoregInfo doregInfo = getDetailByTransactionId(doRegCancel.getPayNo());
+        DoregInfo doregInfo = getDetailBySourceMark(doRegCancel.getSourceMark());
         if(null == doregInfo){
             throw new HisException(String.format("取消预约失败，订单不存在"));
         }

@@ -10,6 +10,7 @@ import com.ruoyi.his.domain.DepositPayment;
 import com.ruoyi.his.domain.LeaveHosPay;
 import com.ruoyi.his.remote.request.LeaveHosPayIn;
 import com.ruoyi.his.remote.response.BaseResponse;
+import com.ruoyi.his.remote.response.InPatientPaymentOut;
 import com.ruoyi.his.remote.response.LeaveHosPayOut;
 import com.ruoyi.his.service.ILeaveHosPayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class LeaveHosPayHisServiceHander extends AbstractHisServiceHandler<Leave
 
     @Override
     protected LeaveHosPayOut transResult(String result) {
-        return JSON.toJavaObject(JSON.parseObject(result), LeaveHosPayOut.class);
+        return JSON.parseObject(result, LeaveHosPayOut.class);
     }
 
 

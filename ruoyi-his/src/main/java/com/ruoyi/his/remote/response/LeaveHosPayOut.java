@@ -42,6 +42,19 @@ public class LeaveHosPayOut extends BaseResponse implements Serializable {
      */
     private String reminder;
 
+    public LeaveHosPayOut(String resultCode, String resultMsg, String clearingNO, String patientName, Integer patientSex, String inHosDate, int inHosState, String bedNo, String departmentorganId, String departmentName, String reminder) {
+        super(resultCode, resultMsg);
+        this.clearingNO = clearingNO;
+        this.patientName = patientName;
+        this.patientSex = patientSex;
+        this.inHosDate = inHosDate;
+        this.inHosState = inHosState;
+        this.bedNo = bedNo;
+        this.departmentorganId = departmentorganId;
+        this.departmentName = departmentName;
+        this.reminder = reminder;
+    }
+
     public LeaveHosPayOut(String resultCode, String resultMsg) {
         super(resultCode, resultMsg);
     }

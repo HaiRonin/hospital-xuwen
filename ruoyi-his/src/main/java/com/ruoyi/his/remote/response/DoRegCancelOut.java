@@ -24,6 +24,16 @@ public class DoRegCancelOut extends BaseResponse{
         super(resultCode, resultMsg);
     }
 
+    public DoRegCancelOut(String resultCode, String resultMsg, String departmentorganId, String payNo, String payType, String regDate, String regStatus, String sourceTimeType) {
+        super(resultCode, resultMsg);
+        this.departmentorganId = departmentorganId;
+        this.payNo = payNo;
+        this.payType = payType;
+        this.regDate = regDate;
+        this.regStatus = regStatus;
+        this.sourceTimeType = sourceTimeType;
+    }
+
     public String getDepartmentorganId() {
         return departmentorganId;
     }

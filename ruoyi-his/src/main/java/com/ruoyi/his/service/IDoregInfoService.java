@@ -75,6 +75,9 @@ public interface IDoregInfoService
      * @return
      */
     public DoregInfo getDetailByTransactionId(String transactionId);
+
+
+    public DoregInfo getDetailBySourceMark(String sourceMark);
     /***
      * 取消预约
      * @param doRegCancel

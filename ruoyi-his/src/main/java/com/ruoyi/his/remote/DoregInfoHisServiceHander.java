@@ -77,7 +77,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
 
     @Override
     protected DoRegOut transResult(String result) {
-        return JSON.toJavaObject(JSON.parseObject(result), DoRegOut.class);
+        return JSON.parseObject(result, DoRegOut.class);
     }
 
 
