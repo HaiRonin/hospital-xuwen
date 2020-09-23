@@ -50,8 +50,8 @@ public class AliPayServiceImp extends AbstractPayService {
             // 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天 (屁股后面的字母一定要带，不然报错)
             model.setTimeoutExpress("30m");
             // 订单总金额 ，默认单位为元，精确到小数点后两位，取值范围[0.01,100000000]
-//            model.setTotalAmount("" + hisPayOrder.getAmount().doubleValue());
-            model.setTotalAmount("0.01");
+            model.setTotalAmount("" + hisPayOrder.getAmount().doubleValue());
+//            model.setTotalAmount("0.01");
             // 销售产品码 不必填
             model.setProductCode(HisOrderType.getDescByKey(hisPayOrder.getOrderType()));
             request.setBizModel(model);
