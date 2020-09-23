@@ -99,6 +99,7 @@ public class HisOrderApi extends BaseController
             order.setOrderType("doreg");
             order.setOutTradeNo(doregInfo.getOutTradeNo());
             order.setOpenId(doregInfo.getOpenId());
+            order.setRedirectUrl(doregInfo.getRedirectUrl());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
             doregInfo.setPrePaySign(payService.prePay(order));
         }
@@ -132,6 +133,7 @@ public class HisOrderApi extends BaseController
             order.setOrderType("dopay");
             order.setOutTradeNo(dopayInfo.getOutTradeNo());
             order.setOpenId(dopayInfo.getOpenId());
+            order.setRedirectUrl(dopayInfo.getRedirectUrl());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
             dopayInfo.setPrePaySign(payService.prePay(order));
         }
@@ -165,6 +167,7 @@ public class HisOrderApi extends BaseController
             order.setOrderType("inpatientpayment");
             order.setOutTradeNo(depositPayment.getOutTradeNo());
             order.setOpenId(depositPayment.getOpenId());
+            order.setRedirectUrl(depositPayment.getRedirectUrl());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
             depositPayment.setPrePaySign(payService.prePay(order));
         }
@@ -200,6 +203,7 @@ public class HisOrderApi extends BaseController
             order.setOrderType("leavehospay");
             order.setOutTradeNo(leaveHosPay.getOutTradeNo());
             order.setOpenId(leaveHosPay.getOpenId());
+            order.setRedirectUrl(leaveHosPay.getRedirectUrl());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
             leaveHosPay.setPrePaySign(payService.prePay(order));
         }

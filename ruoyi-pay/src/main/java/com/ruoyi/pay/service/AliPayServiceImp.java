@@ -5,11 +5,15 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.ruoyi.common.enums.HisOrderType;
 import com.ruoyi.common.model.HisPayOrder;
+import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.pay.config.AlipayConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,14 +81,49 @@ public class AliPayServiceImp extends AbstractPayService {
 
     @Override
     public boolean refund(HisPayOrder hisPayOrder) {
+        LOG.info(">>>>>>>>>>>>支付宝退款开始：" + JSON.toJSONString(hisPayOrder));
+        try {
+            AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
+                    AlipayConfig.appid, AlipayConfig.private_key, "json", AlipayConfig.input_charset,
+                    AlipayConfig.ali_public_key, AlipayConfig.sign_type);
+
+            String out_trade_no = hisPayOrder.getOutTradeNo();
+            String trade_no = hisPayOrder.getTransactionId();
+            String refund_amount = String.valueOf(hisPayOrder.getAmount());
+            String refund_reason = "退款";
+            String out_request_no = IdUtils.getOrderNo("RF");
+            AlipayTradeRefundRequest alipay_request = new AlipayTradeRefundRequest();
+            AlipayTradeRefundModel model = new AlipayTradeRefundModel();
+            model.setOutTradeNo(out_trade_no);
+            model.setTradeNo(trade_no);
+            model.setRefundAmount(refund_amount);
+            model.setRefundReason(refund_reason);
+            model.setOutRequestNo(out_request_no);
+            alipay_request.setBizModel(model);
+
+            AlipayTradeRefundResponse alipay_response = alipayClient.execute(alipay_request);
+            if (alipay_response.isSuccess()) {
+                LOG.error(">>>>>>>>支付宝退款成功：" + alipay_response.getBody());
+                return true;
+            } else {
+                LOG.error(">>>>>>>>支付宝退款失败.code=" + alipay_response.getCode() + ",body=" + alipay_response.getBody());
+            }
+        } catch (AlipayApiException e) {
+            LOG.error(">>>>>>>>支付宝退款失败：" + e.getMessage(), e);
+        }
+
         return false;
     }
 
+    /**
+     * 支付宝支付回调
+     *
+     * @param request
+     * @return
+     */
     public Map<String, String> appAliPayNotify(HttpServletRequest request) {
         LOG.info("----------------阿里服务器消费手机回调-------" + request);
-
         Map<String, String> result = new HashMap<>();
-
         Map<String, String> params = new HashMap<String, String>();
         Map requestParams = request.getParameterMap();
         LOG.info("----------------阿里服务器回调入参1-------" + JSON.toJSONString(requestParams));

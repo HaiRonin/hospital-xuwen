@@ -110,23 +110,22 @@ public class PayThirdApi extends BaseController {
             // 微信交易订单号
             String transaction_id = map.get("transaction_id");
             // 系统订单号
-            String orderId = map.get("out_trade_no");
-            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调out_trade_no=" + orderId + ",transaction_id=" + transaction_id);
+            String out_trade_no = map.get("out_trade_no");
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调out_trade_no=" + out_trade_no + ",transaction_id=" + transaction_id);
 
             OrderPayResultBO bo = new OrderPayResultBO();
-            bo.setOrderType(HisPayType.WECHAT.getKey());
-            bo.setOutTradeNo(orderId);
+            bo.setOrderType(HisOrderType.tranferTypeByOrderPrex(out_trade_no));
+            bo.setOutTradeNo(out_trade_no);
             bo.setTransactionId(transaction_id);
             bo.setPaymentResults(true);
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack调用入参：" + JSON.toJSONString(bo));
             AjaxResult result = hisOrderApi.orderPayCallBack(bo);
-            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调下单结果：" + JSON.toJSONString(result));
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack结果：" + JSON.toJSONString(result));
             if (result.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
                 return "SUCCESS";
             } else {
                 return "FAIL";
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
             return "FAIL";
@@ -152,17 +151,18 @@ public class PayThirdApi extends BaseController {
             String status = result.get("status");
             if ("SUCCESS".equals(status)) {
                 // 交易订单号
-                String orderId = result.get("trade_no");
+                String trade_no = result.get("trade_no");
                 // 系统订单号
-                String transaction_id = result.get("out_trade_no");
+                String out_trade_no = result.get("out_trade_no");
 
                 OrderPayResultBO bo = new OrderPayResultBO();
-                bo.setOrderType(HisPayType.ALI.getKey());
-                bo.setOutTradeNo(orderId);
-                bo.setTransactionId(transaction_id);
+                bo.setOrderType(HisOrderType.tranferTypeByOrderPrex(out_trade_no));
+                bo.setOutTradeNo(out_trade_no);
+                bo.setTransactionId(trade_no);
                 bo.setPaymentResults(true);
+                LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用入参：" + JSON.toJSONString(bo));
                 AjaxResult callResult = hisOrderApi.orderPayCallBack(bo);
-                LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调下单结果：" + JSON.toJSONString(result));
+                LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用结果：" + JSON.toJSONString(result));
                 if (callResult.get(AjaxResult.CODE_TAG) == AjaxResult.Type.SUCCESS) {
                     return "success";
                 } else {
