@@ -1,5 +1,5 @@
 <template>
-    <view class>
+    <view class="">
         <view class="flex-box align-center top-box">
             <view
                 v-for="(item, index) in sort"
@@ -33,17 +33,18 @@
 
 <script lang="ts">
 
-    import {Component, Vue, Ref} from 'vue-property-decorator';
+    import {Component, Vue, Ref, Provide} from 'vue-property-decorator';
     import {queryToPayRecipeInfoList, queryPaymentRecordList} from '@/apis';
-    import orderDetail from './childAction/orderDetail.vue';
+    import orderDetail from '@/components/orderDetail.vue';
 
     @Component({
         components: {
             orderDetail
         }
     })
-    export default class Index extends Vue {
+    export default class PaymentPrescriptionRecord extends Vue {
         @Ref('orderDetail') readonly orderDetail!: IOBJ;
+        @Provide('ppr') ppr = this;
 
         sortIndex = 0;
         oneLoad = true;
@@ -54,9 +55,9 @@
             {name: '已缴费'},
         ];
 
-        change (index: number) {
-            this.sortIndex = index;
-            index === 0 ? this.getList1() : this.getList2();
+        change (index?: number) {
+            const sortIndex = this.sortIndex = (utils.zEmpty(index) ? this.sortIndex : index) as number;
+            sortIndex === 0 ? this.getList1() : this.getList2();
         }
 
         async getList1 () {

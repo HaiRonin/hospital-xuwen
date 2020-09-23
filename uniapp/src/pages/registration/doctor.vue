@@ -164,9 +164,45 @@
             this.info.photoUrl = (this.info.photoUrl || '').trim();
         }
 
+        // 获取单日时间段
+        getDaySourceTimeType () {
+            var sourceTimeType = 1;
+            var date1 = new Date(this.$store.getters.systemTime);
+            var timestamp = (new Date()).getTime();
+            // var date = date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
+            var morningTime = date1.getFullYear() + '/' + (date1.getMonth() + 1) + '/' + date1.getDate() + ' ' + '7:00:00'; // morningTime表示当天7:00时间
+            var morningTimeHaoMiao = (new Date(morningTime)).getTime();
+            var noonTime = date1.getFullYear() + '/' + (date1.getMonth() + 1) + '/' + date1.getDate() + ' ' + '12:00:00'; // noonTime表示当天12:00时间
+            var noonTimeHaoMiao = (new Date(noonTime)).getTime();
+            var noonInfoTime = date1.getFullYear() + '/' + (date1.getMonth() + 1) + '/' + date1.getDate() + ' ' + '14:00:00'; // noonTime表示当天12:00时间
+            var noonInfoHaoMiao = (new Date(noonInfoTime)).getTime();
+            var AfternoonTime = date1.getFullYear() + '/' + (date1.getMonth() + 1) + '/' + date1.getDate() + ' ' + '17:30:00'; // Afternoon表示当天17:30时间
+            var AfternoonHaoMiao = (new Date(AfternoonTime)).getTime();
+            var beforeDawnTime = date1.getFullYear() + '/' + (date1.getMonth() + 1) + '/' + date1.getDate() + ' ' + '23:59:00'; // beforeDawnTime表示当天23:59时间
+            var beforeDawnHaoMiao = (new Date(beforeDawnTime)).getTime();
+            var beforeDawnInfoTime = date1.getFullYear() + '/' + (date1.getMonth() + 1) + '/' + date1.getDate() + ' ' + '00:0:01'; // beforeDawnTime表示当天23:59时间
+            var beforeDawnInfoHaoMiao = (new Date(beforeDawnInfoTime)).getTime();
+            var MorningInfoTime = date1.getFullYear() + '/' + (date1.getMonth() + 1) + '/' + date1.getDate() + ' ' + '6:59:00'; // Afternoon表示当天17:30时间
+            var MorningInfoTimeHaoMiao = (new Date(MorningInfoTime)).getTime();
+
+            if (timestamp > morningTimeHaoMiao && timestamp < noonTimeHaoMiao) {
+                sourceTimeType = 1;
+            } else if (timestamp > noonTimeHaoMiao && timestamp < noonInfoHaoMiao) {
+                sourceTimeType = 2;
+            } else if (timestamp > noonInfoHaoMiao && timestamp < AfternoonHaoMiao) {
+                sourceTimeType = 3;
+            } else if (timestamp > AfternoonHaoMiao && timestamp < beforeDawnHaoMiao) {
+                sourceTimeType = 4;
+            } else if (timestamp > beforeDawnInfoHaoMiao && timestamp < MorningInfoTimeHaoMiao) {
+                sourceTimeType = 5;
+            }
+            return sourceTimeType;
+        }
+
         // 根据医生查询号源
         async getReserveTime (date?: string) {
-            // querytoregdoctorListbydoctorid
+            // 判断是否有传参
+            const isVal = !!date;
             if (date) {
                 this.dateText = date;
             } else {
@@ -174,64 +210,34 @@
                 const {text, week} = utils.dateData(dObj);
                 date = text;
             }
-            // const res = await queryToRegDoctorListByDoctorId({
-            //     startDate: date,
-            //     endDate: date,
-            //     organdoctorId: this.options.organdoctorId,
-            // }).catch(() => {
-            //     this.list.forEach((item) => {
-            //         item.show = false;
-            //     });
-            //     return Promise.reject();
-            // });
-
-            // const data: IOBJ = res.data[0];
-
-            // this.list.forEach((item) => {
-            //     const num: string | undefined = data[item.key];
-            //     // debugger;
-            //     if (utils.zEmpty(num)) {
-            //         item.show = false;
-            //         return;
-            //     }
-
-            //     item.show = true;
-            //     item.num = Math.max(+(num || 0), 0);
-            //     item.disabled = item.num <= 0;
-            //     item.price = data.consultationFee;
-            // });
-
 
             const {departmentorganId, organdoctorId} = this.options;
             const sourceTimeType = globalConfig.sourceTimeType;
-            // const fnArr: any[] = [];
 
             utils.showLoad();
 
-            // sourceTimeType.forEach((item) => {
-            //     fnArr.push(
-            //         queryToRegDoctorTimes({
-            //             departmentorganId,
-            //             organdoctorId,
-            //             sourceTimeType: item.value,
-            //             sourceDate: date
-            //         }, {closeErrorTips: true})
-            //     );
-            // });
-            // const resList = await Promise.allSettled(fnArr);
-
             const resList: IOBJ[] = [];
-            for (const item of sourceTimeType) {
-                await queryToRegDoctorTimes({
+            if (isVal) {
+                for (const item of sourceTimeType) {
+                    await queryToRegDoctorTimes({
+                        departmentorganId,
+                        organdoctorId,
+                        sourceTimeType: item.value,
+                        sourceDate: date
+                    }, {closeErrorTips: true}).then((value) => {
+                        resList.push({status: 'fulfilled', value});
+                    }).catch((value) => {
+                        resList.push({status: 'rejected', value});
+                    });
+                }
+            } else {
+                const res = await queryToRegDoctorTimes({
                     departmentorganId,
                     organdoctorId,
-                    sourceTimeType: item.value,
+                    sourceTimeType: this.getDaySourceTimeType(),
                     sourceDate: date
-                }, {closeErrorTips: true}).then((value) => {
-                    resList.push({status: 'fulfilled', value});
-                }).catch((value) => {
-                    resList.push({status: 'rejected', value});
-                });
+                }, {closeErrorTips: true}).catch(() => ({status: 'rejected'}));
+                resList.push({status: 'fulfilled', value: res});
             }
 
             const list: IOBJ[] = [];

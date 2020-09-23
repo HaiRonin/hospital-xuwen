@@ -42,18 +42,18 @@
                 // #ifdef H5
                 "navigationStyle": "custom",
                 // #endif
-                "navigationBarTitleText": ""
+                "navigationBarTitleText": "支付"
+			}
+        },
+        {
+			"path": "pages/wvCallBack",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "确认支付成功"
 			}
 		}
-        // {
-		// 	"path": "pages/confirmOrder",
-		// 	"style": {
-        //         // #ifdef H5
-        //         "navigationStyle": "custom",
-        //         // #endif
-        //         "navigationBarTitleText": "确认挂号信息"
-		// 	}
-		// }
     ],
     "subPackages": [
         // info
@@ -225,7 +225,7 @@
                     }
                 },
                 {
-                    "path": "paymentPrescriptionRecord/index",
+                    "path": "paymentPrescriptionRecord",
                     "style": {
                         // #ifdef H5
                         "navigationStyle": "custom",

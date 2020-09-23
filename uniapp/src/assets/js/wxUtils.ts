@@ -97,7 +97,7 @@ const obj = {
                         rel(res);
                     } else {
                         rej(res);
-                        utils.toast('cChooseWXPayPromise2: 支付失败');
+                        utils.toast('支付失败2');
                     }
                 });
         });

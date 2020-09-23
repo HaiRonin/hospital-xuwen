@@ -84,22 +84,33 @@
             <view class="z-btn-box rel" v-if="showBtn">
                 <view class="red-color zbb-text-1">医院门诊缴费</view>
                 <view>合计: <text class="red-color zbb-text-2">{{curItem.settleAmount}}元</text></view>
-                <view class="zbb-btn abs flex-box align-center justify-center" @tap="pay">支付</view>
+                <view class="zbb-btn abs flex-box align-center justify-center" @tap="playPay">支付</view>
             </view>
         </view>
+
+        <pay ref="pay" :request="payRequest" @paySuccess="paySuccess"/>
     </u-popup>
 </template>
 
 <script lang="ts">
 
-    import {Component, Vue, Ref} from 'vue-property-decorator';
+    import {Component, Vue, Ref, Inject} from 'vue-property-decorator';
+    import pay from '@/components/pay.vue';
+    import {ordeNewPayment} from '@/apis';
 
-    @Component
+    @Component({
+        components: {
+            pay
+        }
+    })
     export default class OrderDetail extends Vue {
+        @Ref('pay') readonly pay!: IOBJ;
+        @Inject('ppr') readonly ppr!: IOBJ;
 
         show = false;
         showBtn = false;
         curItem: IOBJ | null = null;
+        payRequest = ordeNewPayment;
 
         openFun (item: IOBJ) {
             this.curItem = item;
@@ -107,16 +118,24 @@
             this.show = true;
         }
 
-        pay () {
+        playPay () {
             const curItem = this.curItem as IOBJ;
             const data = {
-                payMoney: curItem.payMoney,
+                payMoney: curItem.settleAmount,
                 medicareType: 1,
-                hiFeeNos: curItem.hiFeeNo
+                hiFeeNos: curItem.hiFeeNo,
             };
+            this.pay.startPay(data);
         }
 
-        created () {}
+        paySuccess () {
+            this.show = false;
+            this.ppr.change();
+        }
+
+        created () {
+            console.log(this);
+        }
 
         mounted () {}
 

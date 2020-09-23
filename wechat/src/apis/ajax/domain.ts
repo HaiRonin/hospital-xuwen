@@ -3,36 +3,41 @@
 let apiServer: IApiServer | null = null;
 
 
-let urlEnv: any = /env=(\w{1,})/.exec(window.location.hash);
-urlEnv && urlEnv.length && (urlEnv = urlEnv[1]);
+// let urlEnv: any = /env=(\w{1,})/.exec(window.location.hash);
+// urlEnv && urlEnv.length && (urlEnv = urlEnv[1]);
 
+let parendDomain: any = /parendDomain=(\S{1,})/.exec(window.location.hash);
+parendDomain && parendDomain.length && (parendDomain = parendDomain[1]);
+parendDomain && (parendDomain = decodeURIComponent(parendDomain));
 console.log(window.location.hash);
-console.log(urlEnv);
+console.log(parendDomain);
 
-if (process.env.NODE_ENV === 'development' || urlEnv === 'development') {
+if (process.env.NODE_ENV === 'development') {
 
     apiServer = {
         // 正式
         // 测试
-        // baseApi: 'http://120.76.246.196',
+        baseApi: 'http://apptest.gdsnkzxyy.cn',
 
         // vueconfig proxy 代理
-        baseApi: '',
+        // baseApi: '',
     };
 
-} else if (process.env.NODE_ENV === 'test' || urlEnv === 'test') {
+} else if (process.env.NODE_ENV === 'test') {
 
     apiServer = {
-        baseApi: 'http://120.76.246.196:9090',
+        baseApi: 'http://apptest.gdsnkzxyy.cn',
     };
 
-} else if (process.env.NODE_ENV === 'production' || urlEnv === 'production') {
+} else if (process.env.NODE_ENV === 'production') {
 
     apiServer = {
-        baseApi: 'http://120.76.246.196',
+        baseApi: 'http://apptest.gdsnkzxyy.cn',
     };
 
 }
+
+parendDomain && apiServer && (apiServer.baseApi = parendDomain);
 
 // const win: any = window;
 // if (win.uni) {

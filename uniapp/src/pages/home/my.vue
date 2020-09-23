@@ -57,7 +57,7 @@
             },
             {
                 text: '缴费处方记录',
-                url: '/pages/outpatient/index?toUrl=/pages/registration/paymentPrescriptionRecord/index',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/paymentPrescriptionRecord',
                 imgUrl: require('@/assets/image/icon/icon_43.png'),
             },
             {

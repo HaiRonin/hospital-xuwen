@@ -13,7 +13,7 @@
 <script lang="ts">
 
     import {Component, Vue, Inject, Ref} from 'vue-property-decorator';
-    import {doRegCancel} from '@/apis';
+    import {ordeDoRegCancel} from '@/apis';
 
     @Component
     export default class CloseReport extends Vue {
@@ -57,7 +57,7 @@
             // }"
 
             this.offClose = true;
-            await doRegCancel(data).catch(() => {
+            await ordeDoRegCancel(data).catch(() => {
                 this.offClose = false;
                 this.modal.clearLoading();
                 return Promise.reject();

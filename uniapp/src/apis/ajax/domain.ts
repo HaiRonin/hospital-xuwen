@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === 'development') {
         // 正式
         // baseApi: 'http://120.76.246.196:8080',
         baseApi: 'http://apptest.gdsnkzxyy.cn',
+        webUrl: 'http://apptest.gdsnkzxyy.cn',
         // 测试
 
         // #ifdef H5
@@ -20,18 +21,13 @@ if (process.env.NODE_ENV === 'development') {
 
 } else if (process.env.NODE_ENV === 'test') {
 
-    apiServer = {
-        baseApi: 'http://apptest.gdsnkzxyy.cn',
-    };
+    apiServer = globalConfig.TEST_DOMAIN;
 
 } else if (process.env.NODE_ENV === 'production') {
 
-    apiServer = {
-        baseApi: 'http://apptest.gdsnkzxyy.cn',
-    };
+    apiServer = globalConfig.BUILD_DOMAIN;
 
 }
-
 
 globalConfig.domain = apiServer as IApiServer;
 export default apiServer as IApiServer;

@@ -73,7 +73,6 @@
 
         async commit () {
             const data = utils.jsCopyObj(this.params);
-            data.openId = utils.getStorage('openId');
 
             if (utils.zEmpty(data.patientNo)) {
                 utils.toast('请选择就诊人');

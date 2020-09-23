@@ -9,6 +9,7 @@
             console.log('App Launch', options);
 
             // #ifdef H5
+            if (['pages/wv', 'pages/wvCallBack'].includes(options.path)) return;
             wxObj.cWxAuth.init(options.query, this);
             // #endif
         },

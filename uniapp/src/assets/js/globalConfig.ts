@@ -1,6 +1,14 @@
 
 // 公众号id
 export const APPID = 'wx50617d578b93801d';
+export const TEST_DOMAIN = {
+    baseApi: 'http://apptest.gdsnkzxyy.cn',
+    webUrl: 'http://apptest.gdsnkzxyy.cn',
+};
+export const BUILD_DOMAIN = {
+    baseApi: 'http://apptest.gdsnkzxyy.cn',
+    webUrl: 'http://apptest.gdsnkzxyy.cn',
+};
 
 // 首页的几个路径
 export const homeUrl = [
@@ -17,6 +25,8 @@ export const refreshUrl = [
 // 强制登录，白名单
 export const whiteList = [
     '/pages/login',
+    '/pages/wv',
+    '/pages/wvCallBack',
     '/pages/home/outpatient',
 
     '/pages/outpatient/intelligentGuidance',
