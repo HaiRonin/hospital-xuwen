@@ -12,6 +12,8 @@
         src = '';
 
         async onLoad (options: IOBJ) {
+            utils.showLoad();
+
             // console.log(options);
             // console.log(options.url);
             // console.log(decodeURIComponent(options.url));
@@ -22,7 +24,6 @@
 
             // #ifdef H5
             url = decodeURIComponent(url);
-            utils.showLoad();
             // setTimeout(() => {
             window.location.replace(url);
             // }, 1000);

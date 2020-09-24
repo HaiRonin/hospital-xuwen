@@ -37,7 +37,7 @@
         <view class="fake-view"></view>
         <view class="bottom-btn" @tap="commit">确认支付</view>
 
-        <pay ref="pay" :request="payRequest"/>
+        <pay ref="pay" :request="payRequest" @paySuccess="paySuccess"/>
     </view>
 </template>
 
@@ -66,6 +66,16 @@
             this.$set(params, 'cardNo', item.cardNo);
         }
 
+        paySuccess () {
+            const {patientNo, patientName, cardNo} = this.params;
+            const strData = utils.serialize({
+                patientNo,
+                cardNo,
+                name: patientName
+            });
+            utils.link(`/pages/registration/reportOrderList/index?${strData}`, 1);
+        }
+
         // 选择就就诊人
         linkPatient () {
             utils.link('/pages/outpatient/index?sel=1');
@@ -91,6 +101,7 @@
 
         created () {
             this.commit = utils.throttle(this.commit, 300, 300, true);
+            console.log(this);
         }
 
         mounted () {}
