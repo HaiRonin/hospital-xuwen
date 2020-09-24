@@ -1,10 +1,10 @@
 package com.ruoyi.his.remote;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.exception.HisException;
+import com.ruoyi.common.json.JSONObject;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.beans.Transient;
+import java.math.BigDecimal;
 import java.util.List;
 
 /***
@@ -273,7 +274,10 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     public BaseResponse callRefund(String outTradeNo) {
         D d = getOrderDetail(outTradeNo);
         HisPayOrder hisPayOrder = buildHisPayOrder(d);
+        hisPayOrder.setAmount(new BigDecimal("0.01"));
+        logger.info("调用退款接口.callRefund.outTradeNo={},hisPayOrder={}",outTradeNo, JSONObject.valueAsStr(hisPayOrder));
         boolean isOK = AbstractPayService.servicesInstance(hisPayOrder.getPayType()).refund(hisPayOrder);
+        logger.info("调用退款接口.callRefund.outTradeNo={},isOK={}",outTradeNo, isOK);
         return isOK?BaseResponse.success():BaseResponse.fail(getBusinessType().getDesc()+"退款失败");
     }
 

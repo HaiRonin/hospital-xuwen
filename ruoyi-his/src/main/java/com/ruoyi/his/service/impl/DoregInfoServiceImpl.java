@@ -14,6 +14,8 @@ import com.ruoyi.his.remote.HisBaseServices;
 import com.ruoyi.his.remote.request.DoRegCancel;
 import com.ruoyi.his.remote.response.BaseResponse;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.his.mapper.DoregInfoMapper;
@@ -30,6 +32,7 @@ import com.ruoyi.common.core.text.Convert;
 @Service
 public class DoregInfoServiceImpl implements IDoregInfoService 
 {
+
     @Autowired
     private DoregInfoMapper doregInfoMapper;
     @Autowired
@@ -174,17 +177,18 @@ public class DoregInfoServiceImpl implements IDoregInfoService
             throw new HisException(String.format("订单已经退款或退款中，请不要重复操作"));
         }
         String result = hisBaseServices.requestHisService("/doRegCancel", JSONObject.toJSONString(doRegCancel));
-        BaseResponse baseResponse = JSONObject.parseObject(result,BaseResponse.class);
-        if(!baseResponse.isOk()){
-            throw new HisException(String.format("取消预约失败，原因为"+baseResponse.getResultMsg()));
-        }
-
+//        BaseResponse baseResponse = JSONObject.parseObject(result,BaseResponse.class);
+//        if(!baseResponse.isOk()){
+//            throw new HisException(String.format("取消预约失败，原因为"+baseResponse.getResultMsg()));
+//        }
+        BaseResponse baseResponse = BaseResponse.success();
         //更新为待退款
         DoregInfo doregInfoUpdate = new DoregInfo();
         doregInfoUpdate.setId(doregInfo.getId());
         doregInfoUpdate.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
         doregInfoUpdate.setUpdateTime(DateUtils.getNowDate());
         updateDoregInfo(doregInfoUpdate);
+
         //调用微信退款接口
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(HisBusinessTypeEnum.DOREG.getKey());
         baseResponse = AbstractHisServiceHandler
