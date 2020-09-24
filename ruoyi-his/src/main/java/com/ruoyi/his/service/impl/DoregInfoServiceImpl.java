@@ -14,6 +14,8 @@ import com.ruoyi.his.remote.HisBaseServices;
 import com.ruoyi.his.remote.request.DoRegCancel;
 import com.ruoyi.his.remote.response.BaseResponse;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.his.mapper.DoregInfoMapper;
@@ -30,6 +32,7 @@ import com.ruoyi.common.core.text.Convert;
 @Service
 public class DoregInfoServiceImpl implements IDoregInfoService 
 {
+
     @Autowired
     private DoregInfoMapper doregInfoMapper;
     @Autowired
@@ -185,6 +188,7 @@ public class DoregInfoServiceImpl implements IDoregInfoService
         doregInfoUpdate.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
         doregInfoUpdate.setUpdateTime(DateUtils.getNowDate());
         updateDoregInfo(doregInfoUpdate);
+
         //调用微信退款接口
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(HisBusinessTypeEnum.DOREG.getKey());
         baseResponse = AbstractHisServiceHandler

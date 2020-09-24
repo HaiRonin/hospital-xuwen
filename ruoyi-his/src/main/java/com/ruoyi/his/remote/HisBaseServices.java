@@ -36,10 +36,10 @@ public class HisBaseServices {
         try {
             Map<String, String> headers = new HashMap<>();
             headers.put("doRegIn", dataParam);
-            logger.info("HisBaseServices.apiUrl={},dataParam={}",apiUrl,dataParam);
+            logger.info("调用His接口HisBaseServices.apiUrl={},dataParam={}",apiUrl,dataParam);
             HttpResponse responseInfo = HttpUtils.doPost(hisUrl, apiUrl,  new HashMap<>(), null,headers);
             String result = EntityUtils.toString(responseInfo.getEntity(), "UTF-8");
-            logger.info("HisBaseServices.apiUrl={}，result={}",apiUrl,result);
+            logger.info("调用His接口HisBaseServices.apiUrl={}，result={}",apiUrl,result);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
