@@ -177,11 +177,11 @@ public class DoregInfoServiceImpl implements IDoregInfoService
             throw new HisException(String.format("订单已经退款或退款中，请不要重复操作"));
         }
         String result = hisBaseServices.requestHisService("/doRegCancel", JSONObject.toJSONString(doRegCancel));
-        BaseResponse baseResponse = JSONObject.parseObject(result,BaseResponse.class);
-        if(!baseResponse.isOk()){
-            throw new HisException(String.format("取消预约失败，原因为"+baseResponse.getResultMsg()));
-        }
-
+//        BaseResponse baseResponse = JSONObject.parseObject(result,BaseResponse.class);
+//        if(!baseResponse.isOk()){
+//            throw new HisException(String.format("取消预约失败，原因为"+baseResponse.getResultMsg()));
+//        }
+        BaseResponse baseResponse = BaseResponse.success();
         //更新为待退款
         DoregInfo doregInfoUpdate = new DoregInfo();
         doregInfoUpdate.setId(doregInfo.getId());

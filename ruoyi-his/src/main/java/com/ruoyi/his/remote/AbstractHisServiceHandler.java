@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.beans.Transient;
+import java.math.BigDecimal;
 import java.util.List;
 
 /***
@@ -273,6 +274,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     public BaseResponse callRefund(String outTradeNo) {
         D d = getOrderDetail(outTradeNo);
         HisPayOrder hisPayOrder = buildHisPayOrder(d);
+        hisPayOrder.setAmount(new BigDecimal("0.01"));
         logger.info("调用退款接口.callRefund.outTradeNo={},hisPayOrder={}",outTradeNo, JSONObject.valueAsStr(hisPayOrder));
         boolean isOK = AbstractPayService.servicesInstance(hisPayOrder.getPayType()).refund(hisPayOrder);
         logger.info("调用退款接口.callRefund.outTradeNo={},isOK={}",outTradeNo, isOK);

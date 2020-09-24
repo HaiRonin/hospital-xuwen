@@ -171,7 +171,7 @@ his:
     #支付地址
     unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
     #退款证书
-    refundCert: D:\apiclient_cert.p12
+    refundCert: E:\ry\apiclient_cert.p12
   wxapp:
     #AppID
     appId: wx50617d578b93801d
