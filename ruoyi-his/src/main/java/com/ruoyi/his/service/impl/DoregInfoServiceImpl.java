@@ -198,6 +198,7 @@ public class DoregInfoServiceImpl implements IDoregInfoService
         if(baseResponse.isOk()){
             doregInfoUpdate.setSuccessfulPayment(PayStatusEnum.REFUND_SUCCESS.getCode());
             doregInfoUpdate.setUpdateTime(DateUtils.getNowDate());
+            doregInfoUpdate.setResultMsg(doregInfoUpdate.getResultMsg()+"->取消预约并退款成功");
             updateDoregInfo(doregInfoUpdate);
             return BaseResponse.success("取消预约成功");
         }
@@ -205,6 +206,7 @@ public class DoregInfoServiceImpl implements IDoregInfoService
             doregInfoUpdate.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
             doregInfoUpdate.setUpdateTime(DateUtils.getNowDate());
             updateDoregInfo(doregInfoUpdate);
+            doregInfoUpdate.setResultMsg(doregInfoUpdate.getResultMsg()+"->取消预约退款失败");
             return BaseResponse.success("取消预约退款失败，请稍后再试，如有问题请联系医院");
         }
     }

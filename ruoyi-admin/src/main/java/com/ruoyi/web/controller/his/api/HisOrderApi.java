@@ -30,6 +30,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -101,6 +102,7 @@ public class HisOrderApi extends BaseController
             order.setOpenId(doregInfo.getOpenId());
             order.setRedirectUrl(doregInfo.getRedirectUrl());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
+            order.setAmount(new BigDecimal("0.01"));
             doregInfo.setPrePaySign(payService.prePay(order));
         }
         return iResult>0?AjaxResult.success(doregInfo):AjaxResult.error("预约挂号失败");
