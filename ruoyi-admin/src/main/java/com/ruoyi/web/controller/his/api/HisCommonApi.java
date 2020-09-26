@@ -77,7 +77,8 @@ public class HisCommonApi extends BaseController
     public AjaxResult sendMsg(@RequestParam("phone") @Validated String phone) {
         ServletUtils.getRequest().setAttribute("api", "/user/sendMsg");
         ServletUtils.getRequest().setAttribute("dataParam", phone);
-        return smsService.sendVerificationCode(phone);
+        String msg = "【广东省农垦中心医院】您的注册验证码是%1$s，如非本人操作，请忽略本短信。";
+        return smsService.sendVerificationCode(phone,msg);
     }
 
     /**

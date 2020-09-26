@@ -1,6 +1,7 @@
 package com.ruoyi.his.remote;
 
 import com.alibaba.fastjson.JSON;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
@@ -11,6 +12,7 @@ import com.ruoyi.his.remote.request.DoRegIn;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDoregInfoService;
+import com.ruoyi.his.service.ISmsService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ import java.util.List;
 public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn,DoregInfo, DoRegOut> {
     @Autowired
     private IDoregInfoService doregInfoService;
+    @Autowired
+    private ISmsService iSmsService;
 
     @Override
     public HisBusinessTypeEnum getBusinessType() {
@@ -93,9 +97,27 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
             doregInfo.setMedicalCode(regOut.getMedicalCode());
             doregInfo.setSourceMark(regOut.getSourceMark());
             doregInfo.setConsultationFee(regOut.getConsultationFee());
+            sendSmsMsg(doregInfoTemp.getSynUserName());
+
         }
         doregInfoService.updateDoregInfo(doregInfo);
         return regOut.isOk()?BaseResponse.success():BaseResponse.fail("操作失败，支付金额稍后将会原路返回");
+    }
+
+
+    /***
+     * 发送短信
+     * @param phone
+     */
+    private void sendSmsMsg(String phone){
+        //发送短信
+        try {
+            String msg ="【广东省农垦中心医院】您已预约成功，就诊当天请务必携带身份证或者诊疗卡在预约时间内到自助机取号就诊，不取号不能正常就诊。";
+            AjaxResult ajaxResult =iSmsService.sendSmsMessage(phone,msg);
+        }catch (Exception ex){
+            logger.error("DoregInfoHisServiceHander.afterInvokeCallSumbit发送预约短信时，phone={},发送失败={}",
+                    phone,ex.getMessage());
+        }
     }
 
     /***
