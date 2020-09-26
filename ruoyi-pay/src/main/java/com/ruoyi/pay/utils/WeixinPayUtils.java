@@ -1,6 +1,5 @@
 package com.ruoyi.pay.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.pay.config.WechatConfig;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -9,12 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.URL;
@@ -258,5 +252,4 @@ public class WeixinPayUtils {
 
         return map;
     }
-
 }

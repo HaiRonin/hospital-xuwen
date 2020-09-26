@@ -4,6 +4,7 @@ import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
 import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
 import com.ruoyi.his.remote.response.healthcard.CardGetResponse;
 import com.ruoyi.his.remote.response.healthcard.DynamicQRCodeResponse;
+import com.ruoyi.his.remote.response.healthcard.OcrInfoResponse;
 import com.ruoyi.his.remote.response.healthcard.RegisterResponse;
 
 public interface HealthCardService {
@@ -33,4 +34,11 @@ public interface HealthCardService {
      * @return
      */
     DynamicQRCodeResponse getDynamicQRCode(DynamicQRCodeResquest dynamicQRCodeResquest);
+
+
+    /***
+     * 身份证照片OCR接口
+     * @return
+     */
+    OcrInfoResponse getOcrInfo(String imageContent);
 }

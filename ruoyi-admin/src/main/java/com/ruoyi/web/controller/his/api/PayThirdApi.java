@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -194,5 +195,68 @@ public class PayThirdApi extends BaseController {
 
         Map<String, String> map = new HashMap<String, String>();
         return AjaxResult.success("微信退款完成", result);
+    }
+
+
+    /**
+     * 微信图片上传签名
+     *
+     * @return
+     */
+    @Log(title = "微信图片上传签名", businessType = BusinessType.HIS)
+    @ApiOperation("微信图片上传签名")
+    @ResponseBody
+    @RequestMapping(value = "/weixinImgSign", method = RequestMethod.POST)
+    public AjaxResult weixinImgSign(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+
+        /*
+         *以http://localhost/test.do?a=b&c=d为例
+         *request.getRequestURL的结果是http://localhost/test.do
+         *request.getQueryString的返回值是a=b&c=d
+         */
+        String urlString = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
+        String queryStringEncode = null;
+        String url;
+        if (queryString != null) {
+            queryStringEncode = URLDecoder.decode(queryString, "UTF-8");
+            url = urlString + "?" + queryStringEncode;
+        } else {
+            url = urlString;
+        }
+
+        String nonceStr = WeixinPayUtils.createNoncestr();      //随机数
+        long timeStamp = System.currentTimeMillis() / 1000;     //时间戳参数
+        String signedUrl = url;
+        String signature = null;       //签名
+        String accessToken = "";
+        String ticket = "";
+        try {
+            //1.4 jsapi_ticket
+            accessToken = WeixinMessageUtil.getAccessToken(request, response);
+            ticket = WeixinMessageUtil.getJsapiTicket(accessToken, request, response);
+            //2.进行签名，获取signature
+            signature = WeixinPayUtils.getJsApiSign(ticket, nonceStr, timeStamp, signedUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        logger.info("accessToken:" + accessToken);
+        logger.info("ticket:" + ticket);
+        logger.info("nonceStr:" + nonceStr);
+        logger.info("timeStamp:" + timeStamp);
+        logger.info("signedUrl:" + signedUrl);
+        logger.info("signature:" + signature);
+        logger.info("appId:" + WechatConfig.appId);
+
+        Map<String, String> result = new HashMap<>();
+        result.put("appId", WechatConfig.appId);
+        result.put("timestamp", "" + timeStamp);
+        result.put("nonceStr", nonceStr);
+        result.put("signature", signature);
+        logger.info(">>>>>>>>>>>>>>签名结果：" + JSON.toJSONString(result));
+
+
+        return AjaxResult.success("微信图片上传签名", result);
     }
 }

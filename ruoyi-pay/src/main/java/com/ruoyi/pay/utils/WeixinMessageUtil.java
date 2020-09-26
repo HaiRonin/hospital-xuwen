@@ -1,8 +1,11 @@
 package com.ruoyi.pay.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.pay.config.WechatConfig;
+import org.apache.commons.codec.binary.*;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -14,6 +17,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,12 +37,21 @@ public class WeixinMessageUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(WeixinMessageUtil.class);
 
+    private static final String COOKIE_ACCESS_TOKEN = "COOKIE_ACCESS_TOKEN";
+
+    private static final String COOKIE_JSAPI_TICKET = "WX_SHARE_JSAPI_TICKET";
+
     /**
      * 获取TOKEN
      *
      * @return
      */
-    public static String getAccessToken() {
+    public static String getAccessToken(HttpServletRequest request, HttpServletResponse response) {
+
+        String accessTokenStr = CookieUtils.getCookieValue(request, COOKIE_ACCESS_TOKEN);
+        if (StringUtils.isNotEmpty(accessTokenStr)) {
+            return accessTokenStr;
+        }
 
         AccessToken accessToken = null;
         String accessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=#APPID#&secret=#APPSECRET#";
@@ -46,6 +59,7 @@ public class WeixinMessageUtil {
                 "#APPID#", WechatConfig.appId).replace(
                 "#APPSECRET#", WechatConfig.appsecret);
         JSONObject jsonObject = httpRequestForSSL(requestUrl, "GET", null);
+        LOG.info(">>>>>>>>>>>>>>>>>获取accessToken结果：" + JSON.toJSONString(jsonObject));
         // 如果请求成功
         if (null != jsonObject) {
             try {
@@ -60,7 +74,17 @@ public class WeixinMessageUtil {
                         jsonObject.getString("errmsg"));
             }
         }
-        return accessToken == null ? "" : accessToken.getToken();
+        if (null != accessToken) {
+            accessTokenStr = accessToken.getToken();
+            if (StringUtils.isNotEmpty(accessTokenStr) && !"null".equals(accessTokenStr)) {
+                CookieUtils.setCookie(response,
+                        COOKIE_ACCESS_TOKEN, accessTokenStr,
+                        2 * 60 * 60);
+            }
+        } else {
+            accessTokenStr = "";
+        }
+        return accessTokenStr;
     }
 
     /**
@@ -159,5 +183,36 @@ public class WeixinMessageUtil {
             LOG.error("https request error:{}", e);
         }
         return jsonObject;
+    }
+
+    /**
+     * 获取公众号ticket
+     *
+     * @param accessToken
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public static String getJsapiTicket(String accessToken, HttpServletRequest request, HttpServletResponse response) {
+
+
+        String ticket = CookieUtils.getCookieValue(request, COOKIE_JSAPI_TICKET);
+        if (null != ticket) {
+            return ticket;
+        } else {
+            String token = WeixinMessageUtil.getAccessToken(request, response);
+            String ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="
+                    + token + "&type=jsapi";
+            JSONObject jsonObject = httpRequestForSSL(ticketUrl, "GET",
+                    null);
+            LOG.info(">>>>>>>>>>>>>>>>>获取ticket结果：" + JSON.toJSONString(jsonObject));
+            ticket = jsonObject.getString("ticket");
+            if (StringUtils.isNotEmpty(ticket) && !"null".equals(ticket)) {
+                CookieUtils.setCookie(response,
+                        COOKIE_JSAPI_TICKET, ticket,
+                        7200 * 1000);
+            }
+            return ticket;
+        }
     }
 }
