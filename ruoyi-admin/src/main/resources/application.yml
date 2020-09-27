@@ -151,8 +151,10 @@ redis:
 
 his:
   service:
+#    name: xuwen
+    name: nongken
     #廉江医院
-    #url: http://219.129.12.10:8099/wechat.asmx
+#    url: http://www.xuwenxianrenminyiyuan.cn:8001
     #农垦中心医院
     url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
   wechat:
