@@ -16,7 +16,7 @@ ruoyi:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 8080
+  port: 80
   servlet:
     # 应用的访问路径
     context-path: /
@@ -27,11 +27,11 @@ server:
     max-threads: 800
     # Tomcat启动初始化的线程数，默认值25
     min-spare-threads: 30
- 
+
 # 日志配置
 logging:
   level:
-    com.ruoyi: info
+    com.ruoyi: debug
     org.springframework: warn
 
 # 用户配置
@@ -55,7 +55,7 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-  profiles: 
+  profiles:
     active: druid
   # 文件上传
   servlet:
@@ -80,11 +80,11 @@ mybatis:
     configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
-pagehelper: 
+pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
-  params: count=countSql 
+  params: count=countSql
 
 # Shiro
 shiro:
@@ -101,7 +101,7 @@ shiro:
     captchaType: math
   cookie:
     # 设置Cookie的域名 默认空，即当前访问的域名
-    domain: 
+    domain:
     # 设置cookie的有效访问路径
     path: /
     # 设置HttpOnly属性
@@ -123,7 +123,7 @@ shiro:
     kickoutAfter: false
 
 # 防止XSS攻击
-xss: 
+xss:
   # 过滤开关
   enabled: true
   # 排除链接（多个用逗号分隔）
@@ -165,13 +165,11 @@ his:
     #key值
     key: A44de8673b0f2d1603a6ff33b18b81EF
     #回调地址
-    baseUrl: http://apptest.gdsnkzxyy.cn/his/wechat/notify_weixin
+    baseUrl: http://nktest.free.idcfengye.com/hospital/wechat/notify_weixin
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     #支付地址
     unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
-    #退款证书
-    refundCert: E:\ry\apiclient_cert.p12
   wxapp:
     #AppID
     appId: wx50617d578b93801d
@@ -182,14 +180,12 @@ his:
     #key值
     key: A44de8673b0f2d1603a6ff33b18b81EF
     #回调地址
-    baseUrl: http://apptest.gdsnkzxyy.cn/his/wechat/notify_weixin
+    baseUrl: http://app.gdsnkzxyy.cn/hospital/wechat/notify_weixin
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     #支付地址
     unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
   aliapp:
-    #应用Id
-    appid: 2017031306201007
     #合作身份者ID
     partner: 2088521631668130
     #商户的支付宝账号
@@ -199,7 +195,7 @@ his:
     #支付宝的公钥
     ali_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi1bw+zczwfg8/WpCkg8L9LHvMWvQ5Y+I8JP9O5vHV9gBY8EZ/1ahWPHqbPPXi4NlTZSc7co5fbtERM7x2gvCc+hXN9TXKM66MeNFpHcu/bMbEezKWrEFHpBffHSb82XR6ldnr14v1tDf2Q59kth2U/7LENaiLr3Y7aDSBuOIW7TSacMfpSbAit+ibfz1XRMiOVQlLK/Gpcu20w4kDS7UMYEkkhQIA0Nd/FwRoNgIVm/PySwCjI8UZCX3OuX1xUjo8dzkTJ1uK7888AEbF1SwFNNKSN1NzyRpzmBborpCDPxqEjog3sjjR2b87qY3uLwID9Cb06GA1ie42L9/GBdhYQIDAQAB
     #回调地址
-    baseUrl: http://apptest.gdsnkzxyy.cn/his/wechat/notify_alipay
+    baseUrl: http://app.gdsnkzxyy.cn/hospital/wechat/notify_alipay
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
   healthcard:
