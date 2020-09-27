@@ -6,12 +6,12 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.remote.HealthCardService;
 import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
 import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
 import com.ruoyi.his.remote.response.healthcard.CardGetResponse;
 import com.ruoyi.his.remote.response.healthcard.DynamicQRCodeResponse;
+import com.ruoyi.his.remote.response.healthcard.OcrInfoResponse;
 import com.ruoyi.his.remote.response.healthcard.RegisterResponse;
 import com.ruoyi.his.service.ISmsService;
 import io.swagger.annotations.Api;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  *
- * 
+ *
  * @author whl
  * @date 2020-08-08
  */
@@ -113,5 +113,20 @@ public class HisHealthCardApi extends BaseController
         ServletUtils.getRequest().setAttribute("dataParam", phone);
         String msg ="【电子居民健康卡】%1$s为您的登录验证码，请于十分钟内填写。如非本人操作，请忽略本短信。";
         return smsService.sendVerificationCode(msg,phone);
+    }
+
+    /**
+     * 2020.9.26
+     * 身份证照片OCR接口
+     *
+     * @return
+     */
+    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("身份证照片OCR接口")
+    @ResponseBody
+    @PostMapping(value = "/ocrInfo")
+    public AjaxResult ocrInfo(String imageContent) {
+        OcrInfoResponse response = healthCardService.getOcrInfo(imageContent);
+        return AjaxResult.success(response);
     }
 }
