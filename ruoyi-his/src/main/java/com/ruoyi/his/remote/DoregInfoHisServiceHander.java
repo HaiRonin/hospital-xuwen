@@ -1,16 +1,16 @@
 package com.ruoyi.his.remote;
 
 import com.alibaba.fastjson.JSON;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
-import com.ruoyi.his.domain.DopayInfo;
 import com.ruoyi.his.domain.DoregInfo;
+import com.ruoyi.his.remote.request.DoRegCancel;
 import com.ruoyi.his.remote.request.DoRegIn;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoRegOut;
+import com.ruoyi.his.remote.response.RegCancelByDocStopOut;
 import com.ruoyi.his.service.IDoregInfoService;
 import com.ruoyi.his.service.ISmsService;
 import org.apache.commons.collections.CollectionUtils;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -97,7 +98,12 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
             doregInfo.setMedicalCode(regOut.getMedicalCode());
             doregInfo.setSourceMark(regOut.getSourceMark());
             doregInfo.setConsultationFee(regOut.getConsultationFee());
-            sendSmsMsg(doregInfoTemp.getSynUserName());
+            //当天预约的不发送短信
+            if(null !=doregInfo.getSourceDate()
+                    && !DateUtils.isSameDay(doregInfo.getSourceDate(),new Date())){
+                String msg ="【广东省农垦中心医院】您已预约成功，就诊当天请务必携带身份证或者诊疗卡在预约时间内到自助机取号就诊，不取号不能正常就诊。";
+                sendSmsMsg(doregInfoTemp.getSynUserName(),msg);
+            }
 
         }
         doregInfoService.updateDoregInfo(doregInfo);
@@ -109,14 +115,11 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
      * 发送短信
      * @param phone
      */
-    private void sendSmsMsg(String phone){
-        //发送短信
+    private void sendSmsMsg(String phone,String msg){
         try {
-            String msg ="【广东省农垦中心医院】您已预约成功，就诊当天请务必携带身份证或者诊疗卡在预约时间内到自助机取号就诊，不取号不能正常就诊。";
-            AjaxResult ajaxResult =iSmsService.sendSmsMessage(phone,msg);
+            iSmsService.sendSmsMessage(phone,msg);
         }catch (Exception ex){
-            logger.error("DoregInfoHisServiceHander.afterInvokeCallSumbit发送预约短信时，phone={},发送失败={}",
-                    phone,ex.getMessage());
+            logger.error("发送短信失败，phone={},发送失败={}",phone,ex.getMessage());
         }
     }
 
@@ -140,5 +143,59 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
             refundList.addAll(refundTodo);
         }
         return refundList;
+    }
+
+
+    /***
+     * 5.3	查询未来7天停诊医生对应的未取号患者信息并发起退款
+     * @return
+     */
+    @Override
+    public boolean regCancelByDocStopForRefund() {
+        String res = requestHisService("/GetRegCancelByDocStop","");
+        if(StringUtils.isEmpty(res)){
+           return false;
+        }
+        RegCancelByDocStopOut regCancelByDocStopOut = JSON.parseObject(res, RegCancelByDocStopOut.class);
+        if(!regCancelByDocStopOut.isOk() || CollectionUtils.isEmpty(regCancelByDocStopOut.getReturnList())){
+            return false;
+        }
+        List<RegCancelByDocStopOut.ReturnListBean> lst = regCancelByDocStopOut.getReturnList();
+        for(RegCancelByDocStopOut.ReturnListBean returnListBean:lst ){
+            DoregInfo doregInfo = doregInfoService.getDetailByTransactionId(returnListBean.getPayNo());
+            //非下单成功的不重新退款
+            if(null == doregInfo ){
+                continue;
+            }
+            //下单成功、退款失败、待退款的可进行退款
+            if(!StringUtils.equalsAny(doregInfo.getSuccessfulPayment(),PayStatusEnum.ORDER_SUCCESS.getCode(),
+                    PayStatusEnum.REFUND_FAIL.getCode(),PayStatusEnum.REFUND_TODO.getCode())){
+                continue;
+            }
+            //调用接口取消预约
+            DoRegCancel doRegCancel = buildDoRegCancel(doregInfo,returnListBean);
+            BaseResponse baseResponse = doregInfoService.doRegCancel(doRegCancel);
+            if(baseResponse.isOk()){
+                String msg ="【广东省农垦中心医院】您预约%1$s%2$s医生当天已停诊，挂号费已原路退回，不便之处敬请谅解。";
+                msg = String.format(msg,returnListBean.getSourceDate(),returnListBean.getDoctorName());
+                sendSmsMsg(returnListBean.getMobile(),msg);
+            }
+        }
+        return true;
+    }
+
+    private DoRegCancel buildDoRegCancel(DoregInfo doregInfo,RegCancelByDocStopOut.ReturnListBean returnListBean){
+        DoRegCancel doRegCancel = new DoRegCancel();
+        doRegCancel.setSynUserName(doregInfo.getSynUserName());
+        doRegCancel.setSynKey(doregInfo.getSynKey());
+        doRegCancel.setSourceMark(returnListBean.getSourceMark());
+        doRegCancel.setPatientNo(returnListBean.getPatientNo());
+        doRegCancel.setSourceDate(returnListBean.getSourceDate());
+        doRegCancel.setDepartmentorganId(doregInfo.getDepartmentorganId());
+        doRegCancel.setPayType(returnListBean.getPayType());
+        doRegCancel.setPayCardNo(returnListBean.getPayCardNo());
+        doRegCancel.setPayNo(returnListBean.getPayNo());
+        doRegCancel.setPayAmount(returnListBean.getPayAmount());
+        return doRegCancel;
     }
 }

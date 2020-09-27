@@ -50,4 +50,6 @@ public interface HisWebServices {
     @Async
     boolean autoScanningRefund();
 
+
+    boolean regCancelByDocStopForRefund();
 }

@@ -306,4 +306,9 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
             t.setPayType(HisPayType.WECHAT.getKey());
         }
     }
+
+    @Override
+    public boolean regCancelByDocStopForRefund() {
+        return false;
+    }
 }
