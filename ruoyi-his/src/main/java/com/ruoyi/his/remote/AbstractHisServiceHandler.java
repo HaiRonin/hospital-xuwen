@@ -91,6 +91,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
 
     /***
      * 支付成功，更新本地支付状态并调用his接口下单
+     * 下单失败后调用退款接口
      * @param outTradeNo 订单号
      * @param transactionId 交易流水id
      * @return
@@ -106,15 +107,32 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
             int iResult = updateOrder(d);
             if(iResult > 0){
                 baseResponse = invokeCallSubmit(outTradeNo);
+                //下单失败，发起退款
+                if(!baseResponse.isOk()){
+                    refudnAndUpdateOrder(d);
+                }
             }
         }catch (Exception ex){
             d.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
-            updateOrder(d);
-            baseResponse.error("缴费支付时发生错误,支付的金额稍后会自动原路返回，请注意查收");
+            refudnAndUpdateOrder(d);
+            baseResponse.error("缴费支付时发生错误,支付的金额会自动原路返还，请注意查收");
         }
         return baseResponse;
     }
 
+
+    /***
+     * 下单失败后发起退款
+     * @param d
+     * @return
+     */
+    private boolean refudnAndUpdateOrder(D d){
+        d.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
+        BaseResponse baseResponse = callRefund(d.getOutTradeNo());
+        d.setSuccessfulPayment(baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getCode():PayStatusEnum.REFUND_FAIL.getCode());
+        updateOrder(d);
+        return true;
+    }
     /***
      * 支付失败，更新本地支付状态并调用微信退款接口
      * @param outTradeNo 订单号
@@ -165,9 +183,11 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
 
     @Override
     public BaseResponse payedNotify(boolean isSucceed, String outTradeNo, String transactionId) {
+        //访并发处理
         logger.info("AbstractHisServiceHandler.{}.payedNotify.outTradeNo={},transactionId={},isSucceed={}",
                 getBusinessType().getDesc(),outTradeNo,transactionId,isSucceed);
-        return isSucceed?paySuccessful(outTradeNo,transactionId):payFailed(outTradeNo);
+        BaseResponse baseResponse = isSucceed?paySuccessful(outTradeNo,transactionId):payFailed(outTradeNo);
+        return baseResponse;
     }
 
     @Override
