@@ -25,13 +25,10 @@ public class RyTask {
 //        System.out.println("执行有参方法：" + params);
 //    }
 
-//    public void ryNoParams()
-//    {
-//        System.out.println("执行无参方法");
-//        for(HisBusinessTypeEnum businessTypeEnum : HisBusinessTypeEnum.values()  ){
-//            AbstractHisServiceHandler.servicesInstance(businessTypeEnum).autoScanningRefund();
-//        }
-//    }
+    public void regCancelByDocStopForRefund()
+    {
+        AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG).regCancelByDocStopForRefund();
+    }
 
     public void refund()
     {

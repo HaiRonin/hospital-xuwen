@@ -74,6 +74,11 @@ public class RegisterResquest implements Serializable {
     @ApiModelProperty(value="地址：",name="address",example="广东省深圳市南山区深南大道10000号")
     private String address;
 
+    /***
+     * 短信验证码
+     */
+    @ApiModelProperty(value="短信验证码",name="smsCode",example="男")
+    private String smsCode;
 
     public String getWechatCode() {
         return wechatCode;
@@ -140,4 +145,11 @@ public class RegisterResquest implements Serializable {
         this.phone1 = phone1;
     }
 
+    public String getSmsCode() {
+        return smsCode;
+    }
+
+    public void setSmsCode(String smsCode) {
+        this.smsCode = smsCode;
+    }
 }
