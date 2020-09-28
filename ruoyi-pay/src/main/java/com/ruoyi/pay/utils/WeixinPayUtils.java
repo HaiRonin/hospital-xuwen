@@ -12,13 +12,11 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.URL;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -257,6 +255,46 @@ public class WeixinPayUtils {
         inputStream = null;
 
         return map;
+    }
+
+    /**
+     * jsapi签名
+     *
+     * @param jsTicket
+     * @param nonceStr
+     * @param timeStamp
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    public static String getJsApiSign(String jsTicket, String nonceStr, Long timeStamp, String url) throws Exception {
+        String plainTex = "jsapi_ticket=" + jsTicket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=" + url;
+        System.out.println(plainTex);
+        try {
+            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+            crypt.reset();
+            crypt.update(plainTex.getBytes("UTF-8"));
+            return byteToHex(crypt.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new Exception(e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * @param hash
+     * @return String
+     * @desc ：4.2 将bytes类型的数据转化为16进制类型
+     */
+    private static String byteToHex(byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash) {
+            formatter.format("%02x", new Object[]{Byte.valueOf(b)});
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
     }
 
 }

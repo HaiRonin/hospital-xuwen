@@ -14,6 +14,8 @@ import com.ruoyi.his.remote.response.healthcard.*;
 import com.tencent.healthcard.impl.HealthCardServerImpl;
 import com.tencent.healthcard.model.CommonIn;
 import com.tencent.healthcard.model.HealthCardInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ import java.util.UUID;
 
 @Service
 public class HealthCardServicelmpl implements HealthCardService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HealthCardServicelmpl.class);
+
     @Autowired
     private HealthCarConfig healthCarConfig;
     @Autowired
@@ -121,4 +126,19 @@ public class HealthCardServicelmpl implements HealthCardService {
         return qrCodeResponse;
     }
 
+    @Override
+    public OcrInfoResponse getOcrInfo(String imageContent) {
+        JSONObject json = gethealthCard().ocrInfo(buildCommonIn(), imageContent);
+        if (StringUtils.isEmpty(json)) {
+            throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
+        }
+        LOG.info(">>>>>>>>>>>>>>调用健康卡身份证照片OCR接口结果1：" + JSON.toJSONString(json));
+        HealthCardResponse response = JSON.parseObject(json.toJSONString(), HealthCardResponse.class);
+        LOG.info(">>>>>>>>>>>>>>调用健康卡身份证照片OCR接口结果2：" + JSON.toJSONString(response));
+        if (!response.getCommonOut().isOk()) {
+            throw new HisException("调用健康卡身份证照片OCR接口发生异常:" + response.getCommonOut().getErrMsg());
+        }
+        OcrInfoResponse ocrInfoResponse = JSON.parseObject(response.getRsp()).getObject("cardInfo", OcrInfoResponse.class);
+        return ocrInfoResponse;
+    }
 }
