@@ -207,27 +207,10 @@ public class PayThirdApi extends BaseController {
     @ApiOperation("微信图片上传签名")
     @ResponseBody
     @RequestMapping(value = "/weixinImgSign", method = RequestMethod.POST)
-    public AjaxResult weixinImgSign(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-
-        /*
-         *以http://localhost/test.do?a=b&c=d为例
-         *request.getRequestURL的结果是http://localhost/test.do
-         *request.getQueryString的返回值是a=b&c=d
-         */
-        String urlString = request.getRequestURL().toString();
-        String queryString = request.getQueryString();
-        String queryStringEncode = null;
-        String url;
-        if (queryString != null) {
-            queryStringEncode = URLDecoder.decode(queryString, "UTF-8");
-            url = urlString + "?" + queryStringEncode;
-        } else {
-            url = urlString;
-        }
+    public AjaxResult weixinImgSign(String signedUrl, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 
         String nonceStr = WeixinPayUtils.createNoncestr();      //随机数
         long timeStamp = System.currentTimeMillis() / 1000;     //时间戳参数
-        String signedUrl = url;
         String signature = null;       //签名
         String accessToken = "";
         String ticket = "";
