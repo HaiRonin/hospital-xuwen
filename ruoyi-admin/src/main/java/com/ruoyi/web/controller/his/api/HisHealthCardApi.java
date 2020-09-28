@@ -111,7 +111,7 @@ public class HisHealthCardApi extends BaseController
     public AjaxResult sendCode(@RequestParam("phone") @Validated String phone) {
         ServletUtils.getRequest().setAttribute("api", "/user/sendMsg");
         ServletUtils.getRequest().setAttribute("dataParam", phone);
-        String msg ="【电子居民健康卡】%1$s为您的登录验证码，请于十分钟内填写。如非本人操作，请忽略本短信。";
+        String msg ="【电子居民健康卡】%1$s为您的登录验证码，请于1分钟内填写。如非本人操作，请忽略本短信。";
         return smsService.sendVerificationCode(phone,msg);
     }
 
