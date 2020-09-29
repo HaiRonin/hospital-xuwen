@@ -17,7 +17,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,9 +36,9 @@ public class WeixinMessageUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(WeixinMessageUtil.class);
 
-    private static final String COOKIE_ACCESS_TOKEN = "COOKIE_ACCESS_TOKEN";
+    private static final String CACHE_ACCESS_TOKEN = "CACHE_ACCESS_TOKEN";
 
-    private static final String COOKIE_JSAPI_TICKET = "WX_SHARE_JSAPI_TICKET";
+    private static final String CACHE_JSAPI_TICKET = "WX_SHARE_JSAPI_TICKET";
 
     /**
      * 获取TOKEN
@@ -47,7 +46,7 @@ public class WeixinMessageUtil {
      * @return
      */
     public static String getAccessToken(RedisUtil redisUtil) {
-        Object accessTokenCache = redisUtil.get(COOKIE_ACCESS_TOKEN);
+        Object accessTokenCache = redisUtil.get(CACHE_ACCESS_TOKEN);
         LOG.info(">>>>>>>>>>>>>>>>>>>缓存获取accessToken=" + accessTokenCache);
         if (null != accessTokenCache) {
             return (String) accessTokenCache;
@@ -78,8 +77,8 @@ public class WeixinMessageUtil {
         if (null != accessToken) {
             accessTokenStr = accessToken.getToken();
             if (StringUtils.isNotEmpty(accessTokenStr) && !"null".equals(accessTokenStr)) {
-                redisUtil.set(COOKIE_ACCESS_TOKEN, accessTokenStr,
-                        accessToken.getExpiresIn() - 100);
+                redisUtil.set(CACHE_ACCESS_TOKEN, accessTokenStr,
+                        3600);
             }
         }
         return accessTokenStr;
@@ -192,7 +191,7 @@ public class WeixinMessageUtil {
      */
     public static String getJsapiTicket(String accessToken, RedisUtil redisUtil) {
 
-        Object ticketObj = redisUtil.get(COOKIE_JSAPI_TICKET);
+        Object ticketObj = redisUtil.get(CACHE_JSAPI_TICKET);
         LOG.info(">>>>>>>>>>>>>>>>>>>缓存获取ticket=" + ticketObj);
         if (null != ticketObj) {
             return (String) ticketObj;
@@ -204,7 +203,7 @@ public class WeixinMessageUtil {
             LOG.info(">>>>>>>>>>>>>>>>>获取ticket结果：" + JSON.toJSONString(jsonObject));
             String ticket = jsonObject.getString("ticket");
             if (StringUtils.isNotEmpty(ticket) && !"null".equals(ticket)) {
-                redisUtil.set(COOKIE_JSAPI_TICKET, ticket,
+                redisUtil.set(CACHE_JSAPI_TICKET, ticket,
                         3600);
             }
             return ticket;
