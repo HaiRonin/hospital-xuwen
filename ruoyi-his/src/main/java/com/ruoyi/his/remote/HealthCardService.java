@@ -1,5 +1,6 @@
 package com.ruoyi.his.remote;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
 import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
 import com.ruoyi.his.remote.response.healthcard.CardGetResponse;
@@ -11,9 +12,10 @@ public interface HealthCardService {
 
     /**
      * 获取token
+     *
      * @return
      */
-     String getToken();
+    String getToken();
 
     /***
      * 注册健康码
@@ -41,4 +43,12 @@ public interface HealthCardService {
      * @return
      */
     OcrInfoResponse getOcrInfo(String imageContent);
+
+    /**
+     * 获取卡包订单ID接口
+     *
+     * @param qrCodeText
+     * @return
+     */
+    String getOrderIdByOutAppId(String qrCodeText);
 }

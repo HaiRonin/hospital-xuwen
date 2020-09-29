@@ -21,17 +21,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *
- *
  * @author whl
  * @date 2020-08-08
  */
 @RestController
-@Api(value="His健康卡接口",tags={"His健康卡接口"})
+@Api(value = "His健康卡接口", tags = {"His健康卡接口"})
 @RequestMapping("/his/healthCard")
 @CrossOrigin
-public class HisHealthCardApi extends BaseController
-{
+public class HisHealthCardApi extends BaseController {
     @Autowired
     private HealthCardService healthCardService;
     @Autowired
@@ -128,5 +125,20 @@ public class HisHealthCardApi extends BaseController
     public AjaxResult ocrInfo(String imageContent) {
         OcrInfoResponse response = healthCardService.getOcrInfo(imageContent);
         return AjaxResult.success(response);
+    }
+
+    /**
+     * 2020.9.26
+     * 获取卡包订单ID接口
+     *
+     * @return
+     */
+    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("获取卡包订单ID接口")
+    @ResponseBody
+    @PostMapping(value = "/getOrderIdByOutAppId")
+    public AjaxResult getOrderIdByOutAppId(String imageContent) {
+        String orderId = healthCardService.getOrderIdByOutAppId(imageContent);
+        return AjaxResult.success(orderId);
     }
 }
