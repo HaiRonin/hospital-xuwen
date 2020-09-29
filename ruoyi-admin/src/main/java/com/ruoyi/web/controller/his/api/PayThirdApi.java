@@ -203,7 +203,7 @@ public class PayThirdApi extends BaseController {
                 Object cacheVal = redisUtil.get(cacheKey);
                 LOG.info(">>>>>>>>>>>>>>>支付宝回调处理缓存情况。cacheKey=" + cacheKey + ",cacheVal=" + cacheVal);
                 if (null != cacheVal) {
-                    return "FAIL";
+                    return "fail";
                 }
                 redisUtil.set(cacheKey, trade_no, 120);
 
