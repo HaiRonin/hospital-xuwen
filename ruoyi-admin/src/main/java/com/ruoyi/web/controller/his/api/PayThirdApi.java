@@ -9,6 +9,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.enums.HisOrderType;
 import com.ruoyi.common.enums.HisPayType;
 import com.ruoyi.common.model.HisPayOrder;
+import com.ruoyi.common.utils.RedisUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.pay.service.AbstractPayService;
 import com.ruoyi.pay.service.AliPayServiceImp;
@@ -49,6 +50,17 @@ public class PayThirdApi extends BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(PayThirdApi.class);
 
+    /**
+     * 微信回调缓存订单ID
+     */
+    private static final String CACHE_WEIXIN_PAY_CALLBACK_ID = "CACHE_WEIXIN_PAY_CALLBACK_ID";
+
+
+    /**
+     * 支付宝回调缓存订单ID
+     */
+    private static final String CACHE_ALI_PAY_CALLBACK_ID = "CACHE_ALI_PAY_CALLBACK_ID";
+
     @Autowired
     private AliPayServiceImp aliPayServiceImp;
 
@@ -57,6 +69,9 @@ public class PayThirdApi extends BaseController {
      */
     @Autowired
     private HisOrderApi hisOrderApi;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
 
     /**
@@ -93,6 +108,17 @@ public class PayThirdApi extends BaseController {
     }
 
     /**
+     * 支付回调缓存KEY
+     *
+     * @param prex
+     * @param tranId
+     * @return
+     */
+    private String cacheCallbackKey(String prex, String tranId) {
+        return prex + "_" + tranId;
+    }
+
+    /**
      * 微信通知
      *
      * @param request
@@ -104,6 +130,7 @@ public class PayThirdApi extends BaseController {
     @RequestMapping(value = "/notify_weixin", method = RequestMethod.POST)
     public String wxPayCallBackNotify(HttpServletRequest request) {
         LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调开始");
+        String cacheKey = "";
         try {
             Map<String, String> map = WeixinMessageUtil.parseXml(request);
 
@@ -114,6 +141,15 @@ public class PayThirdApi extends BaseController {
             // 系统订单号
             String out_trade_no = map.get("out_trade_no");
             LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调out_trade_no=" + out_trade_no + ",transaction_id=" + transaction_id);
+
+            //缓存2分钟，2分钟内未处理，回调再过来不处理
+            cacheKey = cacheCallbackKey(CACHE_WEIXIN_PAY_CALLBACK_ID, transaction_id);
+            Object cacheVal = redisUtil.get(cacheKey);
+            LOG.info(">>>>>>>>>>>>>>>微信回调处理缓存情况。cacheKey=" + cacheKey + ",cacheVal=" + cacheVal);
+            if (null != cacheVal) {
+                return "FAIL";
+            }
+            redisUtil.set(cacheKey, transaction_id, 120);
 
             OrderPayResultBO bo = new OrderPayResultBO();
             bo.setOrderType(HisOrderType.tranferTypeByOrderPrex(out_trade_no));
@@ -131,6 +167,10 @@ public class PayThirdApi extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
             return "FAIL";
+        } finally {
+            if (StringUtils.isNotEmpty(cacheKey)) {
+                redisUtil.del(cacheKey);
+            }
         }
     }
 
@@ -145,6 +185,7 @@ public class PayThirdApi extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/notify_alipay", method = RequestMethod.POST)
     public String alipayCallBackNotify(HttpServletRequest request) {
+        String cacheKey = "";
         try {
             LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调开始>>>>>>>>>>>>>>>>>>>>>");
             Map<String, String> result = aliPayServiceImp.appAliPayNotify(request);
@@ -156,6 +197,15 @@ public class PayThirdApi extends BaseController {
                 String trade_no = result.get("trade_no");
                 // 系统订单号
                 String out_trade_no = result.get("out_trade_no");
+
+                //缓存2分钟，2分钟内未处理，回调再过来不处理
+                cacheKey = cacheCallbackKey(CACHE_ALI_PAY_CALLBACK_ID, trade_no);
+                Object cacheVal = redisUtil.get(cacheKey);
+                LOG.info(">>>>>>>>>>>>>>>支付宝回调处理缓存情况。cacheKey=" + cacheKey + ",cacheVal=" + cacheVal);
+                if (null != cacheVal) {
+                    return "FAIL";
+                }
+                redisUtil.set(cacheKey, trade_no, 120);
 
                 OrderPayResultBO bo = new OrderPayResultBO();
                 bo.setOrderType(HisOrderType.tranferTypeByOrderPrex(out_trade_no));
@@ -175,6 +225,10 @@ public class PayThirdApi extends BaseController {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (StringUtils.isNotEmpty(cacheKey)) {
+                redisUtil.del(cacheKey);
+            }
         }
 
         return "fail";
@@ -216,8 +270,8 @@ public class PayThirdApi extends BaseController {
         String ticket = "";
         try {
             //1.4 jsapi_ticket
-            accessToken = WeixinMessageUtil.getAccessToken(request, response);
-            ticket = WeixinMessageUtil.getJsapiTicket(accessToken, request, response);
+            accessToken = WeixinMessageUtil.getAccessToken(redisUtil);
+            ticket = WeixinMessageUtil.getJsapiTicket(accessToken, redisUtil);
             //2.进行签名，获取signature
             signature = WeixinPayUtils.getJsApiSign(ticket, nonceStr, timeStamp, signedUrl);
         } catch (Exception e) {
