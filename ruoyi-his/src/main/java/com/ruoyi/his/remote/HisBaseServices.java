@@ -24,7 +24,11 @@ public class HisBaseServices {
      */
     @Value("${his.service.url}")
     private String hisUrl;
-
+    /**
+     * His接口地址
+     */
+    @Value("${his.service.name}")
+    private String hisName;
 
     private static Logger logger = LoggerFactory.getLogger(HisBaseServices.class);
     /***
@@ -33,13 +37,19 @@ public class HisBaseServices {
      * @return
      */
     public String requestHisService(String apiUrl, String dataParam) {
+        String result = "";
         try {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("doRegIn", dataParam);
-            logger.info("HisBaseServices.apiUrl={},dataParam={}",apiUrl,dataParam);
-            HttpResponse responseInfo = HttpUtils.doPost(hisUrl, apiUrl,  new HashMap<>(), null,headers);
-            String result = EntityUtils.toString(responseInfo.getEntity(), "UTF-8");
-            logger.info("HisBaseServices.apiUrl={}，result={}",apiUrl,result);
+            switch (hisName){
+                case "xuwen":
+                    result=requestHisServiceForXuwen(apiUrl,dataParam);
+                    break;
+                case "nongken":
+                    result=requestHisServiceForNk(apiUrl,dataParam);
+                    break;
+                default:
+                    result=requestHisServiceForNk(apiUrl,dataParam);
+                    break;
+            }
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,32 +57,41 @@ public class HisBaseServices {
         }
     }
 
-    /**
-     * 封装构造his接口的请求消息体
+    /***
+     * 徐闻his服务接口
+     * @param apiUrl
+     * @param dataParam
      * @return
      */
-    protected Map<String, Object> buildBaseRequestData(String key,Object obj){
-        Map<String, Object> requestMap = new HashMap<String, Object>();
-        requestMap.put("synUserName","");
-        requestMap.put("synKey","");
-        //无入参
-        if(StringUtils.isEmpty(key)){
-            return requestMap;
-        }
+    public String requestHisServiceForXuwen(String apiUrl, String dataParam) {
         try {
-            if(obj instanceof String){
-                requestMap.put(key, obj);
-            }
-            else if(obj instanceof Integer){
-                requestMap.put(key, obj);
-            }
-            else{
-                requestMap.put(key, MapUtil.objectToMap(obj));
-            }
+            logger.info("调用His接口HisBaseServices.apiUrl={},dataParam={}",apiUrl,dataParam);
+            String result = HttpUtils.post(hisUrl+apiUrl, dataParam);
+            logger.info("调用His接口HisBaseServices.apiUrl={}，result={}",apiUrl,result);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BusinessException(String.format("数据转换发生异常"));
+            throw new BusinessException(String.format("调用His接口发生异常，操作失败:%1$s",e.getMessage()));
         }
-        return requestMap;
+    }
+
+    /***
+     * 农垦his请求
+     * @param dataParam
+     * @return
+     */
+    public String requestHisServiceForNk(String apiUrl, String dataParam) {
+        try {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("doRegIn", dataParam);
+            logger.info("调用His接口HisBaseServices.apiUrl={},dataParam={}",apiUrl,dataParam);
+            HttpResponse responseInfo = HttpUtils.doPost(hisUrl, apiUrl,  new HashMap<>(), null,headers);
+            String result = EntityUtils.toString(responseInfo.getEntity(), "UTF-8");
+            logger.info("调用His接口HisBaseServices.apiUrl={}，result={}",apiUrl,result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException(String.format("调用His接口发生异常，操作失败:%1$s",e.getMessage()));
+        }
     }
 }

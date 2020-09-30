@@ -2,6 +2,7 @@ package com.ruoyi.common.xss;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -10,12 +11,18 @@ import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
@@ -129,4 +136,40 @@ public class HttpUtils {
             throw new RuntimeException(ex);
         }
     }
+
+
+    public static String post(String url,String request){
+        String result = "";
+        HttpPost post = new HttpPost(url);
+        try{
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+
+            post.setHeader("Content-Type","application/json;charset=utf-8");
+//            post.addHeader("Authorization", "Basic YWRtaW46");
+            StringEntity postingString = new StringEntity(request,"utf-8");
+            post.setEntity(postingString);
+            HttpResponse response = httpClient.execute(post);
+
+            InputStream in = response.getEntity().getContent();
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, "utf-8"));
+            StringBuilder strber= new StringBuilder();
+            String line = null;
+            while((line = br.readLine())!=null){
+                strber.append(line+'\n');
+            }
+            br.close();
+            in.close();
+            result = strber.toString();
+            if(response.getStatusLine().getStatusCode()!= HttpStatus.SC_OK){
+                result = "服务器异常";
+            }
+        } catch (Exception e){
+//            System.out.println("请求异常");
+            throw new RuntimeException(e);
+        } finally{
+            post.abort();
+        }
+        return result;
+    }
+
 }
