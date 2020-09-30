@@ -130,6 +130,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         d.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
         BaseResponse baseResponse = callRefund(d.getOutTradeNo());
         d.setSuccessfulPayment(baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getCode():PayStatusEnum.REFUND_FAIL.getCode());
+        d.setResultMsg(d.getResultMsg()+"|"+(baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getDesc():PayStatusEnum.REFUND_FAIL.getDesc()));
         updateOrder(d);
         return true;
     }
