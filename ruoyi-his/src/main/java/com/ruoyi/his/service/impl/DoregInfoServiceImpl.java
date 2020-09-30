@@ -1,23 +1,24 @@
 package com.ruoyi.his.service.impl;
 
-import java.util.List;
-
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.his.callservice.HisBaseServices;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
+import com.ruoyi.his.domain.DoregInfo;
+import com.ruoyi.his.mapper.DoregInfoMapper;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.request.DoRegCancel;
 import com.ruoyi.his.remote.response.BaseResponse;
+import com.ruoyi.his.service.IDoregInfoService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.his.mapper.DoregInfoMapper;
-import com.ruoyi.his.domain.DoregInfo;
-import com.ruoyi.his.service.IDoregInfoService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.util.List;
 
 /**
  * 预约挂号Service业务层处理
