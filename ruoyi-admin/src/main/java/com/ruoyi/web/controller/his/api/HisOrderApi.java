@@ -99,7 +99,7 @@ public class HisOrderApi extends BaseController
             order.setOpenId(doregInfo.getOpenId());
             order.setRedirectUrl(doregInfo.getRedirectUrl());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
-            order.setAmount(new BigDecimal("0.01"));
+//            order.setAmount(new BigDecimal("0.01"));
             doregInfo.setPrePaySign(payService.prePay(order));
         }
         return iResult>0?AjaxResult.success(doregInfo):AjaxResult.error("预约挂号失败");

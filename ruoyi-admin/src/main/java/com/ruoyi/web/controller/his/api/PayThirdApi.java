@@ -101,7 +101,7 @@ public class PayThirdApi extends BaseController {
     @ResponseBody
     public AjaxResult pay(HisPayOrder order, HttpServletRequest request, HttpServletResponse response) {
         PayService payService = AbstractPayService.servicesInstance(order.getPayType());
-        order.setAmount(new BigDecimal("0.01"));
+//        order.setAmount(new BigDecimal("0.01"));
         Map<String, String> result = payService.prePay(order);
 
         return AjaxResult.success("预支付成功[" + HisOrderType.getDescByKey(order.getOrderType()) + "]", result);
@@ -246,8 +246,6 @@ public class PayThirdApi extends BaseController {
     public AjaxResult weixinRefund(HisPayOrder hisPayOrder) {
         PayService payService = AbstractPayService.servicesInstance(hisPayOrder.getPayType());
         boolean result = payService.refund(hisPayOrder);
-
-        Map<String, String> map = new HashMap<String, String>();
         return AjaxResult.success("微信退款完成", result);
     }
 
