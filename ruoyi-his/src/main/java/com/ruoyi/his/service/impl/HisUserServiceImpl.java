@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.RedisUtil;
+import com.ruoyi.his.callservice.HisBaseServices;
 import com.ruoyi.his.constant.Constants;
 import com.ruoyi.his.remote.response.BaseResponse;
 import org.apache.commons.collections.CollectionUtils;
