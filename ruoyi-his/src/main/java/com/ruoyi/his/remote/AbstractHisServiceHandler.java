@@ -151,14 +151,14 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     /***
      * 支付成功，更新本地支付状态并调用his接口下单
      * @param outTradeNo 订单号
-     * @param transactionId 交易流水id
      * @return
      */
-    protected BaseResponse refundSuccessful(String outTradeNo,String transactionId){
+    protected BaseResponse refundSuccessful(String outTradeNo){
         D d = getOrderDetail(outTradeNo);
         d.setUpdateTime(DateUtils.getNowDate());
-        d.setTransactionId(d.getTransactionId()+"||"+transactionId);
         d.setSuccessfulPayment(PayStatusEnum.REFUND_SUCCESS.getCode());
+        d.setResultMsg(d.getResultMsg()+"|"+PayStatusEnum.REFUND_SUCCESS.getDesc());
+        updateOrder(d);
         int iResult = updateOrder(d);
         return iResult>0?BaseResponse.success():BaseResponse.fail();
     }
@@ -172,6 +172,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         D d = getOrderDetail(outTradeNo);
         d.setUpdateTime(DateUtils.getNowDate());
         d.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
+        d.setResultMsg(d.getResultMsg()+"|"+PayStatusEnum.REFUND_FAIL.getDesc());
         int iResult = updateOrder(d);
         return iResult>0?BaseResponse.success():BaseResponse.fail();
     }
@@ -195,7 +196,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     public BaseResponse refundNotify(boolean isSucceed, String outTradeNo, String transactionId) {
         logger.info("AbstractHisServiceHandler.{}.refundNotify.outTradeNo={},transactionId={},isSucceed={}",
                 getBusinessType().getDesc(),outTradeNo,transactionId,isSucceed);
-        return isSucceed?refundSuccessful(outTradeNo,transactionId):refundFailed(outTradeNo);
+        return isSucceed?refundSuccessful(outTradeNo):refundFailed(outTradeNo);
     }
 
     /***
@@ -257,11 +258,16 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
            return true;
        }
         list.stream().forEach(item->{
-           //执行退款操作
-            BaseResponse baseResponse = callRefund(item.getOutTradeNo());
-            logger.info("autoScanningRefund.callRefund.order={}.OutTradeNo={}，baseResponse={}",
-                    getBusinessType().getDesc(),item.getOutTradeNo(),baseResponse.isOk());
-            refundNotify(baseResponse.isOk(),item.getOutTradeNo(),item.getTransactionId());
+            BaseResponse baseResponse = null;
+            try {
+                //执行退款操作
+                baseResponse = callRefund(item.getOutTradeNo());
+                refundNotify(baseResponse.isOk(),item.getOutTradeNo(),item.getTransactionId());
+            }catch (Exception ex){
+                logger.error("autoScanningRefund.callRefund.order={}.OutTradeNo={}，error={}",
+                        getBusinessType().getDesc(),item.getOutTradeNo(),ex.getMessage());
+            }
+
         });
         return true;
     }
