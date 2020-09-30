@@ -1,20 +1,16 @@
 package com.ruoyi.his.service.impl;
 
-import java.beans.Transient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.RedisUtil;
 import com.ruoyi.his.constant.Constants;
-import com.ruoyi.his.remote.HisBaseServices;
 import com.ruoyi.his.remote.response.BaseResponse;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.his.mapper.HisUserMapper;

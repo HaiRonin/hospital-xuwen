@@ -1,4 +1,4 @@
-package com.ruoyi.his.remote;
+package com.ruoyi.his.callservice;
 
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.xss.HttpUtils;
@@ -92,4 +92,5 @@ public class HisBaseServices {
             throw new BusinessException(String.format("调用His接口发生异常，操作失败:%1$s",e.getMessage()));
         }
     }
+
 }

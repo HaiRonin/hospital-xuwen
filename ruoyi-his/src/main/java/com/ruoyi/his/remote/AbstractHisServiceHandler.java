@@ -1,14 +1,13 @@
 package com.ruoyi.his.remote;
 
 import com.alibaba.fastjson.JSON;
-import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.exception.HisException;
 import com.ruoyi.common.json.JSONObject;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
+import com.ruoyi.his.callservice.HisBaseServices;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.HisBaseEntity;
@@ -16,15 +15,11 @@ import com.ruoyi.his.remote.request.BaseRequest;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.pay.constant.HisPayType;
 import com.ruoyi.pay.service.AbstractPayService;
-import com.ruoyi.pay.service.PayService;
-import com.ruoyi.pay.service.WeChatPayServiceImp;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.beans.Transient;
-import java.math.BigDecimal;
 import java.util.List;
 
 /***
