@@ -5,14 +5,17 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.DopayInfo;
+import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.remote.request.DoPayIn;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.remote.response.DoPayOut;
 import com.ruoyi.his.remote.response.DoRegOut;
 import com.ruoyi.his.service.IDopayInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,9 +106,19 @@ public class DopayInfoHisServiceHander extends AbstractHisServiceHandler<DoPayIn
 
     @Override
     protected List<DopayInfo> getRefundOrderList() {
-        DopayInfo dopayInfo = new DopayInfo();
-        dopayInfo.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
-        List<DopayInfo> lstDopayInfo =dopayInfoService.selectDopayInfoList(dopayInfo);
+        List<DopayInfo> refundList = new ArrayList<>();
+        DopayInfo query = new DopayInfo();
+        query.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+        List<DopayInfo> lstDopayInfo =dopayInfoService.selectDopayInfoList(query);
+        if(CollectionUtils.isNotEmpty(lstDopayInfo)){
+            refundList.addAll(lstDopayInfo);
+        }
+        query = new DopayInfo();
+        query.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
+        List<DopayInfo> refundTodo =dopayInfoService.selectDopayInfoList(query);
+        if(CollectionUtils.isNotEmpty(refundTodo)){
+            refundList.addAll(refundTodo);
+        }
         return lstDopayInfo;
     }
 

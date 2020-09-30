@@ -137,7 +137,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
             refundList.addAll(submitFail);
         }
         query = new DoregInfo();
-        query.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
+        query.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
         List<DoregInfo> refundTodo =doregInfoService.selectDoregInfoList(query);
         if(CollectionUtils.isNotEmpty(refundTodo)){
             refundList.addAll(refundTodo);
