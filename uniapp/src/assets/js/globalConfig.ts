@@ -20,6 +20,7 @@ export const homeUrl = [
 // 进入这几个路径需要刷新
 export const refreshUrl = [
     '/pages/registration/confirmOrder',
+    '/pages/registration/paymentPrescriptionRecord',
 ];
 
 // 强制登录，白名单
@@ -28,6 +29,10 @@ export const whiteList = [
     '/pages/wv',
     '/pages/wvCallBack',
     '/pages/home/outpatient',
+
+    '/pages/healthCard/list',
+    '/pages/healthCard/addCard/index',
+    '/pages/healthCard/cardInfo',
 
     '/pages/outpatient/intelligentGuidance',
     '/pages/outpatient/intelligentGuidance/index',

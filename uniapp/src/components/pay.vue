@@ -185,7 +185,8 @@
         handleData () {}
 
         async startPay (data: IOBJ) {
-            this.params = utils.jsCopyObj(data);
+            const params = this.params = utils.jsCopyObj(data);
+            params.synUserName = this.$store.getters.userInfo.userName;
 
             // #ifdef H5
             this.wxJsPay();

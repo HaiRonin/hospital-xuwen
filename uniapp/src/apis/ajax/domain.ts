@@ -6,8 +6,8 @@ if (process.env.NODE_ENV === 'development') {
 
     apiServer = {
         // 正式
-        // baseApi: 'http://120.76.246.196:8080',
-        baseApi: 'http://apptest.gdsnkzxyy.cn',
+        baseApi: 'http://120.76.246.196:8080',
+        // baseApi: 'http://apptest.gdsnkzxyy.cn',
         webUrl: 'http://apptest.gdsnkzxyy.cn',
         // 测试
 

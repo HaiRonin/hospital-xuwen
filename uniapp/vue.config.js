@@ -6,10 +6,11 @@ module.exports = {
         // open: true,
         host: '0.0.0.0',
         // hot: true,
-        // disableHostCheck: true,
-        port: 8090,
+        port: 80,
         // proxy: 'http://120.76.246.196',
         // proxy: 'http://nktest.free.idcfengye.com',
+        // public: 'apptest.gdsnkzxyy.cn:80',
+        disableHostCheck: true,
         proxy: {
             '/test': {
                 target: 'http://120.76.246.196',
