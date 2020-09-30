@@ -16,7 +16,7 @@ ruoyi:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 8080
+  port: 80
   servlet:
     # 应用的访问路径
     context-path: /
@@ -151,23 +151,19 @@ redis:
 
 his:
   service:
-#    name: xuwen
-    name: nongken
-    #廉江医院
-#    url: http://www.xuwenxianrenminyiyuan.cn:8001
-    #农垦中心医院
-    url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
+    name: xuwen
+    url: http://www.xuwenxianrenminyiyuan.cn:8001/
   wechat:
     #AppID
-    appId: wx50617d578b93801d
+    appId: wx433d96c6e8746383
     #appSecret
-    appsecret: d2258bd67e9ef6bb8a795c723f483301
+    appsecret: f5f015b0b32972056d6140fb654d4e58
     #商户号
-    mchid: 1433629902
+    mchid: 1602774998
     #key值
-    key: A44de8673b0f2d1603a6ff33b18b81EF
+    key: abcd0759abcd0759abcd0759abcd0759
     #回调地址
-    baseUrl: http://apptest.gdsnkzxyy.cn/his/wechat/notify_weixin
+    baseUrl: http://www.xuwenxianrenminyiyuan.cn/his/wechat/notify_weixin
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     #支付地址
@@ -184,7 +180,7 @@ his:
     #key值
     key: A44de8673b0f2d1603a6ff33b18b81EF
     #回调地址
-    baseUrl: http://apptest.gdsnkzxyy.cn/his/wechat/notify_weixin
+    baseUrl: http://www.xuwenxianrenminyiyuan.cn/his/wechat/notify_weixin
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     #支付地址
@@ -201,7 +197,7 @@ his:
     #支付宝的公钥
     ali_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi1bw+zczwfg8/WpCkg8L9LHvMWvQ5Y+I8JP9O5vHV9gBY8EZ/1ahWPHqbPPXi4NlTZSc7co5fbtERM7x2gvCc+hXN9TXKM66MeNFpHcu/bMbEezKWrEFHpBffHSb82XR6ldnr14v1tDf2Q59kth2U/7LENaiLr3Y7aDSBuOIW7TSacMfpSbAit+ibfz1XRMiOVQlLK/Gpcu20w4kDS7UMYEkkhQIA0Nd/FwRoNgIVm/PySwCjI8UZCX3OuX1xUjo8dzkTJ1uK7888AEbF1SwFNNKSN1NzyRpzmBborpCDPxqEjog3sjjR2b87qY3uLwID9Cb06GA1ie42L9/GBdhYQIDAQAB
     #回调地址
-    baseUrl: http://apptest.gdsnkzxyy.cn/his/wechat/notify_alipay
+    baseUrl: http://www.xuwenxianrenminyiyuan.cn/his/wechat/notify_alipay
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
   healthcard:
