@@ -9,14 +9,14 @@ ruoyi:
   # 实例演示开关
   demoEnabled: false
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: E:/his/uploadPath
+  profile: D:/his/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 80
+  port: 8082
   servlet:
     # 应用的访问路径
     context-path: /
@@ -169,7 +169,7 @@ his:
     #支付地址
     unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
     #退款证书
-    refundCert: E:\ry\apiclient_cert.p12
+    refundCert: D:\his\service\apiclient_cert.p12
   wxapp:
     #AppID
     appId: wx50617d578b93801d

@@ -1,14 +1,19 @@
 package com.ruoyi.web.controller.his.api;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.his.callservice.HisBaseServices;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.response.BaseResponse;
+import com.ruoyi.vo.HisRequestBO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,7 +28,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class HisTestApi extends BaseController
 {
-
+    @Autowired
+    private HisBaseServices hisBaseServices;
     /**
      * 2020.8.26
      * 测试预约挂号推his
@@ -115,5 +121,18 @@ public class HisTestApi extends BaseController
                                   @RequestParam("outTradeNo") String outTradeNo,@RequestParam("outTradeNo") String transactionId){
         BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.getTypeByKey(orderType)).refundNotify(isSucceed,outTradeNo,transactionId);
         return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
+    }
+
+    /**
+     * his接口测试
+     */
+    @Log(title = "his接口测试", businessType = BusinessType.HIS)
+    @ApiOperation("his接口测试")
+    @PostMapping("/request/{api}")
+    @ResponseBody
+    public String invokeCall(@PathVariable("api") String api,@RequestBody Object json){
+        ServletUtils.getRequest().setAttribute("api", api);
+        ServletUtils.getRequest().setAttribute("dataParam", JSON.toJSONString(json));
+        return hisBaseServices.requestHisService(api,JSON.toJSONString(json));
     }
 }
