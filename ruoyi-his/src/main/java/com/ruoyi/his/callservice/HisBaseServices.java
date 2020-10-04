@@ -74,7 +74,7 @@ public class HisBaseServices {
     }
 
     /***
-     * 农垦his请求
+     * 徐闻his请求
      * @param dataParam
      * @return
      */

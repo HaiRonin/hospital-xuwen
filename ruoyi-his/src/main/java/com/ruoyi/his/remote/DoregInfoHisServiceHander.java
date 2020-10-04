@@ -101,7 +101,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
             //当天预约的不发送短信
             if(null !=doregInfo.getSourceDate()
                     && !DateUtils.isSameDay(doregInfo.getSourceDate(),new Date())){
-                String msg ="【广东省农垦中心医院】您已预约成功，就诊当天请务必携带身份证或者诊疗卡在预约时间内到自助机取号就诊，不取号不能正常就诊。";
+                String msg ="【广东省徐闻人民医院】您已预约成功，就诊当天请务必携带身份证或者诊疗卡在预约时间内到自助机取号就诊，不取号不能正常就诊。";
                 sendSmsMsg(doregInfoTemp.getSynUserName(),msg);
             }
 
@@ -176,7 +176,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
             DoRegCancel doRegCancel = buildDoRegCancel(doregInfo,returnListBean);
             BaseResponse baseResponse = doregInfoService.doRegCancel(doRegCancel);
             if(baseResponse.isOk()){
-                String msg ="【广东省农垦中心医院】您预约%1$s%2$s医生当天已停诊，挂号费已原路退回，不便之处敬请谅解。";
+                String msg ="【广东省徐闻人民医院】您预约%1$s%2$s医生当天已停诊，挂号费已原路退回，不便之处敬请谅解。";
                 msg = String.format(msg,returnListBean.getSourceDate(),returnListBean.getDoctorName());
                 sendSmsMsg(returnListBean.getMobile(),msg);
             }
