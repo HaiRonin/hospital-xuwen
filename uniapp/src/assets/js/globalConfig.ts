@@ -7,6 +7,7 @@ export const TEST_DOMAIN = {
 };
 export const BUILD_DOMAIN = {
     baseApi: 'http://apptest.gdsnkzxyy.cn',
+    // baseApi: 'http://120.76.246.196:8089',
     webUrl: 'http://apptest.gdsnkzxyy.cn',
 };
 
@@ -20,7 +21,6 @@ export const homeUrl = [
 // 进入这几个路径需要刷新
 export const refreshUrl = [
     '/pages/registration/confirmOrder',
-    '/pages/registration/paymentPrescriptionRecord',
 ];
 
 // 强制登录，白名单
@@ -29,10 +29,6 @@ export const whiteList = [
     '/pages/wv',
     '/pages/wvCallBack',
     '/pages/home/outpatient',
-
-    '/pages/healthCard/list',
-    '/pages/healthCard/addCard/index',
-    '/pages/healthCard/cardInfo',
 
     '/pages/outpatient/intelligentGuidance',
     '/pages/outpatient/intelligentGuidance/index',
