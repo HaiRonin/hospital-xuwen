@@ -16,3 +16,10 @@ export const wechatPay: TApi = (params = {}, options = {}) => {
     const url = '/his/wechat/pay';
     return ajax.apiPost(url, params, options);
 };
+
+// 微信config 参数
+export const wechatConfig: TApi = (params = {}, options = {}) => {
+    const url = '/his/wechat/weixinImgSign';
+    return ajax.apiPost(url, params, Object.assign({action: 'formData'}, options));
+};
+

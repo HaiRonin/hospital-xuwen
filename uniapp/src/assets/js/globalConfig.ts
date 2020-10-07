@@ -7,6 +7,7 @@ export const TEST_DOMAIN = {
 };
 export const BUILD_DOMAIN = {
     baseApi: 'http://apptest.gdsnkzxyy.cn',
+    // baseApi: 'http://120.76.246.196:8089',
     webUrl: 'http://apptest.gdsnkzxyy.cn',
 };
 

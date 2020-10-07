@@ -292,6 +292,39 @@
                     }
                 }
             ]
+        },
+        // healthCard
+        {
+            "root": "pages/healthCard",
+            "pages": [
+                {
+                    "path": "list",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "电子健康卡管理"
+                    }
+                },
+                {
+                    "path": "addCard/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "电子健康卡注册"
+                    }
+                },
+                {
+                    "path": "cardInfo",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "电子健康卡信息"
+                    }
+                }
+            ]
         }
     ],
 	"globalStyle": {
