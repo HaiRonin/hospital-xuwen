@@ -251,7 +251,7 @@ public class HisCommonApi extends BaseController
         String localPath = Global.getProfile();
         // 数据库资源地址
         String appName = appClientType.getName()+version + ".apk";
-        String downloadPath = localPath + appName;
+        String downloadPath = localPath +"/app/" + appName;
         response.setCharacterEncoding("utf-8");
         response.setContentType("multipart/form-data");
         response.setHeader("Content-Disposition","attachment;fileName=" + appName);
