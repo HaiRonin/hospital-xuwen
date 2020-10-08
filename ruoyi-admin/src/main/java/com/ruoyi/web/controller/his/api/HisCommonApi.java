@@ -6,11 +6,13 @@ import com.ruoyi.common.config.Global;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.enums.AppClientType;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.BarcodeUtil;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUtils;
+import com.ruoyi.framework.web.service.ConfigService;
 import com.ruoyi.his.callservice.HisBaseServices;
 import com.ruoyi.his.constant.BodySymptomsEnum;
 import com.ruoyi.his.domain.HisUser;
@@ -56,6 +58,8 @@ public class HisCommonApi extends BaseController
     private ISymptomsOrganService symptomsOrganService;
     @Autowired
     private IHisUserService hisUserService;
+    @Autowired
+    private ConfigService configService;
     /**
      * his接口调用
      */
@@ -237,20 +241,20 @@ public class HisCommonApi extends BaseController
     /**
      * 本地资源通用下载
      */
-    @GetMapping("/download/app")
-    public void resourceDownload(String resource, HttpServletRequest request, HttpServletResponse response)
+    @GetMapping("/download/app/{type}")
+    public void resourceDownload(@PathVariable("type") String type,HttpServletResponse response)
             throws Exception
     {
+        AppClientType appClientType = AppClientType.getByType(type);
+        String version = configService.getKey(appClientType.getInfo());
         // 本地资源路径
         String localPath = Global.getProfile();
         // 数据库资源地址
-        String downloadPath = localPath + StringUtils.substringAfter(resource, Constants.RESOURCE_PREFIX);
-        // 下载名称
-        String downloadName = StringUtils.substringAfterLast(downloadPath, "/");
+        String appName = appClientType.getName()+version + ".apk";
+        String downloadPath = localPath + appName;
         response.setCharacterEncoding("utf-8");
         response.setContentType("multipart/form-data");
-        response.setHeader("Content-Disposition",
-                "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, downloadName));
+        response.setHeader("Content-Disposition","attachment;fileName=" + appName);
         FileUtils.writeBytes(downloadPath, response.getOutputStream());
     }
 }
