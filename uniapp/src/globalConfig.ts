@@ -6,9 +6,11 @@ export const TEST_DOMAIN = {
     webUrl: 'http://apptest.gdsnkzxyy.cn',
 };
 export const BUILD_DOMAIN = {
-    baseApi: 'http://apptest.gdsnkzxyy.cn',
     // baseApi: 'http://120.76.246.196:8089',
-    webUrl: 'http://apptest.gdsnkzxyy.cn',
+    // baseApi: 'http://apptest.gdsnkzxyy.cn',
+    // webUrl: 'http://apptest.gdsnkzxyy.cn',
+    baseApi: 'http://app.gdsnkzxyy.cn',
+    webUrl: 'http://app.gdsnkzxyy.cn',
 };
 
 // 首页的几个路径
@@ -21,6 +23,7 @@ export const homeUrl = [
 // 进入这几个路径需要刷新
 export const refreshUrl = [
     '/pages/registration/confirmOrder',
+    '/pages/registration/paymentPrescriptionRecord',
 ];
 
 // 强制登录，白名单
@@ -28,6 +31,7 @@ export const whiteList = [
     '/pages/login',
     '/pages/wv',
     '/pages/wvCallBack',
+    '/pages/download',
     '/pages/home/outpatient',
 
     '/pages/outpatient/intelligentGuidance',
@@ -46,6 +50,13 @@ export const whiteList = [
     '/pages/registration/doctor',
     '/pages/registration/searchDoctor',
     '/pages/registration/confirmOrder',
+];
+
+// 禁止微信授权的页面
+export const banAuth = [
+    '/pages/wv',
+    '/pages/wvCallBack',
+    '/pages/download',
 ];
 
 // 过滤数据用
