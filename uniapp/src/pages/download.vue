@@ -24,7 +24,7 @@
 
         title = '农垦医院app';
         version = '1.0.0';
-        fileName = '__UNI__BBEF366_1007231234.apk';
+        fileName = 'HIS_20201008.apk';
         maskShow = false;
 
         isWeixin () {

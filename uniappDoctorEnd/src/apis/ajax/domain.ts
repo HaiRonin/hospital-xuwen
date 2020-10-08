@@ -19,16 +19,11 @@ if (process.env.NODE_ENV === 'development') {
         // #endif
     };
 
-} else if (process.env.NODE_ENV === 'test') {
-
-    apiServer = {
-        baseApi: 'http://apptest.gdsnkzxyy.cn',
-    };
-
 } else if (process.env.NODE_ENV === 'production') {
 
     apiServer = {
-        baseApi: 'http://apptest.gdsnkzxyy.cn',
+        // baseApi: 'http://apptest.gdsnkzxyy.cn',
+        baseApi: 'http://app.gdsnkzxyy.cn',
     };
 
 }
