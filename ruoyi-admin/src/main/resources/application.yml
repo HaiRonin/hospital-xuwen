@@ -1,7 +1,7 @@
 # 项目相关配置
 ruoyi:
   # 名称
-  name: his-xuwen
+  name: his
   # 版本
   version: 1.0.0
   # 版权年份
@@ -153,10 +153,10 @@ his:
   service:
 #    name: xuwen
     name: nongken
-    #廉江医院
-#    url: http://www.xuwenxianrenminyiyuan.cn:8001
-    #农垦中心医院
-    url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
+    #农垦中心医院-外网
+    #url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
+    #农垦中心医院-内网
+    url: http://192.168.0.59:8031/Ou/hiswx.asmx
   wechat:
     #AppID
     appId: wx50617d578b93801d
