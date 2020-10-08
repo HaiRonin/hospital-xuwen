@@ -1,4 +1,8 @@
 android
+
+医生端包名: uni.UNI2455BCC
+患者端包名: uni.UNIBBEF366
+
 别名: gdnkzxyy_android
 密码: 123456
 

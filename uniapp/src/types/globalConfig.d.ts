@@ -26,6 +26,11 @@ declare module globalConfig {
     const sourceTimeType: {text: string, value: number}[];
 
     /**
+     * 禁止微信授权的页面
+     */
+    const banAuth: string[];
+
+    /**
      * 以为支付的原因，需要刷新页面（ios上）
      */
     const refreshUrl: string[];

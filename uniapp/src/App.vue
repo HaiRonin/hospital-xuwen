@@ -10,7 +10,7 @@
             console.log('App Launch', options);
 
             // #ifdef H5
-            if (['pages/wv', 'pages/wvCallBack'].includes(options.path)) return;
+            if (globalConfig.banAuth.includes(`/${options.path}`)) return;
             wxObj.cWxAuth.init(options.query, this);
             // const signedUrl = window.location.href.replace(window.location.search, '');
             const signedUrl = window.location.href;

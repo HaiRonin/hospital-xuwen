@@ -53,6 +53,15 @@
                 // #endif
                 "navigationBarTitleText": "确认支付成功"
 			}
+		},
+        {
+			"path": "pages/download",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "下载app"
+			}
 		}
     ],
     "subPackages": [
