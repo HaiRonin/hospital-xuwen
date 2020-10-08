@@ -9,7 +9,7 @@ ruoyi:
   # 实例演示开关
   demoEnabled: false
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: E:/his/uploadPath/
+  profile: E:/his-service/uploadPath/
   # 获取ip地址开关
   addressEnabled: false
 
@@ -154,9 +154,9 @@ his:
 #    name: xuwen
     name: nongken
     #农垦中心医院-外网
-    #url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
+    url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
     #农垦中心医院-内网
-    url: http://192.168.0.59:8031/Ou/hiswx.asmx
+#    url: http://192.168.0.59:8031/Ou/hiswx.asmx
   wechat:
     #AppID
     appId: wx50617d578b93801d
@@ -173,7 +173,7 @@ his:
     #支付地址
     unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
     #退款证书
-    refundCert: E:\ry\apiclient_cert.p12
+    refundCert: E:\his-service\apiclient_cert.p12
   wxapp:
     #AppID
     appId: wx50617d578b93801d
