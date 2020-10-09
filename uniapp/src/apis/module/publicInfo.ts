@@ -1,9 +1,9 @@
 // 1.2公共信息
 
-// 获取app最新版本号
+// 获取app最新版本号 type = 1患者, 2是医生
 export const getLastAppVersion: TApi = (params = {}, options = {}) => {
-    const url = 'qq';
-    return ajax.apiPost(url, params, options);
+    const url = '/his/app/version/1';
+    return ajax.apiGet(url, params, options);
 };
 
 // 1.2.1查询医生列表信息
