@@ -62,6 +62,24 @@
                 // #endif
                 "navigationBarTitleText": "下载app"
 			}
+		},
+        {
+			"path": "pages/downloadDoctor",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "下载医生端app"
+			}
+		},
+        {
+			"path": "pages/forgetThePaw",
+			"style": {
+                // #ifdef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "忘记密码"
+			}
 		}
     ],
     "subPackages": [

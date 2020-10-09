@@ -29,9 +29,11 @@ export const refreshUrl = [
 // 强制登录，白名单
 export const whiteList = [
     '/pages/login',
+    '/pages/forgetThePaw',
     '/pages/wv',
     '/pages/wvCallBack',
     '/pages/download',
+    '/pages/downloadDoctor',
     '/pages/home/outpatient',
 
     '/pages/outpatient/intelligentGuidance',
@@ -57,6 +59,7 @@ export const banAuth = [
     '/pages/wv',
     '/pages/wvCallBack',
     '/pages/download',
+    '/pages/downloadDoctor',
 ];
 
 // 过滤数据用
