@@ -86,7 +86,7 @@ public class HisCommonApi extends BaseController
     public AjaxResult sendMsg(@RequestParam("phone") @Validated String phone) {
         ServletUtils.getRequest().setAttribute("api", "/user/sendMsg");
         ServletUtils.getRequest().setAttribute("dataParam", phone);
-        String msg = "【广东省农垦中心医院】您的验证码是%1$s，如非本人操作，请忽略本短信。";
+        String msg = "【广东省农垦中心医院】您的验证码是:%1$s";
         return smsService.sendVerificationCode(phone,msg);
     }
 
@@ -249,7 +249,7 @@ public class HisCommonApi extends BaseController
         Map<String,String> versionMap = new HashMap<>();
         versionMap.put("version",version);
         versionMap.put("type",appClientType.getType());
-        return AjaxResult.success(version);
+        return AjaxResult.success(versionMap);
     }
 
     /**

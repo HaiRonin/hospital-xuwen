@@ -99,8 +99,8 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
             doregInfo.setSourceMark(regOut.getSourceMark());
             doregInfo.setConsultationFee(regOut.getConsultationFee());
             //当天预约的不发送短信
-            if(null !=doregInfo.getSourceDate()
-                    && !DateUtils.isSameDay(doregInfo.getSourceDate(),new Date())){
+            if(null !=doregInfoTemp.getSourceDate()
+                    && !DateUtils.isSameDay(doregInfoTemp.getSourceDate(),new Date())){
                 String msg ="【广东省农垦中心医院】您已预约成功，就诊当天请务必携带身份证或者诊疗卡在预约时间内到自助机取号就诊，不取号不能正常就诊。";
                 sendSmsMsg(doregInfoTemp.getSynUserName(),msg);
             }
