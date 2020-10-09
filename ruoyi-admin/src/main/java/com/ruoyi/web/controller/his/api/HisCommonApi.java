@@ -3,7 +3,6 @@ package com.ruoyi.web.controller.his.api;
 import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.config.Global;
-import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.AppClientType;
@@ -30,10 +29,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 预约挂号Controller
@@ -86,7 +86,7 @@ public class HisCommonApi extends BaseController
     public AjaxResult sendMsg(@RequestParam("phone") @Validated String phone) {
         ServletUtils.getRequest().setAttribute("api", "/user/sendMsg");
         ServletUtils.getRequest().setAttribute("dataParam", phone);
-        String msg = "【广东省农垦中心医院】您的注册验证码是%1$s，如非本人操作，请忽略本短信。";
+        String msg = "【广东省农垦中心医院】您的验证码是%1$s，如非本人操作，请忽略本短信。";
         return smsService.sendVerificationCode(phone,msg);
     }
 
@@ -237,13 +237,27 @@ public class HisCommonApi extends BaseController
         return AjaxResult.success(list);
     }
 
+    /**
+     * 本地资源通用下载
+     */
+    @GetMapping("/app/version/{type}")
+    @ApiOperation("获取客户端版本号")
+    public AjaxResult getVersion(@PathVariable("type") String type)
+    {
+        AppClientType appClientType = AppClientType.getByType(type);
+        String version = configService.getKey(appClientType.getInfo());
+        Map<String,String> versionMap = new HashMap<>();
+        versionMap.put("version",version);
+        versionMap.put("type",appClientType.getType());
+        return AjaxResult.success(version);
+    }
 
     /**
      * 本地资源通用下载
      */
     @GetMapping("/download/app/{type}")
-    public void resourceDownload(@PathVariable("type") String type,HttpServletResponse response)
-            throws Exception
+    @ApiOperation("下载客户端")
+    public void resourceDownload(@PathVariable("type") String type,HttpServletResponse response)throws Exception
     {
         AppClientType appClientType = AppClientType.getByType(type);
         String version = configService.getKey(appClientType.getInfo());
