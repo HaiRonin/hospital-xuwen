@@ -12,6 +12,8 @@
                     <u-icon name="arrow-down" class="tap-icon" v-if="theTitleList.length"></u-icon>
                 </view>
             </view>
+            <u-alert-tips type="primary" class="z-custom" show-icon description="请提前与该科室医生联系，方可挂号，以免找不到医生"></u-alert-tips>
+
             <view class="line-text">
                 <text>{{this.params.type === '2' ? '七日内可预约' : '当天非预约'}}</text>
             </view>
@@ -265,5 +267,16 @@
         font-size: 25.6rpx;
     }
     .fake-height{height: 32rpx;}
+
+    .z-custom{
+        color: $main-color;
+        background: $bg-main-color;
+        position:sticky;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        border:none;
+        border-radius: 0;
+    }
 </style>
 
