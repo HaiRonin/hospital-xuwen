@@ -96,10 +96,10 @@
 
             this.oldList = res.data;
             this.list = [
-                {title: '门诊科室', list: type2},
-                {title: '住院科室', list: type1},
                 {title: '公共科室', list: type3},
+                {title: '门诊科室', list: type2},
                 {title: '医技科室', list: type6},
+                {title: '住院科室', list: type1},
             ];
         }
 
