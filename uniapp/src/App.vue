@@ -3,11 +3,16 @@
     import Vue from 'vue';
     import wxObj from '@/assets/js/wxUtils';
     import {wechatConfig} from '@/apis';
+    import upDataApp from '@/assets/js/upDataApp';
 
     export default Vue.extend({
         mpType: 'app',
         onLaunch (options: any) {
             console.log('App Launch', options);
+
+            // #ifdef APP-PLUS
+            upDataApp();
+            // #endif
 
             // #ifdef H5
             if (globalConfig.banAuth.includes(`/${options.path}`)) return;

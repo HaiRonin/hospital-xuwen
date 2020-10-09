@@ -26,7 +26,7 @@
                 <view class="text-1">流水号:</view>
                 <view class="text-2">{{item.sourceMark}}</view>
             </view>
-            <view class="flex-box align-center justify-s-b item btn-line" v-if="item.IsPreReg !== '非预约号' || item.regStatus === '1'">
+            <view class="flex-box align-center justify-s-b item btn-line" v-if="item.regStatus === '1'">
                 <view></view>
                 <view class="close z-btn flex-box align-center" @tap="closeReport.openFun(item)">
                     <u-icon name="close-circle" class="item-icon"></u-icon>

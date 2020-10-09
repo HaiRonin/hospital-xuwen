@@ -3,7 +3,8 @@
         <image :src="require('@/assets/image/logo.png')" class="logo" mode="" />
         <view class="title">{{ title }}</view>
         <view class="text">版本号: {{ version }}</view>
-        <view class="btn" @tap="down">下载</view>
+        <!-- <view class="btn" @tap="down">患者端下载</view> -->
+        <view class="btn" @tap="down2">下载</view>
 
         <view class="mask" v-if="maskShow" @tap="maskShow = false">
             <image
@@ -27,10 +28,9 @@
     @Component
     export default class Download extends Vue {
 
-        title = '农垦医院app';
+        title = '农垦医院app-医生端';
         version = '1.0.0';
-        // fileName = 'HIS_20201008.apk';
-        fileName = '/his/download/app/1';
+        fileName2 = '/his/download/app/2';
         maskShow = false;
 
         isWeixin () {
@@ -38,12 +38,12 @@
             return !!~wx.indexOf('micromessenger');
         }
 
-        down () {
+        down2 () {
             if (this.isWeixin()) {
                 this.maskShow = true;
                 return;
             }
-            window.open(`${globalConfig.domain.webUrl}/${this.fileName}`, '_blank');
+            window.open(`${globalConfig.domain.webUrl}/${this.fileName2}`, '_blank');
         }
 
         created () {

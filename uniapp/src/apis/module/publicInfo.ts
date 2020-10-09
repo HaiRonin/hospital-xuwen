@@ -1,5 +1,10 @@
 // 1.2公共信息
 
+// 获取app最新版本号
+export const getLastAppVersion: TApi = (params = {}, options = {}) => {
+    const url = 'qq';
+    return ajax.apiPost(url, params, options);
+};
 
 // 1.2.1查询医生列表信息
 export const queryDoctorList: TApi = (params = {}, options = {}) => {

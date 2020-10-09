@@ -3,22 +3,17 @@
         <view class="top"></view>
         <view class="content">
             <view class="title flex-box align-center">
-                <image :src="require('@/assets/image/logo.png')" class="logo" mode=""/>
-                <view>欢迎登录</view>
+                <!-- <image :src="require('@/assets/image/logo.png')" class="logo" mode=""/> -->
+                <view>忘记密码?</view>
             </view>
             <input class="u-border-bottom" type="number" maxlength="11" v-model="params.UserName" placeholder="请输入手机号" />
-            <input class="u-border-bottom" type="password" maxlength="18" v-model="params.PassWord" placeholder="请输入密码" />
+            <input class="u-border-bottom" type="password" maxlength="18" v-model="params.PassWord" placeholder="请输入新密码" />
             <!-- <u-input class="u-border-bottom" placeholder="请输入密码" v-model="params.PassWord" :clearable="false" type="password"></u-input> -->
-            <view class="rel" v-if="isReg">
+            <view class="rel">
                 <input class="u-border-bottom" type="number" maxlength="6" v-model="params.verificationCode" placeholder="请输入验证码" />
                 <button class="abs code-btn" :class="{val: codeStatus}" @tap="getCode">{{codeBtnText}}</button>
             </view>
-            <button @tap="submit" class="getCaptcha" :class="{val: submitStatus}">{{isReg ? '注册' : '登录'}}</button>
-            <view class="alternative">
-                <view class="password" @tap="goForgetThePaw">忘记密码?</view>
-                <view class=""></view>
-                <view class="issue" @tap="isReg = !isReg;">{{isReg ? '账号密码登录' : '前往注册'}}</view>
-            </view>
+            <button @tap="submit" class="getCaptcha" :class="{val: submitStatus}">重设密码</button>
         </view>
         <!-- <view class="buttom">
             <view class="loginType flex-box justify-center">
@@ -35,7 +30,7 @@
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
-    import {validateLogon, registerCur, sendMsg} from '@/apis';
+    import {sendMsg, modifyPassword2} from '@/apis';
     import md5 from 'md5';
 
     const countDown = function (this: IOBJ, key: string, parentS = 60) {
@@ -84,19 +79,19 @@
     export default class Login extends Vue {
 
         params: IOBJ = {};
-        isReg = false;
+        isReg = true;
         countDown: IOBJ = {};
         codeBtnText = '获取验证码';
         check = (() => {
             const c = new utils.CheckVal({
                 UserName: '请输入手机号',
-                PassWord: '请输入密码',
+                PassWord: '请输入新密码',
                 verificationCode: '',
             });
 
             c.UserName = c.phone;
 
-            c._addRule('PassWord', (val) => val.length >= 6 ? '' : '密码长度大于等于6');
+            c._addRule('PassWord', (val) => val.length >= 6 ? '' : '新密码长度大于等于6');
             c._addRule('verificationCode', (val, data) => {
                 if (!data._isReg) return '';
                 return utils.zEmpty(val) ? '请输入验证码' : '';
@@ -115,10 +110,6 @@
             const params = this.params;
             const isReg = this.isReg;
             return (isReg ? !utils.zEmpty(params.verificationCode) : true) && !utils.zEmpty(params.UserName) && !utils.zEmpty(params.PassWord);
-        }
-
-        goForgetThePaw () {
-            utils.link('/pages/forgetThePaw');
         }
 
         async getCode () {
@@ -141,43 +132,15 @@
             data._isReg = isReg;
             if (this.check.run(data)) return;
 
-            data.PassWord = md5(data.PassWord);
-            data._isReg = undefined;
+            const params = {
+                password: md5(data.PassWord),
+                phone: data.UserName,
+                verificationCode: data.verificationCode
+            };
 
-            const fn = isReg ? registerCur : validateLogon;
-
-            if (isReg) {
-                data.password = data.PassWord;
-                data.phone = data.UserName;
-            }
-
-            const res = await fn(data, {isLoad: true});
-
-            if (isReg) {
-                utils.toast('注册成功，请登录');
-                this.isReg = false;
-                return;
-            }
-
-            // console.log(res);
-            delete res.data;
-            delete res.resultCode;
-            delete res.resultMsg;
-
-            this.$store.commit('user/setState', res);
-
-            let {url, index}: IOBJ = {};
-            const pageObj = this.$store.getters['redirect/getRedirectUrl'];
-
-            if (pageObj) {
-                ({url, index} = pageObj);
-            } else {
-                url = '/pages/home/outpatient';
-                index = 2;
-            }
-
-            this.$store.commit('redirect/clearData');
-            utils.link(url, index);
+            // console.log(params);
+            await modifyPassword2(params, {isLoad: true});
+            utils.link(1);
         }
 
         created () {

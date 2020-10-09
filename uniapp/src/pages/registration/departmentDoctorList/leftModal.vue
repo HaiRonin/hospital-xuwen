@@ -44,27 +44,27 @@
 
             const subjects: IOBJ[] = res.data;
 
-            // 科室类别（1、住院科室  2、门诊科室）
+            // 1-住院科室;2-门诊科室;3-公共科室;;6-医技科室
             const type1: IOBJ[] = [];
             const type2: IOBJ[] = [];
+            const type3: IOBJ[] = [];
+            const type6: IOBJ[] = [];
             const cur = this.cur;
             let curText = '';
 
             subjects.forEach((item) => {
                 item.type === '1' && type1.push(item);
                 item.type === '2' && type2.push(item);
+                item.type === '3' && type3.push(item);
+                item.type === '6' && type6.push(item);
                 cur === item.organId && (curText = item.name);
             });
 
             this.subjects = [
-                {
-                    title: '住院科室',
-                    list: type1
-                },
-                {
-                    title: '门诊科室',
-                    list: type2
-                }
+                {title: '公共科室', list: type3},
+                {title: '门诊科室', list: type2},
+                {title: '医技科室', list: type6},
+                {title: '住院科室', list: type1},
             ];
 
             if (!cur) {
