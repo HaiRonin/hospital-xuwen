@@ -29,7 +29,7 @@ export default async function () {
     const name = '农垦医院';
     const version = plus.runtime.version as string;
     const appid = plus.runtime.appid;
-    console.log(appid, name, version);
+    // console.log(appid, name, version);
     // console.log(plus.runtime);
 
     try {

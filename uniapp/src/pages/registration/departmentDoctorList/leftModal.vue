@@ -25,6 +25,7 @@
         subjects: IOBJ[] = [];
         cur = '';
         curText = '';
+        curItem: IOBJ | null = null;
 
         @Emit()
         change () {
@@ -34,6 +35,7 @@
         selTap (item: IOBJ) {
             this.cur = item.organId;
             this.curText = item.name;
+            this.curItem = item;
             this.change();
             this.show = false;
         }
@@ -51,13 +53,17 @@
             const type6: IOBJ[] = [];
             const cur = this.cur;
             let curText = '';
+            let curItem: IOBJ | null = null;
 
             subjects.forEach((item) => {
                 item.type === '1' && type1.push(item);
                 item.type === '2' && type2.push(item);
                 item.type === '3' && type3.push(item);
                 item.type === '6' && type6.push(item);
-                cur === item.organId && (curText = item.name);
+                if (cur === item.organId) {
+                    curText = item.name;
+                    curItem = item;
+                }
             });
 
             this.subjects = [
@@ -70,9 +76,11 @@
             if (!cur) {
                 this.curText = type1[0].name;
                 this.cur = type1[0].organId;
+                this.curItem = type1[0];
                 this.change();
             } else {
                 this.curText = curText;
+                this.curItem = curItem;
             }
         }
 
@@ -99,6 +107,7 @@
         left: 0;
         top: 0;
         background: #fff;
+        z-index: 2;
     }
     .item{font-size: 28rpx;padding: 20rpx;border-bottom:$border-line;}
     .tap-icon{color:$main-color;}
