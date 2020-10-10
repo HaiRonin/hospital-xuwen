@@ -125,7 +125,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         d.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
         BaseResponse baseResponse = callRefund(d.getOutTradeNo());
         d.setSuccessfulPayment(baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getCode():PayStatusEnum.REFUND_FAIL.getCode());
-        d.setResultMsg(d.getResultMsg()+"|"+(baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getDesc():PayStatusEnum.REFUND_FAIL.getDesc()));
+        d.setResultMsg((baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getDesc():PayStatusEnum.REFUND_FAIL.getDesc()));
         updateOrder(d);
         return true;
     }
@@ -152,7 +152,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         D d = getOrderDetail(outTradeNo);
         d.setUpdateTime(DateUtils.getNowDate());
         d.setSuccessfulPayment(PayStatusEnum.REFUND_SUCCESS.getCode());
-        d.setResultMsg(d.getResultMsg()+"|"+PayStatusEnum.REFUND_SUCCESS.getDesc());
+        d.setResultMsg(PayStatusEnum.REFUND_SUCCESS.getDesc());
         updateOrder(d);
         int iResult = updateOrder(d);
         return iResult>0?BaseResponse.success():BaseResponse.fail();
@@ -167,7 +167,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         D d = getOrderDetail(outTradeNo);
         d.setUpdateTime(DateUtils.getNowDate());
         d.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
-        d.setResultMsg(d.getResultMsg()+"|"+PayStatusEnum.REFUND_FAIL.getDesc());
+        d.setResultMsg(PayStatusEnum.REFUND_FAIL.getDesc());
         int iResult = updateOrder(d);
         return iResult>0?BaseResponse.success():BaseResponse.fail();
     }
