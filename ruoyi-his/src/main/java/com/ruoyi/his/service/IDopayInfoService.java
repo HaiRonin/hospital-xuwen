@@ -66,4 +66,7 @@ public interface IDopayInfoService
      * @return 门诊支付
      */
     public DopayInfo getDetailByOutTradeNo(String outTradeNo);
+
+
+    DopayInfo selectDopayInfoByTradeNoOrHsFeeNo(String TradeNoOrHsFeeNo);
 }

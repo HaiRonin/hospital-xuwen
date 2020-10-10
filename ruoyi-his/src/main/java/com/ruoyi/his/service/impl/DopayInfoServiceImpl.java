@@ -110,4 +110,9 @@ public class DopayInfoServiceImpl implements IDopayInfoService
         }
         return list.stream().findFirst().get();
     }
+
+    @Override
+    public DopayInfo selectDopayInfoByTradeNoOrHsFeeNo(String TradeNoOrHsFeeNo){
+        return dopayInfoMapper.selectDopayInfoByTradeNoOrHsFeeNo(TradeNoOrHsFeeNo);
+    }
 }

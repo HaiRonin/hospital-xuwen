@@ -169,4 +169,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="selectDopayInfoByTradeNoOrHsFeeNo" parameterType="String" resultMap="DopayInfoResult">
+        <include refid="selectDopayInfoVo"/>
+        where 1 = 1
+        and hi_fee_nos = #{outTradeNo} or out_trade_no = #{outTradeNo} limit 1
+    </select>
 </mapper>
