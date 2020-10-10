@@ -16,34 +16,41 @@
                 <view class="text-2 flex-1">{{item.visitDate}}</view>
                 <view class="text-2 main-color">{{item.status === '1' ? '已缴费' : '未缴费'}}</view>
             </view>
-            <view class="flex-box align-center item">
+            <view class="flex-box align-center justify-s-b item">
                 <view class="text-1">类型:</view><view class="text-2">{{item.organName}}</view>
+                <view class="text-2">查看详情</view>
             </view>
             <view class="flex-box align-center item">
                 <view class="text-1">总金额:</view><view class="text-2">{{item.patientAmount}}元</view>
             </view>
-            <view class="abs text-3">查看详情</view>
+            <view class="abs text-4" v-if="item.status === '1'" @tap.stop="lookTakeMedicinePoint(item)">查看取药点</view>
+            <!-- <view class="abs text-3">查看详情</view> -->
         </view>
 
         <u-empty text="暂无缴纳信息" mode="list" margin-top="150" icon-size="200" font-size="36" v-show="!oneLoad && !list.length"></u-empty>
 
         <orderDetail ref="orderDetail"/>
+        <tipsModal ref="tipsModal"/>
     </view>
 </template>
 
 <script lang="ts">
 
     import {Component, Vue, Ref, Provide} from 'vue-property-decorator';
-    import {queryToPayRecipeInfoList, queryPaymentRecordList} from '@/apis';
-    import orderDetail from '@/components/orderDetail.vue';
+    import {queryToPayRecipeInfoList, queryPaymentRecordList, getTakeMedicinePoint} from '@/apis';
+    import orderDetail from '@/components/paymentPrescriptionRecord/orderDetail.vue';
+    import tipsModal from '@/components/paymentPrescriptionRecord/tipsModal.vue';
+    import { zEmpty } from '@/utils';
 
     @Component({
         components: {
-            orderDetail
+            orderDetail,
+            tipsModal
         }
     })
     export default class PaymentPrescriptionRecord extends Vue {
         @Ref('orderDetail') readonly orderDetail!: IOBJ;
+        @Ref('tipsModal') readonly tipsModal!: IOBJ;
         @Provide('ppr') ppr = this;
 
         sortIndex = 0;
@@ -57,7 +64,26 @@
 
         change (index?: number) {
             const sortIndex = this.sortIndex = (utils.zEmpty(index) ? this.sortIndex : index) as number;
-            sortIndex === 0 ? this.getList1() : this.getList2();
+            return sortIndex === 0 ? this.getList1() : this.getList2();
+        }
+
+        // 查看取药点
+        async lookTakeMedicinePoint (item: IOBJ) {
+
+            const res = await getTakeMedicinePoint({outTradeNo: item.outTradeNo}, {isLoad: true});
+            try {
+                res.data = JSON.parse(res.data);
+                const list: IOBJ[] = res.data.filter((item: IOBJ) => !zEmpty(item.dispensaryWin));
+
+                if (!list.length) {
+                    utils.toast('查不到相关取药点,可能不需要取药');
+                    return;
+                }
+                // console.log(list);
+                this.tipsModal.openFun(list);
+            } catch (error) {
+                utils.toast('查不到相关取药点,可能不需要取药.');
+            }
         }
 
         async getList1 () {
@@ -71,6 +97,8 @@
 
             this.list = res.data;
             this.oneLoad = false;
+
+            return Promise.resolve();
         }
 
         async getList2 () {
@@ -87,6 +115,8 @@
 
             this.list = res.data;
             this.oneLoad = false;
+
+            return Promise.resolve();
         }
 
         onLoad (options: IOBJ) {
@@ -96,6 +126,7 @@
         created () {
             this.change(0);
             // this.getList1();
+            // global.asd = this;
         }
 
         mounted () {}
@@ -136,6 +167,17 @@
         padding-right: 30rpx;
     }
     .text-3{
+        right: 16rpx;
+        bottom: 90rpx;
+        color: $color-grey;
+        // background: $main-color;
+        background: #fff;
+        padding: 0;
+        border-radius: 10rpx;
+        // border:$border-line;
+    }
+
+    .text-4{
         right: 16rpx;
         bottom: 24rpx;
         color: $color-grey;

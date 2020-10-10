@@ -128,13 +128,16 @@
             this.pay.startPay(data);
         }
 
-        paySuccess () {
+        async paySuccess () {
+            const curItem = this.curItem;
             this.show = false;
-            this.ppr.change();
+            await this.ppr.change();
+            this.ppr.lookTakeMedicinePoint(curItem);
         }
 
         created () {
-            console.log(this);
+            // console.log(this);
+            // global.asd = this;
         }
 
         mounted () {}

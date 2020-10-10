@@ -12,7 +12,7 @@
                     <u-icon name="arrow-down" class="tap-icon" v-if="theTitleList.length"></u-icon>
                 </view>
             </view>
-            <u-alert-tips type="primary" class="z-custom" show-icon description="请提前与该科室医生联系，方可挂号，以免找不到医生"></u-alert-tips>
+            <u-alert-tips v-if="params.type === '0' && (leftModal && leftModal.curItem && ['1', '6'].includes(leftModal.curItem.type))" type="primary" class="z-custom" show-icon description="请提前与该科室医生联系，方可挂号，以免找不到医生"></u-alert-tips>
 
             <view class="line-text">
                 <text>{{this.params.type === '2' ? '七日内可预约' : '当天非预约'}}</text>
@@ -277,6 +277,15 @@
         z-index: 2;
         border:none;
         border-radius: 0;
+    }
+
+    .z-custom::v-deep .u-icon__icon{
+        color: $main-error-color !important;
+    }
+
+    .z-custom::v-deep .u-alert-desc{
+        font-size: 30rpx;
+        line-height: 1.8;
     }
 </style>
 

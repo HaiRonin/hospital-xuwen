@@ -1,5 +1,11 @@
 // 1.3预约挂号
 
+// 获取取药点 获取门诊缴费结果
+export const getTakeMedicinePoint: TApi = (params = {}, options = {}) => {
+    const url = '/his/order/order/dopayInfoResult';
+    return ajax.apiPost(url, params, options);
+};
+
 // 1.3.1取消预约
 export const doRegCancel: TApi = (params = {}, options = {}) => {
     const url = '/his/request';
