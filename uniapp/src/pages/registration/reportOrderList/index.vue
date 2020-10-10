@@ -30,7 +30,7 @@
                 <view></view>
                 <view class="close z-btn flex-box align-center" @tap="closeReport.openFun(item)">
                     <u-icon name="close-circle" class="item-icon"></u-icon>
-                    取消预约
+                    取消挂号
                 </view>
                 <!-- <view class="query z-btn flex-box align-center" @tap="lookQueue.openFun(item)">
                     <u-icon name="account" class="item-icon"></u-icon>
