@@ -28,7 +28,6 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
 
-    const {link} = utils;
 
     @Component
     export default class Outpatient extends Vue {
@@ -65,26 +64,32 @@
                 url: '/pages/outpatient/index?toUrl=/pages/registration/reportData/index?lsInOut=1',
                 imgUrl: require('@/assets/image/icon/icon_87.png'),
             },
-            {
-                text: '排队候诊',
-                url: '/pages/outpatient/index?toUrl=/pages/registration/waitingList',
-                imgUrl: require('@/assets/image/icon/icon_92.png'),
-            },
+            // {
+            //     text: '排队候诊',
+            //     url: '/pages/outpatient/index?toUrl=/pages/registration/waitingList',
+            //     imgUrl: require('@/assets/image/icon/icon_92.png'),
+            //     tips: '正在建设中'
+            // },
             {
                 text: '信息查询',
                 url: '/pages/info/index',
                 imgUrl: require('@/assets/image/icon/icon_81.png'),
             },
-            {
-                text: '出诊安排',
-                url: '/pages/info/doctorTimeing',
-                imgUrl: require('@/assets/image/icon/icon_91.png'),
-            },
+            // {
+            //     text: '出诊安排',
+            //     url: '/pages/info/doctorTimeing',
+            //     imgUrl: require('@/assets/image/icon/icon_91.png'),
+            // },
             // {
             //     text: '科室介绍',
             //     url: '/pages/info/departmentIsIntroduced',
             //     imgUrl: require('@/assets/image/icon/icon_91.png'),
             // },
+            {
+                text: '门诊清单',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/printlist/index',
+                imgUrl: require('@/assets/image/icon/icon_109.png'),
+            },
         ];
 
         link (item: IOBJ) {

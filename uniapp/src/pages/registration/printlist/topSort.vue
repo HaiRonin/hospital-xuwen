@@ -55,7 +55,7 @@
         // modalShow = true;
         timeShow = false;
         params: IOBJ = {
-            xType: '1',
+            // xType: '1',
             endDate: '',
             startDate: ''
         };

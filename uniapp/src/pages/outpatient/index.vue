@@ -1,5 +1,8 @@
 <template>
     <view class="z-box">
+        <u-alert-tips type="primary" class="z-custom" show-icon description="最多可添加 6 人"></u-alert-tips>
+
+
         <view class="common-block" v-for="(item) in list" :key="item.CardNo" @tap="selItem(item)">
             <view class="flex-box align-center justify-s-b">
                 <view class="flex-1">{{item.Name}}</view>
@@ -25,7 +28,7 @@
             <view v-else class="fake-padding"></view>
         </view>
 
-        <view @tap="addPatient.openFun()" v-show="loadCount === 1 && !list.length">
+        <view @tap="addPatientFun" v-show="loadCount === 1 && !list.length">
             <u-empty
                 text="点击前往添加就诊人"
                 mode="list"
@@ -39,7 +42,7 @@
 
         <view class="add-box">
             <!-- <u-button v-show="false" type="primary" :plain="false" @tap="addPatient.openFun()">添加就诊人</u-button> -->
-            <button class="z-btn-default z-btn-primary" @tap="addPatient.openFun()">添加就诊人</button>
+            <button class="z-btn-default z-btn-primary" @tap="addPatientFun">添加就诊人</button>
         </view>
 
         <delPatientCard ref="delPatientCard" />
@@ -85,6 +88,14 @@
                 cardNo: item.IDCardno,
             });
             utils.link(1);
+        }
+
+        addPatientFun () {
+            if (this.list.length >= 6) {
+                utils.toast('最多可添加 6 人');
+                return;
+            }
+            this.addPatient.openFun();
         }
 
         // 跳转下一页
@@ -146,6 +157,7 @@
 <style lang="scss" scoped>
     .z-box {
         overflow: initial;
+        padding-top: 0;
     }
 
     .text-2 {
@@ -197,5 +209,18 @@
     .text-icon {
         margin-left: 10rpx;
         color: $color-grey;
+    }
+
+
+    .z-custom {
+        color: $main-color;
+        background: $bg-main-color;
+        position:sticky;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        border:none;
+        border-radius: 0;
+        margin-bottom: 32rpx;
     }
 </style>

@@ -21,31 +21,31 @@
             {
                 text: '住院信息',
                 url: '/pages/outpatient/index?toUrl=/pages/registration/hospitalInfo',
-                imgUrl: require('@/assets/image/icon/icon_84.png'),
+                imgUrl: require('@/assets/image/icon/icon_95.png'),
                 // tips: ''
             },
-            {
-                text: '住院检验/检测报告',
-                url: '/pages/outpatient/index?toUrl=/pages/registration/reportData/index?lsInOut=2',
-                imgUrl: require('@/assets/image/icon/icon_104.png'),
-            },
             // {
-            //     text: '押金缴纳',
-            //     url: '',
-            //     imgUrl: require('@/assets/image/icon/icon_106.png'),
+            //     text: '住院检验/检测报告',
+            //     url: '/pages/outpatient/index?toUrl=/pages/registration/reportData/index?lsInOut=2',
+            //     imgUrl: require('@/assets/image/icon/icon_104.png'),
             // },
+            {
+                text: '押金缴纳',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/depositHospitalPay',
+                imgUrl: require('@/assets/image/icon/icon_106.png'),
+            },
             {
                 text: '押金缴纳记录',
                 url: '/pages/outpatient/index?toUrl=/pages/registration/depositHospitalList',
-                imgUrl: require('@/assets/image/icon/icon_111.png'),
+                imgUrl: require('@/assets/image/icon/icon_106.png'),
             },
             {
-                text: '住院一日清单',
+                text: '住院清单',
                 url: '/pages/outpatient/index?toUrl=/pages/registration/hospitalizationDayList',
                 imgUrl: require('@/assets/image/icon/icon_117.png'),
             },
             {
-                text: '总费用清单',
+                text: '出院汇总清单',
                 url: '/pages/outpatient/index?toUrl=/pages/registration/totalCostStatement',
                 imgUrl: require('@/assets/image/icon/icon_109.png'),
             },

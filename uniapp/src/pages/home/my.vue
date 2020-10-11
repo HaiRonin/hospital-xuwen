@@ -54,11 +54,17 @@
                 text: '预约挂号记录',
                 url: '/pages/outpatient/index?toUrl=/pages/registration/reportOrderList/index',
                 imgUrl: require('@/assets/image/icon/icon_41.png'),
+                tips: '正在建设中'
             },
             {
                 text: '缴费处方记录',
                 url: '/pages/outpatient/index?toUrl=/pages/registration/paymentPrescriptionRecord',
                 imgUrl: require('@/assets/image/icon/icon_43.png'),
+            },
+            {
+                text: '门诊清单',
+                url: '/pages/outpatient/index?toUrl=/pages/registration/printlist/index',
+                imgUrl: require('@/assets/image/icon/icon_23.png'),
             },
             // {
             //     text: '满意度调查',
@@ -70,7 +76,12 @@
         itemTap (item: IOBJ) {
             if (!this.isLogin) return;
 
-            const {url, action} = item;
+            const {url, action, tips} = item;
+
+            if (tips) {
+                utils.toast(tips);
+                return;
+            }
 
             if (!utils.zEmpty(url)) {
                 utils.link(url);
