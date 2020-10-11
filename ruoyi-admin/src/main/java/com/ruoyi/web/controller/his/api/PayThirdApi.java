@@ -82,10 +82,23 @@ public class PayThirdApi extends BaseController {
     @ApiOperation("获取OPENID")
     @GetMapping("/getOpenid")
     @ResponseBody
-    public AjaxResult getOpenId(String code, HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult getOpenId(String code) {
         Map<String, String> resultData = Maps.newHashMap();
-        resultData.put("openId", WeixinLoginUtils.thirtypartyUserLogin(request, response));
+        resultData.put("openId", WeixinLoginUtils.getOpenId(code, redisUtil));
         return AjaxResult.success("获取OPENID", resultData);
+    }
+
+
+    /**
+     * 获取用户信息
+     */
+    @Log(title = "获取公众号用户信息", businessType = BusinessType.HIS)
+    @ApiOperation("获取公众号用户信息")
+    @PostMapping("/getWeixinUserInfo")
+    @ResponseBody
+    public AjaxResult getWeixinUserInfo(String code) {
+        Map<String, String> resultData = Maps.newHashMap();
+        return AjaxResult.success("获取公众号用户信息", WeixinLoginUtils.getUserInfoFromWexin(code, redisUtil));
     }
 
     /**
