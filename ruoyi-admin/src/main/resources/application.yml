@@ -154,7 +154,7 @@ his:
 #    name: xuwen
     name: nongken
     #农垦中心医院-外网
-    #url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
+#    url: http://app.gdsnkzxyy.cn:8031/ou/hiswx.asmx
     #农垦中心医院-内网
     url: http://192.168.0.59:8031/Ou/hiswx.asmx
   wechat:
