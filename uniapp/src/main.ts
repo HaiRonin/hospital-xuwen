@@ -2,9 +2,8 @@ import Vue from 'vue';
 import App from './App.vue';
 import store from './store/index';
 import uView from 'uview-ui';
-import forcedToLogin, {handleHomeShow} from '@/assets/js/forcedToLogin';
-import '@/assets/js/wxUtils';
-// import '@/assets/js/intelligentGuidanceApi';
+// import forcedToLogin, {handleHomeShow} from '@/assets/js/forcedToLogin';
+// import '@/assets/js/wxUtils';
 
 
 Vue.config.productionTip = false;
@@ -17,12 +16,11 @@ Vue.mixin({
         for (const key in options) {
             typeof options[key] === 'number' && (options[key] = `${options[key]}`);
         }
-        // console.log(store.getters.isLogin);
         store.dispatch('time/ajaxGetTime');
-        forcedToLogin();
+        // forcedToLogin();
     },
     onShow () {
-        handleHomeShow();
+        // handleHomeShow();
     }
 });
 
@@ -36,9 +34,10 @@ new App({
 // console.log(queryDepartmentList());
 
 
+store.commit('user/setState', {openId: '123', synUserName: '', synKey: '', id: '1'});
+
 // #ifdef H5
 if (process.env.NODE_ENV === 'development') {
-    utils.setStorage('openId', 'oKXcuv5uoQ2Jj10xf0-JCnhG8I9o');
     (global as any).globalConfig = globalConfig;
     (global as any).utils = utils;
     (global as any).ajax = ajax;

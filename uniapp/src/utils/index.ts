@@ -174,7 +174,8 @@ export const link: TLink = (() => {
 
                     // #ifdef H5
                     if (zEmpty(_url)) return;
-                    const u = _url as string;
+                    let u = _url as string;
+                    u = u.substr(0, u.indexOf('?'));
                     const r = refreshUrl.find(str => ~u.indexOf(str));
                     r && window.location.reload();
                     // #endif

@@ -40,11 +40,11 @@
 
         // loading: boolean = false;
         quickEntry2: IOBJ[] = [
-            {
-                text: '修改密码',
-                action: 'upDataPwa',
-                imgUrl: require('@/assets/image/icon/icon_39.png'),
-            },
+            // {
+            //     text: '修改密码',
+            //     action: 'upDataPwa',
+            //     imgUrl: require('@/assets/image/icon/icon_39.png'),
+            // },
             {
                 text: '就诊人管理',
                 url: '/pages/outpatient/index',
@@ -60,11 +60,11 @@
                 url: '/pages/outpatient/index?toUrl=/pages/registration/paymentPrescriptionRecord',
                 imgUrl: require('@/assets/image/icon/icon_43.png'),
             },
-            {
-                text: '满意度调查',
-                url: '/pages/other/questionnaire',
-                imgUrl: require('@/assets/image/icon/icon_43.png'),
-            },
+            // {
+            //     text: '满意度调查',
+            //     url: '/pages/other/questionnaire',
+            //     imgUrl: require('@/assets/image/icon/icon_43.png'),
+            // },
         ];
 
         itemTap (item: IOBJ) {
@@ -88,6 +88,7 @@
         logOut () {
             this.clearUserInfo();
             utils.link('/pages/home/outpatient', 2);
+            window.location.reload();
         }
 
         created () {

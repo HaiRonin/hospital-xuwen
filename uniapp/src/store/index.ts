@@ -40,6 +40,9 @@ export default new Vuex.Store({
             const len = Object.keys(state.user.userInfo).length;
             return !!len;
         },
+        openId (state: IOBJ) {
+            return state.user.userInfo.openId;
+        },
         // 用户信息
         userInfo (state: IOBJ) {
             return state.user.userInfo;

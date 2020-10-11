@@ -3,7 +3,7 @@
     <view>
         <image class="top-bg" :src="require('@/assets/image/br01.png')" alt />
         <u-grid :col="2" class="common-block" :border="false">
-            <u-grid-item v-for="(item, index) in quickEntry2" :key="index" @tap="link(item.url)">
+            <u-grid-item v-for="(item, index) in quickEntry2" :key="index" @tap="link(item)">
                 <image class="q-e-img" :src="item.imgUrl" mode="aspectFit"/>
                 <view class="q-e-text">{{item.text}}</view>
             </u-grid-item>
@@ -22,6 +22,7 @@
                 text: '住院信息',
                 url: '/pages/outpatient/index?toUrl=/pages/registration/hospitalInfo',
                 imgUrl: require('@/assets/image/icon/icon_84.png'),
+                // tips: ''
             },
             {
                 text: '住院检验/检测报告',
@@ -50,7 +51,9 @@
             },
         ];
 
-        link = utils.link;
+        link (item: IOBJ) {
+            utils.link(item.url);
+        }
 
         created () {
         }

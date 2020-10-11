@@ -89,7 +89,7 @@
     .context{
         padding: 0 24rpx;
         min-height: 100%;
-        background: #fff;
+        // background: #fff;
     }
 
     .item{font-size: 30rpx;line-height: 90rpx;padding: 0 10rpx;}

@@ -13,7 +13,7 @@
                 </view>
             </view>
             <view class="line-text">
-                <text>{{this.params.type === '2' ? '七日内' : '今日'}}可预约</text>
+                <text>{{this.params.type === '2' ? '七日内可预约' : '当天非预约'}}</text>
             </view>
 
             <template v-if="this.params.type === '2'">

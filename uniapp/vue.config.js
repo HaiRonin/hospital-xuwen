@@ -6,10 +6,11 @@ module.exports = {
         // open: true,
         host: '0.0.0.0',
         // hot: true,
-        // disableHostCheck: true,
-        port: 8090,
+        port: 80,
         // proxy: 'http://120.76.246.196',
         // proxy: 'http://nktest.free.idcfengye.com',
+        // public: 'apptest.gdsnkzxyy.cn:80',
+        disableHostCheck: true,
         proxy: {
             '/test': {
                 target: 'http://120.76.246.196',
@@ -31,7 +32,7 @@ module.exports = {
 
         plugins.push(
             new webpack.ProvidePlugin({
-                globalConfig: path.resolve(__dirname, './', 'src/assets/js/globalConfig.ts'),
+                globalConfig: path.resolve(__dirname, './', 'src/globalConfig.ts'),
                 utils: path.resolve(__dirname, './', 'src/utils/index.ts'),
                 ajax: path.resolve(__dirname, './', 'src/apis/ajax/index.ts'),
                 wx: [path.resolve(__dirname, './', 'src/assets/js/wxUtils.ts'), 'default'],

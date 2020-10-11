@@ -19,15 +19,17 @@ const specialHandl = (url: string, params: IOBJ, options: IMyOptions) => {
     let newParams = params;
     if (url === '/his/request') {
         const {api, ...o} = params;
-        let {synUserName = '', synKey = '', UserName = ''}: IOBJ = {};
+        let {synUserName = '', synKey = '', UserName = '', id = ''}: IOBJ = {};
         options.noCloseBeforeAjax = true;
 
         // debugger;
         if (store && store.getters.isLogin) {
             const user = store.getters.userInfo;
+
             synUserName = user.userName || '';
             synKey = user.synKey || '';
             UserName = user.userName || '';
+            id = user.id || '';
         }
 
         newParams = {
@@ -36,6 +38,7 @@ const specialHandl = (url: string, params: IOBJ, options: IMyOptions) => {
                 synUserName,
                 synKey,
                 UserName,
+                id,
                 ...o,
             })
         };

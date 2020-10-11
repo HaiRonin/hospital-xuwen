@@ -120,7 +120,7 @@
 <style lang="scss" scoped>
     .box{
         min-height: 100%;
-        background: #fff;
+        // background: #fff;
     }
 
     .price-box{

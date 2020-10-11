@@ -104,7 +104,7 @@
 
 <style lang="scss" scoped>
     .box {
-        background: #fff;
+        // background: #fff;
         padding-bottom: 20rpx;
         min-height: 100%;
         padding-top: 32rpx;

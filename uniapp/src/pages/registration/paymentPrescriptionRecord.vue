@@ -117,6 +117,7 @@
         right: 0;
         box-shadow: 0 2rpx 6rpx 0px $color-weak-grey;
         margin-bottom: 32rpx;
+        z-index: 2;
     }
     .top-box .tb-text.cur {
         color: $main-color;

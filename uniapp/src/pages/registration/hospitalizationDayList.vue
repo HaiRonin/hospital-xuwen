@@ -45,7 +45,7 @@
         <u-empty v-if="!oneLoad && !info" text="暂无住院信息" mode="list" margin-top="150" icon-size="200" font-size="36"></u-empty>
         <u-empty v-if="!oneLoad2 && info && !list.length" text="暂无数据" mode="list" margin-top="150" icon-size="200" font-size="36"></u-empty>
 
-        <u-calendar v-model="timeShow" active-bg-color="#299ff7" mode="date" @change="timeChange" class="z-calendar"></u-calendar>
+        <u-calendar v-model="timeShow"  active-bg-color="#463f3a" range-color="#463f3a" range-bg-color="#bcb8b1" mode="date" @change="timeChange" class="z-calendar"></u-calendar>
     </view>
 </template>
 
@@ -126,7 +126,7 @@
 
 <style lang="scss" scoped>
     .box {
-        background: #fff;
+        // background: #fff;
         min-height: 100%;
     }
 

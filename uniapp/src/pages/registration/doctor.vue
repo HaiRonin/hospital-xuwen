@@ -236,8 +236,9 @@
                     organdoctorId,
                     sourceTimeType: this.getDaySourceTimeType(),
                     sourceDate: date
-                }, {closeErrorTips: true}).catch(() => ({status: 'rejected'}));
-                resList.push({status: 'fulfilled', value: res});
+                }, {closeErrorTips: true}).then((value) => ({status: 'fulfilled', value})).catch((value) => ({status: 'rejected', value}));
+                // debugger
+                resList.push(res);
             }
 
             const list: IOBJ[] = [];

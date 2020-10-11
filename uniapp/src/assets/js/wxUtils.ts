@@ -1,5 +1,5 @@
 // #ifdef H5
-
+import store from '@/store';
 import jweixin from 'jweixin-module';
 import {getOpenId} from '@/apis';
 const wxObj: any = jweixin;
@@ -10,7 +10,7 @@ const wxObj: any = jweixin;
 // 微信授权
 const wxAuth = {
     async init (options: IOBJ, vueCompon: IOBJ) {
-        if (this.isOpenId() || await this.isCode(options, vueCompon)) return;
+        if (store.getters.isLogin || await this.isCode(options, vueCompon)) return;
         const appid = globalConfig.APPID;
         const redirectUri = encodeURIComponent(window.location.href);
         window.location.replace(`http://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`);
@@ -19,19 +19,22 @@ const wxAuth = {
         const code = options.code;
         if (utils.zEmpty(code)) return false;
 
-        // code 换取openId 存到本地
+        // code 换取openId以及用户数据 存到本地
         const res = await getOpenId({code}, {isLoad: true});
-        utils.setStorage('openId', res.data.openId);
+        // utils.setStorage('openId', res.data.openId);
+        store.commit('user/setState', res.data);
+
+        // store.commit('user/setState', {openId: '123', synUserName: '', synKey: '', id: '1'});
 
         const r = vueCompon.$route;
         vueCompon.$router.replace({path: r.path, query: {}});
         return true;
     },
-    isOpenId () {
-        const openId = utils.getStorage('openId');
-        // console.log(!!openId);
-        return !!openId;
-    }
+    // isOpenId () {
+    //     const openId = utils.getStorage('openId');
+    //     // console.log(!!openId);
+    //     return !!openId;
+    // }
 };
 
 const obj = {
@@ -39,12 +42,12 @@ const obj = {
     cWxConfig: (data: IOBJ) => {
         return new Promise((rel, rej) => {
             wxObj.config({
-                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                 appId: data.appId, // 必填，公众号的唯一标识
-                timestamp: data.timestamp, // 必填，生成签名的时间戳
+                timestamp: +data.timestamp, // 必填，生成签名的时间戳
                 nonceStr: data.nonceStr, // 必填，生成签名的随机串
                 signature: data.signature, // 必填，签名
-                jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
+                jsApiList: ['chooseWXPay', 'chooseImage', 'getLocalImgData'] // 必填，需要使用的JS接口列表
             });
 
             wxObj.ready(function () {
@@ -59,6 +62,26 @@ const obj = {
             });
         });
 
+    },
+    cChooseImage: () => {
+        return new Promise((rel, rej) => {
+            wxObj.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: rel,
+                fail: rej
+            });
+        });
+    },
+    cGetLocalImgData: (localId: string | number) => {
+        return new Promise((rel, rej) => {
+            wxObj.getLocalImgData({
+                localId, // 图片的localID
+                success: rel,
+                fail: rej
+            });
+        });
     },
     cChooseWXPayPromise: (data: IOBJ) => {
         return new Promise((rel, rej) => {

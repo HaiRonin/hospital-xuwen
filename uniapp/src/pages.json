@@ -309,9 +309,9 @@
         }
     },
     "tabBar": {
-		"color": "#333333",
-		"selectedColor": "#299ff7",
-        "backgroundColor": "#FFFFFF",
+		"color": "#606060",
+		"selectedColor": "#8a817c",
+        "backgroundColor": "#ffffff",
 		"list": [
 			{
 				"pagePath": "pages/home/outpatient",

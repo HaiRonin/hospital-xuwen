@@ -3,7 +3,8 @@
 page {
     height: 100%;
     width: 100%;
-    background-color: #f5f5f9;
+    // background-color: #f5f5f9;
+    background-color: #f4f3ee;
     color: $default-color;
     line-height: 1.2;
     font-size: 32px;
@@ -54,12 +55,13 @@ image, img {
 .common-block{
     margin: 0 32rpx 32rpx;padding: 25.6rpx 16rpx;font-size: 28rpx;
     border-radius: 9.6rpx;
-    box-shadow: 0 2rpx 24rpx rgba(100, 101, 102, 0.12);
+    // box-shadow: 0 2rpx 24rpx rgba(100, 101, 102, 0.12);
     // box-shadow: 0 0rpx 10rpx 0rpx rgb(100 101 102 / 0.05);
+    border:$border-line;
     background-color: #fff;
 }
 
-.z-box{background: #fff;min-height: 100%;padding-top: 32rpx;overflow: hidden;}
+.z-box{min-height: 100%;padding-top: 32rpx;}
 
 .head-img{
     width:128rpx;

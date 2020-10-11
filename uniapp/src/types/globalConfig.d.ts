@@ -12,7 +12,6 @@ declare module globalConfig {
      * 使用中的域名地址
      */
     let domain: IApiServer;
-    const TEST_DOMAIN: IApiServer;
     const BUILD_DOMAIN: IApiServer;
 
     /**

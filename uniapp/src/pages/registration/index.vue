@@ -31,24 +31,17 @@
             </view>
         </view>
 
-        <template v-for="(item, index) in list" v-else>
-            <view :key="item.title + index" class="line-text-box" :style="{position: topVal ? 'sticky' : 'static', top: topVal}">
-                <view class="line-text">
-                    <text>{{item.title}}</text>
-                </view>
+        <view class="row-box" v-else>
+            <view
+                v-for="(child, cindex) in list"
+                :key="cindex"
+                class="common-block flex-box align-center justify-s-b"
+                @tap="link(child)"
+            >
+                <view>{{child.name}}</view>
+                <u-icon name="arrow-right" class="item-icon"></u-icon>
             </view>
-            <view class="row-box" :key="index">
-                <view
-                    v-for="(child, cindex) in item.list"
-                    :key="cindex"
-                    class="common-block flex-box align-center justify-s-b"
-                    @tap="link(child)"
-                >
-                    <view>{{child.name}}</view>
-                    <u-icon name="arrow-right" class="item-icon"></u-icon>
-                </view>
-            </view>
-        </template>
+        </view>
 
         <view class="fake-view"></view>
         <view class="bottom-btn" @tap="linkSearchDoctor">查找医生</view>
@@ -82,25 +75,8 @@
         async getInfo () {
             const res = await queryDepartmentList();
 
-            // 科室类别（1、住院科室  2、门诊科室）
-            const type1: IOBJ[] = [];
-            const type2: IOBJ[] = [];
-            res.data.forEach((item: IOBJ) => {
-                item.type === '1' && type1.push(item);
-                item.type === '2' && type2.push(item);
-            });
-
             this.oldList = res.data;
-            this.list = [
-                {
-                    title: '门诊科室',
-                    list: type2
-                },
-                {
-                    title: '住院科室',
-                    list: type1
-                },
-            ];
+            this.list = res.data;
         }
 
         link (item: IOBJ) {

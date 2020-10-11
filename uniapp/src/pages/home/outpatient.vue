@@ -7,7 +7,7 @@
                 class="flex-box align-center justify-center flex-1"
                 v-for="(item, index) in quickEntry1"
                 :key="index"
-                @tap="link(item.url)"
+                @tap="link(item)"
             >
                 <image :src="item.imgUrl" alt class="b-img" mode="aspectFit" />
                 <view>
@@ -17,7 +17,7 @@
             </view>
         </view>
         <u-grid :col="3" class="common-block" :border="false">
-            <u-grid-item v-for="(item, index) in quickEntry2" :key="index" @tap="link(item.url)">
+            <u-grid-item v-for="(item, index) in quickEntry2" :key="index" @tap="link(item)">
                 <image class="q-e-img" :src="item.imgUrl" mode="aspectFit" />
                 <view class="q-e-text">{{item.text}}</view>
             </u-grid-item>
@@ -38,12 +38,14 @@
                 text2: '当日挂号新体验',
                 url: '/pages/registration/index?type=0',
                 imgUrl: require('@/assets/image/icon/icon_68.png'),
+                tips: '正在建设中'
             },
             {
                 text: '预约挂号',
                 text2: '预约挂号新体验',
                 url: '/pages/registration/index?type=2',
                 imgUrl: require('@/assets/image/icon/icon_68.png'),
+                tips: '正在建设中'
             },
         ];
 
@@ -85,7 +87,14 @@
             // },
         ];
 
-        link = link;
+        link (item: IOBJ) {
+            // debugger;
+            if (item.tips) {
+                utils.toast(item.tips);
+                return;
+            }
+            utils.link(item.url);
+        }
 
         created () {
         }

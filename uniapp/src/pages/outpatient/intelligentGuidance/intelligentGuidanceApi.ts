@@ -17,7 +17,8 @@ const obj = {
     },
     link (item: IOBJ) {
         // console.log(item);
-        utils.link(`/pages/registration/diagnosis?${utils.serialize(item)}`);
+        // utils.link(`/pages/registration/diagnosis?${utils.serialize(item)}`);
+        utils.toast('正在建设中');
     }
 };
 

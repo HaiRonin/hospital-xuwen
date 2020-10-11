@@ -126,7 +126,7 @@
 
 <style lang="scss" scoped>
     .box {
-        background: #fff;
+        // background: #fff;
         min-height: 100%;
     }
 

@@ -9,8 +9,7 @@
                 <template v-else>时间范围</template>
             </view>
             <view class="text-2">
-                <text class="main-color">{{params.xType === '2' ? '检查' : '检验'}}</text>
-                报告
+                <text class="main-color">{{params.xType === '2' ? '检查' : '检验'}}</text>报告
             </view>
         </view>
         <view class="sort-block" v-if="modalShow">
@@ -33,7 +32,15 @@
             <u-icon name="arrow-down" v-else class="z-icon"></u-icon>
         </view>
 
-        <u-calendar v-model="timeShow" active-bg-color="#299ff7" mode="range" @change="timeChange" class="z-calendar"></u-calendar>
+        <u-calendar
+            v-model="timeShow"
+            active-bg-color="#463f3a"
+            range-color="#463f3a"
+            range-bg-color="#bcb8b1"
+            mode="range"
+            @change="timeChange"
+            class="z-calendar"
+        ></u-calendar>
     </view>
 </template>
 
@@ -103,67 +110,70 @@
 </script>
 
 <style lang="scss" scoped>
-    .top{
+    .top {
         background: #fff;
         font-size: 30rpx;
         position: relative;
         z-index: 2;
         line-height: 80rpx;
-        padding:0 24rpx;
+        padding: 0 24rpx;
     }
 
     .z-calendar {
         font-size: 28rpx;
     }
 
-    .title-1{
+    .title-1 {
         text-align: center;
         line-height: 80rpx;
         border: $border-line;
         border-radius: 50rpx;
         font-size: 32rpx;
         margin-bottom: 80rpx;
-        border-color:$main-color;
+        border-color: $main-color;
     }
 
-    .title-2{margin-right: 80rpx;margin-left: 10rpx;}
+    .title-2 {
+        margin-right: 80rpx;
+        margin-left: 10rpx;
+    }
 
-    .title-3{
+    .title-3 {
         text-align: center;
         margin-bottom: 50rpx;
         font-size: 36rpx;
-        font-weight:bold;
+        font-weight: bold;
     }
 
-    .z-btn{
+    .z-btn {
         color: #fff;
-        background:$main-color;
+        background: $main-color;
         text-align: center;
         line-height: 80rpx;
         border-radius: 10rpx;
         margin-top: 80rpx;
     }
 
-    .sort-block{
-        margin:0;
+    .sort-block {
+        margin: 0;
         background-color: #fff;
         padding: 24rpx 16rpx;
         font-size: 28rpx;
     }
 
-    .sort-control{
+    .sort-control {
         background: #ebedf0;
         color: #909399;
-        border-top:$border-line;
-        border-bottom:$border-line;
+        border-top: $border-line;
+        border-bottom: $border-line;
         font-size: 36rpx;
     }
 
-    .main-color{
-        color:$main-color;
+    .main-color {
+        color: $main-color;
     }
 
-    .color-grey{
+    .color-grey {
         color: $color-grey;
     }
 </style>

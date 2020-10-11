@@ -1,37 +1,20 @@
 <template>
-    <view class="z-box">
-        <template v-for="(item, index) in list">
-            <view class="line-text" :key="item.title + index"><text>{{item.title}}</text></view>
-            <view class="row-box" :key="index">
-                <view
-                    v-for="(child, cindex) in item.list"
-                    :key="cindex"
-                    class="common-block"
-                    @tap="open(child)"
-                >
-                    <view class="flex-box align-center justify-s-b">
-                        <view>{{child.name}}</view>
-                        <u-icon :name="child.open ? 'arrow-up' : 'arrow-down'" class="item-icon"></u-icon>
-                    </view>
-                    <view class="text-1" v-if="!!child.open">
-                        <view class="fake-line"></view>
-                        {{child.ddesc || '暂无介绍信息'}}
-                    </view>
-                </view>
+    <view class="z-box row-box">
+        <view
+            v-for="(child, cindex) in list"
+            :key="cindex"
+            class="common-block"
+            @tap="open(child)"
+        >
+            <view class="flex-box align-center justify-s-b">
+                <view>{{child.name}}</view>
+                <u-icon :name="child.open ? 'arrow-up' : 'arrow-down'" class="item-icon"></u-icon>
             </view>
-            <!-- <u-collapse class="collapse-box" :key="index">
-                <u-collapse-item
-                    v-for="(child, cindex) in item.list"
-                    :title="child.name"
-                    :key="cindex"
-                    class="common-block"
-                >
-                    <view class="fake-line"></view>
-                    {{child.ddesc || '暂无介绍信息'}}
-                    <view class="fake-height"></view>
-                </u-collapse-item>
-            </u-collapse> -->
-        </template>
+            <view class="text-1" v-if="!!child.open">
+                <view class="fake-line"></view>
+                {{child.ddesc || '暂无介绍信息'}}
+            </view>
+        </view>
     </view>
 </template>
 
@@ -50,25 +33,8 @@
         async getInfo () {
             const res = await queryDepartmentList();
 
-            // 科室类别（1、住院科室  2、门诊科室）
-            const type1: IOBJ[] = [];
-            const type2: IOBJ[] = [];
-            res.data.forEach((item: IOBJ) => {
-                item.type === '1' && type1.push(item);
-                item.type === '2' && type2.push(item);
-            });
-
             this.oldList = res.data;
-            this.list = [
-                {
-                    title: '住院科室',
-                    list: type1
-                },
-                {
-                    title: '门诊科室',
-                    list: type2
-                }
-            ];
+            this.list = res.data;
         }
 
         open (item: IOBJ) {
