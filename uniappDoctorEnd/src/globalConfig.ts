@@ -1,4 +1,17 @@
 
+
+export const TEST_DOMAIN = {
+    baseApi: 'http://apptest.gdsnkzxyy.cn',
+    webUrl: 'http://apptest.gdsnkzxyy.cn',
+};
+
+export const BUILD_DOMAIN = {
+    // baseApi: 'http://120.76.246.196:8089',
+    // baseApi: 'http://apptest.gdsnkzxyy.cn',
+    baseApi: 'http://app.gdsnkzxyy.cn',
+    webUrl: 'http://app.gdsnkzxyy.cn',
+};
+
 // 首页的几个路径
 export const homeUrl = [
     // '/pages/home/outpatient',

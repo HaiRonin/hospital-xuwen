@@ -1,11 +1,16 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import upDataApp from '@/assets/js/upDataApp';
 
     export default Vue.extend({
         mpType: 'app',
         onLaunch (options: any) {
             console.log('App Launch', options);
+
+            // #ifdef APP-PLUS
+            upDataApp();
+            // #endif
         },
         onShow () {
             console.log('App Show');

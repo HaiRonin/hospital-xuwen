@@ -12,6 +12,8 @@ declare module globalConfig {
      * 从domain 文件进行赋值
      */
     let domain: IApiServer;
+    const TEST_DOMAIN: IApiServer;
+    const BUILD_DOMAIN: IApiServer;
 
     /**
      * 强制跳转白名单

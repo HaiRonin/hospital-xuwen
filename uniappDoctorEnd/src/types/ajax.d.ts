@@ -3,6 +3,7 @@ declare module '*.vue' {}
 
 interface IApiServer extends IOBJ {
     baseApi: string;
+    webUrl: string;
 }
 
 interface IMyResponse extends IOBJ {
