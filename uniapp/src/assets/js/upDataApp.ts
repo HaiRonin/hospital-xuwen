@@ -12,7 +12,7 @@ const versionComparison = (newVal: string, oldVal: string) => {
     let isUpdata = false;
 
     if (oArr.length !== len) {
-        throw new Error('版本对比出错了');
+        throw new Error(`版本对比出错了 ${newVal},${oldVal}}`);
     }
 
     while (i < len) {
@@ -34,9 +34,11 @@ export default async function () {
 
     try {
         const res = await getLastAppVersion({}, {closeErrorTips: true});
-        const originVer = res.msg;
+        const originVer = res.data.version;
+        // console.log(res);
+        console.log(originVer, version);
 
-        if (versionComparison(originVer, version)) return;
+        if (!versionComparison(originVer, version)) return;
 
         await utils.confirm({content: 'app更新', showCancel: true});
 
@@ -51,7 +53,8 @@ export default async function () {
             appurl = `itms-apps://itunes.apple.com/cn/app/${name}/${appid}`;
         }
 
-        plus.runtime.openURL(res.data.url);
+        console.log(appurl);
+        plus.runtime.openURL(appurl);
     } catch (error) {
         console.error(error);
     }
