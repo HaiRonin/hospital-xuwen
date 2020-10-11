@@ -1,5 +1,5 @@
 
-import {getLastAppVersion} from '@/apis';
+import {getLastDoctorAppVersion} from '@/apis';
 
 const versionComparison = (newVal: string, oldVal: string) => {
     if (newVal === oldVal) return false;
@@ -26,14 +26,14 @@ const versionComparison = (newVal: string, oldVal: string) => {
 };
 
 export default async function () {
-    const name = '农垦医院';
+    const name = '农垦医院-医生端';
     const version = plus.runtime.version as string;
     const appid = plus.runtime.appid;
     // console.log(appid, name, version);
     // console.log(plus.runtime);
 
     try {
-        const res = await getLastAppVersion({}, {closeErrorTips: true});
+        const res = await getLastDoctorAppVersion({}, {closeErrorTips: true});
         const originVer = res.data.version;
         // console.log(res);
         console.log(originVer, version);
@@ -48,7 +48,7 @@ export default async function () {
             // appurl = "market://details?id=io.dcloud.hellouniapp"; //这个是通用应用市场，如果想指定某个应用商店，需要单独查这个应用商店的包名或scheme及参数
 
             // type = 1患者, 2是医生
-            appurl = `${globalConfig.domain.webUrl}/his/download/app/1`;
+            appurl = `${globalConfig.domain.webUrl}/his/download/app/2`;
         } else {
             appurl = `itms-apps://itunes.apple.com/cn/app/${name}/${appid}`;
         }

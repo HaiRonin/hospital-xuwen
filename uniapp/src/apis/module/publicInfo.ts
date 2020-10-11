@@ -6,6 +6,12 @@ export const getLastAppVersion: TApi = (params = {}, options = {}) => {
     return ajax.apiGet(url, params, options);
 };
 
+// 获取app最新版本号 type = 1患者, 2是医生
+export const getLastDoctorAppVersion: TApi = (params = {}, options = {}) => {
+    const url = '/his/app/version/2';
+    return ajax.apiGet(url, params, options);
+};
+
 // 1.2.1查询医生列表信息
 export const queryDoctorList: TApi = (params = {}, options = {}) => {
     const url = '/his/request';

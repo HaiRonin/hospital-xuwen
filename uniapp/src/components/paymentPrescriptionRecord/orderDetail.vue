@@ -128,8 +128,9 @@
             this.pay.startPay(data);
         }
 
-        async paySuccess () {
-            const curItem = this.curItem;
+        async paySuccess (resphoneData: IOBJ) {
+            // const curItem = this.curItem;
+            const curItem = resphoneData.data;
             this.show = false;
             await this.ppr.change();
             this.ppr.lookTakeMedicinePoint(curItem);

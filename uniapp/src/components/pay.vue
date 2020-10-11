@@ -39,6 +39,7 @@
         @Prop({type: Function, required: true}) readonly request!: TApi;
 
         params: IOBJ = {};
+        resphoneData: IOBJ | null = null;
         show = false;
         modalShow = false;
         list: IOBJ = {
@@ -49,6 +50,7 @@
         @Emit('paySuccess')
         paySuccess () {
             console.log('支付成功');
+            return this.resphoneData;
         }
 
         // 获取支付平台
@@ -145,6 +147,7 @@
                 type === 'alipay' && this.requestPayment('alipay', res.data.prePaySign.orderInfo.replace(/"/g, ''));
                 // type === 'alipay' && this.requestPayment('alipay', encodeURIComponent(res.data.prePaySign.orderInfo.replace(/"/g, '')));
 
+                this.resphoneData = res;
                 this.show = false;
                 this.modalShow = true;
             } catch (error) {
@@ -174,6 +177,7 @@
                     paySign: prePaySign.paySign,
                 });
 
+                this.resphoneData = res;
                 this.modalShow = true;
 
                 utils.hideLoad();

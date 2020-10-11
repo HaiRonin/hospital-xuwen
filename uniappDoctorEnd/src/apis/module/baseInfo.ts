@@ -1,5 +1,11 @@
 
 
+// 获取app最新版本号 type = 1患者, 2是医生
+export const getLastDoctorAppVersion: TApi = (params = {}, options = {}) => {
+    const url = '/his/app/version/2';
+    return ajax.apiGet(url, params, options);
+};
+
 // 5.22查询挂号患者
 export const getDocFInfo: TApi = (params = {}, options = {}) => {
     const url = '/his/request';

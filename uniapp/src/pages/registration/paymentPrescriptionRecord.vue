@@ -17,13 +17,15 @@
                 <view class="text-2 main-color">{{item.status === '1' ? '已缴费' : '未缴费'}}</view>
             </view>
             <view class="flex-box align-center justify-s-b item">
-                <view class="text-1">类型:</view><view class="text-2">{{item.organName}}</view>
-                <view class="text-2">查看详情</view>
+                <view class="text-1">类型:</view>
+                <view class="text-2 flex-1">{{item.organName}}</view>
             </view>
             <view class="flex-box align-center item">
-                <view class="text-1">总金额:</view><view class="text-2">{{item.patientAmount}}元</view>
+                <view class="text-1">总金额:</view>
+                <view class="text-2 flex-1">{{item.patientAmount}}元</view>
+                <view class="text-3">查看详情</view>
             </view>
-            <view class="abs text-4" v-if="item.status === '1'" @tap.stop="lookTakeMedicinePoint(item)">查看取药点</view>
+            <!-- <view class="abs text-4" v-if="item.status === '1'" @tap.stop="lookTakeMedicinePoint(item)">查看取药点</view> -->
             <!-- <view class="abs text-3">查看详情</view> -->
         </view>
 
@@ -72,8 +74,15 @@
 
             const res = await getTakeMedicinePoint({outTradeNo: item.outTradeNo}, {isLoad: true});
             try {
+                const map = new Map();
                 res.data = JSON.parse(res.data);
-                const list: IOBJ[] = res.data.filter((item: IOBJ) => !zEmpty(item.dispensaryWin));
+                res.data.forEach((item: IOBJ) => {
+                    if (!zEmpty(item.dispensaryWin)) {
+                        map.set(item.dispensaryWin, item);
+                    }
+                });
+
+                const list: IOBJ[] = [...map.values()];
 
                 if (!list.length) {
                     utils.toast('查不到相关取药点,可能不需要取药');

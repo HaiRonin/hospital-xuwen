@@ -18,6 +18,7 @@
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
+    import {getLastAppVersion} from '@/apis';
 
 
     // 下载地址：
@@ -34,7 +35,7 @@
         maskShow = false;
 
         isWeixin () {
-            let wx = navigator.userAgent.toLowerCase();
+            const wx = navigator.userAgent.toLowerCase();
             return !!~wx.indexOf('micromessenger');
         }
 
@@ -46,8 +47,17 @@
             window.open(`${globalConfig.domain.webUrl}/${this.fileName}`, '_blank');
         }
 
+        async getData () {
+            try {
+                const res = await getLastAppVersion({}, {closeErrorTips: true, isLoad: true});
+                this.version = res.data.version;
+            } catch (error) {
+            }
+        }
+
         created () {
             // console.log(plus.runtime.version);
+            this.getData();
         }
 
         mounted () {}
