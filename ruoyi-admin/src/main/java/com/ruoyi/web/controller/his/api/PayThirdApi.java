@@ -147,6 +147,8 @@ public class PayThirdApi extends BaseController {
             Object cacheVal = redisUtil.get(cacheKey);
             LOG.info(">>>>>>>>>>>>>>>微信回调处理缓存情况。cacheKey=" + cacheKey + ",cacheVal=" + cacheVal);
             if (null != cacheVal) {
+                cacheKey = "";//初始化key,避免finally删除缓存
+                Thread.sleep(5000);//休眠5秒后返回，避免微信立即再回调过来
                 return "FAIL";
             }
             redisUtil.set(cacheKey, transaction_id, 120);
@@ -159,19 +161,16 @@ public class PayThirdApi extends BaseController {
             LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack调用入参：" + JSON.toJSONString(bo));
             AjaxResult callResult = hisOrderApi.orderPayCallBack(bo);
             LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack结果：" + JSON.toJSONString(callResult));
-            if (Integer.parseInt(callResult.get(AjaxResult.CODE_TAG).toString()) == AjaxResult.Type.SUCCESS.value()) {
-                return "SUCCESS";
-            } else {
-                return "FAIL";
-            }
+            return "SUCCESS";
         } catch (Exception e) {
-            e.printStackTrace();
-            return "FAIL";
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调异常：" + e.getMessage(), e);
         } finally {
             if (StringUtils.isNotEmpty(cacheKey)) {
+                LOG.info(">>>>>>>>>>>>>>>微信回调处理完成，删除缓存。cacheKey=" + cacheKey);
                 redisUtil.del(cacheKey);
             }
         }
+        return "FAIL";
     }
 
     /**
@@ -203,6 +202,8 @@ public class PayThirdApi extends BaseController {
                 Object cacheVal = redisUtil.get(cacheKey);
                 LOG.info(">>>>>>>>>>>>>>>支付宝回调处理缓存情况。cacheKey=" + cacheKey + ",cacheVal=" + cacheVal);
                 if (null != cacheVal) {
+                    cacheKey = "";//初始化key,避免finally删除缓存
+                    Thread.sleep(5000);//休眠5秒后返回，避免微信立即再回调过来
                     return "fail";
                 }
                 redisUtil.set(cacheKey, trade_no, 120);
@@ -215,18 +216,15 @@ public class PayThirdApi extends BaseController {
                 LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用入参：" + JSON.toJSONString(bo));
                 AjaxResult callResult = hisOrderApi.orderPayCallBack(bo);
                 LOG.info(">>>>>>>>>>>>>>>>>>>支付宝hisOrderApi.orderPayCallBack调用结果：" + JSON.toJSONString(callResult));
-                if (Integer.parseInt(callResult.get(AjaxResult.CODE_TAG).toString()) == AjaxResult.Type.SUCCESS.value()) {
-                    return "success";
-                } else {
-                    return "fail";
-                }
+                return "success";
             }
             LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调结束");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调异常：" + e.getMessage(), e);
         } finally {
             if (StringUtils.isNotEmpty(cacheKey)) {
+                LOG.info(">>>>>>>>>>>>>>>支付宝回调处理完成，删除缓存。cacheKey=" + cacheKey);
                 redisUtil.del(cacheKey);
             }
         }
