@@ -73,7 +73,7 @@ public class DoregInfoHisServiceHander extends AbstractHisServiceHandler<DoRegIn
         //1,银联，2支付宝 3，现场支付 4、医保账户，5、微信，6、云医院微信，7、云医院支付宝，8、诊疗卡
         doRegInInfo.setPayType(doregInfoNew.getPayType());
         //支付流水号
-        doRegInInfo.setPayNo(doregInfoNew.getPayNo());
+        doRegInInfo.setPayNo(doregInfoNew.getTransactionId());
         //支付金额
         doRegInInfo.setPayAmount(String.valueOf(doregInfoNew.getPayAmount()));
 

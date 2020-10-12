@@ -20,7 +20,8 @@ public class BaseResponse implements Serializable{
    private String resultMsg;
 
    public boolean isOk(){
-       return "00".equals(this.getResultCode());
+       //400与00都代表成功，400是重复下单且成功的订单
+       return "00".equals(this.getResultCode()) || "400".equals(this.getResultCode());
    }
 
    public void error(String errorMsg){
