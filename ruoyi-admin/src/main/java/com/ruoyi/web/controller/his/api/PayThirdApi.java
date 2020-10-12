@@ -163,7 +163,7 @@ public class PayThirdApi extends BaseController {
             LOG.info(">>>>>>>>>>>>>>>>>>>微信hisOrderApi.orderPayCallBack结果：" + JSON.toJSONString(callResult));
             return "SUCCESS";
         } catch (Exception e) {
-            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调异常：" + e.getMessage(), e);
+            LOG.info(">>>>>>>>>>>>>>>>>>>微信支付回调异常。cacheKey=" + cacheKey + "，异常信息：" + e.getMessage(), e);
         } finally {
             if (StringUtils.isNotEmpty(cacheKey)) {
                 LOG.info(">>>>>>>>>>>>>>>微信回调处理完成，删除缓存。cacheKey=" + cacheKey);
@@ -221,7 +221,7 @@ public class PayThirdApi extends BaseController {
             LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调结束");
 
         } catch (Exception e) {
-            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调异常：" + e.getMessage(), e);
+            LOG.info(">>>>>>>>>>>>>>>>>>>支付宝支付回调异常。cacheKey=" + cacheKey + "，异常信息：" + e.getMessage(), e);
         } finally {
             if (StringUtils.isNotEmpty(cacheKey)) {
                 LOG.info(">>>>>>>>>>>>>>>支付宝回调处理完成，删除缓存。cacheKey=" + cacheKey);
