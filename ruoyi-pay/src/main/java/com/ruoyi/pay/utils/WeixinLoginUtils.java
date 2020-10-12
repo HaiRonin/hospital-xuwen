@@ -27,7 +27,6 @@ public class WeixinLoginUtils {
 
 
     /**
-     * @param request
      * @param redisUtil
      * @return
      */
@@ -97,6 +96,7 @@ public class WeixinLoginUtils {
         String accessToken = WeixinMessageUtil.getAccessToken(redisUtil);
         String url = QUERY_USER_INFO_URL.replace("ACCESS_TOKEN", accessToken).replace("OPENID", openId);
         JSONObject jsonObject = WeixinMessageUtil.httpRequestForSSL(url, "GET", null);
+        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>获取公众号用户信息：" + JSON.toJSONString(jsonObject));
         if (null != jsonObject) {
             return (WeixinUserInfo) JSONObject.parseObject(JSON.toJSONString(jsonObject), WeixinUserInfo.class);
         }
