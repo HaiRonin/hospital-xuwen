@@ -85,13 +85,13 @@
                 const list: IOBJ[] = [...map.values()];
 
                 if (!list.length) {
-                    utils.toast('查不到相关取药点,可能不需要取药');
+                    utils.toast('缴费成功');
                     return;
                 }
                 // console.log(list);
                 this.tipsModal.openFun(list);
             } catch (error) {
-                utils.toast('查不到相关取药点,可能不需要取药.');
+                utils.toast('缴费成功.');
             }
         }
 
