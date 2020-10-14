@@ -75,7 +75,7 @@ public class WeixinLoginUtils {
                 "&secret=" + WechatConfig.appsecret + "" +
                 "&code=" + code + "&grant_type=authorization_code";
         JSONObject jsonObject = WeixinMessageUtil.httpRequestForSSL(url, "POST", null);
-        LOG.info(">>>>>>>>>>>>>>>微信access_token获取结果:" + jsonObject + "，地址：" + url);
+        LOG.info(">>>>>>>>>>>>>>>微信open_id获取结果:" + jsonObject + "，地址：" + url);
         String openId = null;
         if (jsonObject != null) {
             Map map = (Map) JSONObject.parseObject(JSONObject.toJSONString(jsonObject), Map.class);
