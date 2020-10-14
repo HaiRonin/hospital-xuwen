@@ -197,6 +197,15 @@
                     }
                 },
                 {
+                    "path": "printlist/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "门诊清单"
+                    }
+                },
+                {
                     "path": "waitingList",
                     "style": {
                         // #ifdef H5
@@ -222,6 +231,15 @@
                         "navigationStyle": "custom",
                         // #endif
                         "navigationBarTitleText": "押金缴纳记录"
+                    }
+                },
+                {
+                    "path": "depositHospitalPay",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "押金缴纳"
                     }
                 },
                 {

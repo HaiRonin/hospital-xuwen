@@ -5,6 +5,7 @@ import uView from 'uview-ui';
 // import forcedToLogin, {handleHomeShow} from '@/assets/js/forcedToLogin';
 // import '@/assets/js/wxUtils';
 
+store.commit('user/setState', {openId: '123', synUserName: '', synKey: '', id: '1'});
 
 Vue.config.productionTip = false;
 
@@ -34,7 +35,6 @@ new App({
 // console.log(queryDepartmentList());
 
 
-store.commit('user/setState', {openId: '123', synUserName: '', synKey: '', id: '1'});
 
 // #ifdef H5
 if (process.env.NODE_ENV === 'development') {
