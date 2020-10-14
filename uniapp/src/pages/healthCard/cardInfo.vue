@@ -84,6 +84,7 @@
 
             const healthCode = typeof options.healthCode === 'undefined' ? '-1' : `${options.healthCode}`;
 
+            // https://open.tengmed.com/doc/#41
             if (healthCode === '0') {
                 const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/pages/healthCard/addCard/index`);
                 window.location.replace(`https://health.tengmed.com/open/getUserCode?redirect_uri=${redirectUri}`);

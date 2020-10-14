@@ -36,6 +36,10 @@ export const whiteList = [
     '/pages/downloadDoctor',
     '/pages/home/outpatient',
 
+    '/pages/healthCard/list',
+    '/pages/healthCard/addCard/index',
+    '/pages/healthCard/cardInfo',
+
     '/pages/outpatient/intelligentGuidance',
     '/pages/outpatient/intelligentGuidance/index',
 

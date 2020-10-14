@@ -52,7 +52,7 @@
 <script lang="ts">
 
     import {Component, Vue, Ref, Provide} from 'vue-property-decorator';
-    import {queryPatients} from '@/apis';
+    import {queryPatients, healthCardGetHealthCard, addPatients} from '@/apis';
     import delPatientCard from './childAction/delPatientCard.vue';
     import lookPatientCardInfo from './childAction/lookPatientCardInfo.vue';
     import lookBarCode from './childAction/lookBarCode.vue';
@@ -119,6 +119,57 @@
             return Promise.resolve();
         }
 
+        async healthAddPatient () {
+            let healthCode = this.options.healthCode;
+            healthCode = typeof healthCode === 'undefined' ? '' : `${healthCode}`;
+
+            if (utils.zEmpty(healthCode)) return;
+            // debugger;
+            // 别的处理 https://open.tengmed.com/doc/#41
+            if (healthCode === '0') {
+                const pages = getCurrentPages();
+                const page = pages[pages.length - 1] as IOBJ;
+                const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/${page.route}?${utils.serialize(page.options)}`);
+                utils.link(`/pages/healthCard/cardInfo?healthCode=${healthCode}`, 1);
+                utils.setStorage('healthCodeRedirectUri', redirectUri);
+                return;
+            } else if (healthCode === '-1') {
+                utils.toast('请重新操作, 注意需要进行授权', 2000);
+                return;
+            }
+
+
+            utils.showLoad('添加中');
+
+            try {
+                let healthInfo = await healthCardGetHealthCard({healthCode});
+                // console.log(healthInfo);
+
+                healthInfo = JSON.parse(healthInfo.msg);
+                healthInfo = healthInfo.card;
+
+                // debugger;
+                const params = {
+                    Name: healthInfo.name,
+                    IDCardno: healthInfo.idNumber,
+                    CardNo: '',
+                    Mobile: healthInfo.phone1,
+                    address: healthInfo.address || '',
+                    Sex: globalConfig.sexState.find((item) => item.text === healthInfo.gender)!.value
+                };
+                // console.log(params);
+
+                await addPatients(params);
+
+                utils.hideLoad();
+                this.getList();
+            } catch (error) {
+                console.error(error);
+                // console.log(healthCode);
+                utils.toast('添加失败请重试');
+            }
+        }
+
         onPullDownRefresh () {
             utils.pullDown(() => this.getList());
         }
@@ -130,10 +181,12 @@
             this.isToUrl = !!options.toUrl;
             // 下单时候选择诊疗卡
             this.isSelModel = !!options.sel;
+            console.log(globalConfig.sexState.find((item) => item.text === '男')!.value);
         }
 
-        created () {
-            this.getList();
+        async created () {
+            await this.getList();
+            this.healthAddPatient();
         }
 
         mounted () {}

@@ -157,6 +157,16 @@
 
             await healthCardRegisterHealthCard(data, {isLoad: true});
             // window.history.go(-2);
+
+            // 就诊卡列表添加数据(引用健康卡数据)
+            const healthCodeRedirectUri = utils.getStorage('healthCodeRedirectUri');
+            if (healthCodeRedirectUri) {
+                const redirectUri = encodeURIComponent(`${healthCodeRedirectUri}`);
+                utils.removeStorage('healthCodeRedirectUri');
+                window.location.replace(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
+                return;
+            }
+
             window.location.replace(`${globalConfig.domain.webUrl}/pages/healthCard/list`);
         }
 
