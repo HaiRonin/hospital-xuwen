@@ -211,8 +211,14 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         String response = calltHisService(JSON.toJSONString(t));
         //返回结果数据转换本地对象
         R r = transResult(response);
-        //更新本地对象
-        r = (R) this.afterInvokeCallSumbit(outTradeNo,r);
+        //更新本地对象,即使本地更新错误了，也不会抛出异常终止运行，而是以his接口返回的结果为准
+        try {
+            this.afterInvokeCallSumbit(outTradeNo,r);
+        }catch (Exception ex){
+            logger.info("AbstractHisServiceHandler.invokeCallSubmit.outTradeNo={},更新本地发生异常",
+                    outTradeNo);
+            ex.printStackTrace();
+        }
         return r;
     }
 
