@@ -33,9 +33,12 @@
                 <u-input  v-model="params.address" placeholder="请输入家庭住址" type="textarea"></u-input>
             </u-form-item>
 
-            <view class="flex-box align-center z-btn-box">
-                <u-button class="flex-1 z-btn" shape="circle" @tap="show = false;">取消</u-button>
-                <u-button class="flex-1 z-btn" type="primary" shape="circle" @tap="commit">添加</u-button>
+            <view class="z-btn-box">
+                <u-button v-if="isH5" class="flex-1 z-btn-2" type="warning" shape="circle" @tap="linkHealthCard">关联建康卡</u-button>
+                <view class="flex-box align-center">
+                    <u-button class="flex-1 z-btn" shape="circle" @tap="show = false;">取消</u-button>
+                    <u-button class="flex-1 z-btn" type="primary" shape="circle" @tap="commit">添加</u-button>
+                </view>
             </view>
         </u-form>
     </u-popup>
@@ -51,6 +54,7 @@
         @Inject('outpatientIndex') readonly outpatientIndex!: IOBJ;
 
         show = false;
+        isH5 = false;
         check = (() => {
             const c = new utils.CheckVal({
                 Name: '请输入姓名',
@@ -87,6 +91,17 @@
             this.show = true;
         }
 
+        linkHealthCard () {
+            const pages = getCurrentPages();
+            const page = pages[pages.length - 1] as IOBJ;
+            // console.log(page.route);
+            // console.log(page.options);
+            // console.log(page);
+            const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/${page.route}?${utils.serialize(page.options)}`);
+            // console.log(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
+            window.location.replace(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
+        }
+
         async commit () {
             const data = this.params;
             if (this.check.run(data)) return;
@@ -103,6 +118,9 @@
 
         created () {
             this.commit = utils.throttle(this.commit, 300, 300, true);
+            // #ifdef H5
+            this.isH5 = true;
+            // #endif
         }
 
         mounted () {}
@@ -122,5 +140,8 @@
     }
     .z-btn{
         margin: 0 20rpx;
+    }
+    .z-btn-2{
+        margin: 0 20rpx 20rpx;
     }
 </style>
