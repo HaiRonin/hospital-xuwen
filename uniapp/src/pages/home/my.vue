@@ -2,9 +2,9 @@
 <template>
     <view>
         <view class="flex-box f-v align-center justify-center user-info u-skeleton" :style="{backgroundImage: `url(${require('@/assets/image/memb-head.jpg')})`}">
-            <image class="u-i-headimg u-skeleton-circle" :src="require('@/assets/image/d-male.png')" mode="aspectFit"/>
-            <view class="text-1 u-skeleton-fillet">{{userInfo.userName}}</view>
-            <view class="text-2 u-skeleton-fillet">{{userInfo.userName}}</view>
+            <image class="u-i-headimg u-skeleton-circle" :src="userInfo.headimgurl || require('@/assets/image/d-male.png')" mode="aspectFit"/>
+            <view class="text-1 u-skeleton-fillet">{{userInfo.nickname}}</view>
+            <view class="text-2 u-skeleton-fillet">{{userInfo.province}} {{userInfo.city}}</view>
         </view>
         <u-cell-group class="common-block">
             <u-cell-item v-for="(item, index) in quickEntry2" :key="index" :title="item.text" :arrow="true" @tap="itemTap(item)">
@@ -97,9 +97,12 @@
         }
 
         logOut () {
+            utils.showLoad('退出中');
             this.clearUserInfo();
-            utils.link('/pages/home/outpatient', 2);
-            window.location.reload();
+            setTimeout(() => {
+                utils.link('/pages/home/outpatient', 2);
+                window.location.reload();
+            }, 1000);
         }
 
         created () {

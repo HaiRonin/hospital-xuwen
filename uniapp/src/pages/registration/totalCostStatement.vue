@@ -81,9 +81,18 @@
             // hosInfoItem.inHosNo = '0058014';
 
             // 获取清单
-            const statement = await queryLeaveHosDetail({inHosNo: hosInfoItem.inHosNo}, {closeErrorTips: true}).catch(() => null);
+            let statement = await queryLeaveHosDetail({inHosNo: hosInfoItem.inHosNo}, {closeErrorTips: true}).catch(() => null);
 
-            statement && (statement.totalMoney = utils.toFixed(statement.totalMoney));
+            if (statement && statement.inHosList.length === 0) {
+                statement = null;
+            }
+
+            if (statement) {
+                statement.totalMoney = statement.inHosList.reduce((total: number, item: IOBJ) => {
+                    total = +utils.toFixed(total + item.feeItemAllAmount);
+                }, 0);
+                statement.totalMoney = utils.toFixed(statement.totalMoney || 0);
+            }
 
             this.info = statement as IOBJ;
             // this.inHosList = [];

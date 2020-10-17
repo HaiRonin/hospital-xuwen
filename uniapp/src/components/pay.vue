@@ -158,7 +158,7 @@
             try {
                 const params = this.params;
                 params.payType = 5;
-                params.openId = utils.getStorage('openId');
+                params.openId = this.$store.getters.openId;
 
                 const res = await this.request(params, {isLoad: true});
 

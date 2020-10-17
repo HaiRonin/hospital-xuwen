@@ -1,7 +1,7 @@
 // #ifdef H5
 import store from '@/store';
 import jweixin from 'jweixin-module';
-import {getOpenId} from '@/apis';
+import {getOpenId, getWeixinUserInfo} from '@/apis';
 const wxObj: any = jweixin;
 
 // 授权地址
@@ -11,6 +11,7 @@ const wxObj: any = jweixin;
 const wxAuth = {
     async init (options: IOBJ, vueCompon: IOBJ) {
         if (store.getters.isLogin || await this.isCode(options, vueCompon)) return;
+        utils.showLoad('授权中');
         const appid = globalConfig.APPID;
         const redirectUri = encodeURIComponent(window.location.href);
         window.location.replace(`http://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`);
@@ -19,9 +20,9 @@ const wxAuth = {
         const code = options.code;
         if (utils.zEmpty(code)) return false;
 
-        // code 换取openId以及用户数据 存到本地
-        const res = await getOpenId({code}, {isLoad: true});
-        // utils.setStorage('openId', res.data.openId);
+        // code 登录
+        const res = await getWeixinUserInfo({code}, {isLoad: true});
+        res.data.id = res.data.openid;
         store.commit('user/setState', res.data);
 
         // store.commit('user/setState', {openId: '123', synUserName: '', synKey: '', id: '1'});
@@ -30,11 +31,6 @@ const wxAuth = {
         vueCompon.$router.replace({path: r.path, query: {}});
         return true;
     },
-    // isOpenId () {
-    //     const openId = utils.getStorage('openId');
-    //     // console.log(!!openId);
-    //     return !!openId;
-    // }
 };
 
 const obj = {

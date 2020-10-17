@@ -5,7 +5,6 @@ import uView from 'uview-ui';
 // import forcedToLogin, {handleHomeShow} from '@/assets/js/forcedToLogin';
 // import '@/assets/js/wxUtils';
 
-store.commit('user/setState', {openId: '123', synUserName: '', synKey: '', id: '1'});
 
 Vue.config.productionTip = false;
 

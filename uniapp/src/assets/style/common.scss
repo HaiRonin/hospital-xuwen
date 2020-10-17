@@ -126,7 +126,10 @@ image, img {
 .z-btn-default {
     font-size: 30rpx;
     height: 80rpx;
-    line-height: 80rpx;
+    // line-height: 80rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .z-btn-primary {
     color: #ffffff;

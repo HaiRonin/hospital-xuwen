@@ -17,21 +17,25 @@
                 </view>
                 <view class="flex-50">
                     <text class="text-3">项目编号:</text>
-                    <text class="text-4">{{item.projectCode}}元</text>
+                    <text class="text-4">{{item.projectCode}}</text>
                 </view>
                 <view class="flex-50">
                     <text class="text-3">药品分类:</text>
                     <text class="text-4">{{item.drugType}}</text>
                 </view>
                 <view class="flex-100">
-                    <text class="text-3">规格:</text>
+                    <text class="text-3">数量:</text>
                     <text class="text-4 main-color">{{item.feeItemNum}}{{item.feeItemUnit}}</text>
                 </view>
-                <view class="flex-50">
+                <view class="flex-100">
+                    <text class="text-3">规格:</text>
+                    <text class="text-4">{{item.feeItemStandard}}</text>
+                </view>
+                <view class="flex-100">
                     <text class="text-3">单价:</text>
                     <text class="text-4">{{item.feeItemAmount}}元</text>
                 </view>
-                <view class="flex-50">
+                <view class="flex-100">
                     <text class="text-3">总价:</text>
                     <text class="text-4">{{item.feeItemAllAmount}}元</text>
                 </view>

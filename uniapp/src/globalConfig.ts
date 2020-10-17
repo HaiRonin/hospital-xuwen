@@ -1,6 +1,6 @@
 
 // 公众号id
-export const APPID = 'wx50617d578b93801d';
+export const APPID = 'wx433d96c6e8746383';
 
 export const BUILD_DOMAIN = {
     baseApi: 'http://www.xuwenxianrenminyiyuan.cn',

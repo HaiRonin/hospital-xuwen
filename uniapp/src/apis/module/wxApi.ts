@@ -5,6 +5,12 @@ export const getOpenId: TApi = (params = {}, options = {}) => {
     return ajax.apiGet(url, params, options);
 };
 
+// 获取微信用户信息
+export const getWeixinUserInfo: TApi = (params = {}, options = {}) => {
+    const url = '/his/wechat/getWeixinUserInfo';
+    return ajax.apiPost(url, params, Object.assign({action: 'formData'}, options));
+};
+
 // 支付宝预支付
 // export const aliApppay: TApi = (params = {}, options = {}) => {
 //     const url = '/his/wechat/ali_apppay';
