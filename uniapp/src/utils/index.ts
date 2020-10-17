@@ -77,10 +77,7 @@ export const showLoad: TShowToast = (message = '请求中', forbidClick = true) 
     }) as unknown as Promise<void>;
 };
 
-export const hideLoad: THideLoad = async (sleepMs) => {
-    if (sleepMs && sleepMs > 0) {
-        await utils.sleep(sleepMs);
-    }
+export const hideLoad: THideLoad = () => {
     uni.hideLoading();
 };
 
@@ -191,7 +188,8 @@ export const link: TLink = (() => {
     } as TLink;
 })();
 
-export const sleep = (duration = 500) => {
+export const sleep: TSleep = (duration = 500) => {
+    if (!duration) return Promise.resolve();
     return new Promise((rel) => {
         setTimeout(() => {
             rel();

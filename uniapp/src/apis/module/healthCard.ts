@@ -8,13 +8,13 @@ export const healthCardRegisterHealthCard: TApi = (params = {}, options = {}) =>
 // 获取健康码
 export const healthCardGetHealthCard: TApi = (params = {}, options = {}) => {
     const url = '/his/healthCard/getHealthCard';
-    return ajax.apiGet(url, params, options);
+    return ajax.apiGet(url, params, {sleep: 600, ...options});
 };
 
 // 获取健康卡二维码接口
 export const healthCardGetDynamicQRCode: TApi = (params = {}, options = {}) => {
     const url = '/his/healthCard/getDynamicQRCode';
-    return ajax.apiPost(url, params, options);
+    return ajax.apiPost(url, params, {sleep: 600, ...options});
 };
 
 // 身份证照片OCR接口

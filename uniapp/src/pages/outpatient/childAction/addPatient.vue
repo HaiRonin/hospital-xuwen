@@ -118,8 +118,12 @@
 
         created () {
             this.commit = utils.throttle(this.commit, 300, 300, true);
+
+
             // #ifdef H5
-            this.isH5 = true;
+            if (['15919865119', '13418803185', '13543599335'].includes(this.$store.getters.userInfo.userName)) {
+                this.isH5 = true;
+            }
             // #endif
         }
 
