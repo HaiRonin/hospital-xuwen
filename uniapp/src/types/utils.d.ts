@@ -79,7 +79,7 @@ type TDateData = (date: Date, format?: string) => IDateData;
 type TToFixed = (val: string | number, toNum?: boolean | false, retain?: number | 2) => string | number;
 type TLink = (url: string | number, index?: number) => Promise<any>;
 type TSleep = (duration?: number | 500) => Promise<void>;
-type THideLoad = (sleepMs?: number) => void;
+type THideLoad = () => void;
 type TPullDown = (fn: () => Promise<void>) => void;
 type TSetPageTitle = (title: string) => void;
 type TZEmpty = (str: any) => boolean;

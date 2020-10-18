@@ -62,12 +62,14 @@ const handleError = (err: IMyRejectObj) => {
     return errorText;
 };
 
-const ajax1 = (url: string, params: IOBJ, options: IMyOptions) => {
+const ajax1 = async (url: string, params: IOBJ, options: IMyOptions) => {
     const {isLoad, closeErrorTips} = options;
 
     if (isLoad) {
         utils.showLoad();
     }
+
+    !utils.zEmpty(options.sleep) && await utils.sleep(options.sleep);
 
     return get(url, params, options).finally(() => {
         if (isLoad) utils.hideLoad();

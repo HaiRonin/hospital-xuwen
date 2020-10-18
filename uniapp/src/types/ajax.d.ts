@@ -48,6 +48,10 @@ interface IMyOptions {
      * 关闭错误提示
      */
     closeErrorTips?: boolean | false;
+    /**
+     * 延迟接口触发时间
+     */
+    sleep?: number;
 }
 
 interface IMyRejectObj {
