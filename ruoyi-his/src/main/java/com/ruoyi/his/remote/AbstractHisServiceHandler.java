@@ -125,7 +125,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         d.setSuccessfulPayment(PayStatusEnum.REFUND_TODO.getCode());
         BaseResponse baseResponse = callRefund(d.getOutTradeNo());
         d.setSuccessfulPayment(baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getCode():PayStatusEnum.REFUND_FAIL.getCode());
-        d.setResultMsg(d.getResultMsg()+"|"+(baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getDesc():PayStatusEnum.REFUND_FAIL.getDesc()));
+        d.setResultMsg((baseResponse.isOk()?PayStatusEnum.REFUND_SUCCESS.getDesc():PayStatusEnum.REFUND_FAIL.getDesc()));
         updateOrder(d);
         return true;
     }
@@ -152,7 +152,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         D d = getOrderDetail(outTradeNo);
         d.setUpdateTime(DateUtils.getNowDate());
         d.setSuccessfulPayment(PayStatusEnum.REFUND_SUCCESS.getCode());
-        d.setResultMsg(d.getResultMsg()+"|"+PayStatusEnum.REFUND_SUCCESS.getDesc());
+        d.setResultMsg(PayStatusEnum.REFUND_SUCCESS.getDesc());
         updateOrder(d);
         int iResult = updateOrder(d);
         return iResult>0?BaseResponse.success():BaseResponse.fail();
@@ -167,7 +167,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         D d = getOrderDetail(outTradeNo);
         d.setUpdateTime(DateUtils.getNowDate());
         d.setSuccessfulPayment(PayStatusEnum.REFUND_FAIL.getCode());
-        d.setResultMsg(d.getResultMsg()+"|"+PayStatusEnum.REFUND_FAIL.getDesc());
+        d.setResultMsg(PayStatusEnum.REFUND_FAIL.getDesc());
         int iResult = updateOrder(d);
         return iResult>0?BaseResponse.success():BaseResponse.fail();
     }
@@ -211,8 +211,14 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         String response = calltHisService(JSON.toJSONString(t));
         //返回结果数据转换本地对象
         R r = transResult(response);
-        //更新本地对象
-        r = (R) this.afterInvokeCallSumbit(outTradeNo,r);
+        //更新本地对象,即使本地更新错误了，也不会抛出异常终止运行，而是以his接口返回的结果为准
+        try {
+            this.afterInvokeCallSumbit(outTradeNo,r);
+        }catch (Exception ex){
+            logger.info("AbstractHisServiceHandler.invokeCallSubmit.outTradeNo={},更新本地发生异常",
+                    outTradeNo);
+            ex.printStackTrace();
+        }
         return r;
     }
 

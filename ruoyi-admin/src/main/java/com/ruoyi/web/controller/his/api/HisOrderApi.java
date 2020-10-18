@@ -122,6 +122,8 @@ public class HisOrderApi extends BaseController
         dopayInfo.setAppId(WechatConfig.appId);
         dopayInfo.setCreateBy(dopayInfo.getSynUserName());
         dopayInfo.setCreateTime(new Date());
+        dopayInfo.setCreatTime(new Date());
+        dopayInfo.setUpdateTime(new Date());
         dopayInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
         dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"));
         int iResult = dopayInfoService.insertDopayInfo(dopayInfo);
@@ -280,6 +282,40 @@ public class HisOrderApi extends BaseController
                 .servicesInstance(hisBusinessTypeEnum)
                 .refundNotify(orderPayResultBO.isPaymentResults(),orderPayResultBO.getOutTradeNo(),orderPayResultBO.getTransactionId());
         return baseResponse.isOk()?AjaxResult.success():AjaxResult.error();
+    }
+
+    /**
+     * 退款成功或失败回调
+     */
+    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("获取门诊缴费结果")
+    @PostMapping("/order/dopayInfoResult")
+    @ResponseBody
+    public AjaxResult dopayInfoResult(@RequestBody OrderPayResultBO orderPayResultBO)
+    {
+        getRequest().setAttribute("api", "/order/dopayInfoResult");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
+        DopayInfo dopayInfo = dopayInfoService.getDetailByOutTradeNo(orderPayResultBO.getOutTradeNo());
+        if(null == dopayInfo){
+            return AjaxResult.error("无取药信息。");
+        }
+        PayStatusEnum payStatusEnum = PayStatusEnum.getPayStatusEnumByCode(dopayInfo.getSuccessfulPayment());
+        switch (payStatusEnum){
+            case INIT:
+                return AjaxResult.warn("正在处理中，请稍后。");
+            case PAY_SUCCESS:
+                return AjaxResult.warn("正在处理中，请稍后。");
+            case PAY_FAIL:
+                return AjaxResult.error("支付失败，缴费不成功。");
+            case ORDER_SUCCESS:
+                return AjaxResult.success( "缴费成功",dopayInfo.getResultMessage());
+            case ORDER_FAIL:
+                return AjaxResult.error("缴费失败,费用稍后原路返回。");
+            case REFUND_SUCCESS:
+                return AjaxResult.error("缴费失败,费用已原路返回。");
+            default:
+                return AjaxResult.error("无取药信息。");
+        }
     }
 
 }

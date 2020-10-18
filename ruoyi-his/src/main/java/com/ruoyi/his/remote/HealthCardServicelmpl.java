@@ -101,6 +101,7 @@ public class HealthCardServicelmpl implements HealthCardService {
         if (StringUtils.isEmpty(json)) {
             throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
         }
+        LOG.info("getHealthCardByHealthCode.healthCode={},response={}",healthCode,json.toString());
         HealthCardResponse response = JSON.parseObject(json.toJSONString(), HealthCardResponse.class);
         if (!response.getCommonOut().isOk()) {
             throw new HisException("获取健康码时发生异常:" + response.getCommonOut().getErrMsg());

@@ -58,4 +58,11 @@ public interface DopayInfoMapper
      * @return 结果
      */
     public int deleteDopayInfoByIds(String[] ids);
+
+    /**
+     *
+     * @param TradeNoOrHsFeeNo
+     * @return
+     */
+    public DopayInfo selectDopayInfoByTradeNoOrHsFeeNo(String TradeNoOrHsFeeNo);
 }

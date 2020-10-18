@@ -173,6 +173,7 @@ public class DoregInfoServiceImpl implements IDoregInfoService
         if(!PayStatusEnum.ORDER_SUCCESS.getCode().equals(doregInfo.getSuccessfulPayment())){
             throw new HisException(String.format("订单已经退款或退款中，请不要重复操作"));
         }
+        doRegCancel.setPayNo(doregInfo.getTransactionId());
         String result = hisBaseServices.requestHisService("/doRegCancel", JSONObject.toJSONString(doRegCancel));
         BaseResponse baseResponse = JSONObject.parseObject(result,BaseResponse.class);
         if(!baseResponse.isOk()){
