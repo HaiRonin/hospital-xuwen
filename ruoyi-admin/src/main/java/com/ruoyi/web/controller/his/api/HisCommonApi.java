@@ -105,6 +105,7 @@ public class HisCommonApi extends BaseController
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
+        hisUser.setOpenId(userRegBO.getOpenId());
         boolean isOK = hisUserService.userRegister(hisUser,userRegBO.getVerificationCode());
         return isOK?AjaxResult.success("注册成功"):AjaxResult.error("注册失败");
     }

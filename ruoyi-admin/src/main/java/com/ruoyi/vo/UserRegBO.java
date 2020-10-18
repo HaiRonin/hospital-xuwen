@@ -1,5 +1,7 @@
 package com.ruoyi.vo;
 
+import com.ruoyi.common.annotation.Excel;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -32,6 +34,8 @@ public class UserRegBO implements Serializable {
     @NotBlank(message = "验证码不能为空")
    private String verificationCode;
 
+    /** 微信openId */
+    private String openId;
 
     public String getPhone() {
         return phone;
@@ -57,4 +61,11 @@ public class UserRegBO implements Serializable {
         this.verificationCode = verificationCode;
     }
 
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
 }
