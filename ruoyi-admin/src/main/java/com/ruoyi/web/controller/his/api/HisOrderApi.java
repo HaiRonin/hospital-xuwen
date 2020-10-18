@@ -8,6 +8,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.model.HisPayOrder;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
+import com.ruoyi.his.callservice.HisPayOrderServices;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
 import com.ruoyi.his.domain.DepositPayment;
@@ -16,9 +17,11 @@ import com.ruoyi.his.domain.DoregInfo;
 import com.ruoyi.his.domain.LeaveHosPay;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.request.DoRegCancel;
+import com.ruoyi.his.remote.request.ToPayRecipeInfoIn;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.service.*;
 import com.ruoyi.pay.config.WechatConfig;
+import com.ruoyi.pay.constant.HisPayType;
 import com.ruoyi.pay.service.AbstractPayService;
 import com.ruoyi.pay.service.PayService;
 import com.ruoyi.vo.OrderPayResultBO;
@@ -53,6 +56,8 @@ public class HisOrderApi extends BaseController
 
     @Autowired
     private ILeaveHosPayService leaveHosPayService;
+    @Autowired
+    private HisPayOrderServices hisPayOrderServices;
 
     /**
      * 取消预约
@@ -112,28 +117,34 @@ public class HisOrderApi extends BaseController
     @ApiOperation("新增缴费支付的记录")
     @PostMapping("/newPayment")
     @ResponseBody
-    public AjaxResult newPayment(@RequestBody DopayInfo dopayInfo)
+    public AjaxResult newPayment(@RequestBody ToPayRecipeInfoIn toPayRecipeInfoIn)
     {
+
         getRequest().setAttribute("api", "newPayment");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(dopayInfo));
-        if(StringUtils.isEmpty(dopayInfo.getPayType())){
-            dopayInfo.setPayType("5");
+        getRequest().setAttribute("dataParam", JSON.toJSONString(toPayRecipeInfoIn));
+        DopayInfo dopayInfo =  hisPayOrderServices.getToPayRecipeTotalAmount(toPayRecipeInfoIn);
+        if(null == dopayInfo || StringUtils.isEmpty(dopayInfo.getHiFeeNos())
+                || null == dopayInfo.getPayMoney() || dopayInfo.getPayMoney().compareTo(BigDecimal.ZERO) == 0){
+            return AjaxResult.error("无法查询到缴费记录，无需缴费");
         }
+        dopayInfo.setMedicareType(toPayRecipeInfoIn.getMedicareType());
+        dopayInfo.setPayType(HisPayType.WECHAT.getKey());
         dopayInfo.setAppId(WechatConfig.appId);
-        dopayInfo.setCreateBy(dopayInfo.getSynUserName());
+        dopayInfo.setCreateBy(toPayRecipeInfoIn.getSynUserName());
         dopayInfo.setCreateTime(new Date());
         dopayInfo.setCreatTime(new Date());
         dopayInfo.setUpdateTime(new Date());
         dopayInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
         dopayInfo.setOutTradeNo(IdUtils.getOrderNo("DO"));
+        dopayInfo.setUserNo(toPayRecipeInfoIn.getPatientNo());
         int iResult = dopayInfoService.insertDopayInfo(dopayInfo);
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
             order.setPayType(dopayInfo.getPayType());
-            order.setAmount(dopayInfo.getPayMoney());
+            order.setAmount(dopayInfo.getPayMoney().setScale(2));
             order.setOrderType("dopay");
             order.setOutTradeNo(dopayInfo.getOutTradeNo());
-            order.setOpenId(dopayInfo.getOpenId());
+            order.setOpenId(toPayRecipeInfoIn.getOpenId());
             order.setRedirectUrl(dopayInfo.getRedirectUrl());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
             dopayInfo.setPrePaySign(payService.prePay(order));

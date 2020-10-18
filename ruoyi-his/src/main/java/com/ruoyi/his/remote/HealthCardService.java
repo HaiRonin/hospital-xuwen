@@ -1,6 +1,5 @@
 package com.ruoyi.his.remote;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
 import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
 import com.ruoyi.his.remote.response.healthcard.CardGetResponse;
