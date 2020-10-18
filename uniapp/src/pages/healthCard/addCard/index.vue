@@ -10,7 +10,7 @@
             >{{item.name}}</view>
         </view>
 
-        <view v-show="sortIndex === 0"><inView ref="inView"/></view>
+        <view v-show="sortIndex === 0"><inView ref="inView" :patientData="patientData"/></view>
         <view v-show="sortIndex === 1"><upDataView ref="upDataView"/></view>
 
         <u-form :model="params" ref="uForm" label-width="200rpx" class="form common-block">
@@ -26,6 +26,7 @@
         <view class="flex-box align-center justify-center btn" @tap="commit">
             <view>完成注册</view>
         </view>
+        <view class="b-tips" v-show="sortIndex === 0" @tap="selPatient">已有就诊卡，一键快速关联</view>
 
     </view>
 </template>
@@ -90,14 +91,18 @@
         @Ref('upDataView') readonly upDataView!: IOBJ;
 
         options: IOBJ = {};
-        params: IOBJ = {};
         countDown: IOBJ = {};
+        patientData: IOBJ = {};
         sortIndex = 0;
         codeBtnText = '获取验证码';
         sort = [
             {name: '输入身份证号码'},
             {name: '上传身份证照片'},
         ];
+
+        params: IOBJ = {
+            phone1: ''
+        };
 
         check = (() => {
             const c = new utils.CheckVal({
@@ -126,6 +131,22 @@
 
             return c;
         })();
+
+        getPatientData (item: IOBJ) {
+            item = item.oldData;
+
+            // this.$set(params, 'patientNo', item.patientNo);
+            // this.$set(params, 'patientName', item.patientName);
+            // this.$set(params, 'cardNo', item.cardNo);
+            // console.log(item);
+            const params = this.params;
+            params.phone1 = item.Mobile;
+            this.patientData = utils.jsCopyObj(item);
+        }
+
+        selPatient () {
+            utils.link('/pages/outpatient/index?sel=1');
+        }
 
         async getCode () {
             if (this.countDown.getStatus()) return;
@@ -176,11 +197,16 @@
 
         created () {
             this.countDown = countDown.call(this, 'codeBtnText');
+            uni.$on('upDataPatient', this.getPatientData);
         }
 
         mounted () {}
 
         activated () {}
+
+        beforeDestroy () {
+            uni.$off('upDataPatient', this.getPatientData);
+        }
 
     }
 </script>
@@ -230,5 +256,12 @@
         font-size: 32rpx;
         border-radius:10rpx;
         margin:60rpx 40rpx 0;
+    }
+
+    .b-tips{
+        font-size: 28rpx;
+        color: $main-color;
+        text-align: center;
+        padding: 30rpx;
     }
 </style>

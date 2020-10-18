@@ -83,6 +83,7 @@
                 patientNo: item.CardNo,
                 patientName: item.Name,
                 cardNo: item.IDCardno,
+                oldData: item,
             });
             utils.link(1);
         }
@@ -181,7 +182,7 @@
             this.isToUrl = !!options.toUrl;
             // 下单时候选择诊疗卡
             this.isSelModel = !!options.sel;
-            console.log(globalConfig.sexState.find((item) => item.text === '男')!.value);
+            // console.log(globalConfig.sexState.find((item) => item.text === '男')!.value);
         }
 
         async created () {

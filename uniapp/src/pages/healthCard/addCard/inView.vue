@@ -40,11 +40,26 @@
 
 <script lang="ts">
 
-    import {Component, Vue, Ref} from 'vue-property-decorator';
+    import {Component, Vue, Ref, Prop, Watch} from 'vue-property-decorator';
     import {nationItems, genderItems, cardTypeItems} from './otherSort';
+
+    // 获取身份证上的出身日期
+    const getBirthdayFromIdCard = (idCard: string) => {
+        var birthday = '';
+        if (idCard.length === 15) {
+            birthday = '19' + idCard.substr(6, 6);
+        } else if (idCard.length === 18) {
+            birthday = idCard.substr(6, 8);
+        }
+
+        birthday = birthday.replace(/(.{4})(.{2})/, '$1-$2-');
+
+        return birthday;
+    };
 
     @Component
     export default class InView extends Vue {
+        @Prop({type: Object}) readonly patientData!: IOBJ;
 
         nationShow = false;
         idTypeShow = false;
@@ -56,8 +71,21 @@
             gender: '男',
             birthday: '',
             idType: '01',
-            nation: ''
+            nation: '',
+            idNumber: '',
+            name: ''
         };
+
+        @Watch('patientData')
+        handler (item: IOBJ | null) {
+            if (!item) return;
+            const params = this.params;
+            params.gender = ['男', '女'].includes(item.Sex) ? item.Sex : '男';
+            params.idNumber = item.IDCardno;
+            params.name = item.Name;
+            params.birthday = getBirthdayFromIdCard(item.IDCardno);
+            console.log(item);
+        }
 
         selectChange (e: IOBJ, key: string) {
             console.log(e, key);

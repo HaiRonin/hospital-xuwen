@@ -97,8 +97,9 @@
             // console.log(page.route);
             // console.log(page.options);
             // console.log(page);
-            const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/${page.route}?${utils.serialize(page.options)}`);
             // console.log(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
+            delete page.options.healthCode;
+            const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/${page.route}?${utils.serialize(page.options)}`);
             window.location.replace(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
         }
 
