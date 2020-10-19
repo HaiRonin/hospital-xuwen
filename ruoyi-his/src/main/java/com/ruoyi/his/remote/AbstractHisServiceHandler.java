@@ -94,6 +94,12 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     protected BaseResponse paySuccessful(String outTradeNo,String transactionId){
         BaseResponse baseResponse = BaseResponse.success();
         D d = getOrderDetail(outTradeNo);
+        //已经下单成功
+        if(PayStatusEnum.ORDER_SUCCESS.getCode().equals(d.getSuccessfulPayment())){
+            logger.info("AbstractHisServiceHandler.{}.payedNotify.outTradeNo={},transactionId={}不能重复下单",
+                    getBusinessType().getDesc(),outTradeNo,transactionId);
+            return baseResponse;
+        }
         d.setUpdateTime(DateUtils.getNowDate());
         d.setTransactionId(transactionId);
         d.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
@@ -104,13 +110,17 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
                 baseResponse = invokeCallSubmit(outTradeNo);
                 //下单失败，发起退款
                 if(!baseResponse.isOk()){
+                    logger.info("AbstractHisServiceHandler.{}.payedNotify.outTradeNo={},transactionId={}下单失败，自动发起退款",
+                            getBusinessType().getDesc(),outTradeNo,transactionId);
                     refudnAndUpdateOrder(d);
                 }
             }
         }catch (Exception ex){
-            d.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
-            refudnAndUpdateOrder(d);
-            baseResponse.error("缴费支付时发生错误,支付的金额会自动原路返还，请注意查收");
+            logger.info("AbstractHisServiceHandler.{}.payedNotify.outTradeNo={},transactionId={}下单失败，未发起退款操作，请联系医院管理员",
+                    getBusinessType().getDesc(),outTradeNo,transactionId);
+//            d.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
+//            refudnAndUpdateOrder(d);
+            baseResponse.error("缴费支付时发生错误,请联系医院管理员");
         }
         return baseResponse;
     }

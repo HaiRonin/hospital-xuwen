@@ -148,7 +148,7 @@ public class PayThirdApi extends BaseController {
             LOG.info(">>>>>>>>>>>>>>>微信回调处理缓存情况。cacheKey=" + cacheKey + ",cacheVal=" + cacheVal);
             if (null != cacheVal) {
                 cacheKey = "";//初始化key,避免finally删除缓存
-                Thread.sleep(5000);//休眠5秒后返回，避免微信立即再回调过来
+                Thread.sleep(10000);//休眠10秒后返回，避免微信立即再回调过来
                 return "FAIL";
             }
             redisUtil.set(cacheKey, transaction_id, 120);
@@ -203,7 +203,7 @@ public class PayThirdApi extends BaseController {
                 LOG.info(">>>>>>>>>>>>>>>支付宝回调处理缓存情况。cacheKey=" + cacheKey + ",cacheVal=" + cacheVal);
                 if (null != cacheVal) {
                     cacheKey = "";//初始化key,避免finally删除缓存
-                    Thread.sleep(5000);//休眠5秒后返回，避免微信立即再回调过来
+                    Thread.sleep(10000);//休眠5秒后返回，避免微信立即再回调过来
                     return "fail";
                 }
                 redisUtil.set(cacheKey, trade_no, 120);
