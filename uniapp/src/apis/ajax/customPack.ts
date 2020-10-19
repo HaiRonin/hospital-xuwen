@@ -9,7 +9,7 @@ let store: IOBJ | null = null;
 
 const cacheData: IOBJ = {};
 const ajaxErr = [
-    {key: 'timeout of', text: '请求超时，请稍后...'},
+    {key: 'fail timeout', text: '请求超时，请稍后...'},
     {key: '404', text: '请求地址有误'},
     {key: 'request:fail', text: '请求发送失败'},
 ];
@@ -47,7 +47,8 @@ const specialHandl = (url: string, params: IOBJ, options: IMyOptions) => {
 };
 
 const handleError = (err: IMyRejectObj) => {
-    console.log(err);
+    // console.log(err);
+    // debugger;
     const {type, data} = err;
     let errorText = '服务器异常';
     let item = null;
@@ -78,7 +79,9 @@ const ajax1 = (url: string, params: IOBJ, options: IMyOptions) => {
         return res;
     }).catch((err) => {
         console.error(err);
-        if (!closeErrorTips) {
+        // console.error(err.type !== 'catchError');
+        // debugger;
+        if (!closeErrorTips || err.type === 'catchError') {
             // 提示
             utils.toast(handleError(err));
         }

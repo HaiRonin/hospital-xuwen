@@ -114,7 +114,7 @@
 
         openFun (item: IOBJ) {
             this.curItem = item;
-            this.showBtn = this.curItem.status === '0';
+            // this.showBtn = this.curItem.status === '0';
             this.show = true;
         }
 
@@ -134,7 +134,7 @@
         }
 
         created () {
-            console.log(this);
+            // console.log(this);
         }
 
         mounted () {}

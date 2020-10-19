@@ -25,29 +25,44 @@
             <view class="abs text-3">查看详情</view>
         </view>
 
+        <view style="height:120rpx;"></view>
+
+        <view class="z-btn-box rel" v-if="list.length && sortIndex === 0">
+            <view class="red-color zbb-text-1">医院门诊缴费</view>
+            <view>合计: <text class="red-color zbb-text-2">{{allAmount}}元</text></view>
+            <view class="zbb-btn abs flex-box align-center justify-center" @tap="playPay">支付</view>
+        </view>
+
         <u-empty text="暂无缴纳信息" mode="list" margin-top="150" icon-size="200" font-size="36" v-show="!oneLoad && !list.length"></u-empty>
 
         <orderDetail ref="orderDetail"/>
+        <pay ref="pay" :request="payRequest" @paySuccess="paySuccess"/>
+
     </view>
 </template>
 
 <script lang="ts">
 
     import {Component, Vue, Ref, Provide} from 'vue-property-decorator';
-    import {queryToPayRecipeInfoList, queryPaymentRecordList} from '@/apis';
+    import {queryToPayRecipeInfoList, queryPaymentRecordList, ordeNewPayment} from '@/apis';
+    import pay from '@/components/pay.vue';
     import orderDetail from '@/components/orderDetail.vue';
 
     @Component({
         components: {
-            orderDetail
+            orderDetail,
+            pay
         }
     })
     export default class PaymentPrescriptionRecord extends Vue {
         @Ref('orderDetail') readonly orderDetail!: IOBJ;
+        @Ref('pay') readonly pay!: IOBJ;
         @Provide('ppr') ppr = this;
 
         sortIndex = 0;
         oneLoad = true;
+        payRequest = ordeNewPayment;
+        allAmount: string | number = 0;
         list: IOBJ[] = [];
         options: IOBJ = {};
         sort = [
@@ -60,6 +75,21 @@
             sortIndex === 0 ? this.getList1() : this.getList2();
         }
 
+        paySuccess () {
+            console.log('支付成功');
+        }
+
+        playPay () {
+            // const curItem = this.curItem as IOBJ;
+            const data = {
+                // payMoney: this.allAmount,
+                medicareType: 1,
+                patientNo: this.options.patientNo,
+                // hiFeeNos: curItem.hiFeeNo,
+            };
+            this.pay.startPay(data);
+        }
+
         async getList1 () {
             this.list = [];
             this.oneLoad = true;
@@ -69,6 +99,10 @@
             };
             const res = await queryToPayRecipeInfoList(data, {isLoad: true, closeErrorTips: true}).catch(() => ({data: []}));
 
+            this.allAmount = utils.toFixed(res.data.reduce((total: number, item: IOBJ) => {
+                // debugger;
+                return +utils.toFixed(total + +item.settleAmount);
+            }, 0));
             this.list = res.data;
             this.oneLoad = false;
         }
@@ -145,5 +179,38 @@
         padding: 8rpx 12rpx;
         border-radius: 10rpx;
         border:$border-line;
+    }
+
+    .z-btn-box{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 32rpx;
+        line-height: 50rpx;
+        height: 120rpx;
+        box-shadow: 0 -2rpx 6rpx 0px $color-weak-grey;
+        padding: 10rpx 30rpx;
+        background: #fff;
+        z-index: 2;
+    }
+
+    .zbb-text-1{
+        font-size: 28rpx;
+    }
+
+    .zbb-text-2{
+        margin-left: 10rpx;
+    }
+
+    .zbb-btn{
+        top: 0rpx;
+        right: 0;
+        bottom: 0;
+        background: $main-color;
+        width: 280rpx;
+        font-size: 40rpx;
+        color: #fff;
+        box-shadow: 0 -2rpx 6rpx 0px $color-weak-grey;
     }
 </style>

@@ -6,8 +6,8 @@ if (process.env.NODE_ENV === 'development') {
 
     apiServer = {
         // 正式
-        // baseApi: 'http://www.xuwenxianrenminyiyuan.cn',
-        baseApi: 'http://219.132.61.42',
+        baseApi: 'http://www.xuwenxianrenminyiyuan.cn',
+        // baseApi: 'http://219.132.61.42',
         webUrl: 'http://www.xuwenxianrenminyiyuan.cn',
         // 测试
 
