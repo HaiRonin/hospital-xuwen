@@ -95,7 +95,7 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         BaseResponse baseResponse = BaseResponse.success();
         D d = getOrderDetail(outTradeNo);
         //已经下单成功
-        if(PayStatusEnum.ORDER_SUCCESS.getCode().equals(d.getSuccessfulPayment())){
+        if(!PayStatusEnum.INIT.getCode().equals(d.getSuccessfulPayment())){
             logger.info("AbstractHisServiceHandler.{}.payedNotify.outTradeNo={},transactionId={}不能重复下单",
                     getBusinessType().getDesc(),outTradeNo,transactionId);
             return baseResponse;
