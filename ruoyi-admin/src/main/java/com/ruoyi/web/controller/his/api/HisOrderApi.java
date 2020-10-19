@@ -141,7 +141,7 @@ public class HisOrderApi extends BaseController
         if(iResult>0) {
             HisPayOrder order = new HisPayOrder();
             order.setPayType(dopayInfo.getPayType());
-            order.setAmount(dopayInfo.getPayMoney().setScale(2));
+            order.setAmount(dopayInfo.getPayMoney().setScale(2,BigDecimal.ROUND_HALF_UP));
             order.setOrderType("dopay");
             order.setOutTradeNo(dopayInfo.getOutTradeNo());
             order.setOpenId(toPayRecipeInfoIn.getOpenId());
