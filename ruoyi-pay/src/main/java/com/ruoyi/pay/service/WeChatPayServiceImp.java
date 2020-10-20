@@ -1,11 +1,14 @@
 package com.ruoyi.pay.service;
 
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.enums.HisOrderType;
 import com.ruoyi.common.model.HisPayOrder;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.pay.config.WechatConfig;
-import com.ruoyi.pay.utils.*;
+import com.ruoyi.pay.utils.WeixinH5PayUtils;
+import com.ruoyi.pay.utils.WeixinPayUtils;
+import com.ruoyi.pay.utils.WxSignCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,10 +18,14 @@ import java.util.Map;
 
 @Service
 public class WeChatPayServiceImp extends AbstractPayService {
-
+    private static final Logger LOG = LoggerFactory.getLogger(WeChatPayServiceImp.class);
 
     @Override
     public Map<String, String> prePay(HisPayOrder hisPayOrder) {
+
+        LOG.info(">>>>>>>>>>微信预支付开始:" + JSON.toJSONString(hisPayOrder));
+
+
         Map<String, String> wxPayParams = new HashMap<String, String>();
         String orderId = hisPayOrder.getOutTradeNo();
         WxSignCode sign = new WxSignCode();
@@ -33,8 +40,11 @@ public class WeChatPayServiceImp extends AbstractPayService {
         sign.setTotal_fee(String.valueOf(hisPayOrder.getAmount().multiply(BigDecimal.valueOf(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue()));
         sign.setNotify_url(WechatConfig.baseUrl);
 //        sign.setAttach(phone);//传递电话号码，用于回调更新详情信息
+        LOG.info(">>>>>>>>>>微信预支付参数:" + JSON.toJSONString(sign));
         String code = WeixinPayUtils.getWxUnifiedOrderParamsXML(sign);
+        LOG.info(">>>>>>>>>>微信预支付CODE:" + code + ",WechatConfig.unifiedorderUrl:" + WechatConfig.unifiedorderUrl);
         Map<String, String> jsonObject = WeixinPayUtils.httpRequest(WechatConfig.unifiedorderUrl, "POST", code);
+        LOG.info(">>>>>>>>>>微信预支付结果:" + JSON.toJSONString(jsonObject));
         String prepayid = jsonObject.get("prepay_id");
         wxPayParams.put("appId", WechatConfig.appId);
         wxPayParams.put("timeStamp", Long.toString(new Date().getTime()));
