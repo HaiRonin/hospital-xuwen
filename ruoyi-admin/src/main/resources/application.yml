@@ -152,7 +152,7 @@ redis:
 his:
   service:
     name: xuwen
-    url: http://www.xuwenxianrenminyiyuan.cn:8001/
+    url: http://127.0.0.1:8001
   wechat:
     #AppID
     appId: wx433d96c6e8746383

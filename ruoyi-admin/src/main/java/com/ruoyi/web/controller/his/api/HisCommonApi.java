@@ -60,6 +60,9 @@ public class HisCommonApi extends BaseController
     @ResponseBody
     public String invokeCall(@RequestBody HisRequestBO hisRequestBO){
         ServletUtils.getRequest().setAttribute("api", hisRequestBO.getApi());
+        if(hisRequestBO.getApi().equals("QueryPatients")){
+            return "{\"resultCode\":\"00\",\"resultMsg\":\"成功\",\"myIdList\":[{\"Age\":\"27岁\",\"CardNo\":\"00422195\",\"IDCardno\":\"44058219930826557X\",\"Mobile\":\"13418803185\",\"Name\":\"周楷鹏\",\"Sex\":\"1\",\"id\":\"oB4ypxOxRnss_vInM541YLff1g2s\",\"inHosNo\":null},{\"Age\":\"28岁\",\"CardNo\":\"00414474\",\"IDCardno\":\"440782199206085050\",\"Mobile\":\"15088131495\",\"Name\":\"钟锦华\",\"Sex\":\"1\",\"id\":\"oB4ypxOxRnss_vInM541YLff1g2s\",\"inHosNo\":null},{\"Age\":\"39岁\",\"CardNo\":\"99999996\",\"IDCardno\":\"440825198103076913\",\"Mobile\":\"15088131495\",\"Name\":\"测试病人\",\"Sex\":\"1\",\"id\":\"oB4ypxOxRnss_vInM541YLff1g2s\",\"inHosNo\":null}]}";
+        }
         ServletUtils.getRequest().setAttribute("dataParam", hisRequestBO.getDataParam());
         return hisBaseServices.requestHisService("/"+hisRequestBO.getApi().trim(),hisRequestBO.getDataParam());
     }
