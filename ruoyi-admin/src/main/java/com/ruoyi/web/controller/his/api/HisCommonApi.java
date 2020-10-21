@@ -58,10 +58,11 @@ public class HisCommonApi extends BaseController
     @ApiOperation("his接口调用")
     @PostMapping("/request")
     @ResponseBody
-    public String invokeCall(@RequestBody HisRequestBO hisRequestBO){
+    public JSON invokeCall(@RequestBody HisRequestBO hisRequestBO){
         ServletUtils.getRequest().setAttribute("api", hisRequestBO.getApi());
         ServletUtils.getRequest().setAttribute("dataParam", hisRequestBO.getDataParam());
-        return hisBaseServices.requestHisService("/"+hisRequestBO.getApi().trim(),hisRequestBO.getDataParam());
+        String result = hisBaseServices.requestHisService("/"+hisRequestBO.getApi().trim(),hisRequestBO.getDataParam());
+        return JSON.parseObject(result);
     }
 
 
