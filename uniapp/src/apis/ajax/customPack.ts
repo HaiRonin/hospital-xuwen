@@ -33,6 +33,7 @@ const specialHandl = (url: string, params: IOBJ, options: IMyOptions) => {
         }
 
         newParams = {
+            // api: api.substr(1),
             api,
             dataParam: JSON.stringify({
                 synUserName,

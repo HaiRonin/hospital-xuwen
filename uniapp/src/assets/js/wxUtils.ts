@@ -22,6 +22,7 @@ const wxAuth = {
 
         // code 登录
         const res = await getWeixinUserInfo({code}, {isLoad: true});
+        // res.data.id = '1';
         res.data.id = res.data.openid;
         store.commit('user/setState', res.data);
 

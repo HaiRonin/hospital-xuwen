@@ -25,7 +25,7 @@
             <view class="abs text-3">查看详情</view>
         </view>
 
-        <view style="height:120rpx;"></view>
+        <view style="height:100rpx;"></view>
 
         <view class="z-btn-box rel" v-if="list.length && sortIndex === 0">
             <view class="red-color zbb-text-1">医院门诊缴费</view>
@@ -187,8 +187,8 @@
         left: 0;
         right: 0;
         font-size: 32rpx;
-        line-height: 50rpx;
-        height: 120rpx;
+        line-height: 40rpx;
+        height: 100rpx;
         box-shadow: 0 -2rpx 6rpx 0px $color-weak-grey;
         padding: 10rpx 30rpx;
         background: #fff;

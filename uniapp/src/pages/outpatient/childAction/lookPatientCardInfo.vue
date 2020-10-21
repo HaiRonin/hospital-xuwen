@@ -11,7 +11,7 @@
                 <u-input disabled :value="curItem.Name" type="text"></u-input>
             </u-form-item>
             <u-form-item label="年龄">
-                <u-input disabled :value="curItem.Age + ' ' + curItem.Sex" type="text"></u-input>
+                <u-input disabled :value="curItem.Age + ' ' + curItem.sexStr" type="text"></u-input>
             </u-form-item>
             <u-form-item label="电话号码">
                 <u-input disabled :value="curItem.Mobile" type="text"></u-input>
@@ -37,7 +37,11 @@
         curItem: IOBJ = {};
 
         openFun (item: IOBJ) {
-            this.curItem = item;
+            const data = utils.jsCopyObj(item);
+
+            data.sexStr = globalConfig.gFilter(data.Sex, globalConfig.sexState);
+
+            this.curItem = data;
             this.show = true;
         }
 
