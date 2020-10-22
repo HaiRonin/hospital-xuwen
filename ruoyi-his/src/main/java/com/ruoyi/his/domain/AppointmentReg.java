@@ -1,6 +1,9 @@
 package com.ruoyi.his.domain;
 
 import java.util.Date;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -12,6 +15,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author whl
  * @date 2020-10-22
  */
+@ApiModel("预约登记请求对象")
 public class AppointmentReg extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -21,18 +25,22 @@ public class AppointmentReg extends BaseEntity
 
     /** 姓名 */
     @Excel(name = "姓名")
+    @ApiModelProperty("姓名")
     private String name;
 
     /** 身份证 */
     @Excel(name = "身份证")
+    @ApiModelProperty("身份证")
     private String idCard;
 
     /** 手机号码 */
     @Excel(name = "手机号码")
+    @ApiModelProperty("手机号码")
     private String phone;
 
     /** 预约时间 */
     @Excel(name = "预约时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @ApiModelProperty("预约时间")
     private Date appointmentTime;
 
     /** 删除标志（0代表存在 2代表删除） */

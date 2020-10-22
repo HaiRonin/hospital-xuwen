@@ -1,7 +1,8 @@
 package com.ruoyi.his.service;
 
-import java.util.List;
 import com.ruoyi.his.domain.AppointmentReg;
+
+import java.util.List;
 
 /**
  * 医院预约登记Service接口
@@ -58,4 +59,14 @@ public interface IAppointmentRegService
      * @return 结果
      */
     public int deleteAppointmentRegById(Long id);
+
+    /**
+     * 查询当天已经预约的总记录数
+     *
+     * @param startDate
+     * @param endDate
+     * @return 医院预约登记集合
+     */
+    public int getCountByDay(String startDate, String endDate);
+
 }

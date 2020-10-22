@@ -2,6 +2,7 @@ package com.ruoyi.his.mapper;
 
 import java.util.List;
 import com.ruoyi.his.domain.AppointmentReg;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 医院预约登记Mapper接口
@@ -58,4 +59,15 @@ public interface AppointmentRegMapper
      * @return 结果
      */
     public int deleteAppointmentRegByIds(String[] ids);
+
+
+    /**
+     * 查询当天已经预约的总记录数
+     *
+     * @param startDate
+     * @param endDate
+     * @return 医院预约登记集合
+     */
+    public int getCountByDay(@Param(value="startdate")String startDate, @Param(value="endDate")String endDate);
+
 }

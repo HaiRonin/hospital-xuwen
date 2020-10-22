@@ -2,6 +2,7 @@ package com.ruoyi.his.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.his.mapper.AppointmentRegMapper;
@@ -20,7 +21,6 @@ public class AppointmentRegServiceImpl implements IAppointmentRegService
 {
     @Autowired
     private AppointmentRegMapper appointmentRegMapper;
-
     /**
      * 查询医院预约登记
      * 
@@ -94,4 +94,16 @@ public class AppointmentRegServiceImpl implements IAppointmentRegService
     {
         return appointmentRegMapper.deleteAppointmentRegById(id);
     }
+
+    /**
+     * 查询当天已经预约的总记录数
+     *
+     * @param startDate
+     * @param endDate
+     * @return 医院预约登记集合
+     */
+    public int getCountByDay(String startDate, String endDate){
+        return appointmentRegMapper.getCountByDay(startDate,endDate);
+    }
+
 }
