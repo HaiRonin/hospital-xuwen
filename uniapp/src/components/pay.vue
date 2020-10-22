@@ -43,8 +43,8 @@
         show = false;
         modalShow = false;
         list: IOBJ = {
-            wxpay: {key: 'wxpay', icon: 'weixin-fill', iconColor: '#04BE02', text: '微信支付', show: false},
-            alipay: {key: 'alipay', icon: 'zhifubao', iconColor: '#1677ff', text: '支付宝支付', show: false},
+            wxpay: {key: 'wxpay', icon: 'weixin-fill', iconColor: '#04BE02', text: '微信支付', show: true},
+            alipay: {key: 'alipay', icon: 'zhifubao', iconColor: '#1677ff', text: '支付宝支付', show: true},
         };
 
         @Emit('paySuccess')
@@ -100,11 +100,11 @@
             utils.showLoad('准备中');
 
             try {
-                const platformArr = await this.getProvider();
-                (platformArr as string[]).forEach((key) => {
-                    const item = this.list[key];
-                    item && (item.show = true);
-                });
+                // const platformArr = await this.getProvider();
+                // (platformArr as string[]).forEach((key) => {
+                //     const item = this.list[key];
+                //     item && (item.show = true);
+                // });
 
                 this.show = true;
             } catch (error) {
@@ -126,6 +126,7 @@
             //     redirect_url: encodeURIComponent('http://apptest.gdsnkzxyy.cn/pages/wv')
             // });
             // const url = `https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?${str}`;
+            // console.log(url);
             const webUrl = `${globalConfig.domain.webUrl}/pages/wv?url=${encodeURIComponent(url)}`;
             // console.log(webUrl);
             utils.link(`/pages/wv?url=${webUrl}`);
@@ -134,12 +135,21 @@
         async selPay (type: 'alipay' | 'wxpay') {
             // 请求接口，得到相应的数据
 
+            if (type === 'wxpay' && !plus.runtime.isApplicationExist({pname: 'com.tencent.mm', action: 'weixin://'})) {
+                utils.toast('微信应用未安装');
+                return;
+            } else if (type === 'alipay' && !plus.runtime.isApplicationExist({pname: 'com.eg.android.AlipayGphone', action: 'alipay://'})) {
+                utils.toast('支付宝应用未安装');
+                return;
+            }
+
             try {
                 // 调起支付
                 // await this.requestPayment(type, {});
                 const params = this.params;
+                const domainWebUrl = globalConfig.domain.webUrl.replace(/(http|https):\/\//, '');
                 params.payType = type === 'wxpay' ? 7 : 2;
-                params.redirectUrl = `${globalConfig.domain.webUrl}/pages/wvCallBack`;
+                params.redirectUrl = `${domainWebUrl}://${domainWebUrl}/pages/wvCallBack`;
                 const res = await this.request(params, {isLoad: true});
                 // console.log(res);
                 // console.log(res.data.prePaySign.orderInfo.replace(/"/g, ''));

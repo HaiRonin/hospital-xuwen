@@ -101,7 +101,7 @@
 
         created () {
             this.commit = utils.throttle(this.commit, 300, 300, true);
-            console.log(this);
+            // console.log(this);
         }
 
         mounted () {}

@@ -77,7 +77,7 @@ const ajax1 = async (url: string, params: IOBJ, options: IMyOptions) => {
         return res;
     }).catch((err) => {
         console.error(err);
-        if (!closeErrorTips) {
+        if (!closeErrorTips || err.type === 'catchError') {
             // 提示
             utils.toast(handleError(err));
         }
