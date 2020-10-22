@@ -17,7 +17,7 @@
             </view>
         </view>
         <u-grid :col="3" class="common-block" :border="false">
-            <u-grid-item v-for="(item, index) in quickEntry2" :key="index" @tap="link(item.url)">
+            <u-grid-item v-for="(item, index) in quickEntry2" :key="index" @tap="link(item.url)" v-show="!item.hide">
                 <image class="q-e-img" :src="item.imgUrl" mode="aspectFit" />
                 <view class="q-e-text">{{item.text}}</view>
             </u-grid-item>
@@ -78,6 +78,12 @@
                 url: '/pages/info/doctorTimeing',
                 imgUrl: require('@/assets/image/icon/icon_91.png'),
             },
+            {
+                text: '预约登记',
+                url: '/pages/other/preregistration',
+                imgUrl: require('@/assets/image/icon/icon_91.png'),
+                hide: true
+            },
             // {
             //     text: '科室介绍',
             //     url: '/pages/info/departmentIsIntroduced',
@@ -87,7 +93,10 @@
 
         link = link;
 
-        created () {
+        mounted () {
+            if (this.$store.getters.isTest) {
+                this.quickEntry2[this.quickEntry2.length - 1].hide = false;
+            }
         }
     }
 </script>

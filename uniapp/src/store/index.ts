@@ -43,6 +43,12 @@ export default new Vuex.Store({
         // 用户信息
         userInfo (state: IOBJ) {
             return state.user.userInfo;
+        },
+        // 内部号测试
+        isTest (state: IOBJ) {
+            const userInfo = state.user.userInfo;
+            const len = Object.keys(userInfo).length;
+            return len && ['15919865119', '13418803185', '13543599335'].includes(userInfo.userName);
         }
     },
     modules: {

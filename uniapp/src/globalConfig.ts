@@ -35,6 +35,7 @@ export const whiteList = [
     '/pages/download',
     '/pages/downloadDoctor',
     '/pages/home/outpatient',
+    '/pages/other/preregistration',
 
     '/pages/healthCard/list',
     '/pages/healthCard/addCard/index',

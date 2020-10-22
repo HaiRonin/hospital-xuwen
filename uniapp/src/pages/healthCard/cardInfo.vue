@@ -86,7 +86,8 @@
 
             // https://open.tengmed.com/doc/#41
             if (healthCode === '0') {
-                const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/pages/healthCard/addCard/index`);
+                const patientItem = options.patientItem;
+                const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/pages/healthCard/addCard/index?patientItem=${patientItem}`);
                 window.location.replace(`https://health.tengmed.com/open/getUserCode?redirect_uri=${redirectUri}`);
             } else if (healthCode === '-1') {
                 utils.hideLoad();

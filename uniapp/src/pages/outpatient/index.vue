@@ -3,8 +3,41 @@
         <view class="common-block" v-for="(item) in list" :key="item.CardNo" @tap="selItem(item)">
             <view class="flex-box align-center justify-s-b">
                 <view class="flex-1">{{item.Name}}</view>
-                <view class="text-2">(就诊卡号{{item.CardNo}})</view>
+                <view class="text-1">(就诊卡号{{item.CardNo}})</view>
                 <u-icon name="arrow-right" class="text-icon" v-if="isToUrl || isSelModel"></u-icon>
+            </view>
+            <view class="item flex-box f-v rel" v-if="isH5">
+                <view class="flex-box align-center justify-s-b">
+                    <view class="text-2">广东省卫生健康委员会</view>
+                    <view class="flex-box align-center">
+                        <image class="logo-2" :src="require('@/assets/image/healthCard/icon2.png')"/>
+                        <view class="text-5">电子健康卡</view>
+                    </view>
+                </view>
+
+                <template v-if="item.HealthyCardNo">
+                    <view class="flex-box align-end justify-s-b content-box" >
+                        <view>
+                            <view class="text-3">{{item.Name}}</view>
+                            <view class="text-4">2222****2222</view>
+                        </view>
+                        <!-- <view class="qr-box rel">
+                            <image class="qr" :src="require('@/assets/image/healthCard/fake.png')"/>
+                            <image class="logo abs" :src="require('@/assets/image/healthCard/logo_.png')"/>
+                        </view> -->
+                        <imgLoad v-bind="{
+                            idType: 1,
+                            healthCardId: item.HealthyCardNo,
+                            idNumber: userInfo.IDCardno,
+                        }"/>
+                    </view>
+
+                    <view class="text-6">中华人民共和国国家卫生健康委员会监制</view>
+                </template>
+
+                <view class="abs item-mask flex-box align-center justify-center" v-else>
+                    <button class="im-btn z-btn-default z-btn-primary" @tap.stop="addPatient.linkHealthCard(item)">申请健康卡</button>
+                </view>
             </view>
             <view class="flex-box align-center justify-s-b action-box" v-if="!isSelModel">
                 <view v-if="isToUrl || isSelModel"></view>
@@ -14,10 +47,13 @@
                     </view>
                 </view>
                 <view class="flex-box align-center flex-1 justify-s-b">
-                    <view class="text-action" @tap.stop="lookPatientCardInfo.openFun(item)">
+                    <!-- <view class="text-action text-action-2 text-action-3" v-if="isH5" @tap.stop="addPatient.linkHealthCard(item)">
+                        <u-icon name="list-dot" class="del-icon"></u-icon>关联健康卡
+                    </view> -->
+                    <view class="text-action text-action-2" @tap.stop="lookPatientCardInfo.openFun(item)">
                         <u-icon name="list-dot" class="del-icon"></u-icon>卡号信息
                     </view>
-                    <view class="text-action" @tap.stop="lookBarCode.openFun(item)">
+                    <view class="text-action text-action-2" @tap.stop="lookBarCode.openFun(item)">
                         <u-icon name="tiaoxingma" custom-prefix="z-icon" class="del-icon"></u-icon>查看条形码
                     </view>
                 </view>
@@ -57,10 +93,11 @@
     import lookPatientCardInfo from './childAction/lookPatientCardInfo.vue';
     import lookBarCode from './childAction/lookBarCode.vue';
     import addPatient from './childAction/addPatient.vue';
+    import imgLoad from '@/components/imgLoad.vue';
 
     @Component({
         components: {
-            delPatientCard, lookPatientCardInfo, lookBarCode, addPatient
+            delPatientCard, lookPatientCardInfo, lookBarCode, addPatient, imgLoad
         }
     })
     export default class Index extends Vue {
@@ -74,6 +111,7 @@
         options: IOBJ = {};
         isToUrl = false;
         isSelModel = false;
+        isH5 = false;
         loadCount = 0;
 
         // 提供给下单时候使用的
@@ -120,22 +158,68 @@
             return Promise.resolve();
         }
 
+        // 健康卡 重定向回来
+        setStoreRedirectUri () {
+            const options = utils.jsCopyObj(this.options);
+            if (options.healthCode) return;
+            utils.setStorage('healthCodeRedirectUri', `${globalConfig.domain.webUrl}/pages/outpatient/index?${utils.serialize(options)}`);
+        }
+
+        // 健康卡添加就诊人
+        async singAddPatientAndHealth (healthInfo: IOBJ) {
+            const params = {
+                Name: healthInfo.name,
+                IDCardno: healthInfo.idNumber,
+                CardNo: '',
+                Mobile: healthInfo.phone1,
+                address: healthInfo.address || '',
+                HealthyCardNo: healthInfo.healthCardId,
+                HealthyQrCodeText: healthInfo.qrCodeText,
+                Sex: globalConfig.sexState.find((item) => item.text === healthInfo.gender)!.value,
+            };
+            // console.log(params);
+
+            return await addPatients(params);
+        }
+
+        // 添加成功后，返回来的
+        async handleAddHealthData () {
+            const data = utils.getStorage('addHealthData');
+            if (utils.zEmpty(data)) return;
+            utils.removeStorage('addHealthData');
+            try {
+                const {healthRes, params} = data;
+                const healthData = JSON.parse(healthRes.msg);
+
+                await this.singAddPatientAndHealth({...params, ...healthData});
+            } catch (error) {
+                console.error(error);
+                utils.toast('添加失败,请重试', 1000);
+            }
+            this.getList();
+        }
+
+        // 关联已有的，返回来这
         async healthAddPatient () {
             let healthCode = this.options.healthCode;
+            const pages = getCurrentPages();
+            const {route, options} = pages[pages.length - 1] as IOBJ;
+            delete options.healthCode;
+
             healthCode = typeof healthCode === 'undefined' ? '' : `${healthCode}`;
 
             if (utils.zEmpty(healthCode)) return;
             // debugger;
             // 别的处理 https://open.tengmed.com/doc/#41
             if (healthCode === '0') {
-                const pages = getCurrentPages();
-                const page = pages[pages.length - 1] as IOBJ;
-                const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/${page.route}?${utils.serialize(page.options)}`);
-                utils.link(`/pages/healthCard/cardInfo?healthCode=${healthCode}`, 1);
-                utils.setStorage('healthCodeRedirectUri', redirectUri);
+                // const patientItem = this.options.patientItem;
+                // utils.link(`/pages/healthCard/cardInfo?healthCode=${healthCode}&patientItem=${patientItem}`, 1);
+                // utils.link(`/pages/healthCard/cardInfo?healthCode=${healthCode}`, 1);
+                window.history.go(-1);
                 return;
             } else if (healthCode === '-1') {
-                utils.toast('请重新操作, 注意需要进行授权', 2000);
+                // utils.toast('请重新操作, 注意需要进行授权', 2000);
+                window.history.go(-2);
                 return;
             }
 
@@ -149,26 +233,20 @@
                 healthInfo = JSON.parse(healthInfo.msg);
                 healthInfo = healthInfo.card;
 
-                // debugger;
-                const params = {
-                    Name: healthInfo.name,
-                    IDCardno: healthInfo.idNumber,
-                    CardNo: '',
-                    Mobile: healthInfo.phone1,
-                    address: healthInfo.address || '',
-                    Sex: globalConfig.sexState.find((item) => item.text === healthInfo.gender)!.value
-                };
-                // console.log(params);
-
-                await addPatients(params);
+                await this.singAddPatientAndHealth(healthInfo);
 
                 utils.hideLoad();
                 this.getList();
             } catch (error) {
                 console.error(error);
-                // console.log(healthCode);
-                utils.toast('添加失败请重试');
+                // alert(healthCode);
+                // alert(JSON.stringify(error, null, 4));
+                await utils.toast('添加失败,请重试', 1000);
             }
+            window.history.go(-2);
+
+            // utils.link(utils.getStorage('healthCodeRedirectUri'), 1);
+            // window.location.replace(`${globalConfig.domain.webUrl}/${route}?${utils.serialize(options)}`);
         }
 
         onPullDownRefresh () {
@@ -183,11 +261,19 @@
             // 下单时候选择诊疗卡
             this.isSelModel = !!options.sel;
             // console.log(globalConfig.sexState.find((item) => item.text === '男')!.value);
+            this.setStoreRedirectUri();
         }
 
         async created () {
             await this.getList();
             this.healthAddPatient();
+            this.handleAddHealthData();
+
+            // #ifdef H5
+            if (this.$store.getters.isTest) {
+                this.isH5 = true;
+            }
+            // #endif
         }
 
         mounted () {}
@@ -202,7 +288,7 @@
         overflow: initial;
     }
 
-    .text-2 {
+    .text-1 {
         color: $color-grey;
     }
 
@@ -237,8 +323,12 @@
     .text-action {
         padding: 26rpx 0 24rpx;
         // margin-left: 40rpx;
-        display: inline-block;
+        // display: inline-block;
+        white-space: nowrap;
     }
+
+    .text-action-2{padding-right: 10rpx;}
+    .text-action-3{color: $main-color;}
 
     .text-del {
         margin-left: 0;
@@ -252,4 +342,58 @@
         margin-left: 10rpx;
         color: $color-grey;
     }
+
+
+    .item{
+        width: 620rpx;
+        height: 350rpx;
+        background: url('@/assets/image/healthCard/bg2.png') no-repeat center/contain;
+        margin: 0 auto;
+        padding:30rpx 15rpx 16rpx 40rpx;
+        font-family: PingFangSC-Medium, 'PINGFANG MEDIUM';
+        font-weight: bold;
+        box-shadow:  0 0rpx 40rpx 2rpx rgba(100, 101, 102, 0.12);
+        // border-top: $border-line;
+        margin-top: 30rpx;
+    }
+
+    .item-mask{
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        // filter: blur(2rpx);
+        font-weight: initial;
+        background: rgba(255,255,255,0.8);
+    }
+
+    .text-2{ font-size: 24rpx; }
+    .text-3{ font-size: 36rpx; }
+    .text-4{ font-size: 30rpx;margin-top: 20rpx;line-height: 0.9; }
+    .text-5{font-size: 30rpx;margin-left: 12rpx;margin-right: 4rpx;}
+    .text-6{font-size: 24rpx;text-align: center;margin-top: 25rpx;}
+
+    .content-box::v-deep .qr-box{
+        height: 162rpx;
+        width: 162rpx;
+    }
+
+    .content-box::v-deep .logo{
+        width: 44rpx;
+        height: 44rpx;
+        top: 50%;
+        left: 50%;
+        margin-left: -22rpx;
+        margin-top: -22rpx;
+    }
+
+    .logo-2{
+        width: 55rpx;
+        height: 55rpx;
+    }
+
+    .content-box{
+        margin-top: auto;
+    }
+
 </style>

@@ -34,7 +34,7 @@
             </u-form-item>
 
             <view class="z-btn-box">
-                <u-button v-if="isH5" class="flex-1 z-btn-2" type="warning" shape="circle" @tap="linkHealthCard">关联建康卡</u-button>
+                <u-button v-if="isH5" class="flex-1 z-btn-2" type="warning" shape="circle" @tap="linkHealthCard()">创建建康卡</u-button>
                 <view class="flex-box align-center">
                     <u-button class="flex-1 z-btn" shape="circle" @tap="show = false;">取消</u-button>
                     <u-button class="flex-1 z-btn" type="primary" shape="circle" @tap="commit">添加</u-button>
@@ -91,16 +91,39 @@
             this.show = true;
         }
 
-        linkHealthCard () {
-            const pages = getCurrentPages();
-            const page = pages[pages.length - 1] as IOBJ;
-            // console.log(page.route);
-            // console.log(page.options);
-            // console.log(page);
-            // console.log(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
-            delete page.options.healthCode;
-            const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/${page.route}?${utils.serialize(page.options)}`);
-            window.location.replace(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
+        async linkHealthCard (item?: IOBJ) {
+            // const pages = getCurrentPages();
+            // const {route, options} = pages[pages.length - 1] as IOBJ;
+            // const data = utils.jsCopyObj(options);
+
+            // delete data.healthCode;
+            // delete data.patientItem;
+
+            // 添加时候，填充数据
+            let patientItem = '';
+            if (item) {
+                await utils.confirm({content: '确定 申请电子健康码 吗'});
+
+                patientItem = `${Date.now()}`;
+                utils.setStorage(`relevancePatientItem-${patientItem}`, item);
+
+                // const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/pages/healthCard/addCard/index?patientItem=${patientItem}`);
+                // window.location.href = `https://health.tengmed.com/open/getUserCode?redirect_uri=${redirectUri}`;
+            } else {
+                // const pages = getCurrentPages();
+                // const {route, options} = pages[pages.length - 1] as IOBJ;
+                // const data = utils.jsCopyObj(options);
+
+                // delete data.healthCode;
+                // delete data.patientItem;
+
+                // const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/${route}?${utils.serialize(data)}`);
+                // const redirectUri = encodeURIComponent(utils.getStorage('healthCodeRedirectUri'));
+                // window.location.href = `https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`;
+            }
+
+            const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/pages/healthCard/addCard/index?patientItem=${patientItem}`);
+            window.location.href = `https://health.tengmed.com/open/getUserCode?redirect_uri=${redirectUri}`;
         }
 
         async commit () {
@@ -109,12 +132,18 @@
 
             const res = await addPatients(data, {isLoad: true});
 
-            if (res.resultMsg === '就诊人已添加！') {
-                await utils.toast(res.resultMsg, 1000, true);
+            this.show = false;
+
+            // if (res.resultMsg === '就诊人已添加！') {
+            //     await utils.toast(res.resultMsg, 1000, true);
+            // }
+
+            const item = res.returnList[0];
+            if (this.$store.getters.isTest && utils.zEmpty(item.HealthyCardNo)) {
+                this.linkHealthCard(item);
             }
 
             this.outpatientIndex.getList();
-            this.show = false;
         }
 
         created () {
@@ -122,7 +151,7 @@
 
 
             // #ifdef H5
-            if (['15919865119', '13418803185', '13543599335'].includes(this.$store.getters.userInfo.userName)) {
+            if (this.$store.getters.isTest) {
                 this.isH5 = true;
             }
             // #endif
