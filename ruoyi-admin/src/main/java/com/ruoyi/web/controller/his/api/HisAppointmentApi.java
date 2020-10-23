@@ -12,7 +12,9 @@ import com.ruoyi.his.domain.AppointmentReg;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.response.BaseResponse;
 import com.ruoyi.his.service.IAppointmentRegService;
+import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.service.ISysConfigService;
+import com.ruoyi.system.service.ISysDictDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 医院预约登记Controller
@@ -43,6 +46,8 @@ public class HisAppointmentApi extends BaseController
     private ISysConfigService configService;
     @Autowired
     private IAppointmentRegService appointmentRegService;
+    @Autowired
+    private ISysDictDataService dictDataService;
     /**
      * 2020.8.26
      * His预约登记接口
@@ -56,9 +61,17 @@ public class HisAppointmentApi extends BaseController
     public AjaxResult getAppointmentInfo(){
         String maxNum = configService.selectConfigByKey("his.appointment.max");
         String tips = configService.selectConfigByKey("his.appointment.tips");
+        String day = configService.selectConfigByKey("his.appointment.day");
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("maxNum",maxNum);
         map.put("tips",tips);
+        map.put("day",day);
+
+        SysDictData dictData = new SysDictData();
+        dictData.setDictType("his.appointment.content");
+        List<SysDictData> lstSysDictData = dictDataService.selectDictDataList(dictData);
+        List<String> contents = lstSysDictData.stream().map(p -> p.getDictValue()).collect(Collectors.toList());
+        map.put("contents",contents);
         return AjaxResult.success(map);
     }
 
