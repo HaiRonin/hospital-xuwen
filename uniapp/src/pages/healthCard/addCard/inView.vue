@@ -76,7 +76,7 @@
             name: ''
         };
 
-        @Watch('patientData')
+        @Watch('patientData', {immediate: true})
         handler (item: IOBJ | null) {
             if (!item) return;
             const params = this.params;

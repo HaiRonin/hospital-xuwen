@@ -26,7 +26,8 @@
         <view class="flex-box align-center justify-center btn" @tap="commit">
             <view>完成注册</view>
         </view>
-        <view class="b-tips" v-show="sortIndex === 0" @tap="selPatient">已有就诊卡，一键快速关联</view>
+        <!-- <view class="b-tips" v-show="sortIndex === 0" @tap="selPatient">已有就诊卡，一键快速关联</view> -->
+        <view class="b-tips" v-show="sortIndex === 0" @tap="selHealth">已有健康卡，一键快速关联</view>
 
     </view>
 </template>
@@ -93,6 +94,7 @@
         options: IOBJ = {};
         countDown: IOBJ = {};
         patientData: IOBJ = {};
+        patientItem = '';
         sortIndex = 0;
         codeBtnText = '获取验证码';
         sort = [
@@ -148,6 +150,23 @@
             utils.link('/pages/outpatient/index?sel=1');
         }
 
+        selHealth () {
+            const redirectUri = encodeURIComponent(utils.getStorage('healthCodeRedirectUri'));
+            // alert(redirectUri);
+            window.location.href = `https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`;
+        }
+
+        setDefaultData () {
+            const patientItem = this.patientItem;
+            if (utils.zEmpty(patientItem)) return;
+            const data = utils.getStorage(`relevancePatientItem-${patientItem}`);
+
+            // utils.removeStorage(`relevancePatientItem-${itemFlag}`);
+
+            if (utils.zEmpty(data)) return;
+            this.getPatientData({oldData: data});
+        }
+
         async getCode () {
             if (this.countDown.getStatus()) return;
 
@@ -170,29 +189,38 @@
         async commit () {
             const sortIndex = this.sortIndex;
             const domCom = sortIndex === 0 ? this.inView : this.upDataView;
-            console.log(domCom);
+            // console.log(domCom);
             const data = Object.assign({}, this.params, this.options, domCom.params);
 
             data.sortIndex = this.sortIndex;
             if (this.check.run(data)) return;
 
-            await healthCardRegisterHealthCard(data, {isLoad: true});
-            // window.history.go(-2);
+            const res = await healthCardRegisterHealthCard(data, {isLoad: true});
+            utils.setStorage('addHealthData', {healthRes: res, params: data});
+            window.history.go(-1);
 
             // 就诊卡列表添加数据(引用健康卡数据)
-            const healthCodeRedirectUri = utils.getStorage('healthCodeRedirectUri');
-            if (healthCodeRedirectUri) {
-                const redirectUri = encodeURIComponent(`${healthCodeRedirectUri}`);
-                utils.removeStorage('healthCodeRedirectUri');
-                window.location.replace(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
-                return;
-            }
+            // const healthCodeRedirectUri = utils.getStorage('healthCodeRedirectUri');
+            // if (healthCodeRedirectUri) {
+            //     const redirectUri = encodeURIComponent(`${healthCodeRedirectUri}`);
+            //     // alert(healthCodeRedirectUri);
+            //     utils.removeStorage('healthCodeRedirectUri');
+            //     await utils.toast('请选择新添加的 健康卡');
+            //     window.location.replace(`https://health.tengmed.com/open/getHealthCardList?redirect_uri=${redirectUri}`);
+            //     return;
+            // }
 
-            window.location.replace(`${globalConfig.domain.webUrl}/pages/healthCard/list`);
+            // window.location.replace(`${globalConfig.domain.webUrl}/pages/healthCard/list`);
         }
 
         onLoad (options: IOBJ) {
+
+            this.patientItem = options.patientItem || '';
             this.options = options;
+
+            delete options.patientItem;
+
+            this.setDefaultData();
         }
 
         created () {

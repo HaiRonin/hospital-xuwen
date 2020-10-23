@@ -292,6 +292,15 @@
                         // #endif
                         "navigationBarTitleText": "问卷调查"
                     }
+                },
+                {
+                    "path": "preregistration",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "预约登记"
+                    }
                 }
             ]
         },

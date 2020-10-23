@@ -5,7 +5,7 @@ export const healthCardRegisterHealthCard: TApi = (params = {}, options = {}) =>
     return ajax.apiPost(url, params, options);
 };
 
-// 获取健康码
+// 通过授权码获取健康码数据
 export const healthCardGetHealthCard: TApi = (params = {}, options = {}) => {
     const url = '/his/healthCard/getHealthCard';
     return ajax.apiGet(url, params, {sleep: 600, ...options});

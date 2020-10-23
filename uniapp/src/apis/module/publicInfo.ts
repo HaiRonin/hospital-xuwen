@@ -1,5 +1,17 @@
 // 1.2公共信息
 
+// 预约登记接口配置
+export const getPreregistrationConfig: TApi = (params = {}, options = {}) => {
+    const url = '/his/appointment/getConfig';
+    return ajax.apiGet(url, params, options);
+};
+
+// 预约登记接口保存
+export const savePreregistrationInfo: TApi = (params = {}, options = {}) => {
+    const url = '/his/appointment/save';
+    return ajax.apiPost(url, params, options);
+};
+
 // 获取app最新版本号 type = 1患者, 2是医生
 export const getLastAppVersion: TApi = (params = {}, options = {}) => {
     const url = '/his/app/version/1';
