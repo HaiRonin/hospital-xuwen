@@ -28,6 +28,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="idCard != null  and idCard != ''"> and id_card like concat('%', #{idCard}, '%')</if>
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
             <if test="appointmentTime != null "> and appointment_time = #{appointmentTime}</if>
+            <if test="params.beginAppointmentTime != null and params.beginAppointmentTime != ''"><!-- 开始时间检索 -->
+                and date_format(appointment_time,'%y%m%d') &gt;= date_format(#{params.beginAppointmentTime},'%y%m%d')
+            </if>
+            <if test="params.endAppointmentTime != null and params.endAppointmentTime != ''"><!-- 结束时间检索 -->
+                and date_format(appointment_time,'%y%m%d') &lt;= date_format(#{params.endAppointmentTime},'%y%m%d')
+            </if>
         </where>
     </select>
     
