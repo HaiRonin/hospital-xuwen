@@ -157,11 +157,11 @@ his:
     #AppID
     appId: wx433d96c6e8746383
     #appSecret
-    appsecret: f5f015b0b32972056d6140fb654d4e58
+    appsecret: d76e3cf60a4cb85f2621c3616ef64fd3
     #商户号
     mchid: 1602774998
     #key值
-    key: abcd0759abcd0759abcd0759abcd0759
+    key: dg46s49d45165x4g6ds465g4s6f4s6d4
     #回调地址
     baseUrl: http://www.xuwenxianrenminyiyuan.cn/his/wechat/notify_weixin
     #退款地址
@@ -172,13 +172,13 @@ his:
     refundCert: D:\his\service\apiclient_cert.p12
   wxapp:
     #AppID
-    appId: wx50617d578b93801d
+    appId: wx433d96c6e8746383
     #appSecret
-    appsecret: d2258bd67e9ef6bb8a795c723f483301
+    appsecret: d76e3cf60a4cb85f2621c3616ef64fd3
     #商户号
-    mchid: 1433629902
+    mchid: 1602774998
     #key值
-    key: A44de8673b0f2d1603a6ff33b18b81EF
+    key: dg46s49d45165x4g6ds465g4s6f4s6d4
     #回调地址
     baseUrl: http://www.xuwenxianrenminyiyuan.cn/his/wechat/notify_weixin
     #退款地址
