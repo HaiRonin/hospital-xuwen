@@ -39,6 +39,12 @@ public class DynamicQRCodeResquest implements Serializable {
     @ApiModelProperty(value="二维码类型:传0或者1，0返回动态码，1返回静态码",name="codeType",example="0")
     private String codeType;
 
+    /**
+     * 登录手机号码，用作缓存二维码KEY
+     */
+    @ApiModelProperty(value="登录手机号码，用作缓存二维码KEY",name="mobile",example="18702084409")
+    private String mobile;
+
     public String getHealthCardId() {
         return healthCardId;
     }
@@ -69,5 +75,13 @@ public class DynamicQRCodeResquest implements Serializable {
 
     public void setCodeType(String codeType) {
         this.codeType = codeType;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }
