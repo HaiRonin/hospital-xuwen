@@ -46,7 +46,8 @@ public class WeixinPayUtils {
         sign.put("openid", code.getOpenid());// 微信用户编号,0
         sign.put("out_trade_no", code.getOut_trade_no());// 订单编号,0
         sign.put("spbill_create_ip", code.getSpbill_create_ip());// 设备IP,0
-        sign.put("total_fee", code.getTotal_fee());// 价钱 单位:分,0
+//        sign.put("total_fee", code.getTotal_fee());// 价钱 单位:分,0
+        sign.put("total_fee", "" + 1);// 价钱 单位:分,0
         sign.put("notify_url", code.getNotify_url());// 请求成功跳转地址,0
         sign.put("trade_type", "JSAPI");// 支付方式,1
 //		sign.put("attach", code.getAttach());// 附加信息,1
