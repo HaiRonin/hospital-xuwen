@@ -19,6 +19,8 @@
         <!-- <u-skeleton :loading="loading" :animation="true" bgColor="#FFF"></u-skeleton> -->
 
         <upDataPwa ref="upDataPwa"/>
+        <view style="height:100rpx"></view>
+
     </view>
 </template>
 

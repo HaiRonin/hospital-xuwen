@@ -1,6 +1,10 @@
 <template>
     <view class="box">
-        <u-alert-tips type="primary" class="z-custom" show-icon :description="info.tips || '---'"></u-alert-tips>
+        <view @tap="tipsShow = true" v-if="info.contents && info.contents.length">
+            <u-alert-tips @tap="tipsShow = true" type="primary" class="z-custom" show-icon description="点击查看 预约须知"></u-alert-tips>
+        </view>
+
+        <view style="height:32rpx"></view>
 
         <u-form :model="params" ref="uForm" label-width="200rpx" class="form common-block">
             <u-form-item label="姓名">
@@ -13,7 +17,11 @@
                 <u-input v-model="params.phone" maxlength="11" placeholder="请输入手机号码" />
             </u-form-item>
             <u-form-item label="预约时间">
-                <picker mode="date" class="picker-input" :start="start" @change="bindDateChange($event, 'appointmentTime')">
+                <!-- <picker mode="date" class="picker-input" :start="start" @change="bindDateChange($event, 'appointmentTime')">
+                    <view class="picker-input" v-if="params.appointmentTime">{{params.appointmentTime}}</view>
+                    <view class="picker-input p-i-color" v-else>请选择预约时间</view>
+                </picker> -->
+                <picker mode="multiSelector" class="picker-input" :range="sortArr" @change="bindDateChange($event, 'appointmentTime')">
                     <view class="picker-input" v-if="params.appointmentTime">{{params.appointmentTime}}</view>
                     <view class="picker-input p-i-color" v-else>请选择预约时间</view>
                 </picker>
@@ -23,6 +31,18 @@
         <view class="flex-box align-center justify-center btn" @tap="commit">
             <view>提交预约</view>
         </view>
+
+        <u-modal
+            v-model="tipsShow"
+            title="预约须知"
+            :show-cancel-button="false"
+            :mask-close-able="false"
+            ref="modal"
+        >
+            <view class="tips" v-if="info.contents">
+                <view v-for="(str, index) in info.contents" :key="index">{{str}}</view>
+            </view>
+        </u-modal>
 
     </view>
 </template>
@@ -35,11 +55,22 @@
     @Component
     export default class Name extends Vue {
 
-        start = '';
         info: IOBJ = {};
+        tipsShow = false;
         params: IOBJ = {
             appointmentTime: '',
         };
+
+        sortArr: string[][] = [
+            [
+                '2020-02-02',
+                '2020-02-03',
+                '2020-02-04',
+            ],
+            [
+                '14:30-17:30',
+            ]
+        ];
 
         check = (() => {
             const c = new utils.CheckVal({
@@ -60,14 +91,15 @@
 
         bindDateChange (e: IOBJ, key: string) {
             console.log(e, key);
-            const val = e.detail.value;
-            this.params[key] = val;
+            const arr = e.detail.value;
+            const sortArr = this.sortArr;
+            this.params[key] = `${sortArr[0][arr[0]]} ${sortArr[1][arr[1]]}`;
         }
 
         async commit () {
             const data = utils.jsCopyObj(this.params);
             if (this.check.run(data)) return;
-            data.appointmentTime = `${data.appointmentTime} 00:00:00`;
+            data.appointmentTime = `${data.appointmentTime.substr(0, 16)}:00`;
 
             const res = await savePreregistrationInfo(data, {isLoad: true});
             await utils.toast(res.msg, 1000);
@@ -81,18 +113,31 @@
 
         async getData () {
             const res = await getPreregistrationConfig({}, {isLoad: true});
-            console.log(res);
-            this.info = res.data;
+            const data = this.info = res.data;
+
+            this.genratedTime(+(data.day || 7));
+            if (data.contents && data.contents.length) {
+                this.tipsShow = true;
+            }
+        }
+
+        genratedTime (scope = 7) {
+            const date = new Date();
+            const arr = [];
+            for (let i = 0; i < scope - 1; i++) {
+                date.setDate(date.getDate() + 1);
+                const obj = utils.dateData(date);
+                !obj.weekend && arr.push(obj.text);
+            }
+            // console.log(arr);
+            this.sortArr[0] = arr;
         }
 
         onLoad () {}
 
         created () {
-            const d = new Date();
-            d.setDate(d.getDate() + 1);
-
-            this.start = utils.dateData(d).text;
             this.getData();
+            // this.genratedTime();
         }
 
         mounted () {}
@@ -105,6 +150,7 @@
 <style lang="scss" scoped>
     .box{
         font-size: 28rpx;
+        // padding-top: 32rpx;
     }
     .form {
         // background: #fff;
@@ -130,15 +176,23 @@
     }
 
     .z-custom{
-        position: sticky;
-        left: 0;
-        top: 0;
+        // position: sticky;
+        // left: 0;
+        // top: 0;
         border:none;
         font-size: 26rpx;
         padding: 16rpx 30rpx;
         // line-height: 2;
         line-height: 1.6;
-        margin-bottom: 32rpx;
+    }
+
+    .tips{
+        line-height: 1.5;
+        color: $color-grey;
+        padding: 40rpx 20rpx;
+        font-size: 32rpx;
+        // height: 500rpx;
+        // overflow: auto;
     }
 
 </style>

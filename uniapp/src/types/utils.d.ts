@@ -24,6 +24,8 @@ interface IDateData extends IOBJ{
     time: number;
     // 周几
     week: number | string;
+    // 是否周末
+    weekend: boolean;
     // 2002-01-01
     text: string;
     // 2002-01-01 00:00:00

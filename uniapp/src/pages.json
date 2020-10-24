@@ -299,7 +299,7 @@
                         // #ifdef H5
                         "navigationStyle": "custom",
                         // #endif
-                        "navigationBarTitleText": "预约登记"
+                        "navigationBarTitleText": "两癌筛查预约"
                     }
                 }
             ]

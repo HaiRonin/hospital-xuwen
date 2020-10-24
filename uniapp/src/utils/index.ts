@@ -108,6 +108,7 @@ export const dateData: TDateData = (() => {
             s: addZero(date.getSeconds()),
             time: date.getTime(),
             week: WEEK_ARR[date.getDay()],
+            weekend: [0, 6].includes(date.getDay()),
             text: '',
             textTime: '',
         };

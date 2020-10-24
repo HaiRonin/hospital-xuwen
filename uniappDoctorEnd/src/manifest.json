@@ -1,11 +1,14 @@
 {
-    "name" : "农垦医院-医生端",
+    "name" : "农垦医院医生",
     "appid" : "__UNI__2455BCC",
-    "description" : "农垦医院",
+    "description" : "农垦医院医生",
     "versionName" : "1.0.1",
     "versionCode" : "101",
     "transformPx" : false,
     "app-plus" : {
+        "compatible" : {
+            "ignoreVersion" : true
+        },
         /* 5+App特有相关 */
         "modules" : {},
         /* 模块配置 */

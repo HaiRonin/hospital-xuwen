@@ -8,6 +8,8 @@
                 <view class="q-e-text">{{item.text}}</view>
             </u-grid-item>
         </u-grid>
+
+        <view style="height:100rpx"></view>
     </view>
 </template>
 

@@ -51,6 +51,12 @@
                 // wv.setStyle({top: 150, height: 300});
             });
             // #endif
+
+            // #ifdef H5
+            document.getElementsByTagName('iframe')[0].onload = function () {
+                utils.hideLoad();
+            };
+            // #endif
         }
 
         activated () {}

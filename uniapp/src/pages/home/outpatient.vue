@@ -22,6 +22,8 @@
                 <view class="q-e-text">{{item.text}}</view>
             </u-grid-item>
         </u-grid>
+
+        <view style="height:100rpx"></view>
     </view>
 </template>
 
@@ -79,10 +81,10 @@
                 imgUrl: require('@/assets/image/icon/icon_91.png'),
             },
             {
-                text: '预约登记',
+                text: '两癌筛查预约',
                 url: '/pages/other/preregistration',
                 imgUrl: require('@/assets/image/icon/icon_91.png'),
-                hide: true
+                hide: false
             },
             // {
             //     text: '科室介绍',
@@ -94,9 +96,9 @@
         link = link;
 
         mounted () {
-            if (this.$store.getters.isTest) {
-                this.quickEntry2[this.quickEntry2.length - 1].hide = false;
-            }
+            // if (this.$store.getters.isTest) {
+            //     this.quickEntry2[this.quickEntry2.length - 1].hide = false;
+            // }
         }
     }
 </script>

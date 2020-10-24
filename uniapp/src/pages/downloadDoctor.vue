@@ -29,7 +29,7 @@
     @Component
     export default class Download extends Vue {
 
-        title = '农垦医院app-医生端';
+        title = '农垦医院医生';
         version = '1.0.0';
         fileName2 = '/his/download/app/2';
         maskShow = false;

@@ -28,7 +28,7 @@
     @Component
     export default class Download extends Vue {
 
-        title = '农垦医院app';
+        title = '农垦中心医院';
         version = '1.0.0';
         // fileName = 'HIS_20201008.apk';
         fileName = '/his/download/app/1';
