@@ -1,24 +1,24 @@
 <template>
     <view class="box">
         <u-form :model="params" ref="uForm" label-width="200rpx" class="form common-block">
-            <u-form-item label="姓名">
+            <u-form-item label="姓名" required>
                 <u-input v-model="params.name" maxlength="8" placeholder="请输入就诊人姓名" />
             </u-form-item>
-            <u-form-item label="性别">
+            <u-form-item label="性别" required>
                 <u-radio-group v-model="params.gender">
                     <u-radio v-for="(item, index) in genderItems" :key="index" :name="item.label" >
                         {{item.label}}
                     </u-radio>
                 </u-radio-group>
             </u-form-item>
-            <u-form-item label="民族">
+            <u-form-item label="民族" required>
                 <!-- <u-input :value="params.nation" @tap="nationShow = true" type="input" :disabled="true" placeholder="请选择" /> -->
                 <picker mode="selector" :range="nationSort" range-key="label" class="picker-input" @change="bindDateChange($event, 'nation')">
                     <view class="picker-input" v-if="params.nation">{{params.nation}}</view>
                     <view class="picker-input p-i-color" v-else>请选择</view>
                 </picker>
             </u-form-item>
-            <u-form-item label="出生日期">
+            <u-form-item label="出生日期" required>
                 <!-- <u-input v-model="params.birthday" placeholder="请输入就诊人姓名" /> -->
                 <picker mode="date" class="picker-input" @change="bindDateChange($event, 'birthday')">
                     <view class="picker-input" v-if="params.birthday">{{params.birthday}}</view>
@@ -28,7 +28,7 @@
             <!-- <u-form-item label="证件类型">
                 <u-input :value="params.idType" @tap="idTypeShow = true" type="input" :disabled="true" placeholder="请选择" />
             </u-form-item> -->
-            <u-form-item label="身份证号码">
+            <u-form-item label="身份证号码" required>
                 <u-input v-model="params.idNumber" maxlength="20" placeholder="请输入就诊人身份证号码" />
             </u-form-item>
         </u-form>

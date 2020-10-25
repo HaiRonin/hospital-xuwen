@@ -14,10 +14,13 @@
         <view v-show="sortIndex === 1"><upDataView ref="upDataView"/></view>
 
         <u-form :model="params" ref="uForm" label-width="200rpx" class="form common-block">
-            <u-form-item label="手机号码">
+            <u-form-item label="就诊卡号">
+                <u-input v-model="params.cardNo" maxlength="18" placeholder="请输入已有的就诊卡号" />
+            </u-form-item>
+            <u-form-item label="手机号码" required>
                 <u-input v-model="params.phone1" maxlength="15" placeholder="请输入手机号码" />
             </u-form-item>
-            <u-form-item label="验证码">
+            <u-form-item label="验证码" required>
                 <u-input v-model="params.smsCode" placeholder="请输入验证码" />
                 <button class="code-btn" @tap="getCode">{{codeBtnText}}</button>
             </u-form-item>
@@ -135,7 +138,7 @@
         })();
 
         getPatientData (item: IOBJ) {
-            item = item.oldData;
+            item = utils.jsCopyObj(item.oldData);
 
             // this.$set(params, 'patientNo', item.patientNo);
             // this.$set(params, 'patientName', item.patientName);
@@ -143,7 +146,11 @@
             // console.log(item);
             const params = this.params;
             params.phone1 = item.Mobile;
-            this.patientData = utils.jsCopyObj(item);
+            params.cardNo = item.CardNo;
+
+            delete item.Mobile;
+            delete item.CardNo;
+            this.patientData = item;
         }
 
         selPatient () {
