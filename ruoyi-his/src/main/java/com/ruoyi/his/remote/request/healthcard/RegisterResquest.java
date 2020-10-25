@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by ASUS on 2019/1/25.
  */
-@ApiModel(value="注册健康卡对象",description="注册健康卡")
+@ApiModel(value = "注册健康卡对象", description = "注册健康卡")
 public class RegisterResquest implements Serializable {
 
 
@@ -30,55 +30,58 @@ public class RegisterResquest implements Serializable {
      * 微信身份码
      * 1) wechatCode有效期为30分钟且只能使用一次，注册成功时立即失效，注册失败（如核身失败）时，wechatCode不会失效，用户可继续修改信息注册
      */
-    @ApiModelProperty(value="微信身份码",name="wechatCode",example="4D6FFFE544AE4CE1B5E5FA2DC1566E1C")
+    @ApiModelProperty(value = "微信身份码", name = "wechatCode", example = "4D6FFFE544AE4CE1B5E5FA2DC1566E1C")
     private String wechatCode;
     /***
      * 姓名
      */
-    @ApiModelProperty(value="张三",name="name",example="男")
+    @ApiModelProperty(value = "张三", name = "name", example = "男")
     private String name;
     /**
      * 性别:男、女
      */
-    @ApiModelProperty(value="性别",name="gender",example="男")
+    @ApiModelProperty(value = "性别", name = "gender", example = "男")
     private String gender;
     /***
      * 民族:汉族、满族等
      */
-    @ApiModelProperty(value="民族",name="nation",example="汉族")
+    @ApiModelProperty(value = "民族", name = "nation", example = "汉族")
     private String nation;
     /***
      * 出生年月日
      * 	格式：yyyy-MM-dd
      */
-    @ApiModelProperty(value="出生年月日,格式：yyyy-MM-dd",name="birthday",example="2020-08-01")
+    @ApiModelProperty(value = "出生年月日,格式：yyyy-MM-dd", name = "birthday", example = "2020-08-01")
     private String birthday;
     /***
      * 证件号码
      */
-    @ApiModelProperty(value="证件号码",name="idNumber",example="101102199809089988")
+    @ApiModelProperty(value = "证件号码", name = "idNumber", example = "101102199809089988")
     private String idNumber;
     /***
      * 证件类型:01-居民身份证
      * 其它证件：https://open.tengmed.com/doc/#74
      */
-    @ApiModelProperty(value="证件类型,具体证件：https://open.tengmed.com/doc/#74",name="idType",example="01")
+    @ApiModelProperty(value = "证件类型,具体证件：https://open.tengmed.com/doc/#74", name = "idType", example = "01")
     private String idType;
 
     /***
      * 联系方式1
      */
-    @ApiModelProperty(value="联系方式1：",name="phone1",example="18808808808")
+    @ApiModelProperty(value = "联系方式1：", name = "phone1", example = "18808808808")
     private String phone1;
 
-    @ApiModelProperty(value="地址：",name="address",example="广东省深圳市南山区深南大道10000号")
+    @ApiModelProperty(value = "地址：", name = "address", example = "广东省深圳市南山区深南大道10000号")
     private String address;
 
     /***
      * 短信验证码
      */
-    @ApiModelProperty(value="短信验证码",name="smsCode",example="男")
+    @ApiModelProperty(value = "短信验证码", name = "smsCode", example = "男")
     private String smsCode;
+
+    @ApiModelProperty(value = "就诊卡号", name = "cardNo", example = "123456")
+    private String cardNo;
 
     public String getWechatCode() {
         return wechatCode;
@@ -151,5 +154,21 @@ public class RegisterResquest implements Serializable {
 
     public void setSmsCode(String smsCode) {
         this.smsCode = smsCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }

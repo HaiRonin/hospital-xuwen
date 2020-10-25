@@ -5,7 +5,10 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.RedisUtil;
 import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.his.callservice.HisBaseServices;
 import com.ruoyi.his.remote.HealthCardService;
 import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
 import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
@@ -20,6 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author whl
  * @date 2020-08-08
@@ -33,6 +39,12 @@ public class HisHealthCardApi extends BaseController {
     private HealthCardService healthCardService;
     @Autowired
     private ISmsService smsService;
+    @Autowired
+    private HisBaseServices hisBaseServices;
+    @Autowired
+    private RedisUtil redisUtil;
+    //健康二维码缓存KEY
+    private static final String HEALTH_CARD_QRCODE_IMG_CACHE = "HEALTH_CARD_QRCODE_IMG_";
     /**
      * 2020.8.26
      * 测试预约挂号推his
@@ -63,7 +75,37 @@ public class HisHealthCardApi extends BaseController {
 //            return AjaxResult.error("短信验证码不通过");
 //        }
         RegisterResponse response = healthCardService.registerHealthCard(registerResquest);
+        addPatients(response, registerResquest);
         return AjaxResult.success(JSON.toJSONString(response));
+    }
+
+    /**
+     * 注册HIS就诊人
+     *
+     * @param response
+     * @param registerResquest
+     */
+    private void addPatients(RegisterResponse response, RegisterResquest registerResquest) {
+        try {
+            String healthCardId = response.getHealthCardId();
+            Map<String, Object> dataParam = new HashMap<String, Object>();
+            dataParam.put("synUserName", registerResquest.getPhone1());
+            dataParam.put("synKey", "");
+            dataParam.put("UserName", registerResquest.getPhone1());
+            dataParam.put("Mobile", registerResquest.getPhone1());
+            dataParam.put("Sex", "男".equals(registerResquest.getGender()) ? "1" : "0");
+            dataParam.put("CardNo", registerResquest.getCardNo());
+            dataParam.put("Name", registerResquest.getPhone1());
+            dataParam.put("IDCardno", registerResquest.getIdNumber());
+            dataParam.put("address", registerResquest.getAddress());
+            dataParam.put("HealthyCardNo", healthCardId);
+            logger.info(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
+            String result = hisBaseServices.requestHisService("/AddPatients",JSON.toJSONString(dataParam));
+            logger.info(">>>>>>>>添加健康卡-就诊人结果：" + result);
+        }catch(Exception e) {
+            logger.error(">>>>>>>>添加健康卡-就诊人异常：" + e.getMessage(), e);
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -91,8 +133,17 @@ public class HisHealthCardApi extends BaseController {
     @ApiOperation("获取健康卡二维码接口")
     @ResponseBody
     @PostMapping(value = "/getDynamicQRCode")
-    public AjaxResult registerHealthCard(@RequestBody DynamicQRCodeResquest dynamicQRCodeResquest){
+    public AjaxResult registerHealthCard(@RequestBody DynamicQRCodeResquest dynamicQRCodeResquest) {
+        String cacheKey = HEALTH_CARD_QRCODE_IMG_CACHE + dynamicQRCodeResquest.getMobile();
+        if (StringUtils.isNotEmpty(dynamicQRCodeResquest.getMobile()) && null != redisUtil.get(cacheKey)) {
+            DynamicQRCodeResponse response = new DynamicQRCodeResponse();
+            response.setQrCodeImg((String) redisUtil.get(cacheKey));
+            AjaxResult.success(JSON.toJSONString(response));
+        }
         DynamicQRCodeResponse response = healthCardService.getDynamicQRCode(dynamicQRCodeResquest);
+        if (StringUtils.isNotEmpty(dynamicQRCodeResquest.getMobile()) && StringUtils.isNotEmpty(response.getQrCodeImg())) {
+            redisUtil.set(cacheKey, response.getQrCodeImg(), 24 * 3600);
+        }
         return AjaxResult.success(JSON.toJSONString(response));
     }
 
