@@ -1,10 +1,14 @@
 android
+	医生端包名: uni.UNI2455BCC
+	患者端包名: uni.UNIBBEF366
 
-医生端包名: uni.UNI2455BCC
-患者端包名: uni.UNIBBEF366
+	别名: gdnkzxyy_android
+	密码: 123456
 
-别名: gdnkzxyy_android
-密码: 123456
+ios
+	医生端包名: nkzxyy
+	患者端包名: nkzxyyDoc
+	密码: 123456
 
 keytool -genkey -alias gdnkzxyy_android -keyalg RSA -keysize 2048 -validity 36500 -keystore gdnkzxyy_android.keystore
 CN=wu, OU=jingbao, O=jingbao, L=深圳, ST=广东, C=CN是否正确?
