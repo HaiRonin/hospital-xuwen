@@ -134,14 +134,14 @@ public class HisHealthCardApi extends BaseController {
     @ResponseBody
     @PostMapping(value = "/getDynamicQRCode")
     public AjaxResult registerHealthCard(@RequestBody DynamicQRCodeResquest dynamicQRCodeResquest) {
-        String cacheKey = HEALTH_CARD_QRCODE_IMG_CACHE + dynamicQRCodeResquest.getMobile();
-        if (StringUtils.isNotEmpty(dynamicQRCodeResquest.getMobile()) && null != redisUtil.get(cacheKey)) {
+        String cacheKey = HEALTH_CARD_QRCODE_IMG_CACHE + dynamicQRCodeResquest.getHealthCardId();
+        if (null != redisUtil.get(cacheKey)) {
             DynamicQRCodeResponse response = new DynamicQRCodeResponse();
             response.setQrCodeImg((String) redisUtil.get(cacheKey));
             AjaxResult.success(JSON.toJSONString(response));
         }
         DynamicQRCodeResponse response = healthCardService.getDynamicQRCode(dynamicQRCodeResquest);
-        if (StringUtils.isNotEmpty(dynamicQRCodeResquest.getMobile()) && StringUtils.isNotEmpty(response.getQrCodeImg())) {
+        if (StringUtils.isNotEmpty(response.getQrCodeImg())) {
             redisUtil.set(cacheKey, response.getQrCodeImg(), 24 * 3600);
         }
         return AjaxResult.success(JSON.toJSONString(response));
