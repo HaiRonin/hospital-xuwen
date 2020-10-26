@@ -136,6 +136,7 @@ public class HisHealthCardApi extends BaseController {
     public AjaxResult registerHealthCard(@RequestBody DynamicQRCodeResquest dynamicQRCodeResquest) {
         String cacheKey = HEALTH_CARD_QRCODE_IMG_CACHE + dynamicQRCodeResquest.getHealthCardId();
         if (null != redisUtil.get(cacheKey)) {
+            logger.info(">>>>>>>>>>从缓存获取健康码：" + cacheKey);
             DynamicQRCodeResponse response = new DynamicQRCodeResponse();
             response.setQrCodeImg((String) redisUtil.get(cacheKey));
             return AjaxResult.success(JSON.toJSONString(response));
