@@ -138,7 +138,7 @@ public class HisHealthCardApi extends BaseController {
         if (null != redisUtil.get(cacheKey)) {
             DynamicQRCodeResponse response = new DynamicQRCodeResponse();
             response.setQrCodeImg((String) redisUtil.get(cacheKey));
-            AjaxResult.success(JSON.toJSONString(response));
+            return AjaxResult.success(JSON.toJSONString(response));
         }
         DynamicQRCodeResponse response = healthCardService.getDynamicQRCode(dynamicQRCodeResquest);
         if (StringUtils.isNotEmpty(response.getQrCodeImg())) {
