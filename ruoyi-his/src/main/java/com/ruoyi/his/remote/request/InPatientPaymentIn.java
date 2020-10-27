@@ -28,7 +28,7 @@ public class InPatientPaymentIn extends BaseRequest implements Serializable {
     /***
      * 终端号
      */
-    private String terminalCode="";
+    private String terminalCode="WeChat";
 
     public String getInHosNo() {
         return inHosNo;

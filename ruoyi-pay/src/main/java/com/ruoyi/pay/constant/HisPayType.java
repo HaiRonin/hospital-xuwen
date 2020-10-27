@@ -15,7 +15,8 @@ public enum HisPayType
     ALI("2", "支付宝", AliPayServiceImp.class),
     WECHAT("5", "微信", WeChatPayServiceImp.class),
     WXAPP("6", "微信APP", WxAppPayServiceImp.class),
-    WXH5("7", "微信H5", WxH5PayServiceImp.class);
+    WXH5("7", "微信H5", WxH5PayServiceImp.class),
+    WECHAT_GZH("10", "微信公众号", WeChatPayServiceImp.class);
     private String key;
     private String desc;
     private Class clazz;

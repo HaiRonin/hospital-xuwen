@@ -48,7 +48,7 @@ public class LeaveHosPayIn extends BaseRequest implements Serializable {
     /***
      * 终端号
      */
-    private String terminalCode="";
+    private String terminalCode="WeChat";
 
     /***
      * 个人编号

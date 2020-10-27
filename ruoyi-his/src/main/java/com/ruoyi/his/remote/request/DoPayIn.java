@@ -32,7 +32,7 @@ public class DoPayIn extends BaseRequest implements Serializable {
     /***
      *终端号
      */
-    private String terminalCode="";
+    private String terminalCode="WeChat";
 
     /***
      *0,非医保 1,市医保  2,区医保

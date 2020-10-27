@@ -324,14 +324,15 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     }
 
     /***
-     * 因为前端区分了app/h5/jsAPI的支付方式
+     * 因为徐闻只有微信公众号的支付方式
      * @param t
      */
     private void payTypeTransform(T t){
-        if(StringUtils.equalsAny(t.getPayType(),HisPayType.WECHAT.getKey(),
-                HisPayType.WXAPP.getKey(),HisPayType.WXH5.getKey())){
-            t.setPayType(HisPayType.WECHAT.getKey());
-        }
+//        if(StringUtils.equalsAny(t.getPayType(),HisPayType.WECHAT.getKey(),
+//                HisPayType.WXAPP.getKey(),HisPayType.WXH5.getKey())){
+//            t.setPayType(HisPayType.WECHAT_GZH.getKey());
+//        }
+        t.setPayType(HisPayType.WECHAT_GZH.getKey());
     }
 
     @Override
