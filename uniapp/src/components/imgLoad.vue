@@ -13,7 +13,7 @@
 
 <script lang="ts">
 
-    import {Component, Vue, Ref, Prop} from 'vue-property-decorator';
+    import {Component, Vue, Ref, Prop, Emit} from 'vue-property-decorator';
     import {healthCardGetDynamicQRCode} from '@/apis';
 
     @Component
@@ -28,6 +28,11 @@
         errText = '';
         qrCodeImg = '';
 
+        @Emit('getImgLoadData')
+        getImgLoadData (item: IOBJ) {
+            return item;
+        }
+
         async getData () {
             if (utils.zEmpty(this.errText)) await utils.sleep(1000);
 
@@ -40,6 +45,7 @@
                 healthCardId: this.healthCardId,
                 codeType: this.codeType,
                 idNumber: this.idNumber,
+                mobile: this.$store.getters.userInfo.userName
             };
             const res = await healthCardGetDynamicQRCode(params).catch(() => {
                 this.errText = '出错了，点击重新获取';
@@ -51,6 +57,8 @@
             // console.log(res);
             // console.log(data);
             // console.log(data);
+
+            this.getImgLoadData(data);
             this.qrCodeImg = `data:image/png;base64,${qrCodeImg}`;
             this.load = false;
         }

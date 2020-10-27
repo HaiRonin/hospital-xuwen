@@ -5,12 +5,14 @@
                 <image class="qr" :src="require('@/assets/image/healthCard/fake.png')"/>
                 <image class="logo abs" :src="require('@/assets/image/healthCard/logo_.png')"/>
             </view> -->
-            <imgLoad v-bind="{
-                idType: userInfo.idType,
-                healthCardId: userInfo.healthCardId,
-                idNumber: userInfo.idNumber,
-                qrCodeText: userInfo.qrCodeText,
-            }"/>
+            <imgLoad
+                @getImgLoadData="getImgLoadData"
+                v-bind="{
+                    idType: '1',
+                    healthCardId: userInfo.healthCardId,
+                    idNumber: userInfo.idNumber,
+                }"
+            />
         </view>
         <view class="common-block">
             <view class="item flex-box justify-s-b align-center">
@@ -31,7 +33,7 @@
             </view>
         </view>
 
-        <view class="flex-box align-center justify-center btn" @tap="linkWxCard">
+        <view class="flex-box align-center justify-center btn" v-if="qrCodeText" @tap="linkWxCard">
             <view>进入卡包</view>
         </view>
         <!-- <view class="text-3">解绑电子卡</view> -->
@@ -52,11 +54,13 @@
     export default class CardInfo extends Vue {
 
         show = false;
+        qrCodeText = '';
         userInfo: IOBJ = {};
+        options: IOBJ = {};
 
 
         async linkWxCard () {
-            const qrCodeText = this.userInfo.qrCodeText;
+            const qrCodeText = this.qrCodeText;
             const res = await healthCardGetOrderIdByOutAppId({imageContent: qrCodeText}, {isLoad: true});
 
             const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/pages/healthCard/list`);
@@ -69,23 +73,36 @@
             const res = await healthCardGetHealthCard({healthCode}, {isLoad: true});
             let data = JSON.parse(res.msg);
             data = data.card;
-            console.log(res);
-            console.log(data);
+            // console.log(res);
+            // console.log(data);
 
+            this.setData(data);
+        }
+
+        getImgLoadData (data: IOBJ) {
+            console.log(data);
+            this.qrCodeText = data.qrCodeText;
+        }
+
+        setData (data: IOBJ) {
             data.newIdNumber = `${data.idNumber.substr(0, 4)}***********${data.idNumber.substr(-4)}`;
             data.newPhone1 = `${data.phone1.substr(0, 2)}*******${data.phone1.substr(-2)}`;
 
             this.userInfo = data;
             this.show = true;
+            utils.hideLoad();
         }
 
         async onLoad (options: IOBJ) {
             utils.showLoad();
+            this.options = options;
 
             const healthCode = typeof options.healthCode === 'undefined' ? '-1' : `${options.healthCode}`;
 
             // https://open.tengmed.com/doc/#41
-            if (healthCode === '0') {
+            if (options.healthCardId) {
+                this.setData(options);
+            } else if (healthCode === '0') {
                 const patientItem = options.patientItem;
                 const redirectUri = encodeURIComponent(`${globalConfig.domain.webUrl}/pages/healthCard/addCard/index?patientItem=${patientItem}`);
                 window.location.replace(`https://health.tengmed.com/open/getUserCode?redirect_uri=${redirectUri}`);
