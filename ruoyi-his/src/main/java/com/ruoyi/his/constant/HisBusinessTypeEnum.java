@@ -13,21 +13,23 @@ import com.ruoyi.his.remote.LeaveHosPayHisServiceHander;
  */
 public enum HisBusinessTypeEnum {
 
-	DOREG("doreg","doRegIn", "/doReg","预约挂号", DoregInfoHisServiceHander.class),
-	DOPAY("dopay","doRegIn", "/doPay","缴费支付", DopayInfoHisServiceHander.class),
-	INPATIENTPAYMENT("inpatientpayment","doRegIn", "/inPatientPayment","住院押金补缴", InPatientPaymentHisServiceHander.class),
-	LEAVEHOSPAY("leavehospay","doRegIn", "/leaveHosPay","离院结算", LeaveHosPayHisServiceHander.class),;
+	DOREG("doreg","doRegIn", "/doReg","预约挂号",true, DoregInfoHisServiceHander.class),
+	DOPAY("dopay","doRegIn", "/doPay","缴费支付",true, DopayInfoHisServiceHander.class),
+	INPATIENTPAYMENT("inpatientpayment","doRegIn", "/inPatientPayment","住院押金补缴",false, InPatientPaymentHisServiceHander.class),
+	LEAVEHOSPAY("leavehospay","doRegIn", "/leaveHosPay","离院结算",true, LeaveHosPayHisServiceHander.class),;
 	private String key;
 	private String code;
 	private String apiUrl;
 	private String desc;
+	private boolean autoRefund;
 	private Class clazz;
 
-	HisBusinessTypeEnum(String key, String code, String apiUrl,String desc,  Class clazz) {
+	HisBusinessTypeEnum(String key, String code, String apiUrl,String desc, boolean autoRefund, Class clazz) {
 		this.key=key;
 		this.code=code;
 		this.apiUrl=apiUrl;
 		this.desc=desc;
+		this.autoRefund=autoRefund;
 		this.clazz=clazz;
 	}
 
@@ -55,7 +57,9 @@ public enum HisBusinessTypeEnum {
 		return clazz;
 	}
 
-
+	public boolean isAutoRefund() {
+		return autoRefund;
+	}
 
 	public static HisBusinessTypeEnum getTypeByKey(String key){
 		HisBusinessTypeEnum[] values = HisBusinessTypeEnum.values();

@@ -58,14 +58,15 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
         if(null == d){
             throw new HisException(String.format("%1$s记录不存在，不能进行此操作:",outTradeNo));
         }
+        if(!PayStatusEnum.PAY_SUCCESS.getCode().equals(d.getSuccessfulPayment())){
+            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
+        }
         if(PayStatusEnum.ORDER_SUCCESS.getCode().equals(d.getSuccessfulPayment()) ||
                 PayStatusEnum.ORDER_FAIL.getCode().equals(d.getSuccessfulPayment())){
             throw new HisException(String.format("%1$s记录状态为[%2$s]，不能重复此操作:",
                     outTradeNo,PayStatusEnum.getPayStatusEnumByCode(d.getSuccessfulPayment()).getDesc()));
         }
-        if(!PayStatusEnum.PAY_SUCCESS.getCode().equals(d.getSuccessfulPayment())){
-            throw new HisException(String.format("%1$s记录不是支付成功状态，不能进行此操作:",outTradeNo));
-        }
+
         if(StringUtils.isEmpty(d.getTransactionId())){
             throw new HisException(String.format("%1$s记录支付流水为空，不能进行此操作:",outTradeNo));
         }
@@ -94,22 +95,35 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     protected BaseResponse paySuccessful(String outTradeNo,String transactionId){
         BaseResponse baseResponse = BaseResponse.success();
         D d = getOrderDetail(outTradeNo);
+        if(null == d){
+            baseResponse.isOk();
+            return baseResponse;
+        }
+        //只有待支付状态的才能重新发起下单
+        if(!PayStatusEnum.INIT.getCode().equals(d.getSuccessfulPayment())){
+            baseResponse.isOk();
+            return baseResponse;
+        }
         d.setUpdateTime(DateUtils.getNowDate());
         d.setTransactionId(transactionId);
         d.setSuccessfulPayment(PayStatusEnum.PAY_SUCCESS.getCode());
+        //更新支付流水与支付状态
+        int iResult = updateOrder(d);
         try {
-            //更新支付流水与支付状态
-            int iResult = updateOrder(d);
             if(iResult > 0){
                 baseResponse = invokeCallSubmit(outTradeNo);
                 //下单失败，发起退款
-                if(!baseResponse.isOk()){
-                    refudnAndUpdateOrder(d);
+                if(null == baseResponse || !baseResponse.isOk()){
+                    logger.error("paySuccessful.invokeCallSubmit.outTradeNo={},response={}",outTradeNo,JSON.toJSONString(baseResponse));
+                    //只有支持自动退款的才会发起退款操作，押金不支持自动退款
+                    if(getBusinessType().isAutoRefund()){
+                        refudnAndUpdateOrder(d);
+                    }
                 }
             }
         }catch (Exception ex){
             d.setSuccessfulPayment(PayStatusEnum.ORDER_FAIL.getCode());
-            refudnAndUpdateOrder(d);
+//            refudnAndUpdateOrder(d);
             baseResponse.error("缴费支付时发生错误,支付的金额会自动原路返还，请注意查收");
         }
         return baseResponse;
@@ -202,18 +216,20 @@ public abstract class AbstractHisServiceHandler<T extends BaseRequest,D extends 
     @Transient
     public R invokeCallSubmit(String outTradeNo) {
         //数据检查
-        checkData(outTradeNo);
-        //his接口对象构造
-        T t = buildRequestData(outTradeNo);
-        //付款方式转换
-        payTypeTransform(t);
-        //his接口请求下单
-        String response = calltHisService(JSON.toJSONString(t));
-        //返回结果数据转换本地对象
-        R r = transResult(response);
-        //更新本地对象,即使本地更新错误了，也不会抛出异常终止运行，而是以his接口返回的结果为准
+        R r = null;
         try {
+            checkData(outTradeNo);
+            //his接口对象构造
+            T t = buildRequestData(outTradeNo);
+            //付款方式转换
+            payTypeTransform(t);
+            //his接口请求下单
+            String response = calltHisService(JSON.toJSONString(t));
+            //返回结果数据转换本地对象
+            r = transResult(response);
+            //更新本地对象,即使本地更新错误了，也不会抛出异常终止运行，而是以his接口返回的结果为准
             this.afterInvokeCallSumbit(outTradeNo,r);
+
         }catch (Exception ex){
             logger.info("AbstractHisServiceHandler.invokeCallSubmit.outTradeNo={},更新本地发生异常",
                     outTradeNo);

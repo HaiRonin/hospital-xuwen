@@ -21,10 +21,12 @@ public class DepositPayment extends HisBaseEntity
 
     /** 用户名 */
     @Excel(name = "用户名")
+    @ApiModelProperty(value = "synUserName",hidden = true)
     private String synUserName;
 
     /** 效验码 */
     @Excel(name = "效验码")
+    @ApiModelProperty(value = "synKey",hidden = true)
     private String synKey;
 
     /** 住院号 */
@@ -32,6 +34,7 @@ public class DepositPayment extends HisBaseEntity
     private String inHosNo;
 
     /** 支付交易流水号 */
+    @ApiModelProperty(value = "payRecord",hidden = true)
     @Excel(name = "支付交易流水号")
     private String payRecord;
 
@@ -40,11 +43,13 @@ public class DepositPayment extends HisBaseEntity
     private BigDecimal payMoney;
 
     /** 支付交易返回 */
+    @ApiModelProperty(value = "payReturn",hidden = true)
     @Excel(name = "支付交易返回")
     private String payReturn;
 
     /** 终端号 */
     @Excel(name = "终端号")
+    @ApiModelProperty(value = "terminalCode",hidden = true)
     private String terminalCode;
 
     /** 商户id */
@@ -66,10 +71,12 @@ public class DepositPayment extends HisBaseEntity
 
     /** 押金余额 */
     @Excel(name = "押金余额")
+    @ApiModelProperty(value = "depositMoney",hidden = true)
     private BigDecimal depositMoney;
 
     /** 医保类型名称 */
     @Excel(name = "医保类型名称")
+    @ApiModelProperty(value = "medicalTypeName",hidden = true)
     private String medicalTypeName;
 
 
@@ -193,4 +200,11 @@ public class DepositPayment extends HisBaseEntity
         return medicalTypeName;
     }
 
+    public String getTerminalCode() {
+        return terminalCode;
+    }
+
+    public void setTerminalCode(String terminalCode) {
+        this.terminalCode = terminalCode;
+    }
 }
