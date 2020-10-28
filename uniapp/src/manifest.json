@@ -2,8 +2,8 @@
     "name" : "农垦中心医院",
     "appid" : "__UNI__BBEF366",
     "description" : "广东省农垦中心医院",
-    "versionName" : "1.0.1",
-    "versionCode" : "101",
+    "versionName" : "2.1.2",
+    "versionCode" : "102",
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 15000
@@ -58,7 +58,8 @@
                         "urlidentifier" : "com.gdsnkzxyy.hospital",
                         "urlschemes" : [ "app.gdsnkzxyy.cn" ]
                     }
-                ]
+                ],
+                "idfa" : false
             },
             /* ios打包配置 */
             "sdkConfigs" : {
