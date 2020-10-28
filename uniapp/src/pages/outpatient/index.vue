@@ -283,7 +283,7 @@
         async created () {
             await this.getList();
             this.healthAddPatient();
-            this.handleAddHealthData();
+            // this.handleAddHealthData();
 
             // #ifdef H5
             if (this.$store.getters.isTest) {
