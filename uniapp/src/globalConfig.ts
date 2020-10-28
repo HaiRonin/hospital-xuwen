@@ -18,6 +18,7 @@ export const homeUrl = [
 export const refreshUrl = [
     '/pages/registration/confirmOrder',
     '/pages/registration/paymentPrescriptionRecord',
+    '/pages/registration/depositHospitalPay',
 ];
 
 // 强制登录，白名单
@@ -103,6 +104,7 @@ export const payType = [
     {value: '6', text: '云医院微信'},
     {value: '7', text: '云医院支付宝'},
     {value: '8', text: '诊疗卡'},
+    {value: '10', text: '微信公众号'},
 ];
 
 export const inHosState = [
@@ -113,7 +115,7 @@ export const inHosState = [
 ];
 
 export const sexState = [
-    {value: '0', text: '女'},
     {value: '1', text: '男'},
-    {value: '2', text: '其他'},
+    {value: '0', text: '女'},
+    // {value: '2', text: '其他'},
 ];

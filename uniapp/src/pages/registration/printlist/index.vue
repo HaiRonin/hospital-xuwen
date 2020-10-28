@@ -33,11 +33,11 @@
             </view>
             <view class="flex-box align-center justify-s-b">
                 <view class="text-1">自费金额:</view>
-                <view class="text-2">{{item.patientAmount}}</view>
+                <view class="text-2">{{item.patientAmount}}元</view>
             </view>
             <view class="flex-box align-center justify-s-b">
                 <view class="text-1">结算金额:</view>
-                <view class="text-2">{{item.settleAmount}}</view>
+                <view class="text-2">{{item.settleAmount}}元</view>
             </view>
             <!-- <view class="flex-box align-center justify-s-b">
                 <view class="text-1">检查时间:</view>

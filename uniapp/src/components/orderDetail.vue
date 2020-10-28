@@ -42,11 +42,11 @@
                     </view>
                     <view class="flex-50">
                         <text class="text-1">结算金额:</text>
-                        <text class="text-2">{{curItem.settleAmount}}</text>
+                        <text class="text-2">{{curItem.settleAmount}}元</text>
                     </view>
                     <view class="flex-50">
                         <text class="text-1">自费金额:</text>
-                        <text class="text-2">{{curItem.patientAmount}}</text>
+                        <text class="text-2">{{curItem.patientAmount}}元</text>
                     </view>
                     <view class="flex-100">
                         <text class="text-1">就诊日期:</text>

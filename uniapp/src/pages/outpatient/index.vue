@@ -6,7 +6,18 @@
         <view class="common-block" v-for="(item) in list" :key="item.CardNo" @tap="selItem(item)">
             <view class="flex-box align-center justify-s-b">
                 <view class="flex-1">{{item.Name}}</view>
-                <view class="text-2">(就诊卡号{{item.CardNo}})</view>
+                <view class="text-2">
+                    <!-- (就诊卡号{{item.CardNo}},住院号{{item.CardNo}}) -->
+                    <view class="text-3">
+                        卡号
+                        <text>{{item.CardNo}}</text>
+                    </view>
+                    <view class="text-3">
+                        住院号
+                        <text v-if="item.inHosNo">{{item.inHosNo}}</text>
+                        <text v-else class="error-color" @tap.stop="addPatient.openFun(item)">去绑定</text>
+                    </view>
+                </view>
                 <u-icon name="arrow-right" class="text-icon" v-if="isToUrl || isSelModel"></u-icon>
             </view>
             <view class="flex-box align-center justify-s-b action-box" v-if="!isSelModel">
@@ -103,14 +114,10 @@
             const toUrl = this.options.toUrl;
             if (!this.isToUrl && !toUrl) return;
             const is = ~toUrl.indexOf('?');
-            // {"bankCardNumber":"","synUserName":"","synKey":"","cardNo":"440822195306247118","visitCardNo":"52400200199564","socialsecurityNO":""}
             const strData = utils.serialize({
                 patientNo: item.CardNo,
                 name: item.Name,
                 idCardno: item.IDCardno,
-                // patientNo: '52400200199564',
-                // name: item.Name,
-                // idCardno: '440822195306247118'
             });
             utils.link(`${toUrl}${is ? '&' : '?'}${strData}`);
         }
@@ -164,6 +171,13 @@
         color: $color-grey;
     }
 
+    .text-3{
+        text-align: right;
+        line-height: 1.6;
+    }
+
+    .text-3 text{width: 150rpx;display: inline-block;}
+
     .add-box {
         padding: 30rpx 50rpx;
         box-shadow: 0 -2rpx 8rpx rgba(100, 101, 102, 0.08);
@@ -184,7 +198,7 @@
 
     .action-box {
         border-top: $border-line;
-        margin-top: 26rpx;
+        margin-top: 16rpx;
         font-size: 26rpx;
     }
 

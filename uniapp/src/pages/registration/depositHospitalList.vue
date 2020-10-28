@@ -17,7 +17,7 @@
                     <view class="text-1">预缴金金额:</view><view class="text-2">{{item.payMoney}}元</view>
                 </view>
                 <view class="flex-box align-center item">
-                    <view class="text-1">发票号:</view><view class="text-2">{{item.invoiceNo}}</view>
+                    <view class="text-1">收费标识:</view><view class="text-2">{{item.invoiceNo}}</view>
                 </view>
                 <view class="flex-box align-center item">
                     <view class="text-1">支付方式:</view><view class="text-2">{{item.payType | f_payType}}</view>
@@ -105,7 +105,7 @@
 
             let totalPrice = 0;
             res.data.forEach((item: IOBJ) => {
-                totalPrice = utils.toFixed(totalPrice + item.payMoney, true) as number;
+                totalPrice = utils.toFixed(totalPrice + +item.payMoney, true) as number;
 
                 item.payDate = item.payDate.replace(/\\\//g, '-');
                 item.payDate = utils.dateData(createDate(item.payDate)).textTime;

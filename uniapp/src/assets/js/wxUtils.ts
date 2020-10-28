@@ -26,8 +26,6 @@ const wxAuth = {
         res.data.id = res.data.openid;
         store.commit('user/setState', res.data);
 
-        // store.commit('user/setState', {openId: '123', synUserName: '', synKey: '', id: '1'});
-
         const r = vueCompon.$route;
         vueCompon.$router.replace({path: r.path, query: {}});
         return true;

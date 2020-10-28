@@ -1,36 +1,28 @@
 <template>
     <view class="box">
 
-        <view style="height:40rpx;"></view>
-        <template v-if="payList && payList.length">
-            <view class="common-block rel" v-for="(item, index) in payList" :key="index">
-                <view class="flex-box align-center item">
-                    <view class="text-1">患者姓名:</view><view class="text-2 main-color">{{item.patientName}}</view>
-                </view>
-                <view class="flex-box align-center item">
-                    <view class="text-1">科室名称:</view><view class="text-2">{{item.departmentName}}</view>
-                </view>
-                <view class="flex-box align-center item">
-                    <view class="text-1">床号:</view><view class="text-2">{{item.bedNo}}</view>
-                </view>
-                <view class="flex-box align-center item">
-                    <view class="text-1">押金余额:</view><view class="text-2">{{item.depositMoney}}元</view>
-                </view>
-                <view class="flex-box align-center item">
-                    <view class="text-1">补缴上限:</view><view class="text-2">{{item.uppeLimit}}元</view>
-                </view>
-                <view class="flex-box align-center item">
-                    <view class="text-1">补缴下限:</view><view class="text-2">{{item.lowerLimit}}元</view>
-                </view>
-                <view class="text-3 abs">待缴费</view>
-                <view class="btn abs" @tap="payFees">缴费</view>
-            </view>
-        </template>
-
         <view style="height:1px;"></view>
-        <u-empty text="暂无缴纳数据" mode="list" margin-top="150" icon-size="200" font-size="36" v-show="!oneLoad && !payList.length"></u-empty>
+        <u-empty text="暂无住院信息" mode="list" margin-top="150" icon-size="200" font-size="36" v-show="!oneLoad && !inHotInfo"></u-empty>
+
+        <view class="z-n-box flex-box justify-center f-v align-center" v-if="inHotInfo">
+            <view class="text-1">单笔转张金额最低为1元，最高为10000元</view>
+            <u-number-box :min="1" :max="10000" :input-width="400" :input-height="80" :size="32" v-model="params.payMoney"></u-number-box>
+            <view class="btn z-btn-default z-btn-primary" @tap="payFees">押金缴纳</view>
+        </view>
 
         <pay ref="pay" :request="payRequest" @paySuccess="paySuccess"/>
+        <u-modal
+            v-model="tipsShow"
+            title="温馨提示"
+            :show-cancel-button="false"
+            :mask-close-able="false"
+            ref="modal"
+        >
+            <view class="tips">
+                <view v-for="(str, index) in rule" :key="index">{{str}}</view>
+            </view>
+        </u-modal>
+
     </view>
 </template>
 
@@ -38,12 +30,9 @@
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import pay from '@/components/pay.vue';
-    import {queryPatientInHosInfo, queryArrears, ordeNewPayment} from '@/apis';
+    import {queryPatientInHosInfo, ordePayment} from '@/apis';
 
     @Component({
-        // filters: {
-        //     f_payType: (val: any) => globalConfig.gFilter(val, globalConfig.payType),
-        // }
         components: {
             pay
         }
@@ -52,51 +41,54 @@
         @Ref('pay') readonly pay!: IOBJ;
 
         options: IOBJ = {};
-        payList: IOBJ[] = [];
+        params: IOBJ = {};
+        inHotInfo: IOBJ | null = null;
         oneLoad = true;
-        payRequest = ordeNewPayment;
+        tipsShow = false;
+        payRequest = ordePayment;
+        rule = [
+            '1）出院结账时，住院押金的结账余额请到医院人工窗口办理返还。',
+            '2）信用卡恶意透支，将移交公检法机关，请勿以身试法。',
+            '3）微信公众号上只能使用微信支付缴费，如需缴纳现金请到医院人工窗口办理。',
+            '4）出院结账时，所退金额不能大于所支付的缴费金额。'
+        ];
 
         async getData () {
             // 查信息
             utils.showLoad();
             const {patientNo, idCardno} = this.options;
-            const res1 = await queryPatientInHosInfo(
+            const res = await queryPatientInHosInfo(
                 {cardNo: idCardno, visitCardNo: patientNo},
                 {closeErrorTips: true}
             ).catch(() => ({data: []}));
 
-            const hosInfoList = res1.data || [];
-            const hosInfoItem = hosInfoList[hosInfoList.length - 1];
-            if (utils.zEmpty(hosInfoItem)) {
-                this.oneLoad = false;
-                utils.hideLoad();
-                return;
+            const data = res.data[0];
+
+            if (data) {
+                this.params = {
+                    bedNo: data.bedNo,
+                    departmentName: data.departmentName,
+                    inHosNo: data.inHosNo,
+                    patientName: data.patientName,
+                    payMoney: 1,
+                    payType: 5,
+                };
             }
 
-            // hosInfoItem.inHosNo = '0058014';
 
-            const res = await queryArrears(
-                {
-                    inHosNo: hosInfoItem.inHosNo,
-                    bedNo: '',
-                    departmentorganId: '',
-                },
-                {closeErrorTips: true}
-            ).catch(() => ({data: []}));
-
-
-            this.payList = res.data;
+            this.tipsShow = !!data;
+            this.inHotInfo = data;
             this.oneLoad = false;
             utils.hideLoad();
         }
 
         payFees () {
-            const data = {};
-            this.pay.startPay(data);
+            this.pay.startPay(this.params);
         }
 
         paySuccess () {
-            this.getData();
+            // this.getData();
+            utils.link(`/pages/registration/depositHospitalList?${utils.serialize(this.options)}`, 1);
         }
 
         onLoad (options: IOBJ) {
@@ -123,54 +115,36 @@
         // background: #fff;
     }
 
-    .price-box{
-        font-size: 30rpx;
-        box-shadow: 0 2rpx 12rpx rgba(100, 101, 102, 0.12);
-        padding:0 24rpx;
-        position:sticky;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 2;
-        background: #fff;
-    }
-
-    .p-item{
-        line-height: 90rpx;
-        padding:0 10rpx;
-    }
-
-    .p-item + .p-item{
-        border-top:$border-line;
-    }
-
-    .p-text-1{
-        color:$color-grey;
-    }
-
-    .item{
-        line-height: 46rpx;
-        font-size: 26rpx;
-    }
-    .text-1{
-        color:$color-grey;
-        min-width: 180rpx;
-        text-align: right;
-        padding-right: 30rpx;
-    }
-
-    .text-3{
-        right: 24rpx;
-        top: 24rpx;
+    .tips{
+        line-height: 1.5;
         color: $color-grey;
+        padding: 40rpx 20rpx;
+        font-size: 32rpx;
+        // height: 500rpx;
+        // overflow: auto;
+    }
+
+    .z-n-box{
+        margin:auto;
+    }
+
+    .z-n-box::v-deep .u-icon-minus{display: none;}
+    .z-n-box::v-deep .u-icon-plus{display: none;}
+    .z-n-box::v-deep .u-number-input{
+        background: #fff !important;
+        border-radius: 12rpx;
+    }
+
+    .text-1{
+        color: $main-error-color;
+        font-size: 30rpx;
+        margin: 25% 0 50rpx;
     }
 
     .btn{
-        bottom: 24rpx;
-        right: 24rpx;
-        // border:$border-line;
-        color: #fff;
-        border-radius: 10rpx;
-        background: $main-color;
+        margin-top: 50rpx;
+        font-size: 30rpx;
+        border-radius: 12rpx;
+        padding: 0 100rpx;
     }
 </style>

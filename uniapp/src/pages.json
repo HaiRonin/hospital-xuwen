@@ -297,7 +297,7 @@
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "选择就诊卡号"
+                        "navigationBarTitleText": "选择卡号"
                     }
                 },
                 {

@@ -13,9 +13,9 @@
                 </template>
             </u-cell-item>
         </u-cell-group>
-        <view class="out-box" v-if="isLogin">
+        <!-- <view class="out-box" v-if="isLogin">
             <u-button type="info" :plain="false" @tap="logOut">退出登录</u-button>
-        </view>
+        </view> -->
         <!-- <u-skeleton :loading="loading" :animation="true" bgColor="#FFF"></u-skeleton> -->
 
         <upDataPwa ref="upDataPwa"/>

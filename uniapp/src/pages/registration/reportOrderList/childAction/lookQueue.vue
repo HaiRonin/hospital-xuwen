@@ -19,7 +19,7 @@
             <u-form-item label="身份证号码">
                 <u-input disabled :value="curItem.IDCardno" type="password"></u-input>
             </u-form-item>
-            <u-form-item label="就诊卡号">
+            <u-form-item label="卡号">
                 <u-input disabled :value="curItem.CardNo" type="text"></u-input>
             </u-form-item>
         </u-form>

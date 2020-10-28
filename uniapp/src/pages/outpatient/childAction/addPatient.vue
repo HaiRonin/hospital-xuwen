@@ -13,8 +13,14 @@
             <u-form-item label="身份证号码" required>
                 <u-input  v-model="params.IDCardno" maxlength="18" placeholder="请输入身份证号码" type="idcard"></u-input>
             </u-form-item>
-            <u-form-item label="就诊卡号">
-                <u-input  v-model="params.CardNo" maxlength="18" placeholder="请输入已有的就诊卡号" type="text"></u-input>
+            <!-- <u-form-item label="PatientNo">
+                <u-input  v-model="params.PatientNo" maxlength="18" placeholder="请输入已有的PatientNo" type="text"></u-input>
+            </u-form-item> -->
+            <u-form-item label="卡号">
+                <u-input  v-model="params.CardNo" maxlength="18" placeholder="请输入已有的卡号" type="text"></u-input>
+            </u-form-item>
+            <u-form-item label="住院号">
+                <u-input  v-model="params.inHosNo" maxlength="18" placeholder="请输入已有的住院号" type="text"></u-input>
             </u-form-item>
             <u-form-item label="联系电话" required>
                 <u-input  v-model="params.Mobile" maxlength="11" placeholder="请输入联系电话" type="number"></u-input>
@@ -29,13 +35,13 @@
                     </u-radio>
                 </u-radio-group>
             </u-form-item>
-            <u-form-item label="家庭住址" required>
+            <u-form-item label="家庭住址" >
                 <u-input  v-model="params.address" placeholder="请输入家庭住址" type="textarea"></u-input>
             </u-form-item>
 
             <view class="flex-box align-center z-btn-box">
                 <u-button class="flex-1 z-btn" shape="circle" @tap="show = false;">取消</u-button>
-                <u-button class="flex-1 z-btn" type="primary" shape="circle" @tap="commit">添加</u-button>
+                <u-button class="flex-1 z-btn" type="primary" shape="circle" @tap="commit">{{commitBtnText}}</u-button>
             </view>
         </u-form>
     </u-popup>
@@ -51,12 +57,13 @@
         @Inject('outpatientIndex') readonly outpatientIndex!: IOBJ;
 
         show = false;
+        commitBtnText = '添加';
         check = (() => {
             const c = new utils.CheckVal({
                 Name: '请输入姓名',
                 IDCardno: '请输入身份证号码',
                 Mobile: '请输入联系电话',
-                address: '输入家庭住址',
+                // address: '输入家庭住址',
             });
 
             c.Mobile = c.phone;
@@ -71,19 +78,19 @@
         };
 
         // 0女，1男，3表示未知
-        sortSex: IOBJ[] = [
-            {text: '男', value: '1'},
-            {text: '女', value: '0'},
-            {text: '其他', value: '3'},
-        ];
+        sortSex = globalConfig.sexState;
 
-        openFun (item: IOBJ) {
-            const user = this.$store.getters.userInfo;
-            this.params = {
-                Mobile: user.userName,
-                Sex: 1,
-                CardNo: '',
-            };
+        openFun (item?: IOBJ) {
+            let obj: IOBJ = {};
+
+            if (item) {
+                obj = utils.jsCopyObj(item);
+            } else {
+                obj = {Sex: 1};
+            }
+
+            this.commitBtnText = item ? '修改' : '添加';
+            this.params = obj;
             this.show = true;
         }
 

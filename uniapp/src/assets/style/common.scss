@@ -15,6 +15,9 @@ image, img {
     object-fit: contain;
 }
 
+.main-color{color: $main-color;}
+.error-color{color:$main-error-color}
+
 .flex-50{flex-basis: 50%;}
 .flex-100{flex-basis: 100%;}
 .flex-box { display: flex; }

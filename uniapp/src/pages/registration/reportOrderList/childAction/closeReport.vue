@@ -43,18 +43,7 @@
 
             delete data.CardNo;
             delete data.consultationFee;
-            // "{
-            //     "synUserName": "",
-            //     "synKey": "",
-            //     "sourceMark": "202009051021",
-            //     "patientNo": "99202008290495",
-            //     "sourceDate": "2020-09-12",
-            //     "departmentorganId": "uybtkt",
-            //     "payCardNo": "",
-            //     "payType": "5",
-            //     "payAmount": "13",
-            //     "payNo": "4200000685202009055226834287"
-            // }"
+
 
             this.offClose = true;
             await ordeDoRegCancel(data).catch(() => {

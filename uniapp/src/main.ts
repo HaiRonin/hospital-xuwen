@@ -18,6 +18,10 @@ Vue.mixin({
         }
         store.dispatch('time/ajaxGetTime');
         // forcedToLogin();
+
+        // #ifdef H5
+        console.log(this);
+        // #endif
     },
     onShow () {
         // handleHomeShow();
