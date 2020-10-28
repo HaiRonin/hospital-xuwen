@@ -81,7 +81,7 @@
                 imgUrl: require('@/assets/image/icon/icon_91.png'),
             },
             {
-                text: '两癌筛查预约',
+                text: '预约登记',
                 url: '/pages/other/preregistration',
                 imgUrl: require('@/assets/image/icon/icon_91.png'),
                 hide: false
