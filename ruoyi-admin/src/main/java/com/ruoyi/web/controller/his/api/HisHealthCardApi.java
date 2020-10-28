@@ -67,16 +67,26 @@ public class HisHealthCardApi extends BaseController {
     @ApiOperation("注册健康码")
     @ResponseBody
     @PostMapping(value = "/registerHealthCard")
-    public AjaxResult registerHealthCard(@RequestBody RegisterResquest registerResquest){
-        if(StringUtils.isEmpty(registerResquest.getSmsCode())){
-            return AjaxResult.error("请输入验证码");
+    public AjaxResult registerHealthCard(@RequestBody RegisterResquest registerResquest) {
+//        if(StringUtils.isEmpty(registerResquest.getSmsCode())){
+//            return AjaxResult.error("请输入验证码");
+//        }
+//        if(smsService.checkVerificationCode(registerResquest.getPhone1(),registerResquest.getSmsCode())){
+//            return AjaxResult.error("短信验证码不通过");
+//        }
+        RegisterResponse response = null;
+        try {
+            response = healthCardService.registerHealthCard(registerResquest);
+        } catch (Exception e) {
+            logger.error(">>>>>>>>创建健康码异常：" + e.getMessage(), e);
         }
-        if(!smsService.checkVerificationCode(registerResquest.getPhone1(),registerResquest.getSmsCode())){
-            return AjaxResult.error("短信验证码不通过");
+        try {
+            addPatients(response, registerResquest);
+        } catch (Exception e) {
+            logger.error(">>>>>>>>添加健康卡-就诊人异常：" + e.getMessage(), e);
+            return AjaxResult.error("创建失败");
         }
-        RegisterResponse response = healthCardService.registerHealthCard(registerResquest);
-        addPatients(response, registerResquest);
-        return AjaxResult.success(JSON.toJSONString(response));
+        return AjaxResult.success("创建成功");
     }
 
     /**
@@ -86,26 +96,26 @@ public class HisHealthCardApi extends BaseController {
      * @param registerResquest
      */
     private void addPatients(RegisterResponse response, RegisterResquest registerResquest) {
-        try {
-            String healthCardId = response.getHealthCardId();
-            Map<String, Object> dataParam = new HashMap<String, Object>();
-            dataParam.put("synUserName", registerResquest.getPhone1());
-            dataParam.put("synKey", "");
-            dataParam.put("UserName", registerResquest.getPhone1());
-            dataParam.put("Mobile", registerResquest.getPhone1());
-            dataParam.put("Sex", "男".equals(registerResquest.getGender()) ? "1" : "0");
-            dataParam.put("CardNo", registerResquest.getCardNo());
-            dataParam.put("Name", registerResquest.getPhone1());
-            dataParam.put("IDCardno", registerResquest.getIdNumber());
-            dataParam.put("address", registerResquest.getAddress());
-            dataParam.put("HealthyCardNo", healthCardId);
-            logger.info(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
-            String result = hisBaseServices.requestHisService("/AddPatients",JSON.toJSONString(dataParam));
-            logger.info(">>>>>>>>添加健康卡-就诊人结果：" + result);
-        }catch(Exception e) {
-            logger.error(">>>>>>>>添加健康卡-就诊人异常：" + e.getMessage(), e);
-            e.printStackTrace();
+
+        String healthCardId = "";
+        if (null != response) {
+            healthCardId = response.getHealthCardId();
         }
+        Map<String, Object> dataParam = new HashMap<String, Object>();
+        dataParam.put("synUserName", registerResquest.getPhone1());
+        dataParam.put("synKey", "");
+        dataParam.put("UserName", registerResquest.getPhone1());
+        dataParam.put("Mobile", registerResquest.getPhone1());
+        dataParam.put("Sex", "男".equals(registerResquest.getGender()) ? "1" : "0");
+        dataParam.put("CardNo", registerResquest.getCardNo());
+        dataParam.put("Name", registerResquest.getPhone1());
+        dataParam.put("IDCardno", registerResquest.getIdNumber());
+        dataParam.put("address", registerResquest.getAddress());
+        dataParam.put("HealthyCardNo", healthCardId);
+        logger.info(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
+        String result = hisBaseServices.requestHisService("/AddPatients", JSON.toJSONString(dataParam));
+        logger.info(">>>>>>>>添加健康卡-就诊人结果：" + result);
+
     }
 
     /**
@@ -137,13 +147,12 @@ public class HisHealthCardApi extends BaseController {
         String cacheKey = HEALTH_CARD_QRCODE_IMG_CACHE + dynamicQRCodeResquest.getHealthCardId();
         if (null != redisUtil.get(cacheKey)) {
             logger.info(">>>>>>>>>>从缓存获取健康码：" + cacheKey);
-            DynamicQRCodeResponse response = new DynamicQRCodeResponse();
-            response.setQrCodeImg((String) redisUtil.get(cacheKey));
+            DynamicQRCodeResponse response = (DynamicQRCodeResponse)redisUtil.get(cacheKey);
             return AjaxResult.success(JSON.toJSONString(response));
         }
         DynamicQRCodeResponse response = healthCardService.getDynamicQRCode(dynamicQRCodeResquest);
         if (StringUtils.isNotEmpty(response.getQrCodeImg())) {
-            redisUtil.set(cacheKey, response.getQrCodeImg(), 24 * 3600);
+            redisUtil.set(cacheKey, response, 24 * 3600);
         }
         return AjaxResult.success(JSON.toJSONString(response));
     }

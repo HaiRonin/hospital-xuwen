@@ -102,7 +102,7 @@
             // 添加时候，填充数据
             let patientItem = '';
             if (item) {
-                await utils.confirm({content: '确定 申请电子健康码 吗'});
+                await utils.confirm({content: '升级电子健康码'});
 
                 patientItem = `${Date.now()}`;
                 utils.setStorage(`relevancePatientItem-${patientItem}`, item);
@@ -138,10 +138,10 @@
             //     await utils.toast(res.resultMsg, 1000, true);
             // }
 
-            const item = res.returnList[0];
-            if (this.$store.getters.isTest && utils.zEmpty(item.HealthyCardNo)) {
-                this.linkHealthCard(item);
-            }
+            // const item = res.returnList[0];
+            // if (this.$store.getters.isTest && utils.zEmpty(item.HealthyCardNo)) {
+            //     this.linkHealthCard(item);
+            // }
 
             this.outpatientIndex.getList();
         }

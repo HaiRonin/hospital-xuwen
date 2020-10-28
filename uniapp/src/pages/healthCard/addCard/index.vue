@@ -119,6 +119,7 @@
                 nation: '请选择民族',
                 birthday: '请选择出生日期',
                 idNumber: '请输入身份证号',
+                address: '请输入家庭地址',
                 idType: '',
                 phone1: '请输入手机号',
                 smsCode: '请输入验证码',
