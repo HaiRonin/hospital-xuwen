@@ -2,8 +2,8 @@
     "name" : "农垦医院医生",
     "appid" : "__UNI__2455BCC",
     "description" : "农垦医院医生",
-    "versionName" : "1.0.1",
-    "versionCode" : "101",
+    "versionName" : "1.2.1",
+    "versionCode" : 102,
     "transformPx" : false,
     "app-plus" : {
         "compatible" : {
@@ -37,7 +37,9 @@
                 ],
                 "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ]
             },
-            "ios" : {},
+            "ios" : {
+                "idfa" : false
+            },
             /* ios打包配置 */
             "sdkConfigs" : {
                 "ad" : {},

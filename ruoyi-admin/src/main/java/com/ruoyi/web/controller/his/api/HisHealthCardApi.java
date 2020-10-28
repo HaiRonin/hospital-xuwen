@@ -68,12 +68,12 @@ public class HisHealthCardApi extends BaseController {
     @ResponseBody
     @PostMapping(value = "/registerHealthCard")
     public AjaxResult registerHealthCard(@RequestBody RegisterResquest registerResquest){
-//        if(StringUtils.isEmpty(registerResquest.getSmsCode())){
-//            return AjaxResult.error("请输入验证码");
-//        }
-//        if(smsService.checkVerificationCode(registerResquest.getPhone1(),registerResquest.getSmsCode())){
-//            return AjaxResult.error("短信验证码不通过");
-//        }
+        if(StringUtils.isEmpty(registerResquest.getSmsCode())){
+            return AjaxResult.error("请输入验证码");
+        }
+        if(!smsService.checkVerificationCode(registerResquest.getPhone1(),registerResquest.getSmsCode())){
+            return AjaxResult.error("短信验证码不通过");
+        }
         RegisterResponse response = healthCardService.registerHealthCard(registerResquest);
         addPatients(response, registerResquest);
         return AjaxResult.success(JSON.toJSONString(response));
