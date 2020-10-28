@@ -12,8 +12,8 @@ if (process.env.NODE_ENV === 'development') {
 
         // 测试
         // baseApi: 'http://apptest.gdsnkzxyy.cn',
-        // baseApi: 'http://app.gdsnkzxyy.cn:8080',
-        // webUrl: 'http://apptest.gdsnkzxyy.cn',
+        baseApi: 'http://219.129.40.82:8088',
+        // webUrl: 'http://app.gdsnkzxyy.cn:8088',
 
 
         // #ifdef H5

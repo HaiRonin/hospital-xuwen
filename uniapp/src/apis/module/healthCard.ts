@@ -14,7 +14,7 @@ export const healthCardGetHealthCard: TApi = (params = {}, options = {}) => {
 // 获取健康卡二维码接口
 export const healthCardGetDynamicQRCode: TApi = (params = {}, options = {}) => {
     const url = '/his/healthCard/getDynamicQRCode';
-    return ajax.apiPost(url, params, {sleep: 600, ...options});
+    return ajax.apiPost(url, params, {sleep: 600, noCloseBeforeAjax: true, ...options});
 };
 
 // 身份证照片OCR接口

@@ -6,7 +6,7 @@
                 <view class="text-1">(就诊卡号{{item.CardNo}})</view>
                 <u-icon name="arrow-right" class="text-icon" v-if="isToUrl || isSelModel"></u-icon>
             </view>
-            <view class="item flex-box f-v rel" v-if="isH5">
+            <view class="item flex-box f-v rel" @tap.stop="lookHealthCard(item)" v-if="isH5">
                 <view class="flex-box align-center justify-s-b">
                     <view class="text-2">广东省卫生健康委员会</view>
                     <view class="flex-box align-center">
@@ -19,16 +19,16 @@
                     <view class="flex-box align-end justify-s-b content-box" >
                         <view>
                             <view class="text-3">{{item.Name}}</view>
-                            <view class="text-4">2222****2222</view>
+                            <view class="text-4">{{item.newIdNumber}}</view>
                         </view>
                         <!-- <view class="qr-box rel">
                             <image class="qr" :src="require('@/assets/image/healthCard/fake.png')"/>
                             <image class="logo abs" :src="require('@/assets/image/healthCard/logo_.png')"/>
                         </view> -->
                         <imgLoad v-bind="{
-                            idType: 1,
+                            idType: '1',
                             healthCardId: item.HealthyCardNo,
-                            idNumber: userInfo.IDCardno,
+                            idNumber: item.IDCardno,
                         }"/>
                     </view>
 
@@ -143,14 +143,30 @@
             utils.link(`${toUrl}${is ? '&' : '?'}${strData}`);
         }
 
+        lookHealthCard (item: IOBJ) {
+            const strData = utils.serialize({
+                // patientNo: item.CardNo,
+                name: item.Name,
+                idNumber: item.IDCardno,
+                phone1: item.Mobile,
+                healthCardId: item.HealthyCardNo
+            });
+            utils.link(`/pages/healthCard/cardInfo?${strData}`);
+        }
+
         selItem (item: IOBJ) {
             this.confirmOrderPatient(item);
             this.linkToUrl(item);
         }
 
         async getList () {
-            const res = await queryPatients({}, {isLoad: true, closeErrorTips: true}).catch(() => {
+            const res = await queryPatients({HealthyCardNo: ''}, {isLoad: true, closeErrorTips: true}).catch(() => {
                 return {data: []};
+            });
+
+            res.data.forEach((data: IOBJ) => {
+                data.newIdNumber = `${data.IDCardno.substr(0, 4)}***********${data.IDCardno.substr(-4)}`;
+                data.newPhone1 = `${data.Mobile.substr(0, 2)}*******${data.Mobile.substr(-2)}`;
             });
 
             this.list = res.data;
@@ -174,7 +190,7 @@
                 Mobile: healthInfo.phone1,
                 address: healthInfo.address || '',
                 HealthyCardNo: healthInfo.healthCardId,
-                HealthyQrCodeText: healthInfo.qrCodeText,
+                // HealthyQrCodeText: healthInfo.qrCodeText,
                 Sex: globalConfig.sexState.find((item) => item.text === healthInfo.gender)!.value,
             };
             // console.log(params);
@@ -347,7 +363,7 @@
     .item{
         width: 620rpx;
         height: 350rpx;
-        background: url('@/assets/image/healthCard/bg2.png') no-repeat center/contain;
+        background: url('@/assets/image/healthCard/bg2.png') no-repeat center/cover;
         margin: 0 auto;
         padding:30rpx 15rpx 16rpx 40rpx;
         font-family: PingFangSC-Medium, 'PINGFANG MEDIUM';
@@ -355,6 +371,8 @@
         box-shadow:  0 0rpx 40rpx 2rpx rgba(100, 101, 102, 0.12);
         // border-top: $border-line;
         margin-top: 30rpx;
+        border-radius: 12rpx;
+        overflow: hidden;
     }
 
     .item-mask{
@@ -376,6 +394,7 @@
     .content-box::v-deep .qr-box{
         height: 162rpx;
         width: 162rpx;
+        margin:initial;
     }
 
     .content-box::v-deep .logo{
