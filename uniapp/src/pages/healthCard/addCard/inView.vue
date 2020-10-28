@@ -31,6 +31,9 @@
             <u-form-item label="身份证号码" required>
                 <u-input v-model="params.idNumber" maxlength="20" placeholder="请输入就诊人身份证号码" />
             </u-form-item>
+            <u-form-item label="家庭地址" required>
+                <u-input v-model="params.address" maxlength="20" placeholder="请输入家庭地址" />
+            </u-form-item>
         </u-form>
 
         <!-- <u-select v-model="nationShow" :list="nationSort" @confirm="selectChange($event, 'nation')"></u-select> -->
@@ -73,7 +76,8 @@
             idType: '01',
             nation: '',
             idNumber: '',
-            name: ''
+            name: '',
+            address: ''
         };
 
         @Watch('patientData', {immediate: true})
@@ -84,6 +88,7 @@
             params.idNumber = item.IDCardno;
             params.name = item.Name;
             params.birthday = getBirthdayFromIdCard(item.IDCardno);
+            params.address = item.address;
             console.log(item);
         }
 

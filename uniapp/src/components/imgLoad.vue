@@ -1,6 +1,6 @@
 <template>
     <view class="qr-box rel">
-        <view v-if="errText" class="err-box abs flex-box align-center justify-center" @tap="getData">{{errText}}</view>
+        <view v-if="errText" class="err-box abs flex-box align-center justify-center" @tap.stop="getData">{{errText}}</view>
         <template v-else>
             <image class="qr" :src="qrCodeImg || require('@/assets/image/healthCard/fake.png')" />
             <image class="logo abs" :src="require('@/assets/image/healthCard/logo_.png')" />
