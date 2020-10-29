@@ -83,6 +83,17 @@ public class RegisterResquest implements Serializable {
     @ApiModelProperty(value = "就诊卡号", name = "cardNo", example = "123456")
     private String cardNo;
 
+    @ApiModelProperty(value = "登录用户", name = "UserName", example = "15919865471")
+    private String UserName;
+
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
     public String getWechatCode() {
         return wechatCode;
     }
