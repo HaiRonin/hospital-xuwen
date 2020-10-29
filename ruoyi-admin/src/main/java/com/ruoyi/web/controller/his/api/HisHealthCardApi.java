@@ -81,7 +81,10 @@ public class HisHealthCardApi extends BaseController {
             logger.error(">>>>>>>>创建健康码异常：" + e.getMessage(), e);
         }
         try {
-            addPatients(response, registerResquest);
+            String result = addPatients(response, registerResquest);
+            if(!"00".equals(JSON.parseObject(result).getString("resultCode"))) {
+                return AjaxResult.error("操作失败");
+            }
         } catch (Exception e) {
             logger.error(">>>>>>>>添加健康卡-就诊人异常：" + e.getMessage(), e);
             return AjaxResult.error("操作失败");
@@ -95,7 +98,7 @@ public class HisHealthCardApi extends BaseController {
      * @param response
      * @param registerResquest
      */
-    private void addPatients(RegisterResponse response, RegisterResquest registerResquest) {
+    private String addPatients(RegisterResponse response, RegisterResquest registerResquest) {
 
         String healthCardId = "";
         if (null != response) {
@@ -115,7 +118,7 @@ public class HisHealthCardApi extends BaseController {
         logger.info(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
         String result = hisBaseServices.requestHisService("/AddPatients", JSON.toJSONString(dataParam));
         logger.info(">>>>>>>>添加健康卡-就诊人结果：" + result);
-
+        return result;
     }
 
     public static void main(String[] args) {
