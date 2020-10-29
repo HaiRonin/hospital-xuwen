@@ -159,6 +159,12 @@ export const createdBarCode: TApi = (params = {}, options = {}) => {
     return ajax.apiGet(url, params, options);
 };
 
+// 自己系统的 生成二维码
+export const createdQrCode: TApi = (params = {}, options = {}) => {
+    const url = '/his/user/qrCode';
+    return ajax.apiGet(url, params, options);
+};
+
 // 5.2出诊安排
 export const getDoctorRegList: TApi = (params = {}, options = {}) => {
     const url = '/his/request';

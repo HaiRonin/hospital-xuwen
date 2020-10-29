@@ -6,7 +6,7 @@
                 <view class="text-1">(就诊卡号{{item.CardNo}})</view>
                 <u-icon name="arrow-right" class="text-icon" v-if="isToUrl || isSelModel"></u-icon>
             </view>
-            <view class="item flex-box f-v rel" @tap.stop="lookHealthCard(item)" v-if="isH5">
+            <view class="item flex-box f-v rel" v-if="$store.getters.isTest">
                 <view class="flex-box align-center justify-s-b">
                     <view class="text-2">广东省卫生健康委员会</view>
                     <view class="flex-box align-center">
@@ -36,7 +36,7 @@
                 </template>
 
                 <view class="abs item-mask flex-box align-center justify-center" v-else>
-                    <button class="im-btn z-btn-default z-btn-primary" @tap.stop="addPatient.linkHealthCard(item)">申请健康卡</button>
+                    <button class="im-btn z-btn-default z-btn-primary" @tap.stop="upDateCardInfo(item)">升级健康卡</button>
                 </view>
             </view>
             <view class="flex-box align-center justify-s-b action-box" v-if="!isSelModel">
@@ -46,15 +46,15 @@
                         <u-icon name="trash" class="del-icon"></u-icon>删除
                     </view>
                 </view>
-                <view class="flex-box align-center flex-1 justify-s-b">
-                    <!-- <view class="text-action text-action-2 text-action-3" v-if="isH5" @tap.stop="addPatient.linkHealthCard(item)">
-                        <u-icon name="list-dot" class="del-icon"></u-icon>关联健康卡
-                    </view> -->
+                <view class="flex-box align-center flex-1 justify-end">
+                    <view class="text-action text-action-2" v-if="item.HealthyCardNo" @tap.stop="lookHealthCard(item)">
+                        <u-icon name="list-dot" class="del-icon"></u-icon>健康卡信息
+                    </view>
                     <view class="text-action text-action-2" @tap.stop="lookPatientCardInfo.openFun(item)">
                         <u-icon name="list-dot" class="del-icon"></u-icon>卡号信息
                     </view>
                     <view class="text-action text-action-2" @tap.stop="lookBarCode.openFun(item)">
-                        <u-icon name="tiaoxingma" custom-prefix="z-icon" class="del-icon"></u-icon>查看条形码
+                        <u-icon name="tiaoxingma" custom-prefix="z-icon" class="del-icon"></u-icon>查看二维码
                     </view>
                 </view>
             </view>
@@ -73,9 +73,10 @@
 
         <view class="fake-height"></view>
 
-        <view class="add-box">
+        <view class="add-box" v-if="loadCount === 1">
             <!-- <u-button v-show="false" type="primary" :plain="false" @tap="addPatient.openFun()">添加就诊人</u-button> -->
-            <button class="z-btn-default z-btn-primary" @tap="addPatient.openFun()">添加就诊人</button>
+            <button class="z-btn-default z-btn-primary" v-if="isH5 && $store.getters.isTest" @tap="addPatient.linkHealthCard()">创建健康卡</button>
+            <button class="z-btn-default z-btn-primary" v-else @tap="addPatient.openFun()">添加就诊人</button>
         </view>
 
         <delPatientCard ref="delPatientCard" />
@@ -114,9 +115,17 @@
         isH5 = false;
         loadCount = 0;
 
+        upDateCardInfo (item: IOBJ) {
+            if (this.isH5) {
+                this.addPatient.linkHealthCard(item);
+            } else {
+                utils.toast('关注公众号"广东省农垦中心医院",升级健康卡');
+            }
+        }
+
         // 提供给下单时候使用的
         confirmOrderPatient (item: IOBJ) {
-            if (!this.isSelModel) return;
+            // if (!this.isSelModel) return;
             uni.$emit('upDataPatient', {
                 patientNo: item.CardNo,
                 patientName: item.Name,
@@ -129,7 +138,7 @@
         // 跳转下一页
         linkToUrl (item: IOBJ) {
             const toUrl = this.options.toUrl;
-            if (!this.isToUrl && !toUrl) return;
+            // if (!this.isToUrl && !toUrl) return;
             const is = ~toUrl.indexOf('?');
             // {"bankCardNumber":"","synUserName":"","synKey":"","cardNo":"440822195306247118","visitCardNo":"52400200199564","socialsecurityNO":""}
             const strData = utils.serialize({
@@ -155,8 +164,13 @@
         }
 
         selItem (item: IOBJ) {
-            this.confirmOrderPatient(item);
-            this.linkToUrl(item);
+            if (this.isSelModel) {
+                this.confirmOrderPatient(item);
+            } else if (this.isToUrl && this.options.toUrl) {
+                this.linkToUrl(item);
+            } else {
+                this.lookHealthCard(item);
+            }
         }
 
         async getList () {
@@ -286,9 +300,7 @@
             // this.handleAddHealthData();
 
             // #ifdef H5
-            if (this.$store.getters.isTest) {
-                this.isH5 = true;
-            }
+            this.isH5 = true;
             // #endif
         }
 

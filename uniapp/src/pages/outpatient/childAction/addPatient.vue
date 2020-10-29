@@ -34,7 +34,7 @@
             </u-form-item>
 
             <view class="z-btn-box">
-                <u-button v-if="isH5" class="flex-1 z-btn-2" type="warning" shape="circle" @tap="linkHealthCard()">创建建康卡</u-button>
+                <!-- <u-button v-if="isH5" class="flex-1 z-btn-2" type="warning" shape="circle" @tap="linkHealthCard()">创建建康卡</u-button> -->
                 <view class="flex-box align-center">
                     <u-button class="flex-1 z-btn" shape="circle" @tap="show = false;">取消</u-button>
                     <u-button class="flex-1 z-btn" type="primary" shape="circle" @tap="commit">添加</u-button>
@@ -54,7 +54,6 @@
         @Inject('outpatientIndex') readonly outpatientIndex!: IOBJ;
 
         show = false;
-        isH5 = false;
         check = (() => {
             const c = new utils.CheckVal({
                 Name: '请输入姓名',
@@ -139,7 +138,7 @@
             // }
 
             // const item = res.returnList[0];
-            // if (this.$store.getters.isTest && utils.zEmpty(item.HealthyCardNo)) {
+            // if (utils.zEmpty(item.HealthyCardNo)) {
             //     this.linkHealthCard(item);
             // }
 
@@ -148,13 +147,6 @@
 
         created () {
             this.commit = utils.throttle(this.commit, 300, 300, true);
-
-
-            // #ifdef H5
-            if (this.$store.getters.isTest) {
-                this.isH5 = true;
-            }
-            // #endif
         }
 
         mounted () {}

@@ -20,10 +20,10 @@
             <u-form-item label="手机号码" required>
                 <u-input v-model="params.phone1" maxlength="15" placeholder="请输入手机号码" />
             </u-form-item>
-            <u-form-item label="验证码" required>
+            <!-- <u-form-item label="验证码" required>
                 <u-input v-model="params.smsCode" placeholder="请输入验证码" />
                 <button class="code-btn" @tap="getCode">{{codeBtnText}}</button>
-            </u-form-item>
+            </u-form-item> -->
         </u-form>
 
         <view class="flex-box align-center justify-center btn" @tap="commit">
@@ -122,7 +122,7 @@
                 address: '请输入家庭地址',
                 idType: '',
                 phone1: '请输入手机号',
-                smsCode: '请输入验证码',
+                // smsCode: '请输入验证码',
             });
 
             c.phone1 = c.phone;

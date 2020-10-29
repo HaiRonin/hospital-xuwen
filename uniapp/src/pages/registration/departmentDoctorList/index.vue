@@ -51,7 +51,7 @@
 
         <u-empty text="没有查到相关医生" mode="list" margin-top="150" icon-size="200" font-size="36" v-show="loadCount === 1 && !list.length"></u-empty>
 
-        <leftModal ref="leftModal" v-model="params.departmentorganId" @change="getList" />
+        <leftModal ref="leftModal" v-model="params.departmentorganId" @change="getList()" />
         <leftModal2 ref="leftModal2" :list="theTitleList" v-model="params.theTitle" @change="theTitleChange" />
     </view>
 </template>
@@ -130,11 +130,13 @@
                 });
             }
             this.reserveTimeList = arr;
-
+            // console.log(arr);
             this.getList(arr[0].date);
         }
 
         async getList (dateText?: string) {
+            // console.log(dateText);
+            // debugger;
             if (dateText) {
                 this.params.startDate = dateText;
                 this.params.endDate = dateText;

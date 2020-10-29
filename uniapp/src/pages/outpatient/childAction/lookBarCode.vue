@@ -2,7 +2,7 @@
     <u-modal
         v-model="show"
         ref="modal"
-        title="条形码"
+        title="二维码"
     >
         <view class="content">
             <view v-if="error" class="error-text">出错了</view>
@@ -16,7 +16,7 @@
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
-    import {createdBarCode} from '@/apis';
+    import {createdBarCode, createdQrCode} from '@/apis';
 
     @Component
     export default class LookBarCode extends Vue {
@@ -30,13 +30,13 @@
         async getBarCode () {
             const CardNo = this.curItem.CardNo;
 
-            const res = await createdBarCode({CardNo}, {closeErrorTips: true}).catch(() => {
+            const res = await createdQrCode({CardNo}, {closeErrorTips: true}).catch(() => {
                 this.error = true;
                 return Promise.reject();
             });
             // console.log(res.msg.replace(/\n/g, ''));
             // this.imgUrl = 'data:image/png;base64,' + res.msg.replace(/\n/g, '');
-            this.imgUrl = 'data:image/png;base64,' + res.msg;
+            this.imgUrl = res.msg;
             // console.log(this.imgUrl);
             this.load = false;
         }
