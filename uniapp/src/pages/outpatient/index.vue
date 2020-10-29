@@ -61,9 +61,9 @@
             <view v-else class="fake-padding"></view>
         </view>
 
-        <view @tap="addPatient.openFun()" v-show="loadCount === 1 && !list.length">
+        <view @tap="addPatientFun()" v-show="loadCount === 1 && !list.length">
             <u-empty
-                text="点击前往添加就诊人"
+                text="点击前往添加"
                 mode="list"
                 margin-top="150"
                 icon-size="200"
@@ -75,8 +75,9 @@
 
         <view class="add-box" v-if="loadCount === 1">
             <!-- <u-button v-show="false" type="primary" :plain="false" @tap="addPatient.openFun()">添加就诊人</u-button> -->
-            <button class="z-btn-default z-btn-primary" v-if="isH5 && $store.getters.isTest" @tap="addPatient.linkHealthCard()">创建健康卡</button>
-            <button class="z-btn-default z-btn-primary" v-else @tap="addPatient.openFun()">添加就诊人</button>
+            <button class="z-btn-default z-btn-primary" @tap="addPatientFun()">
+                {{isH5 && $store.getters.isTest ? '创建健康卡' : '添加就诊人'}}
+            </button>
         </view>
 
         <delPatientCard ref="delPatientCard" />
@@ -121,6 +122,10 @@
             } else {
                 utils.toast('关注公众号"广东省农垦中心医院",升级健康卡');
             }
+        }
+
+        addPatientFun () {
+            this.isH5 && this.$store.getters.isTest ? this.addPatient.linkHealthCard() : this.addPatient.openFun();
         }
 
         // 提供给下单时候使用的
@@ -301,12 +306,24 @@
 
             // #ifdef H5
             this.isH5 = true;
+            var browserRule = /^.*((iPhone)|(iPad)|(Safari))+.*$/;
+            if (browserRule.test(navigator.userAgent)) {
+                window.onpageshow = (event: IOBJ) => {
+                    if (event.persisted) {
+                        this.getList();
+                    }
+                };
+            }
             // #endif
         }
 
         mounted () {}
 
         activated () {}
+
+        beforeDestroy () {
+            window.onpageshow = null;
+        }
 
     }
 </script>
