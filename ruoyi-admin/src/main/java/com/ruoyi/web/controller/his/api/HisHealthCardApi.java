@@ -107,9 +107,9 @@ public class HisHealthCardApi extends BaseController {
             healthCardId = response.getHealthCardId();
         }
         Map<String, Object> dataParam = new HashMap<String, Object>();
-        dataParam.put("synUserName", registerResquest.getUserName());
+        dataParam.put("synUserName", registerResquest.getSynUserName());
         dataParam.put("synKey", "");
-        dataParam.put("UserName", registerResquest.getUserName());
+        dataParam.put("UserName", registerResquest.getSynUserName());
         dataParam.put("Mobile", registerResquest.getPhone1());
         dataParam.put("Sex", "男".equals(registerResquest.getGender()) ? "1" : "0");
         dataParam.put("CardNo", null==registerResquest.getCardNo()?"":registerResquest.getCardNo());
