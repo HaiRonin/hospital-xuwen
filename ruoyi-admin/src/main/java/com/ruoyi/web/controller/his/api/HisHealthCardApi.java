@@ -68,12 +68,12 @@ public class HisHealthCardApi extends BaseController {
     @ResponseBody
     @PostMapping(value = "/registerHealthCard")
     public AjaxResult registerHealthCard(@RequestBody RegisterResquest registerResquest) {
-        if(StringUtils.isEmpty(registerResquest.getSmsCode())){
-            return AjaxResult.error("请输入验证码");
-        }
-        if(!smsService.checkVerificationCode(registerResquest.getPhone1(),registerResquest.getSmsCode())){
-            return AjaxResult.error("短信验证码不通过");
-        }
+//        if(StringUtils.isEmpty(registerResquest.getSmsCode())){
+//            return AjaxResult.error("请输入验证码");
+//        }
+//        if(!smsService.checkVerificationCode(registerResquest.getPhone1(),registerResquest.getSmsCode())){
+//            return AjaxResult.error("短信验证码不通过");
+//        }
         RegisterResponse response = null;
         try {
             response = healthCardService.registerHealthCard(registerResquest);
@@ -107,15 +107,24 @@ public class HisHealthCardApi extends BaseController {
         dataParam.put("UserName", registerResquest.getPhone1());
         dataParam.put("Mobile", registerResquest.getPhone1());
         dataParam.put("Sex", "男".equals(registerResquest.getGender()) ? "1" : "0");
-        dataParam.put("CardNo", registerResquest.getCardNo());
+        dataParam.put("CardNo", null==registerResquest.getCardNo()?"":registerResquest.getCardNo());
         dataParam.put("Name", registerResquest.getPhone1());
         dataParam.put("IDCardno", registerResquest.getIdNumber());
-        dataParam.put("address", registerResquest.getAddress());
-        dataParam.put("HealthyCardNo", healthCardId);
+        dataParam.put("address", null==registerResquest.getAddress()?"":registerResquest.getAddress());
+        dataParam.put("HealthyCardNo", null==healthCardId?"":healthCardId);
         logger.info(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
         String result = hisBaseServices.requestHisService("/AddPatients", JSON.toJSONString(dataParam));
         logger.info(">>>>>>>>添加健康卡-就诊人结果：" + result);
 
+    }
+
+    public static void main(String[] args) {
+        Map<String, Object> dataParam = new HashMap<String, Object>();
+        RegisterResquest registerResquest = new RegisterResquest();
+        dataParam.put("synUserName", "1111");
+        dataParam.put("synKey", "");
+        dataParam.put("IDCardno", registerResquest.getIdNumber());
+        System.out.println(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
     }
 
     /**
