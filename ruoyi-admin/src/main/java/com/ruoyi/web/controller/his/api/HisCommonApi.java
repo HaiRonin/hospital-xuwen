@@ -8,6 +8,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.AppClientType;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.BarcodeUtil;
+import com.ruoyi.common.utils.QRCodeUtil;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUtils;
@@ -153,7 +154,6 @@ public class HisCommonApi extends BaseController
      * 生成条形码
      * @return
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("生成条形码")
     @GetMapping("/user/barCode")
     @ResponseBody
@@ -162,12 +162,22 @@ public class HisCommonApi extends BaseController
         return AjaxResult.success(BarcodeUtil.generateFile(CardNo));
     }
 
+    /**
+     * 生成二维码
+     * @return
+     */
+    @ApiOperation("生成二维码")
+    @GetMapping("/user/qrCode")
+    @ResponseBody
+    @Cacheable(value="qrCode", key="#CardNo")
+    public AjaxResult qrCode(@RequestParam("CardNo") String CardNo) {
+        return AjaxResult.success(QRCodeUtil.crateB64QRCode(CardNo,200,200));
+    }
 
     /**
      * 获取所有的身体部位
      * @return
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("获取所有的身体部位")
     @PostMapping(value = "/getBodyListPart")
     @ResponseBody
@@ -194,7 +204,6 @@ public class HisCommonApi extends BaseController
      * 根据身体部位获取对应的病症
      * @return
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("根据身体部位获取对应的病症")
     @PostMapping(value = "/getOrganList")
     @ResponseBody
@@ -223,7 +232,6 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("根据病症获取科室")
     @PostMapping(value = "/diagnosis")
     @ResponseBody
