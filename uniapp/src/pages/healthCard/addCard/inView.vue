@@ -82,7 +82,7 @@
 
         @Watch('patientData', {immediate: true})
         handler (item: IOBJ | null) {
-            if (!item) return;
+            if (!item || Object.keys(item).length === 0) return;
             const params = this.params;
             params.gender = ['男', '女'].includes(item.Sex) ? item.Sex : '男';
             params.idNumber = item.IDCardno;
