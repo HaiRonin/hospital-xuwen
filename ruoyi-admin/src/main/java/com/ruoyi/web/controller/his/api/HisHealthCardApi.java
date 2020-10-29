@@ -111,7 +111,7 @@ public class HisHealthCardApi extends BaseController {
         dataParam.put("Mobile", registerResquest.getPhone1());
         dataParam.put("Sex", "男".equals(registerResquest.getGender()) ? "1" : "0");
         dataParam.put("CardNo", null==registerResquest.getCardNo()?"":registerResquest.getCardNo());
-        dataParam.put("Name", registerResquest.getPhone1());
+        dataParam.put("Name", registerResquest.getName());
         dataParam.put("IDCardno", registerResquest.getIdNumber());
         dataParam.put("address", null==registerResquest.getAddress()?"":registerResquest.getAddress());
         dataParam.put("HealthyCardNo", null==healthCardId?"":healthCardId);
