@@ -34,7 +34,7 @@
         }
 
         async getData () {
-            if (utils.zEmpty(this.errText)) await utils.sleep(1000);
+            // if (utils.zEmpty(this.errText)) await utils.sleep(1000);
 
             this.errText = '';
             this.qrCodeImg = '';
@@ -47,7 +47,7 @@
                 idNumber: this.idNumber,
                 mobile: this.$store.getters.userInfo.userName
             };
-            const res = await healthCardGetDynamicQRCode(params).catch(() => {
+            const res = await healthCardGetDynamicQRCode(params, {isRCache: true}).catch(() => {
                 this.errText = '出错了，点击重新获取';
                 return Promise.reject();
             });

@@ -9,7 +9,7 @@ let store: IOBJ | null = null;
 
 const cacheData: IOBJ = {};
 const ajaxErr = [
-    {key: 'timeout of', text: '请求超时，请稍后...'},
+    {key: 'fail timeout', text: '请求超时，请稍后...'},
     {key: '404', text: '请求地址有误'},
     {key: 'request:fail', text: '请求发送失败'},
 ];

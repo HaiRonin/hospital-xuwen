@@ -96,9 +96,6 @@
         link = link;
 
         mounted () {
-            // if (this.$store.getters.isTest) {
-            //     this.quickEntry2[this.quickEntry2.length - 1].hide = false;
-            // }
         }
     }
 </script>
