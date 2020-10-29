@@ -77,8 +77,10 @@ public class HisHealthCardApi extends BaseController {
         RegisterResponse response = null;
         try {
             response = healthCardService.registerHealthCard(registerResquest);
+            //健康码创建失败，不能建档
         } catch (Exception e) {
             logger.error(">>>>>>>>创建健康码异常：" + e.getMessage(), e);
+            return AjaxResult.error("创建健康码异常");
         }
         try {
             String result = addPatients(response, registerResquest);
@@ -121,14 +123,6 @@ public class HisHealthCardApi extends BaseController {
         return result;
     }
 
-    public static void main(String[] args) {
-        Map<String, Object> dataParam = new HashMap<String, Object>();
-        RegisterResquest registerResquest = new RegisterResquest();
-        dataParam.put("synUserName", "1111");
-        dataParam.put("synKey", "");
-        dataParam.put("IDCardno", registerResquest.getIdNumber());
-        System.out.println(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
-    }
 
     /**
      * 2020.8.26
