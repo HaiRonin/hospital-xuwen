@@ -80,7 +80,7 @@ public class HisHealthCardApi extends BaseController {
             //健康码创建失败，不能建档
         } catch (Exception e) {
             logger.error(">>>>>>>>创建健康码异常：" + e.getMessage(), e);
-            return AjaxResult.error("创建健康码异常");
+            return AjaxResult.error("电子健康码创建失败，请检查身份证和姓名是否正确");
         }
         try {
             String result = addPatients(response, registerResquest);
