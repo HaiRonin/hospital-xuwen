@@ -28,8 +28,10 @@
                     <view class="text-1">药品分类:</view><view class="text-2">{{item.drugType}}</view>
                 </view>
                 <view class="flex-box align-center item">
-                    <view class="text-1">规格:</view><view class="text-2 main-color">{{item.feeItemNum}}{{item.feeItemUnit}}</view>
+                    <view class="text-1">规格:</view><view class="text-2 main-color">{{item.feeItemStandard}}</view>
                 </view>
+                 <view class="flex-box align-center item">
+                     <view class="text-1">数量:</view><view class="text-2 main-color">{{item.feeItemNum}}{{item.feeItemUnit}}</view></view>
                 <view class="flex-box align-center item">
                     <view class="text-1">单价:</view><view class="text-2">{{item.feeItemAmount}}元</view>
                 </view>
@@ -37,7 +39,16 @@
                     <view class="text-1">总价:</view><view class="text-2">{{item.feeItemAllAmount}}元</view>
                 </view>
                 <view class="flex-box align-center item">
-                    <view class="text-1">比例:</view><view class="text-2">{{item.amountMoney}}</view>
+                    <view class="text-1">可记账金额:</view><view class="text-2">{{item.amountMoney}}</view>
+                </view>
+                <view class="flex-box align-center item">
+                    <view class="text-1">医保记账自费金额:</view><view class="text-2">{{item.MmedicareMoney}}</view>
+                </view>
+                <view class="flex-box align-center item">
+                    <view class="text-1">纯自费金额:</view><view class="text-2">{{item.payMoney}}</view>
+                 </view>
+                <view class="flex-box align-center item">
+                    <view class="text-1">记账日期:</view><view class="text-2">{{item.chargeDate}}</view>
                 </view>
             </view>
         </template>
