@@ -188,8 +188,9 @@
     }
 
     .p-item{
-        line-height: 90rpx;
+        line-height: 74rpx;
         padding:0 10rpx;
+        font-size: 26rpx;
     }
 
     .p-item + .p-item{
