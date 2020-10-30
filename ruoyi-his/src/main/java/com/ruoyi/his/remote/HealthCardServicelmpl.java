@@ -2,7 +2,9 @@ package com.ruoyi.his.remote;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.exception.HisException;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.RedisUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
@@ -10,10 +12,12 @@ import com.ruoyi.his.config.HealthCarConfig;
 import com.ruoyi.his.constant.Constants;
 import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
 import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
+import com.ruoyi.his.remote.request.healthcard.ReportDataResquest;
 import com.ruoyi.his.remote.response.healthcard.*;
 import com.tencent.healthcard.impl.HealthCardServerImpl;
 import com.tencent.healthcard.model.CommonIn;
 import com.tencent.healthcard.model.HealthCardInfo;
+import com.tencent.healthcard.model.ReportHISData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,9 @@ public class HealthCardServicelmpl implements HealthCardService {
     @Autowired
     private RedisUtil redisUtil;
 
+
+    //健康二维码缓存KEY
+    private static final String HEALTH_CARD_QRCODE_IMG_CACHE = "HEALTH_CARD_QRCODE_IMG_";
 
     private HealthCardServerImpl healthCardServer;
 
@@ -84,7 +91,7 @@ public class HealthCardServicelmpl implements HealthCardService {
 
         JSONObject json = gethealthCard().registerHealthCard(buildCommonIn(), healthCardInfo);
         if (StringUtils.isEmpty(json)) {
-            throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
+            throw new HisException("注册电子健康发生网络异常，请稍后再试");
         }
         HealthCardResponse response = JSON.parseObject(json.toJSONString(), HealthCardResponse.class);
         if (!response.getCommonOut().isOk()) {
@@ -101,7 +108,7 @@ public class HealthCardServicelmpl implements HealthCardService {
         if (StringUtils.isEmpty(json)) {
             throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
         }
-        LOG.info("getHealthCardByHealthCode.healthCode={},response={}",healthCode,json.toString());
+        LOG.debug("getHealthCardByHealthCode.healthCode={},response={}",healthCode,json.toString());
         HealthCardResponse response = JSON.parseObject(json.toJSONString(), HealthCardResponse.class);
         if (!response.getCommonOut().isOk()) {
             throw new HisException("获取健康码时发生异常:" + response.getCommonOut().getErrMsg());
@@ -133,9 +140,9 @@ public class HealthCardServicelmpl implements HealthCardService {
         if (StringUtils.isEmpty(json)) {
             throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
         }
-        LOG.info(">>>>>>>>>>>>>>调用健康卡身份证照片OCR接口结果1：" + JSON.toJSONString(json));
+        LOG.debug(">>>>>>>>>>>>>>调用健康卡身份证照片OCR接口结果1：" + JSON.toJSONString(json));
         HealthCardResponse response = JSON.parseObject(json.toJSONString(), HealthCardResponse.class);
-        LOG.info(">>>>>>>>>>>>>>调用健康卡身份证照片OCR接口结果2：" + JSON.toJSONString(response));
+        LOG.debug(">>>>>>>>>>>>>>调用健康卡身份证照片OCR接口结果2：" + JSON.toJSONString(response));
         if (!response.getCommonOut().isOk()) {
             throw new HisException("调用健康卡身份证照片OCR接口发生异常:" + response.getCommonOut().getErrMsg());
         }
@@ -149,13 +156,37 @@ public class HealthCardServicelmpl implements HealthCardService {
         if (StringUtils.isEmpty(json)) {
             throw new HisException("调用微信电子健康开放平台发生网络异常，请稍后再试");
         }
-        LOG.info(">>>>>>>>>>>>>>调用获取卡包订单ID接口接口结果1：" + JSON.toJSONString(json));
+        LOG.debug(">>>>>>>>>>>>>>调用获取卡包订单ID接口接口结果1：" + JSON.toJSONString(json));
         HealthCardResponse response = JSON.parseObject(json.toJSONString(), HealthCardResponse.class);
-        LOG.info(">>>>>>>>>>>>>>调用获取卡包订单ID接口接口结果2：" + JSON.toJSONString(response));
+        LOG.debug(">>>>>>>>>>>>>>调用获取卡包订单ID接口接口结果2：" + JSON.toJSONString(response));
         if (!response.getCommonOut().isOk()) {
             throw new HisException("调用健康卡身份证照片OCR接口发生异常:" + response.getCommonOut().getErrMsg());
         }
         return JSON.parseObject(response.getRsp()).getString("orderId");
+    }
+
+    @Override
+    public void reportHISData(ReportDataResquest reportDataResquest) {
+        String cacheKey = HEALTH_CARD_QRCODE_IMG_CACHE + reportDataResquest.getHealthCardId();
+        if (null == redisUtil.get(cacheKey)) {
+            return;
+        }
+        DynamicQRCodeResponse response = (DynamicQRCodeResponse)redisUtil.get(cacheKey);
+        ReportHISData reportHISData=new ReportHISData();
+        reportHISData.setQrCodeText(response.getQrCodeText());
+        reportHISData.setTime(DateUtils.getTime());
+        reportHISData.setHospitalCode(healthCarConfig.getHospitalId());
+        reportHISData.setScene(reportDataResquest.getScene());
+        reportHISData.setDepartment(reportDataResquest.getDepartment());
+        reportHISData.setCardChannel("0401");//	服务号
+        reportHISData.setCardType("11");//	11-电子健康卡
+        reportHISData.setCardCostTypes("0100");// 自费
+        try {
+            gethealthCard().reportHISData(buildCommonIn(),reportHISData);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 
 

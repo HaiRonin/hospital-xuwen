@@ -12,6 +12,7 @@ import com.ruoyi.his.callservice.HisBaseServices;
 import com.ruoyi.his.remote.HealthCardService;
 import com.ruoyi.his.remote.request.healthcard.DynamicQRCodeResquest;
 import com.ruoyi.his.remote.request.healthcard.RegisterResquest;
+import com.ruoyi.his.remote.request.healthcard.ReportDataResquest;
 import com.ruoyi.his.remote.response.healthcard.CardGetResponse;
 import com.ruoyi.his.remote.response.healthcard.DynamicQRCodeResponse;
 import com.ruoyi.his.remote.response.healthcard.OcrInfoResponse;
@@ -80,7 +81,7 @@ public class HisHealthCardApi extends BaseController {
             //健康码创建失败，不能建档
         } catch (Exception e) {
             logger.error(">>>>>>>>创建健康码异常：" + e.getMessage(), e);
-            return AjaxResult.error("电子健康码创建失败，请检查身份证和姓名是否正确");
+            return AjaxResult.error(e.getMessage());
         }
         try {
             String result = addPatients(response, registerResquest);
@@ -130,7 +131,7 @@ public class HisHealthCardApi extends BaseController {
      *
      * @return
      */
-    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("获取健康码")
     @ResponseBody
     @GetMapping(value = "/getHealthCard")
@@ -145,7 +146,7 @@ public class HisHealthCardApi extends BaseController {
      *
      * @return
      */
-    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("获取健康卡二维码接口")
     @ResponseBody
     @PostMapping(value = "/getDynamicQRCode")
@@ -168,7 +169,7 @@ public class HisHealthCardApi extends BaseController {
      *
      * @return
      */
-    @Log(title = "his本地调用", businessType = BusinessType.HIS)
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS)
     @GetMapping("/sendCode")
     @ResponseBody
     @ApiOperation("获取验证码短信")
@@ -185,7 +186,7 @@ public class HisHealthCardApi extends BaseController {
      *
      * @return
      */
-    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("身份证照片OCR接口")
     @ResponseBody
     @PostMapping(value = "/ocrInfo")
@@ -200,12 +201,27 @@ public class HisHealthCardApi extends BaseController {
      *
      * @return
      */
-    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("获取卡包订单ID接口")
     @ResponseBody
     @PostMapping(value = "/getOrderIdByOutAppId")
     public AjaxResult getOrderIdByOutAppId(String imageContent) {
         String orderId = healthCardService.getOrderIdByOutAppId(imageContent);
         return AjaxResult.success(orderId);
+    }
+
+    /**
+     * 2020.10.26
+     * 用卡数据监测上报
+     *
+     * @return
+     */
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("用卡数据监测上报")
+    @ResponseBody
+    @PostMapping(value = "/reportHISData")
+    public AjaxResult reportHISData(@RequestBody ReportDataResquest reportDataResquest) {
+        healthCardService.reportHISData(reportDataResquest);
+        return AjaxResult.success();
     }
 }
