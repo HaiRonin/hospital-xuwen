@@ -183,6 +183,7 @@ public class HealthCardServicelmpl implements HealthCardService {
         try {
             gethealthCard().reportHISData(buildCommonIn(),reportHISData);
         }catch (Exception ex){
+            LOG.debug(">>>>>>>>>>>>>>上报健康卡数据失败："+ex.getMessage());
             ex.printStackTrace();
         }
 
