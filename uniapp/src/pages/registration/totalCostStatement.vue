@@ -11,7 +11,7 @@
             </view>
             <view class="flex-box align-center justify-s-b p-item">
                 <view class="p-text-1">医保类型(代码-名称):</view>
-                <view class="p-text-2">{{info.medicalTypeCode}}-{{info.medicalTypeName}}</view>
+                <view class="p-text-2">{{info.medicalTypeCode}}-{{info.medicalTypeNmae}}</view>
             </view>
         </view>
 
@@ -39,13 +39,13 @@
                     <view class="text-1">总价:</view><view class="text-2">{{item.feeItemAllAmount}}元</view>
                 </view>
                 <view class="flex-box align-center item">
-                    <view class="text-1">可记账金额:</view><view class="text-2">{{item.amountMoney}}</view>
+                    <view class="text-1">可记账金额:</view><view class="text-2">{{item.amountMoney}}元</view>
                 </view>
                 <view class="flex-box align-center item">
-                    <view class="text-1">医保记账自费金额:</view><view class="text-2">{{item.MmedicareMoney}}</view>
+                    <view class="text-1">医保记账自费金额:</view><view class="text-2">{{item.MmedicareMoney}}元</view>
                 </view>
                 <view class="flex-box align-center item">
-                    <view class="text-1">纯自费金额:</view><view class="text-2">{{item.payMoney}}</view>
+                    <view class="text-1">纯自费金额:</view><view class="text-2">{{item.payMoney}}元</view>
                  </view>
                 <view class="flex-box align-center item">
                     <view class="text-1">记账日期:</view><view class="text-2">{{item.chargeDate}}</view>
