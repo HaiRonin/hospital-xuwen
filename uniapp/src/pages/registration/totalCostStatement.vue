@@ -2,6 +2,10 @@
     <view class="box">
         <view class="price-box" v-if="info">
             <view class="flex-box align-center justify-s-b p-item">
+                <view class="p-text-1">姓名-性别:</view>
+                <view class="p-text-2">{{info.patientName}}-{{info.patientSex | f_patientSex}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b p-item">
                 <view class="p-text-1">总费用:</view>
                 <view class="p-text-2">{{info.totalMoney}}元</view>
             </view>
@@ -13,15 +17,39 @@
                 <view class="p-text-1">医保类型(代码-名称):</view>
                 <view class="p-text-2">{{info.medicalTypeCode}}-{{info.medicalTypeNmae}}</view>
             </view>
+            <view class="flex-box align-center justify-s-b p-item">
+                <view class="p-text-1">住院号码:</view>
+                <view class="p-text-2">{{info.inHosNo}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b p-item">
+                <view class="p-text-1">病人科室:</view>
+                <view class="p-text-2">{{info.departmentName}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b p-item">
+                <view class="p-text-1">病人床号:</view>
+                <view class="p-text-2">{{info.bedNo}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b p-item">
+                <view class="p-text-1">入院日期:</view>
+                <view class="p-text-2">{{info.inHosDate}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b p-item">
+                <view class="p-text-1">出院日期:</view>
+                <view class="p-text-2">{{info.outDate}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b p-item">
+                <view class="p-text-1">住院天数:</view>
+                <view class="p-text-2">{{info.indays}}天</view>
+            </view>
         </view>
 
         <view style="height:40rpx;"></view>
         <template v-if="inHosList && inHosList.length">
             <view class="common-block" v-for="(item, index) in inHosList" :key="index">
-                <view class="flex-box align-center item">
+                <view class="flex-box item">
                     <view class="text-1">项目编号:</view><view class="text-2">{{item.projectCode}}</view>
                 </view>
-                <view class="flex-box align-center item">
+                <view class="flex-box item">
                     <view class="text-1">项目名称:</view><view class="text-2">{{item.projectName}}</view>
                 </view>
                 <view class="flex-box align-center item">
@@ -30,8 +58,8 @@
                 <view class="flex-box align-center item">
                     <view class="text-1">规格:</view><view class="text-2 main-color">{{item.feeItemStandard}}</view>
                 </view>
-                 <view class="flex-box align-center item">
-                     <view class="text-1">数量:</view><view class="text-2 main-color">{{item.feeItemNum}}{{item.feeItemUnit}}</view></view>
+                <view class="flex-box align-center item">
+                    <view class="text-1">数量:</view><view class="text-2 main-color">{{item.feeItemNum}}{{item.feeItemUnit}}</view></view>
                 <view class="flex-box align-center item">
                     <view class="text-1">单价:</view><view class="text-2">{{item.feeItemAmount}}元</view>
                 </view>
@@ -46,7 +74,7 @@
                 </view>
                 <view class="flex-box align-center item">
                     <view class="text-1">纯自费金额:</view><view class="text-2">{{item.payMoney}}元</view>
-                 </view>
+                </view>
                 <view class="flex-box align-center item">
                     <view class="text-1">记账日期:</view><view class="text-2">{{item.chargeDate}}</view>
                 </view>
@@ -63,7 +91,11 @@
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import {queryPatientInHosInfo, queryLeaveHosDetail} from '@/apis';
 
-    @Component
+    @Component({
+        filters: {
+            f_patientSex: (val: string) => globalConfig.gFilter(val, globalConfig.sexState)
+        }
+    })
     export default class TotalCostStatement extends Vue {
 
         options: IOBJ = {};
@@ -98,14 +130,14 @@
                 statement = null;
             }
 
-            if (statement) {
-                statement.totalMoney = statement.inHosList.reduce((total: number, item: IOBJ) => {
-                    total = +utils.toFixed(total + item.feeItemAllAmount);
-                }, 0);
-                statement.totalMoney = utils.toFixed(statement.totalMoney || 0);
-            }
+            // if (statement) {
+            //     statement.totalMoney = statement.inHosList.reduce((total: number, item: IOBJ) => {
+            //         total = +utils.toFixed(total + item.feeItemAllAmount);
+            //     }, 0);
+            //     statement.totalMoney = utils.toFixed(statement.totalMoney || 0);
+            // }
 
-            this.info = statement as IOBJ;
+            this.info = Object.assign({}, hosInfoItem, statement);
             // this.inHosList = [];
             this.clearRenderList = utils.renderList({
                 list: this.inHosList,
@@ -147,7 +179,7 @@
         font-size: 30rpx;
         box-shadow: 0 2rpx 12rpx rgba(100, 101, 102, 0.12);
         padding:0 24rpx;
-        position:sticky;
+        // position:sticky;
         top: 0;
         left: 0;
         right: 0;
