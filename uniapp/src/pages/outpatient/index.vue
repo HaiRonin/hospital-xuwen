@@ -6,7 +6,7 @@
                 <view class="text-1">(就诊卡号{{item.CardNo}})</view>
                 <u-icon name="arrow-right" class="text-icon" v-if="isToUrl || isSelModel"></u-icon>
             </view>
-            <view class="item flex-box f-v rel" v-if="$store.getters.isTest">
+            <view class="item flex-box f-v rel">
                 <view class="flex-box align-center justify-s-b">
                     <view class="text-2">广东省卫生健康委员会</view>
                     <view class="flex-box align-center">
@@ -76,7 +76,7 @@
         <view class="add-box" v-if="loadCount === 1">
             <!-- <u-button v-show="false" type="primary" :plain="false" @tap="addPatient.openFun()">添加就诊人</u-button> -->
             <button class="z-btn-default z-btn-primary" @tap="addPatientFun()">
-                {{isH5 && $store.getters.isTest ? '创建健康卡' : '添加就诊人'}}
+                {{isH5 ? '创建健康卡' : '添加就诊人'}}
             </button>
         </view>
 
@@ -125,7 +125,7 @@
         }
 
         addPatientFun () {
-            this.isH5 && this.$store.getters.isTest ? this.addPatient.linkHealthCard() : this.addPatient.openFun();
+            this.isH5 ? this.addPatient.linkHealthCard() : this.addPatient.openFun();
         }
 
         // 提供给下单时候使用的
@@ -173,9 +173,10 @@
                 this.confirmOrderPatient(item);
             } else if (this.isToUrl && this.options.toUrl) {
                 this.linkToUrl(item);
-            } else {
+            } else if (item.HealthyCardNo) {
                 this.lookHealthCard(item);
             }
+            utils.setStorage('HealthyCardNo', item.HealthyCardNo || '');
         }
 
         async getList () {

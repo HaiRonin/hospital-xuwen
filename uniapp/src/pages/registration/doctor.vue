@@ -236,11 +236,14 @@
                     organdoctorId,
                     sourceTimeType: this.getDaySourceTimeType(),
                     sourceDate: date
-                }, {closeErrorTips: true}).catch(() => ({status: 'rejected'}));
-                resList.push({status: 'fulfilled', value: res});
+                }, {closeErrorTips: true})
+                .then((res) => ({status: 'fulfilled', value: res}))
+                .catch(() => ({status: 'rejected'}));
+                resList.push(res);
             }
 
             const list: IOBJ[] = [];
+            // debugger;
             resList.forEach((item: IOBJ) => {
                 if (item.status === 'rejected') return;
                 const data = item.value.data;

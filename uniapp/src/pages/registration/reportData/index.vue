@@ -55,6 +55,7 @@
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import topSort from './topSort.vue';
     import {uspGetPacsApp} from '@/apis';
+    import {healthCardRD} from '@/assets/js/reportedData';
 
     @Component({
         components: {
@@ -90,6 +91,8 @@
             console.log(data);
             if (!data) return;
             Object.assign(data, this.params);
+
+            healthCardRD(data.xType === '2' ? '0101081' : '0101082');
             const res = await uspGetPacsApp(data, {isLoad: true, closeErrorTips: true}).catch(() => ({data: []}));
 
 
@@ -103,6 +106,7 @@
 
             this.oneLoad = false;
             this.list = res.data;
+
         }
 
         onLoad (options: IOBJ) {

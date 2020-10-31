@@ -45,9 +45,13 @@ interface IMyOptions {
      */
     isLoad?: boolean | false;
     /**
-     * 关闭错误提示
+     * 关闭错误提示,但是在 catchError 时还会弹出
      */
     closeErrorTips?: boolean | false;
+    /**
+     * 强制关闭提示，不管是 thenError 还是 catchError
+     */
+    coerceCloseErrorTips?: boolean | false;
     /**
      * 延迟接口触发时间
      */

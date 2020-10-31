@@ -97,6 +97,7 @@
     import {Component, Vue, Ref, Inject} from 'vue-property-decorator';
     import pay from '@/components/pay.vue';
     import {ordeNewPayment} from '@/apis';
+    import {healthCardRD} from '@/assets/js/reportedData';
 
     @Component({
         components: {
@@ -125,6 +126,8 @@
                 medicareType: 1,
                 hiFeeNos: curItem.hiFeeNo,
             };
+
+            healthCardRD('0101051');
             this.pay.startPay(data);
         }
 

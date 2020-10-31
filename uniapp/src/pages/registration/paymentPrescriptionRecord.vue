@@ -42,7 +42,7 @@
     import {queryToPayRecipeInfoList, queryPaymentRecordList, getTakeMedicinePoint} from '@/apis';
     import orderDetail from '@/components/paymentPrescriptionRecord/orderDetail.vue';
     import tipsModal from '@/components/paymentPrescriptionRecord/tipsModal.vue';
-    import { zEmpty } from '@/utils';
+    import {healthCardRD} from '@/assets/js/reportedData';
 
     @Component({
         components: {
@@ -77,7 +77,7 @@
                 const map = new Map();
                 res.data = JSON.parse(res.data);
                 res.data.forEach((item: IOBJ) => {
-                    if (!zEmpty(item.dispensaryWin)) {
+                    if (!utils.zEmpty(item.dispensaryWin)) {
                         map.set(item.dispensaryWin, item);
                     }
                 });
@@ -120,6 +120,8 @@
                 startDate,
                 endDate
             };
+
+            healthCardRD('0101052');
             const res = await queryPaymentRecordList(data, {isLoad: true, closeErrorTips: true}).catch(() => ({data: []}));
 
             this.list = res.data;

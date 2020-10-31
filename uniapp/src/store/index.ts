@@ -19,6 +19,9 @@ export default new Vuex.Store({
         day (state: IOBJ) {
             return state.time.day;
         },
+        dayTime (state: IOBJ) {
+            return state.time.dayTime;
+        },
         // 未来七天日期
         sevenDay (state: IOBJ) {
             return state.time.sevenDay;

@@ -37,9 +37,9 @@ export const whiteList = [
     '/pages/home/outpatient',
     '/pages/other/preregistration',
 
-    '/pages/healthCard/list',
-    '/pages/healthCard/addCard/index',
-    '/pages/healthCard/cardInfo',
+    // '/pages/healthCard/list',
+    // '/pages/healthCard/addCard/index',
+    // '/pages/healthCard/cardInfo',
 
     '/pages/outpatient/intelligentGuidance',
     '/pages/outpatient/intelligentGuidance/index',

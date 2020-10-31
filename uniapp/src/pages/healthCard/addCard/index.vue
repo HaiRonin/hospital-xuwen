@@ -202,6 +202,7 @@
 
             data.sortIndex = this.sortIndex;
             if (this.check.run(data)) return;
+            data.synUserName = this.$store.getters.userInfo.userName;
 
             const res = await healthCardRegisterHealthCard(data, {isLoad: true});
             utils.setStorage('addHealthData', {healthRes: res, params: data});

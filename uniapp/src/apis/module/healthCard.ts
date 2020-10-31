@@ -35,3 +35,10 @@ export const healthCardGetOrderIdByOutAppId: TApi = (params = {}, options = {}) 
     return ajax.apiPost(url, params, Object.assign({action: 'formData'}, options));
 };
 
+// 用卡数据监测上报
+export const reportedData: TApi = (params = {}, options = {}) => {
+    const url = '/his/healthCard/reportHISData';
+    return ajax.apiPost(url, params, options);
+};
+
+

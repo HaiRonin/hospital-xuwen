@@ -46,13 +46,14 @@
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import pay from '@/components/pay.vue';
     import {orderOutpatientPayment} from '@/apis';
+    import {healthCardRD} from '@/assets/js/reportedData';
 
     @Component({
         components: {
             pay
         }
     })
-    export default class Name extends Vue {
+    export default class ConfirmOrder extends Vue {
         @Ref('pay') readonly pay!: IOBJ;
 
         params: IOBJ = {};
@@ -88,6 +89,11 @@
                 utils.toast('请选择就诊人');
                 return;
             }
+
+            healthCardRD({
+                scene: this.$store.getters.dayTime[0] === data.sourceDate ? '0101012' : '0101011',
+                department: data.departmentorganName,
+            });
             this.pay.startPay(data);
             // const res = await orderOutpatientPayment(data, {isLoad: true});
             // this.pay.startPay(res.data);

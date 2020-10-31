@@ -63,7 +63,7 @@ const handleError = (err: IMyRejectObj) => {
 };
 
 const ajax1 = async (url: string, params: IOBJ, options: IMyOptions) => {
-    const {isLoad, closeErrorTips} = options;
+    const {isLoad, closeErrorTips, coerceCloseErrorTips} = options;
 
     if (isLoad) {
         utils.showLoad();
@@ -77,7 +77,10 @@ const ajax1 = async (url: string, params: IOBJ, options: IMyOptions) => {
         return res;
     }).catch((err) => {
         console.error(err);
-        if (!closeErrorTips || err.type === 'catchError') {
+        if (
+            !coerceCloseErrorTips &&
+            (!closeErrorTips || err.type === 'catchError')
+        ) {
             // 提示
             utils.toast(handleError(err));
         }

@@ -52,6 +52,7 @@
     import {queryReg} from '@/apis';
     import closeReport from './childAction/closeReport.vue';
     import lookQueue from './childAction/lookQueue.vue';
+    import {healthCardRD} from '@/assets/js/reportedData';
 
     @Component({
         components: {
@@ -76,6 +77,8 @@
 
         async getList () {
             const data = this.params;
+
+            healthCardRD('0101013');
             const res = await queryReg(data, {isLoad: true, closeErrorTips: true}).catch(() => ({data: []}));
 
             this.list = res.data;
