@@ -328,3 +328,36 @@ export const getSexIdCard: IGetSexIdCard = (idCard: string) => {
     return sex % 2 === 0 ? '女' : '男';
 };
 
+export const getAgeIdCard: IGetAgeIdCard = (idCard: string) => {
+    var len = (idCard + '').length;
+    if (len === 0) {
+        return 0;
+    } else {
+        // 身份证号码只能为15位或18位其它不合法
+        if ((len !== 15) && (len !== 18)) {
+            return 0;
+        }
+    }
+    var strBirthday = '';
+    // 处理18位的身份证号码从号码中得到生日和性别代码
+    if (len === 18) {
+        strBirthday = idCard.substr(6, 4) + '/' + idCard.substr(10, 2) + '/' + idCard.substr(12, 2);
+    }
+
+    if (len === 15) {
+        strBirthday = '19' + idCard.substr(6, 2) + '/' + idCard.substr(8, 2) + '/' + idCard.substr(10, 2);
+    }
+
+    // 时间字符串里，必须是“/”
+    var birthDate = new Date(strBirthday);
+    var nowDateTime = new Date();
+    var age = nowDateTime.getFullYear() - birthDate.getFullYear();
+
+    // 再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
+    if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() === birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    return age;
+};
+

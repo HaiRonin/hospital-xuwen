@@ -92,6 +92,7 @@ type TClearStorage = () => void;
 type TConfirm = (duration: IConfirmData) => Promise<boolean>;
 type IGetBirthdayFromIdCard = (idCard: string) => string;
 type IGetSexIdCard = (idCard: string) => string;
+type IGetAgeIdCard = (idCard: string) => number;
 
 declare module utils {
 
@@ -218,5 +219,11 @@ declare module utils {
      * 通过身份证，获取性别
      */
     const getSexIdCard: IGetSexIdCard;
+
+    /**
+     * 通过身份证，获取年龄
+     */
+    const getAgeIdCard: IGetAgeIdCard;
+
 }
 

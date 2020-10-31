@@ -99,11 +99,7 @@
 
                 if (utils.zEmpty(str)) {
                     // 35到64的
-                    const birthDate = utils.getBirthdayFromIdCard(val);
-                    console.log(birthDate.substr(0, 4));
-                    const uy = +birthDate.substr(0, 4);
-                    const cy = new Date().getFullYear();
-                    const age = cy - uy;
+                    const age = utils.getAgeIdCard(val);
                     str = (age < 35 || age > 64) ? '限制35-64岁年龄的女性预约' : '';
                 }
 
