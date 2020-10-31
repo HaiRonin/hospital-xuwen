@@ -83,8 +83,32 @@
                 appointmentTime: '请选择预约时间'
             });
 
+            // utils.getBirthdayFromIdCard(item.IDCardno);
+
             // c.phone1 = c.phone;
             // c.idCard = c.idCard;
+            const a = c.idCard;
+            c.idCard = (val: string) => {
+                let str = a(val);
+
+                if (utils.zEmpty(str)) {
+                    const sex = utils.getSexIdCard(val);
+                    console.log(sex);
+                    str = sex === '男' ? '限制女性预约' : '';
+                }
+
+                if (utils.zEmpty(str)) {
+                    // 35到64的
+                    const birthDate = utils.getBirthdayFromIdCard(val);
+                    console.log(birthDate.substr(0, 4));
+                    const uy = +birthDate.substr(0, 4);
+                    const cy = new Date().getFullYear();
+                    const age = cy - uy;
+                    str = (age < 35 || age > 64) ? '限制35-64岁年龄的女性预约' : '';
+                }
+
+                return str;
+            };
 
             return c;
         })();

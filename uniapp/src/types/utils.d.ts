@@ -90,6 +90,8 @@ type TSetStorage = (str: string, val: any) => void;
 type TRemoveStorage = (str: string) => void;
 type TClearStorage = () => void;
 type TConfirm = (duration: IConfirmData) => Promise<boolean>;
+type IGetBirthdayFromIdCard = (idCard: string) => string;
+type IGetSexIdCard = (idCard: string) => string;
 
 declare module utils {
 
@@ -206,5 +208,15 @@ declare module utils {
      * cb 每次插入时执行的函数
      */
     const renderList: TRenderList;
+
+    /**
+     * 通过身份证，获取出生日期
+     */
+    const getBirthdayFromIdCard: IGetBirthdayFromIdCard;
+
+    /**
+     * 通过身份证，获取性别
+     */
+    const getSexIdCard: IGetSexIdCard;
 }
 

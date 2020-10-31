@@ -304,3 +304,27 @@ export const confirm: TConfirm = ({content = '', title = '提示', cancelText = 
 
 };
 
+export const getBirthdayFromIdCard: IGetBirthdayFromIdCard = (idCard: string) => {
+    var birthday = '';
+    if (idCard.length === 15) {
+        birthday = '19' + idCard.substr(6, 6);
+    } else if (idCard.length === 18) {
+        birthday = idCard.substr(6, 8);
+    }
+
+    birthday = birthday.replace(/(.{4})(.{2})/, '$1-$2-');
+
+    return birthday;
+};
+
+export const getSexIdCard: IGetSexIdCard = (idCard: string) => {
+    var sex = 0;
+    if (idCard.length === 15) {
+        sex = +idCard.charAt(14);
+    } else if (idCard.length === 18) {
+        sex = +idCard.charAt(16);
+    }
+
+    return sex % 2 === 0 ? '女' : '男';
+};
+
