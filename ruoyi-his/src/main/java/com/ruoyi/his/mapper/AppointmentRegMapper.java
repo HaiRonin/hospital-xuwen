@@ -70,4 +70,6 @@ public interface AppointmentRegMapper
      */
     public int getCountByDay(@Param(value="startdate")String startDate, @Param(value="endDate")String endDate);
 
+
+    public List<AppointmentReg> getDetailByIdCard(@Param(value="idCard")String idCard);
 }

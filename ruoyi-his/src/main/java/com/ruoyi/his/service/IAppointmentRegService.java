@@ -69,4 +69,10 @@ public interface IAppointmentRegService
      */
     public int getCountByDay(String startDate, String endDate);
 
+    /***
+     * 根据手机号码查询已经预约的总记录数
+     * @param idCard
+     * @return AppointmentReg
+     */
+    List<AppointmentReg>  getDetailByIdCard(String idCard);
 }

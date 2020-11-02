@@ -94,13 +94,29 @@ public class HisAppointmentApi extends BaseController
         if(currentNum >= Integer.valueOf(maxNum)){
             return AjaxResult.error("您预约的时间["+currentDay+"]当天预约人数已满，请选择其它时间预约。");
         }
-
-
         appointmentReg.setCreateBy(appointmentReg.getName());
         appointmentReg.setUpdateBy(appointmentReg.getName());
         appointmentReg.setCreateTime(DateUtils.getNowDate());
         appointmentReg.setUpdateTime(DateUtils.getNowDate());
         int result = appointmentRegService.insertAppointmentReg(appointmentReg);
         return result>0?AjaxResult.success("预约登记成功"):AjaxResult.error("预约登记失败");
+    }
+
+
+    /**
+     * 2020.8.26
+     * 预约登记记录查询
+     *
+     * @return
+     */
+    @ApiOperation("预约登记记录查询")
+    @ResponseBody
+    @GetMapping(value = "/getDetailByIdCard/{idCard}")
+    public AjaxResult getDetailByIdCard(@PathVariable("idCard") String idCard){
+        List<AppointmentReg>  lst = appointmentRegService.getDetailByIdCard(idCard);
+        if(CollectionUtils.isEmpty(lst)){
+            return AjaxResult.error("未查到您的预约登记信息");
+        }
+        return AjaxResult.success(lst);
     }
 }

@@ -46,6 +46,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE appointment_time between #{startdate} and #{endDate} and del_flag=0
     </select>
 
+    <select id="getDetailByIdCard" resultMap="AppointmentRegResult">
+         SELECT * FROM his_appointment_reg
+        WHERE date_format(appointment_time,'%y%m%d') >= date_format(now(),'%y%m%d')
+         and id_card  = #{idCard} and del_flag=0
+         order by appointment_time asc
+    </select>
+
     <insert id="insertAppointmentReg" parameterType="AppointmentReg" useGeneratedKeys="true" keyProperty="id">
         insert into his_appointment_reg
         <trim prefix="(" suffix=")" suffixOverrides=",">

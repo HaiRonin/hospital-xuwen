@@ -106,4 +106,14 @@ public class AppointmentRegServiceImpl implements IAppointmentRegService
         return appointmentRegMapper.getCountByDay(startDate,endDate);
     }
 
+    /**
+     * 根据手机号码查询已经预约的总记录数
+     *
+     * @param idCard
+     * @return AppointmentReg
+     */
+    public List<AppointmentReg> getDetailByIdCard(String idCard){
+        return appointmentRegMapper.getDetailByIdCard(idCard);
+    }
+
 }
