@@ -6,7 +6,7 @@ android
 	密码: 123456
 
 ios
-	医生端包名: nkzxyy
+	医生端包名: nkzxyy -> com.gdsnkzxyy.hospital
 	患者端包名: nkzxyyDoc
 	密码: 123456
 

@@ -32,6 +32,10 @@
             <view>提交预约</view>
         </view>
 
+        <view class="flex-box align-center justify-center btn" @tap="statusQuery">
+            <view>预约查询</view>
+        </view>
+
         <u-modal
             v-model="tipsShow"
             title="预约须知"
@@ -50,7 +54,7 @@
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
-    import {getPreregistrationConfig, savePreregistrationInfo} from '@/apis';
+    import {getPreregistrationConfig, savePreregistrationInfo, queryPeregistrationStatus} from '@/apis';
 
     @Component
     export default class Name extends Vue {
@@ -78,7 +82,7 @@
                 // PassWord: '请输入密码',
                 // verificationCode: '',
                 name: '请输入姓名',
-                idCard: '请输入身份证号',
+                idCard: '',
                 phone: '请输入手机号',
                 appointmentTime: '请选择预约时间'
             });
@@ -151,6 +155,23 @@
             }
             // console.log(arr);
             this.sortArr[0] = arr;
+        }
+
+        async statusQuery () {
+            const idCard = this.params.idCard;
+            const errorText = this.check.idCard(idCard);
+            if (errorText) {
+                utils.toast(errorText);
+                return;
+            }
+            const res = await queryPeregistrationStatus({idCard});
+            const data = (res.data || [])[0];
+
+            if (data) {
+                utils.toast(`您已成功预约 ${data.appointmentTime}`);
+            } else {
+                utils.toast('无预约信息');
+            }
         }
 
         onLoad () {}

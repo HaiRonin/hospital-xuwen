@@ -1,5 +1,12 @@
 // 1.2公共信息
 
+// 预约状态查询
+export const queryPeregistrationStatus: TApi = (params = {}, options = {}) => {
+    const idCard = params.idCard;
+    const url = `/his/appointment/getDetailByIdCard/${idCard}`;
+    return ajax.apiGet(url, params, options);
+};
+
 // 预约登记接口配置
 export const getPreregistrationConfig: TApi = (params = {}, options = {}) => {
     const url = '/his/appointment/getConfig';

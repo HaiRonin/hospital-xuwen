@@ -194,7 +194,8 @@
             } else if (timestamp > AfternoonHaoMiao && timestamp < beforeDawnHaoMiao) {
                 sourceTimeType = 4;
             } else if (timestamp > beforeDawnInfoHaoMiao && timestamp < MorningInfoTimeHaoMiao) {
-                sourceTimeType = 5;
+                // sourceTimeType = 5;
+                sourceTimeType = 7;
             }
             return sourceTimeType;
         }

@@ -80,6 +80,7 @@ export const sourceTimeType = [
     {text: '下午', value: '3'},
     {text: '晚上', value: '4'},
     {text: '凌晨', value: '5'},
+    {text: '凌晨', value: '7'},
 ];
 
 // 报告的各种类型
