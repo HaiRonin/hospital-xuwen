@@ -42,7 +42,7 @@
   "dependencies": {
     "@dcloudio/uni-app-plus": "^2.0.0-29320201014001",
     "@dcloudio/uni-h5": "^2.0.0-29320201014001",
-    "@dcloudio/uni-helper-json": "^1.0.7",
+    "@dcloudio/uni-helper-json": "^1.0.8",
     "@dcloudio/uni-mp-360": "^2.0.0-29320201014001",
     "@dcloudio/uni-mp-alipay": "^2.0.0-29320201014001",
     "@dcloudio/uni-mp-baidu": "^2.0.0-29320201014001",
@@ -87,7 +87,7 @@
     "eslint": "^7.12.1",
     "jest": "^25.4.0",
     "mini-types": "*",
-    "miniprogram-api-typings": "^3.1.5",
+    "miniprogram-api-typings": "^3.1.6",
     "postcss-comment": "^2.0.0",
     "sass": "^1.28.0",
     "sass-loader": "^9.0.3",

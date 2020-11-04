@@ -1,14 +1,11 @@
 {
-    "name" : "农垦医院医生",
+    "name" : "农垦医院-医生端",
     "appid" : "__UNI__2455BCC",
-    "description" : "农垦医院医生",
-    "versionName" : "1.2.1",
-    "versionCode" : 102,
+    "description" : "农垦医院",
+    "versionName" : "1.2.2",
+    "versionCode" : 103,
     "transformPx" : false,
     "app-plus" : {
-        "compatible" : {
-            "ignoreVersion" : true
-        },
         /* 5+App特有相关 */
         "modules" : {},
         /* 模块配置 */
@@ -37,9 +34,7 @@
                 ],
                 "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ]
             },
-            "ios" : {
-                "idfa" : false
-            },
+            "ios" : {},
             /* ios打包配置 */
             "sdkConfigs" : {
                 "ad" : {},
@@ -117,7 +112,7 @@
             "mode" : "history"
         },
         "devServer" : {
-            "https" : false
+            "https" : true
         }
     }
 }
