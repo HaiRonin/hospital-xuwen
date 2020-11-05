@@ -33,7 +33,7 @@
             </view>
         </view>
 
-        <view class="flex-box align-center justify-center btn" v-if="qrCodeText" @tap="linkWxCard">
+        <view class="flex-box align-center justify-center btn" v-if="isH5 && qrCodeText" @tap="linkWxCard">
             <view>进入卡包</view>
         </view>
         <!-- <view class="text-3">解绑电子卡</view> -->
@@ -54,6 +54,7 @@
     export default class CardInfo extends Vue {
 
         show = false;
+        isH5 = false;
         qrCodeText = '';
         userInfo: IOBJ = {};
         options: IOBJ = {};
@@ -116,7 +117,11 @@
             }
         }
 
-        created () {}
+        created () {
+            // #ifdef H5
+            this.isH5 = true;
+            // #endif
+        }
 
         mounted () {}
 

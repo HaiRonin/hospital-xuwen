@@ -33,8 +33,10 @@
         </view>
 
         <view class="flex-box align-center justify-center btn" @tap="statusQuery">
-            <view>预约查询</view>
+            <view>查询预约情况</view>
         </view>
+
+        <view class="query-text">输入预约的身份证号，点击查询预约情况按钮即可查询预约情况</view>
 
         <u-modal
             v-model="tipsShow"
@@ -168,7 +170,7 @@
             const data = (res.data || [])[0];
 
             if (data) {
-                utils.toast(`您已成功预约 ${data.appointmentTime}`);
+                utils.toast(`您已成功预约 ${data.appointmentTime}`, 3000);
             } else {
                 utils.toast('无预约信息');
             }
@@ -234,6 +236,12 @@
         font-size: 32rpx;
         // height: 500rpx;
         // overflow: auto;
+    }
+
+    .query-text{
+        margin: 20px 20px 0;
+        color: $main-error-color;
+        font-size: 32rpx;
     }
 
 </style>

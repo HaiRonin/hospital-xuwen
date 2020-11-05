@@ -70,7 +70,7 @@ interface IRenderData {
 type TClearRenderList = () => void;
 type TRenderList = (data: IRenderData) => TClearRenderList;
 type TJsCopyObj = <T>(data: T, cache?: any[]) => T;
-type TToast = (message: string, duration?: number, forbidClick?: boolean) => Promise<void>;
+type TToast = (message: string, duration?: number | 2000, forbidClick?: boolean) => Promise<void>;
 type TShowToast = (message?: string, forbidClick?: boolean) => IOBJ;
 type ISerialize = (data: IOBJ) => 'a=1&b=2&c=3' | string;
 type TFunCallBack = (...arr: any) => any;
