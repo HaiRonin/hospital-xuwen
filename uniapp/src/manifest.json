@@ -2,8 +2,8 @@
     "name" : "农垦中心医院",
     "appid" : "__UNI__BBEF366",
     "description" : "广东省农垦中心医院",
-    "versionName" : "2.1.5",
-    "versionCode" : 105,
+    "versionName" : "2.1.6",
+    "versionCode" : 106,
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 15000
