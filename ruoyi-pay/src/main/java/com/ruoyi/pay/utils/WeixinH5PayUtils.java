@@ -327,7 +327,7 @@ public class WeixinH5PayUtils {
     public static boolean refund(String transactionId, String outRefundNo, BigDecimal refundAmount) {
         try {
             long amount = refundAmount.multiply(BigDecimal.valueOf(100)).longValue(); //退款金额以分为单位
-            amount = 1;
+//            amount = 1;
             Map<String, String> sign = new HashMap<String, String>();
 
             sign.put("appid", WechatConfig.appId);// 公众号标识,1
