@@ -152,6 +152,7 @@ redis:
 his:
   service:
     name: xuwen
+    #his接口地址
     url: http://127.0.0.1:8001
   wechat:
     #AppID
@@ -200,6 +201,7 @@ his:
     baseUrl: http://www.xuwenxianrenminyiyuan.cn/his/wechat/notify_alipay
     #退款地址
     refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
+  #健康码配置
   healthcard:
     appId: 786f063eed41c3e6da9f636bf48b3b1a
     appSecret: fd4dd78ccd2210e2f9aa231a7b874699
