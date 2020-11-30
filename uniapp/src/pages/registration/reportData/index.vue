@@ -39,9 +39,9 @@
                 <view class="text-1">描述:</view>
                 <view class="text-2">{{item.checkDesc}}</view>
             </view>
-            <view class="flex-box justify-s-b">
+            <view class="flex-box justify-s-b" @tap="down(item.contentpicsrc, item.contentpicsrcText)">
                 <view class="text-1">结果:</view>
-                <view class="text-2 main-color" v-if="item.contentpicsrcText" @tap="down(item.contentpicsrc)">{{item.contentpicsrcText}}</view>
+                <view class="text-2 red-color" v-if="item.contentpicsrcText">{{item.contentpicsrcText}}</view>
                 <view class="text-2" v-else>{{item.checkResult}}</view>
             </view>
         </view>
@@ -74,8 +74,11 @@
         list: IOBJ[] = [];
         options: IOBJ = {};
 
-        down (url: string) {
-            if (utils.zEmpty(url)) return;
+        down (url: string, text: string) {
+            // debugger;
+            if (utils.zEmpty(url) || utils.zEmpty(text)) return;
+
+            utils.showLoad('请稍等');
 
             // #ifdef H5
             window.open(url);
@@ -95,6 +98,7 @@
 
             res.data.forEach((item: IOBJ) => {
                 item.reportDate = (item.reportDate || '').replace(/\//g, '-');
+                // if (item.contentpicsrc && /\.pdf$/.test(item.contentpicsrc)) {
                 if (item.contentpicsrc) {
                     const arr = item.contentpicsrc.split('/');
                     item.contentpicsrcText = arr[arr.length - 1];
@@ -152,4 +156,8 @@
     .text-2{text-align: right;}
 
     .check-name{line-height: 40rpx;padding-bottom: 10rpx;}
+
+    .red-color{
+        font-weight: bold;
+    }
 </style>
