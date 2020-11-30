@@ -41,7 +41,8 @@
             </view>
             <view class="flex-box justify-s-b" @tap="down(item.contentpicsrc, item.contentpicsrcText)">
                 <view class="text-1">结果:</view>
-                <view class="text-2 red-color" v-if="item.contentpicsrcText">{{item.contentpicsrcText}}</view>
+                <!-- <view class="text-2 red-color" v-if="item.contentpicsrcText">{{item.contentpicsrcText}}</view> -->
+                <view class="text-2 red-color" v-if="item.contentpicsrcText">点击查看报告</view>
                 <view class="text-2" v-else>{{item.checkResult}}</view>
             </view>
         </view>
