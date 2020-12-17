@@ -71,7 +71,7 @@
                 </view>
                 <view class="flex-box justify-s-b">
                     <view class="text-1">总价:</view>
-                    <view class="text-2">{{child.feeItfeeItemAllAmountemName || 0}}元</view>
+                    <view class="text-2">{{child.feeItemAllAmount || 0}}元</view>
                 </view>
             </div>
             <!-- <view class="flex-box align-center justify-s-b">
