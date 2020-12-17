@@ -28,8 +28,20 @@
                 <view class="text-2">{{item.visitDate}}</view>
             </view>
             <view class="flex-box align-center justify-s-b">
+                <view class="text-1">患者类型:</view>
+                <view class="text-2">{{item.patientType}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b">
                 <view class="text-1">患者姓名:</view>
                 <view class="text-2">{{item.patientName}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b">
+                <view class="text-1">处方分类:</view>
+                <view class="text-2">{{item.prescriptions}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b">
+                <view class="text-1">收费方式:</view>
+                <view class="text-2">{{item.payName}}</view>
             </view>
             <view class="flex-box align-center justify-s-b">
                 <view class="text-1">自费金额:</view>
@@ -39,6 +51,29 @@
                 <view class="text-1">结算金额:</view>
                 <view class="text-2">{{item.settleAmount}}元</view>
             </view>
+            <!-- <view class="line"></view> -->
+            <div v-for="(child, cindex) in item.hiFeeItem" class="child-block" :key="index + '' + cindex + '' + 1">
+                <view class="flex-box justify-s-b" >
+                    <view class="text-1">项目编号:</view>
+                    <view class="text-2">{{child.feeItemCode}}</view>
+                </view>
+                <view class="flex-box justify-s-b">
+                    <view class="text-1">名称:</view>
+                    <view class="text-2">{{child.feeItemName}}</view>
+                </view>
+                <view class="flex-box justify-s-b">
+                    <view class="text-1">规格:</view>
+                    <view class="text-2">{{child.feeItemStandard}}</view>
+                </view>
+                <view class="flex-box justify-s-b">
+                    <view class="text-1">数量:</view>
+                    <view class="text-2">{{child.feeItemNum}}{{child.feeItemUnit}}</view>
+                </view>
+                <view class="flex-box justify-s-b">
+                    <view class="text-1">总价:</view>
+                    <view class="text-2">{{child.feeItfeeItemAllAmountemName || 0}}元</view>
+                </view>
+            </div>
             <!-- <view class="flex-box align-center justify-s-b">
                 <view class="text-1">检查时间:</view>
                 <view class="text-2">{{item.reportDate}}</view>
@@ -153,4 +188,18 @@
     .text-2{text-align: right;}
 
     .check-name{line-height: 40rpx;padding-bottom: 10rpx;}
+
+    .line{
+        border-top:$border-line;
+        margin-top: 26rpx;
+    }
+
+    .child-block{
+        border:$border-line;
+        margin: 10rpx;
+        padding: 10rpx;
+        border-radius: 6rpx;
+        line-height: 1.5;
+        font-size: 24rpx;
+    }
 </style>
