@@ -17,7 +17,8 @@
             </view>
             <view class="flex-box align-center justify-s-b">
                 <view class="text-1">报告状态:</view>
-                <view class="text-2">{{item.reportStatus | f_reportStatus}}</view>
+                <view class="text-2" v-if="item.reportStatus == 1">{{item.reportStatus | f_reportStatus}}</view>
+                <view class="text-2 red-color" v-else>{{item.reportStatus | f_reportStatus}}</view>
             </view>
             <view class="flex-box align-center justify-s-b">
                 <view class="text-1">报告的类型:</view>
@@ -39,11 +40,11 @@
                 <view class="text-1">描述:</view>
                 <view class="text-2">{{item.checkDesc}}</view>
             </view>
-            <view class="flex-box justify-s-b" @tap="down(item.contentpicsrc, item.contentpicsrcText)">
+            <view class="flex-box justify-s-b" @tap="down(item.contentpicsrc, item.contentpicsrcText, item.reportStatus)">
                 <view class="text-1">结果:</view>
                 <!-- <view class="text-2 red-color" v-if="item.contentpicsrcText">{{item.contentpicsrcText}}</view> -->
-                <view class="text-2 red-color" v-if="item.contentpicsrcText">点击查看报告</view>
-                <view class="text-2" v-else>{{item.checkResult}}</view>
+                <view class="text-2 red-color" v-if="item.contentpicsrcText && item.reportStatus == 1">点击查看报告</view>
+                <view class="text-2" v-else></view>
             </view>
         </view>
 
@@ -75,9 +76,9 @@
         list: IOBJ[] = [];
         options: IOBJ = {};
 
-        down (url: string, text: string) {
+        down (url: string, text: string, reportStatus: string | number) {
             // debugger;
-            if (utils.zEmpty(url) || utils.zEmpty(text)) return;
+            if (utils.zEmpty(url) || utils.zEmpty(text) || reportStatus.toString() === '0') return;
 
             utils.showLoad('请稍等');
 
