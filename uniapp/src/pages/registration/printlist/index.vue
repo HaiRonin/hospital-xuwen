@@ -73,7 +73,7 @@
                     <view class="text-2">{{child.feeItemAllAmount || 0}}元</view>
                 </view>
             </div> -->
-            <view class="scroll-box">
+            <!-- <view class="scroll-box">
                 <scroll-view scroll-x class="th-content-box" :scroll-left="item.headLeft" scroll-anchoring>
                     <view  class="th-item flex-box">
                         <view class="th-col th-col-1">医院服务项目编号</view>
@@ -96,7 +96,29 @@
                         <view class="td-col">{{child.feeItemAllAmount}}</view>
                     </view>
                 </scroll-view>
-            </view>
+            </view> -->
+            <scroll-view scroll-x class="scroll-box">
+                <view class="th-item flex-box">
+                    <view class="th-col th-col-1">医院服务项目编号</view>
+                    <view class="th-col th-col-2">医疗服务项目、药品或一次性医用耗材名称</view>
+                    <view class="th-col">规格</view>
+                    <view class="th-col">计价单位</view>
+                    <view class="th-col">单价</view>
+                    <view class="th-col">数量</view>
+                    <view class="th-col">金额</view>
+                </view>
+                <scroll-view scroll-y class="td-content-box" scroll-anchoring>
+                    <view class="td-item flex-box" v-for="(child, cindex) in item.hiFeeItem" :key="cindex">
+                        <view class="td-col td-col-1">{{child.feeItemCode}}</view>
+                        <view class="td-col td-col-2">{{child.feeItemName}}</view>
+                        <view class="td-col">{{child.feeItemStandard}}</view>
+                        <view class="td-col">{{child.feeItemUnit}}</view>
+                        <view class="td-col">{{child.feeItemAmoun}}</view>
+                        <view class="td-col">{{child.feeItemNum}}</view>
+                        <view class="td-col">{{child.feeItemAllAmount}}</view>
+                    </view>
+                </scroll-view>
+            </scroll-view>
             <view class="text-right">合计：{{item.settleAmount}}</view>
         </view>
 
@@ -127,12 +149,6 @@
         params: IOBJ = {};
         list: IOBJ[] = [];
         options: IOBJ = {};
-
-        contentBox (e: IOBJ, item: IOBJ) {
-            // console.log(e.detail.scrollLeft)
-            // item.headLeft = e.detail.scrollLeft;
-            this.$set(item, 'headLeft', e.detail.scrollLeft);
-        }
 
         async getData (data: IOBJ) {
             console.log(data);
@@ -216,6 +232,7 @@
         // border-left:$newBorder;
         white-space: nowrap;
         font-size: 24rpx;
+        width: 1420rpx;
     }
 
     .th-col, .td-col{
@@ -223,6 +240,7 @@
         // display: inline-block;
         white-space: initial;
         min-width: 180rpx;
+        width: 180rpx;
         border-bottom:$newBorder;
         border-right:$newBorder;
         line-height: 1.2;
@@ -235,10 +253,12 @@
 
     .th-col-1, .td-col-1{
         min-width: 240rpx;
+        width: 240rpx;
     }
 
     .th-col-2, .td-col-2{
         min-width: 280rpx;
+        width: 280rpx;
         padding-top: 6rpx;
     }
 
@@ -253,6 +273,7 @@
     }
 
     .td-content-box{
+        width: 1420rpx;
         max-height: 500rpx;
     }
 
