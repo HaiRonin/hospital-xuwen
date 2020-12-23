@@ -3,52 +3,52 @@
         <topSort v-model="modalShow" @commit="getData" ref="topSort" class="top-sort" />
 
         <view class="common-block" v-for="(item, index) in list" :key="index">
-            <view class="flex-box align-center justify-s-b">
+            <!-- <view class="flex-box align-center justify-s-b">
                 <view class="text-1">门诊流水号:</view>
                 <view class="text-2">{{item.serialNumber}}</view>
-            </view>
+            </view> -->
             <view class="flex-box align-center justify-s-b">
-                <view class="text-1">缴费编号(发票号):</view>
+                <view class="text-1">发票号:</view>
                 <view class="text-2">{{item.hiFeeNo}}</view>
             </view>
-            <view class="flex-box justify-s-b">
-                <view class="text-1">医生名字:</view>
-                <view class="text-2">{{item.doctorName}}</view>
-            </view>
             <view class="flex-box align-center justify-s-b">
-                <view class="text-1">就诊科室名:</view>
-                <view class="text-2">{{item.organName}}</view>
-            </view>
-            <view class="flex-box align-center justify-s-b">
-                <view class="text-1">挂号编号:</view>
-                <view class="text-2">{{item.reservation}}</view>
-            </view>
-            <view class="flex-box align-center justify-s-b">
-                <view class="text-1">就诊日期:</view>
-                <view class="text-2">{{item.visitDate}}</view>
-            </view>
-            <view class="flex-box align-center justify-s-b">
-                <view class="text-1">患者类型:</view>
-                <view class="text-2">{{item.patientType}}</view>
-            </view>
-            <view class="flex-box align-center justify-s-b">
-                <view class="text-1">患者姓名:</view>
+                <view class="text-1">姓名:</view>
                 <view class="text-2">{{item.patientName}}</view>
             </view>
             <view class="flex-box align-center justify-s-b">
-                <view class="text-1">处方分类:</view>
-                <view class="text-2">{{item.prescriptions}}</view>
+                <view class="text-1">处方时间:</view>
+                <view class="text-2">{{item.visitDate}}</view>
             </view>
             <view class="flex-box align-center justify-s-b">
                 <view class="text-1">收费方式:</view>
                 <view class="text-2">{{item.payName}}</view>
             </view>
             <view class="flex-box align-center justify-s-b">
-                <view class="text-1">自费金额:</view>
+                <view class="text-1">患者类型:</view>
+                <view class="text-2">{{item.patientType}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b">
+                <view class="text-1">处方分类:</view>
+                <view class="text-2">{{item.prescriptions}}</view>
+            </view>
+            <view class="flex-box justify-s-b">
+                <view class="text-1">医生:</view>
+                <view class="text-2">{{item.doctorName}}</view>
+            </view>
+            <view class="flex-box align-center justify-s-b">
+                <view class="text-1">科室:</view>
+                <view class="text-2">{{item.organName}}</view>
+            </view>
+            <!-- <view class="flex-box align-center justify-s-b">
+                <view class="text-1">挂号编号:</view>
+                <view class="text-2">{{item.reservation}}</view>
+            </view> -->
+            <view class="flex-box align-center justify-s-b">
+                <view class="text-1">处方总额:</view>
                 <view class="text-2">{{item.patientAmount}}元</view>
             </view>
             <view class="flex-box align-center justify-s-b">
-                <view class="text-1">结算金额:</view>
+                <view class="text-1">发票实收:</view>
                 <view class="text-2">{{item.settleAmount}}元</view>
             </view>
             <!-- <div v-for="(child, cindex) in item.hiFeeItem" class="child-block" :key="index + '' + cindex + '' + 1">
