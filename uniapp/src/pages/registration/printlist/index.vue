@@ -45,11 +45,11 @@
             </view> -->
             <view class="flex-box align-center justify-s-b">
                 <view class="text-1">处方总额:</view>
-                <view class="text-2">{{item.patientAmount}}元</view>
+                <view class="text-2">{{item.settleAmount}}元</view>
             </view>
             <view class="flex-box align-center justify-s-b">
                 <view class="text-1">发票实收:</view>
-                <view class="text-2">{{item.settleAmount}}元</view>
+                <view class="text-2">{{item.patientAmount}}元</view>
             </view>
             <!-- <div v-for="(child, cindex) in item.hiFeeItem" class="child-block" :key="index + '' + cindex + '' + 1">
                 <view class="flex-box justify-s-b" >
@@ -97,7 +97,7 @@
                     </view>
                 </scroll-view>
             </view> -->
-            <scroll-view scroll-x class="scroll-box">
+            <scroll-view scroll-x class="table-scroll-box">
                 <view class="th-item flex-box">
                     <view class="th-col th-col-1">医院服务项目编号</view>
                     <view class="th-col th-col-2">医疗服务项目、药品或一次性医用耗材名称</view>
@@ -119,7 +119,7 @@
                     </view>
                 </scroll-view>
             </scroll-view>
-            <view class="text-right">合计：{{item.settleAmount}}</view>
+            <view class="text-right">合计: {{item.settleAmount}}</view>
         </view>
 
         <u-empty v-if="!modalShow && !list.length && !oneLoad" text="暂无门诊清单数据" mode="list" margin-top="150" icon-size="200" font-size="36"></u-empty>
@@ -131,6 +131,7 @@
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import topSort from './topSort.vue';
     import {printlist} from '@/apis';
+    // import '@/assets/style/table.scss';
 
     @Component({
         components: {
@@ -183,7 +184,7 @@
 </script>
 
 <style lang="scss" scoped>
-    $newBorder:2rpx solid #333;
+    @import '~@/assets/style/table.scss';
 
     .box {
         // background: #fff;
@@ -211,93 +212,4 @@
 
     .text-2{text-align: right;}
 
-    .check-name{line-height: 40rpx;padding-bottom: 10rpx;}
-
-    .line{
-        border-top:$border-line;
-        margin-top: 26rpx;
-    }
-
-    .child-block{
-        border:$border-line;
-        margin: 10rpx;
-        padding: 10rpx;
-        border-radius: 6rpx;
-        line-height: 1.5;
-        font-size: 24rpx;
-    }
-
-    .th-item, .td-item{
-        // width: 1260rpx;
-        // border-left:$newBorder;
-        white-space: nowrap;
-        font-size: 24rpx;
-        width: 1420rpx;
-    }
-
-    .th-col, .td-col{
-        // width: 180rpx;
-        // display: inline-block;
-        white-space: initial;
-        min-width: 180rpx;
-        width: 180rpx;
-        border-bottom:$newBorder;
-        border-right:$newBorder;
-        line-height: 1.2;
-        padding: 6rpx 8rpx;
-        text-align: center;
-        background: #e5e5e5;
-        padding-top: 22rpx;
-        font-weight: bold;
-    }
-
-    .th-col-1, .td-col-1{
-        min-width: 240rpx;
-        width: 240rpx;
-    }
-
-    .th-col-2, .td-col-2{
-        min-width: 280rpx;
-        width: 280rpx;
-        padding-top: 6rpx;
-    }
-
-    .th-item:first-child .th-col{
-        border-top:$newBorder;
-    }
-
-    .td-col{
-        background: #fff;
-        font-weight: initial;
-        padding: 10rpx 6rpx;
-    }
-
-    .td-content-box{
-        width: 1420rpx;
-        max-height: 500rpx;
-    }
-
-    .th-content-box::v-deep .uni-scroll-view{
-        overflow: hidden !important;
-    }
-
-    .td-item:last-child .td-col{
-        border-bottom:none;
-    }
-
-    .td-item .td-col:last-child, .th-item .th-col:last-child{
-        border-right:none;
-    }
-
-    .td-item .td-col:first-child, .th-item .th-col:first-child{
-        border-left:none;
-    }
-
-    .scroll-box{
-        border-right:$newBorder;
-        border-bottom:$newBorder;
-        border-left:$newBorder;
-    }
-
-    .text-right{text-align: right;}
 </style>

@@ -10,7 +10,7 @@
                 <!-- <view class="text-btn">查询</view> -->
             </view>
 
-            <view class="flex-box align-center flex-wrap common-block" v-for="(item, index) in list" :key="index">
+            <!-- <view class="flex-box align-center flex-wrap common-block" v-for="(item, index) in list" :key="index">
                 <view class="flex-100">
                     <text class="text-3">项目名称:</text>
                     <text class="text-4">{{item.projectName}}</text>
@@ -43,7 +43,68 @@
                     <text class="text-3">记账日期:</text>
                     <text class="text-4">{{item.chargeDate}}</text>
                 </view>
+            </view> -->
+
+            <view class="flex-box align-center flex-wrap common-block">
+                <view class="flex-100">
+                    <text class="text-3">住院号:</text>
+                    <text class="text-4">{{info.inHosNo}}</text>
+                </view>
+                <view class="flex-50">
+                    <text class="text-3">姓名:</text>
+                    <text class="text-4">{{info.patientName}}</text>
+                </view>
+                <view class="flex-50">
+                    <text class="text-3">性别:</text>
+                    <text class="text-4">{{info.patientSexStr}}</text>
+                </view>
+                <view class="flex-100">
+                    <text class="text-3">入院日期:</text>
+                    <text class="text-4">{{info.inHosDate}}</text>
+                </view>
+                <view class="flex-100">
+                    <text class="text-3">科室:</text>
+                    <text class="text-4">{{info.departmentName}}</text>
+                </view>
+                <view class="flex-100">
+                    <text class="text-3">床位:</text>
+                    <text class="text-4">{{info.bedNo}}</text>
+                </view>
+                <view class="flex-100">
+                    <text class="text-3">总费用:</text>
+                    <text class="text-4">{{info.totalMoney}}</text>
+                </view>
             </view>
+
+            <view class="common-block">
+                <scroll-view scroll-x class="table-scroll-box">
+                    <view class="th-item flex-box">
+                        <view class="th-col">项目名称</view>
+                        <view class="th-col">规格</view>
+                        <view class="th-col">数量</view>
+                        <view class="th-col">单位</view>
+                        <view class="th-col">单价</view>
+                        <view class="th-col">金额</view>
+                        <view class="th-col">日期</view>
+                    </view>
+                    <scroll-view scroll-y class="td-content-box" scroll-anchoring>
+                        <view class="td-item flex-box" v-for="(child, cindex) in list" :key="cindex">
+                            <view class="td-col">{{child.projectName}}</view>
+                            <view class="td-col">{{child.feeItemStandard}}</view>
+                            <view class="td-col">{{child.feeItemNum}}</view>
+                            <view class="td-col">{{child.feeItemUnit}}</view>
+                            <view class="td-col">{{child.feeItemAmount}}</view>
+                            <view class="td-col">{{child.feeItemAllAmount}}</view>
+                            <view class="td-col">{{child.chargeDate}}</view>
+                        </view>
+                    </scroll-view>
+                </scroll-view>
+
+                <view class="text-right">总计: {{info.sum || 0}}</view>
+
+            </view>
+            <!-- <view class="text-right">合计：{{item.settleAmount}}</view> -->
+
         </template>
         <view style="padding-top:1px;"></view>
         <u-empty v-if="!oneLoad && !info" text="暂无住院信息" mode="list" margin-top="150" icon-size="200" font-size="36"></u-empty>
@@ -84,7 +145,11 @@
 
             this.info = hosInfoList[hosInfoList.length - 1];
             this.oneLoad = false;
-            this.info && this.getList();
+            // this.info && this.getList();
+            if (this.info) {
+                this.info.patientSexStr = globalConfig.gFilter(this.info.patientSex, globalConfig.sexState);
+                this.getList();
+            }
         }
 
         async getList () {
@@ -97,6 +162,14 @@
             const res: IOBJ = await inHosDetail(params, {isLoad: true, closeErrorTips: true}).catch(() => ({inHosList: []}));
 
             const list = this.list = [];
+            const info = this.info as IOBJ;
+
+            this.$set(info, 'sum', 0);
+            res.inHosList.forEach((item: IOBJ) => {
+                info.sum += +item.feeItemAllAmount;
+            });
+            info.sum = utils.toFixed(info.sum, true);
+
             this.renderData = utils.renderList({
                 list: list,
                 data: res.inHosList
@@ -129,6 +202,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '~@/assets/style/table.scss';
+
     .box {
         // background: #fff;
         min-height: 100%;
@@ -158,4 +233,18 @@
     .common-block{line-height: 56rpx;}
     .text-3{color: $color-grey;width: 150rpx;display: inline-block;text-align: right;padding-right: 20rpx;}
 
+    .th-col{
+        padding: 10px 6px;
+        background:#6D92E8;
+        color: #fff;
+    }
+
+    .th-item, .td-item{
+        width: 1260rpx;
+    }
+
+    .td-content-box{
+        width: 1260rpx;
+        max-height: 600rpx;
+    }
 </style>

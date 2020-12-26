@@ -53,7 +53,7 @@
                     <view class="text-1">项目名称:</view><view class="text-2">{{item.projectName}}</view>
                 </view>
                 <view class="flex-box align-center item">
-                    <view class="text-1">药品分类:</view><view class="text-2">{{item.drugType}}</view>
+                    <view class="text-1">收费归类:</view><view class="text-2">{{item.drugType}}</view>
                 </view>
                 <view class="flex-box align-center item">
                     <view class="text-1">规格:</view><view class="text-2 main-color">{{item.feeItemStandard}}</view>
@@ -76,7 +76,7 @@
                     <view class="text-1">纯自费金额:</view><view class="text-2">{{item.payMoney}}元</view>
                 </view>
                 <view class="flex-box align-center item">
-                    <view class="text-1">记账日期:</view><view class="text-2">{{item.chargeDate}}</view>
+                    <view class="text-1">扣费日期:</view><view class="text-2">{{item.payDate}}</view>
                 </view>
             </view>
         </template>
