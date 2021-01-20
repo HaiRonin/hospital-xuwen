@@ -102,10 +102,13 @@ public class HisHealthCardApi extends BaseController {
      * @param registerResquest
      */
     private String addPatients(RegisterResponse response, RegisterResquest registerResquest) {
-
         String healthCardId = "";
+        String qrCode = "";
+        String phid = "";
         if (null != response) {
             healthCardId = response.getHealthCardId();
+            qrCode = response.getQrCodeText();
+            phid = response.getPhid();
         }
         Map<String, Object> dataParam = new HashMap<String, Object>();
         dataParam.put("synUserName", registerResquest.getSynUserName());
@@ -118,6 +121,8 @@ public class HisHealthCardApi extends BaseController {
         dataParam.put("IDCardno", registerResquest.getIdNumber());
         dataParam.put("address", null==registerResquest.getAddress()?"":registerResquest.getAddress());
         dataParam.put("HealthyCardNo", null==healthCardId?"":healthCardId);
+        dataParam.put("QrCode", null==qrCode?"":qrCode);
+        dataParam.put("EMPI", null==phid?"":phid);
         logger.info(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
         String result = hisBaseServices.requestHisService("/AddPatients", JSON.toJSONString(dataParam));
         logger.info(">>>>>>>>添加健康卡-就诊人结果：" + result);
