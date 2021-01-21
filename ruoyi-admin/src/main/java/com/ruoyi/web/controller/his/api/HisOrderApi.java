@@ -57,7 +57,7 @@ public class HisOrderApi extends BaseController
     /**
      * 取消预约
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("取消预约")
     @PostMapping("/doRegCancel")
     @ResponseBody
@@ -73,7 +73,7 @@ public class HisOrderApi extends BaseController
     /**
      * 新增预约挂号的记录
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("新增预约挂号的记录")
     @PostMapping("/outpatientPayment")
     @ResponseBody
@@ -108,7 +108,7 @@ public class HisOrderApi extends BaseController
     /**
      * 新增缴费支付的记录
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("新增缴费支付的记录")
     @PostMapping("/newPayment")
     @ResponseBody
@@ -144,7 +144,7 @@ public class HisOrderApi extends BaseController
     /**
      * 新增押金补缴的记录
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("新增押金补缴的记录")
     @PostMapping("/payment")
     @ResponseBody
@@ -179,7 +179,7 @@ public class HisOrderApi extends BaseController
     /**
      * 新增出院结算的记录
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("新增出院结算记录")
     @PostMapping("/leaveHosPay")
     @ResponseBody
@@ -215,7 +215,7 @@ public class HisOrderApi extends BaseController
     /**
      * 订单支付
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("订单支付")
     @PostMapping("/order/orderPay")
     @ResponseBody
@@ -233,7 +233,7 @@ public class HisOrderApi extends BaseController
     /**
      * 支付成功或失败回调
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("支付成功或失败回调")
     @PostMapping("/order/payCallBack")
     @ResponseBody
@@ -251,7 +251,7 @@ public class HisOrderApi extends BaseController
     /**
      * 退款操作
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("订单退款")
     @PostMapping("/order/refund")
     @ResponseBody
@@ -269,7 +269,7 @@ public class HisOrderApi extends BaseController
     /**
      * 退款成功或失败回调
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("退款成功或失败")
     @PostMapping("/order/refundCallBack")
     @ResponseBody
@@ -287,7 +287,7 @@ public class HisOrderApi extends BaseController
     /**
      * 退款成功或失败回调
      */
-    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("获取门诊缴费结果")
     @PostMapping("/order/dopayInfoResult")
     @ResponseBody

@@ -78,7 +78,7 @@ public class PayThirdApi extends BaseController {
      * 获取openId
      * 微信授权code只能用一次，下次从cookie取
      */
-    @Log(title = "获取openId", businessType = BusinessType.HIS)
+//    @Log(title = "获取openId", businessType = BusinessType.HIS)
     @ApiOperation("获取OPENID")
     @GetMapping("/getOpenid")
     @ResponseBody
@@ -124,7 +124,7 @@ public class PayThirdApi extends BaseController {
      * @param request
      * @return
      */
-    @Log(title = "微信支付回调", businessType = BusinessType.HIS)
+//    @Log(title = "微信支付回调", businessType = BusinessType.HIS)
     @ApiOperation("微信支付回调")
     @ResponseBody
     @RequestMapping(value = "/notify_weixin", method = RequestMethod.POST)
@@ -179,7 +179,7 @@ public class PayThirdApi extends BaseController {
      * @param request
      * @return
      */
-    @Log(title = "支付宝支付回调", businessType = BusinessType.HIS)
+//    @Log(title = "支付宝支付回调", businessType = BusinessType.HIS)
     @ApiOperation("支付宝支付回调")
     @ResponseBody
     @RequestMapping(value = "/notify_alipay", method = RequestMethod.POST)
@@ -237,7 +237,7 @@ public class PayThirdApi extends BaseController {
      *
      * @return
      */
-    @Log(title = "微信退款", businessType = BusinessType.HIS)
+//    @Log(title = "微信退款", businessType = BusinessType.HIS)
     @ApiOperation("微信退款")
     @ResponseBody
     @RequestMapping(value = "/refund_weixin", method = RequestMethod.POST)
@@ -253,7 +253,7 @@ public class PayThirdApi extends BaseController {
      *
      * @return
      */
-    @Log(title = "微信图片上传签名", businessType = BusinessType.HIS)
+//    @Log(title = "微信图片上传签名", businessType = BusinessType.HIS)
     @ApiOperation("微信图片上传签名")
     @ResponseBody
     @RequestMapping(value = "/weixinImgSign", method = RequestMethod.POST)

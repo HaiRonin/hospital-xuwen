@@ -64,7 +64,7 @@ public class HisHealthCardApi extends BaseController {
      * }
      * @return
      */
-    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("注册健康码")
     @ResponseBody
     @PostMapping(value = "/registerHealthCard")
@@ -123,6 +123,7 @@ public class HisHealthCardApi extends BaseController {
         dataParam.put("HealthyCardNo", null==healthCardId?"":healthCardId);
         dataParam.put("QrCode", null==qrCode?"":qrCode);
         dataParam.put("EMPI", null==phid?"":phid);
+        dataParam.put("TimeStamp", "");
         logger.info(">>>>>>>>添加健康卡-就诊人入参：" + JSON.toJSONString(dataParam));
         String result = hisBaseServices.requestHisService("/AddPatients", JSON.toJSONString(dataParam));
         logger.info(">>>>>>>>添加健康卡-就诊人结果：" + result);

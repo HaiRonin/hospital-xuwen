@@ -54,7 +54,7 @@ public class HisAppointmentApi extends BaseController
      *
      * @return
      */
-    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("预约登记接口配置")
     @ResponseBody
     @GetMapping(value = "/getConfig")
@@ -75,7 +75,7 @@ public class HisAppointmentApi extends BaseController
         return AjaxResult.success(map);
     }
 
-    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+//    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
     @ApiOperation("预约登记接口保存")
     @ResponseBody
     @PostMapping(value = "/save")

@@ -64,7 +64,7 @@ public class HisCommonApi extends BaseController
     /**
      * his接口调用
      */
-    @Log(title = "his远程接口", businessType = BusinessType.HIS)
+//    @Log(title = "his远程接口", businessType = BusinessType.HIS)
     @ApiOperation("his接口调用")
     @PostMapping("/request")
     @ResponseBody
@@ -80,7 +80,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+//    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @GetMapping("/user/sendMsg")
     @ResponseBody
     @ApiOperation("获取验证码短信")
@@ -96,7 +96,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+//    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("用户注册")
     @PostMapping("/user/register")
     @ResponseBody
@@ -117,7 +117,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
-    @Log(title = "his远程接口", businessType = BusinessType.HIS)
+//    @Log(title = "his远程接口", businessType = BusinessType.HIS)
     @ApiOperation("修改密码")
     @PostMapping("/user/modifyPassword")
     @ResponseBody
@@ -136,7 +136,7 @@ public class HisCommonApi extends BaseController
      *
      * @return
      */
-    @Log(title = "his接口调用", businessType = BusinessType.HIS)
+//    @Log(title = "his接口调用", businessType = BusinessType.HIS)
     @ApiOperation("发送短信")
     @PostMapping("/user/shortMessage")
     @ResponseBody
