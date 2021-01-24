@@ -43,5 +43,6 @@ if (process.env.NODE_ENV === 'development') {
     (global as any).utils = utils;
     (global as any).ajax = ajax;
     (global as any).store = store;
+    (global as any).uni = uni;
 }
 // #endif

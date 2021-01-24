@@ -87,3 +87,18 @@ export const queryDoctorlistSource: TApi = (params = {}, options = {}) => {
     return ajax.apiPost(url, params, Object.assign({closeErrorTips: true, isLoad: true}, options));
 };
 
+// 6.30 新冠流感调查表保存
+export const addCovSurvey: TApi = (params = {}, options = {}) => {
+    const url = '/his/request';
+    params.api = '/AddCovSurvey';
+    return ajax.apiPost(url, params, Object.assign({closeErrorTips: true, isLoad: true}, options));
+};
+
+// 获取内侧功能白名单
+export const getInnerWhitelist: TApi = (params = {}, options = {}) => {
+    const url = '/his/questionnaire/getConfig';
+    return ajax.apiGet(url, params, options);
+};
+
+
+

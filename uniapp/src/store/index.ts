@@ -9,8 +9,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        // 1-内测,白名单可访问,2-正式开放,用户可访问；3-关闭下架,任何人不可访问
+        whiteListStatus: 3,
+        whiteList: [],
     },
     mutations: {
+        setWhiteData (state: IOBJ, data: IOBJ) {
+            state.whiteListStatus = data.whiteListStatus;
+            state.whiteList = data.whiteList;
+        }
     },
     actions: {
     },
@@ -47,11 +54,21 @@ export default new Vuex.Store({
         userInfo (state: IOBJ) {
             return state.user.userInfo;
         },
-        // 内部号测试
-        isTest (state: IOBJ) {
+        // 是否可用
+        isUse (state: IOBJ) {
             const userInfo = state.user.userInfo;
             const len = Object.keys(userInfo).length;
-            return len && ['15919865119', '13418803185', '13543599335'].includes(userInfo.userName);
+            const whiteListStatus = +state.whiteListStatus;
+            const whiteList = state.whiteList;
+
+            if (whiteListStatus === 2) return true;
+            if (!len || whiteListStatus === 3) return false;
+
+            if (whiteListStatus === 1 && whiteList.includes(userInfo.userName)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     },
     modules: {

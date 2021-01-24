@@ -44,6 +44,7 @@
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
+    import {Getter} from 'vuex-class';
     import pay from '@/components/pay.vue';
     import {orderOutpatientPayment} from '@/apis';
     import {healthCardRD} from '@/assets/js/reportedData';
@@ -55,6 +56,7 @@
     })
     export default class ConfirmOrder extends Vue {
         @Ref('pay') readonly pay!: IOBJ;
+        @Getter('isUse') actionIsUse!: boolean;
 
         params: IOBJ = {};
         options: IOBJ = {};
@@ -62,9 +64,11 @@
 
         upDataPatient (item: IOBJ) {
             const params = this.params;
+            // console.log(item);
             this.$set(params, 'patientNo', item.patientNo);
             this.$set(params, 'patientName', item.patientName);
             this.$set(params, 'cardNo', item.cardNo);
+            this.$set(params, 'Mobile', item.oldData.Mobile);
         }
 
         paySuccess () {
@@ -82,13 +86,47 @@
             utils.link('/pages/outpatient/index?sel=1');
         }
 
+        playQuestionnaire (data: IOBJ) {
+            const actionIsUse = this.actionIsUse;
+            // debugger
+
+            // 限制性功能
+            if (!actionIsUse) return false;
+
+            const val = utils.getStorage(`questionnaire-${data.patientNo}`);
+            const time = Date.now();
+            let flag = true;
+
+            // 判断1小时内是否填过，不重复填
+            if (!utils.zEmpty(val) && time - +val >= 3600000) {
+                flag = true;
+            } else if (!utils.zEmpty(val)) {
+                flag = false;
+            }
+
+            if (flag) {
+                const str = utils.serialize({
+                    patientName: data.patientName,
+                    patientNo: data.patientNo,
+                    cardNo: data.cardNo,
+                    Mobile: data.Mobile,
+                });
+                utils.link(`/pages/registration/questionnaire/index?${str}`);
+            }
+
+            return flag;
+        }
+
         async commit () {
             const data = utils.jsCopyObj(this.params);
 
             if (utils.zEmpty(data.patientNo)) {
                 utils.toast('请选择就诊人');
                 return;
+            } else if (this.playQuestionnaire(data)) {
+                return;
             }
+
 
             healthCardRD({
                 scene: this.$store.getters.dayTime[0] === data.sourceDate ? '0101012' : '0101011',
@@ -103,6 +141,7 @@
             this.options = options;
             this.params = utils.jsCopyObj(options);
             uni.$on('upDataPatient', this.upDataPatient);
+            uni.$on('payCommit', this.commit);
         }
 
         created () {
@@ -116,6 +155,7 @@
 
         beforeDestroy () {
             uni.$off('upDataPatient', this.upDataPatient);
+            uni.$off('payCommit', this.commit);
         }
 
     }

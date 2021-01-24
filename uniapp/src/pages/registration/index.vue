@@ -50,6 +50,21 @@
             </view>
         </template>
 
+        <u-modal
+            v-model="titleShow"
+            :show-title="false"
+            mask-close-able
+        >
+            <view class="title-tips">
+                <view>尊敬的患者朋友们，请您就诊前详细阅读以下提示：</view>
+                <view class="tt-text-1">一、进入诊疗区域请佩戴口罩并出示疫情健康码</view>
+                <view class="tt-text-1">二、以下情况请您移步到发热门诊就诊：</view>
+                <view class="tt-text-2">1、健康码红码或者黄码的人员</view>
+                <view class="tt-text-2">2、发热人员</view>
+                <view class="tt-text-2">3、来自疫情中、高风险地区的人员</view>
+            </view>
+        </u-modal>
+
         <view class="fake-view"></view>
         <view class="bottom-btn" @tap="linkSearchDoctor">查找医生</view>
     </view>
@@ -66,6 +81,7 @@
         activeName: string = '';
         tips = '';
         topVal = '';
+        titleShow = false;
         options: IOBJ = {};
         list: IOBJ[] = [];
         searchList: IOBJ[] = [];
@@ -133,6 +149,7 @@
 
         created () {
             this.input = utils.throttle(this.input, 500);
+            this.titleShow = true;
             this.getInfo();
         }
 
@@ -209,5 +226,18 @@
         color: #fff;
         text-align: center;
         z-index: 2;
+    }
+
+    .title-tips{
+        padding: 40rpx;
+        font-size: 30rpx;
+        line-height: 1.6;
+    }
+
+    .tt-text-1{
+        padding-left: 0rpx;
+    }
+    .tt-text-2{
+        padding-left: 40rpx;
     }
 </style>

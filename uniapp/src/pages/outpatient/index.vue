@@ -210,7 +210,9 @@
                 Mobile: healthInfo.phone1,
                 address: healthInfo.address || '',
                 HealthyCardNo: healthInfo.healthCardId,
-                // HealthyQrCodeText: healthInfo.qrCodeText,
+                QrCode: healthInfo.qrCodeText,
+                EMPI: healthInfo.phid,
+                TimeStamp: '',
                 Sex: globalConfig.sexState.find((item) => item.text === healthInfo.gender)!.value,
             };
             // console.log(params);

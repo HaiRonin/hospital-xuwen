@@ -150,6 +150,15 @@
             "root": "pages/registration",
             "pages": [
                 {
+                    "path": "questionnaire/index",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "调查问卷"
+                    }
+                },
+                {
                     "path": "index",
                     "style": {
                         // #ifdef H5

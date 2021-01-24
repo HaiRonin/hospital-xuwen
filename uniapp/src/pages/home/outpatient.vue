@@ -36,13 +36,13 @@
     export default class Outpatient extends Vue {
         quickEntry1: IOBJ[] = [
             {
-                text: '当日挂号',
+                text: '当天预约挂号',
                 text2: '当日挂号新体验',
                 url: '/pages/registration/index?type=0',
                 imgUrl: require('@/assets/image/icon/icon_68.png'),
             },
             {
-                text: '预约挂号',
+                text: '非当天预约挂号',
                 text2: '预约挂号新体验',
                 url: '/pages/registration/index?type=2',
                 imgUrl: require('@/assets/image/icon/icon_68.png'),

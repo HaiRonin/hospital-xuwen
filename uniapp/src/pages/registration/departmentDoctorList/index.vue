@@ -15,7 +15,7 @@
             <u-alert-tips v-if="params.type === '0' && (leftModal && leftModal.curItem && ['1', '6'].includes(leftModal.curItem.type))" type="primary" class="z-custom" show-icon description="请提前与该科室医生联系，方可挂号，以免找不到医生"></u-alert-tips>
 
             <view class="line-text">
-                <text>{{this.params.type === '2' ? '七日内可预约' : '当天非预约'}}</text>
+                <text>{{this.params.type === '2' ? '非当天预约挂号' : '当天预约挂号'}}</text>
             </view>
 
             <template v-if="this.params.type === '2'">

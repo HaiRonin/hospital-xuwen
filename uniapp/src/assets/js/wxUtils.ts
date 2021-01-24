@@ -13,7 +13,12 @@ const wxAuth = {
         if (this.isOpenId() || await this.isCode(options, vueCompon)) return;
         const appid = globalConfig.APPID;
         const redirectUri = encodeURIComponent(window.location.href);
-        window.location.replace(`http://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`);
+
+        if (process.env.NODE_ENV === 'development') {
+            console.log('手动设置登录信息');
+        } else {
+            window.location.replace(`http://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`);
+        }
     },
     async isCode (options: IOBJ, vueCompon: IOBJ) {
         const code = options.code;

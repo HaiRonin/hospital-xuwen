@@ -79,7 +79,7 @@ type TImmediateFun = (fn: TFunCallBack, interval: number, fakeInterval: number) 
 type TThrottle = (fn: TFunCallBack, interval?: 200 | number, fakeInterval?: 300 | number, immediate?: false | boolean) => TFunCallBack;
 type TDateData = (date: Date, format?: string) => IDateData;
 type TToFixed = (val: string | number, toNum?: boolean | false, retain?: number | 2) => string | number;
-type TLink = (url: string | number, index?: number) => Promise<any>;
+type TLink = (url: string | number, index?: number) => Promise<void>;
 type TSleep = (duration?: number | 500) => Promise<void>;
 type THideLoad = () => void;
 type TPullDown = (fn: () => Promise<void>) => void;
