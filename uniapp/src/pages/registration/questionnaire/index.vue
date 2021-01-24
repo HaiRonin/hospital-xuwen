@@ -2,6 +2,11 @@
     <view class="z-box">
         <view class="common-block">
             <view class="title">问卷调查</view>
+            <view class="flex-box align-center item">
+                <view>姓名：{{params.PatName}}</view>
+                <view style="width:60rpx;"></view>
+                <view>卡号：{{params.CardNo}}</view>
+            </view>
             <!-- <Tpl :list="topicList" :params="params"/> -->
             <view v-for="(item, index) in topicList" :key="index" class="item">
                 <template v-if="item.type === 'radio'">
