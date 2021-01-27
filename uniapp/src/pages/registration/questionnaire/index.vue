@@ -61,12 +61,13 @@
             CardNo: '',
             Mobile: '',
             PatName: '',
+            FeverDegree: '',
             // IsFever: ''
         };
 
         topicList: IOBJ = [
             {
-                text: '您14天内是否有发热、咳嗽等呼吸道症状?',
+                text: '您21天内是否有发热、咳嗽等呼吸道症状?',
                 key: 'IsFever',
                 type: 'radio'
             },
@@ -76,29 +77,29 @@
                 type: 'input'
             },
             {
-                text: '近14天内是否去过国外、香港以及国内中高风险地区*，或有病例报告的社区?',
+                text: '近21天内是否去过国外、香港以及国内中高风险地区*，或有病例报告的社区?',
                 key: 'IsGoOutArea',
                 type: 'radio'
             },
             {
-                text: '近14天内是否接触过来自国外、香港以及国内中高风险地区*的发热或有呼吸道症状的患者?',
+                text: '近21天内是否接触过来自国外、香港以及国内中高风险地区*的发热或有呼吸道症状的患者?',
                 key: 'IsTouchOutArea',
                 type: 'radio'
             },
             {
-                text: '近14天内是否与新冠病毒感染者（核酸检测阳性者）有接触?',
+                text: '近21天内是否与新冠病毒感染者（核酸检测阳性者）有接触?',
                 key: 'IsTouchCovPat',
                 type: 'radio'
             },
             {
-                text: '近14天内您的家庭或办公室等小范围内是否出现2例及以上发热和/或呼吸道症状的病例?',
+                text: '近21天内您的家庭或办公室等小范围内是否出现2例及以上发热和/或呼吸道症状的病例?',
                 key: 'IsHaveTwoFever',
                 type: 'radio'
             },
         ];
 
         complexData: IOBJ = {
-            text: '您14天内从哪个地区来本市?',
+            text: '您21天内从哪个地区来本市?',
             // type: 'area',
             key: 'area',
             // value: [
@@ -170,12 +171,20 @@
         check = (() => {
             const c = new utils.CheckVal({
                 IsFever: '请选择是否发热',
-                FeverDegree: '请输入体温度数',
+                FeverDegree: '',
                 IsGoOutArea: '请选择是否去过高风险地区',
                 IsTouchOutArea: '请选择是否接触过来自高风险地区的病人',
                 IsTouchCovPat: '请选择是否接触新冠病人',
                 IsHaveTwoFever: '请选择是否小范围内出现2例发热',
                 area: '请选择最近所在区域',
+            });
+
+            c._addRule('FeverDegree', (val, data) => {
+                let str = '';
+                if (data.IsFever === 1 && utils.zEmpty(val)) {
+                    str = '请输入体温度数';
+                }
+                return str;
             });
 
             c._addRule('area', (val, data) => {
@@ -219,6 +228,9 @@
             });
 
             console.log(params);
+            // if (utils.zEmpty(params.FeverDegree)) {
+            //     params.FeverDegree = '37';
+            // }
 
             await addCovSurvey(params);
             utils.setStorage(`questionnaire-${params.CardNo}`, Date.now());
@@ -238,6 +250,7 @@
                 City: '',
                 Area: '',
                 ForeignPlace: '',
+                FeverDegree: '',
             };
         }
 
