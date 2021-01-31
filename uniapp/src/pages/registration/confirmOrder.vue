@@ -37,7 +37,7 @@
         <view class="fake-view"></view>
         <view class="bottom-btn" @tap="commit">确认支付</view>
 
-        <pay ref="pay" :request="payRequest" @paySuccess="paySuccess"/>
+        <pay ref="pay" :request="payRequest" :zeroRequest="zeroPayRequest" @paySuccess="paySuccess"/>
     </view>
 </template>
 
@@ -46,7 +46,7 @@
     import {Component, Vue, Ref} from 'vue-property-decorator';
     import {Getter} from 'vuex-class';
     import pay from '@/components/pay.vue';
-    import {orderOutpatientPayment} from '@/apis';
+    import {orderOutpatientPayment, freeAppointment} from '@/apis';
     import {healthCardRD} from '@/assets/js/reportedData';
 
     @Component({
@@ -61,6 +61,7 @@
         params: IOBJ = {};
         options: IOBJ = {};
         payRequest = orderOutpatientPayment;
+        zeroPayRequest = freeAppointment;
 
         upDataPatient (item: IOBJ) {
             const params = this.params;
@@ -132,6 +133,8 @@
                 scene: this.$store.getters.dayTime[0] === data.sourceDate ? '0101012' : '0101011',
                 department: data.departmentorganName,
             });
+
+            // data.payAmount = 0;
             this.pay.startPay(data);
             // const res = await orderOutpatientPayment(data, {isLoad: true});
             // this.pay.startPay(res.data);

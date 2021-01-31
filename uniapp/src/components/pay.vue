@@ -37,6 +37,7 @@
     @Component
     export default class Name extends Vue {
         @Prop({type: Function, required: true}) readonly request!: TApi;
+        @Prop({type: Function}) readonly zeroRequest!: TApi;
 
         params: IOBJ = {};
         resphoneData: IOBJ | null = null;
@@ -196,11 +197,39 @@
             }
         }
 
+        // 零元特殊处理
+        zeroPay () {
+            const params = this.params;
+            const payAmount = params.payAmount;
+            let isZero = false;
+
+            if (!isNaN(payAmount) && +payAmount === 0 && this.zeroRequest) {
+                isZero = true;
+
+                utils.showLoad('支付中');
+                this.zeroRequest(params).then(async () => {
+
+                    utils.showLoad('跳转中');
+                    await utils.sleep(800);
+
+                    utils.hideLoad();
+                    this.paySuccess();
+                });
+                // .catch(() => {
+                //     utils.hideLoad();
+                // });
+            }
+
+            return isZero;
+        }
+
         handleData () {}
 
         async startPay (data: IOBJ) {
             const params = this.params = utils.jsCopyObj(data);
             params.synUserName = this.$store.getters.userInfo.userName;
+
+            if (this.zeroPay()) return;
 
             // #ifdef H5
             this.wxJsPay();
