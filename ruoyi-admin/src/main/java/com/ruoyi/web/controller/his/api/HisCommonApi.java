@@ -286,7 +286,7 @@ public class HisCommonApi extends BaseController
 
     /**
      * 2021.1.22
-     * 问卷调查接口配置
+     * 版本升级配置
      *
      * @return
      */
