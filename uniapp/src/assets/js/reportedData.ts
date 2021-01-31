@@ -1,6 +1,6 @@
 
+// 埋点
 import {reportedData} from '@/apis';
-
 // scene department
 interface IHealthData {
     scene: string;
