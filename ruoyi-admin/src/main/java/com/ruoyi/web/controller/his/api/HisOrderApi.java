@@ -63,8 +63,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult doRegCancel(@RequestBody DoRegCancel doRegCancel)
     {
-        getRequest().setAttribute("api", "doRegCancel");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(doRegCancel));
+//        getRequest().setAttribute("api", "doRegCancel");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(doRegCancel));
 
         BaseResponse baseResponse = doregInfoService.doRegCancel(doRegCancel);
         return baseResponse.isOk()?AjaxResult.success(baseResponse.getResultMsg()):AjaxResult.error(baseResponse.getResultMsg());
@@ -79,8 +79,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult outpatientPayment(@RequestBody DoregInfo doregInfo)
     {
-        getRequest().setAttribute("api", "outpatientPayment");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(doregInfo));
+//        getRequest().setAttribute("api", "outpatientPayment");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(doregInfo));
         if(StringUtils.isEmpty(doregInfo.getPayType())){
             doregInfo.setPayType("5");
         }
@@ -114,8 +114,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult newPayment(@RequestBody DopayInfo dopayInfo)
     {
-        getRequest().setAttribute("api", "newPayment");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(dopayInfo));
+//        getRequest().setAttribute("api", "newPayment");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(dopayInfo));
         if(StringUtils.isEmpty(dopayInfo.getPayType())){
             dopayInfo.setPayType("5");
         }
@@ -150,8 +150,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult payment(@RequestBody DepositPayment depositPayment)
     {
-        getRequest().setAttribute("api", "payment");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(depositPayment));
+//        getRequest().setAttribute("api", "payment");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(depositPayment));
         if(StringUtils.isEmpty(depositPayment.getPayType())){
             depositPayment.setPayType("5");
         }
@@ -185,8 +185,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult leaveHosPay(@RequestBody LeaveHosPay leaveHosPay)
     {
-        getRequest().setAttribute("api", "leaveHosPay");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(leaveHosPay));
+//        getRequest().setAttribute("api", "leaveHosPay");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(leaveHosPay));
         if(StringUtils.isEmpty(leaveHosPay.getPayType())){
             leaveHosPay.setPayType("5");
         }
@@ -221,8 +221,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult orderPay(@RequestBody OrderPayResultBO orderPayResultBO)
     {
-        getRequest().setAttribute("api", "/order/orderPay");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
+//        getRequest().setAttribute("api", "/order/orderPay");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(orderPayResultBO.getOrderType());
         BaseResponse baseResponse = AbstractHisServiceHandler
                 .servicesInstance(hisBusinessTypeEnum)
@@ -239,8 +239,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult orderPayCallBack(@RequestBody OrderPayResultBO orderPayResultBO)
     {
-        getRequest().setAttribute("api", "/order/payCallBack");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
+//        getRequest().setAttribute("api", "/order/payCallBack");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(orderPayResultBO.getOrderType());
         BaseResponse baseResponse = AbstractHisServiceHandler
                 .servicesInstance(hisBusinessTypeEnum)
@@ -257,8 +257,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult orderRefund(@RequestBody OrderPayResultBO orderPayResultBO)
     {
-        getRequest().setAttribute("api", "/order/refund");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
+//        getRequest().setAttribute("api", "/order/refund");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(orderPayResultBO.getOrderType());
         BaseResponse baseResponse = AbstractHisServiceHandler
                 .servicesInstance(hisBusinessTypeEnum)
@@ -275,8 +275,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult orderRefundCallBack(@RequestBody OrderPayResultBO orderPayResultBO)
     {
-        getRequest().setAttribute("api", "/order/refundCallBack");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
+//        getRequest().setAttribute("api", "/order/refundCallBack");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
         HisBusinessTypeEnum hisBusinessTypeEnum = HisBusinessTypeEnum.getTypeByKey(orderPayResultBO.getOrderType());
         BaseResponse baseResponse = AbstractHisServiceHandler
                 .servicesInstance(hisBusinessTypeEnum)
@@ -293,8 +293,8 @@ public class HisOrderApi extends BaseController
     @ResponseBody
     public AjaxResult dopayInfoResult(@RequestBody OrderPayResultBO orderPayResultBO)
     {
-        getRequest().setAttribute("api", "/order/dopayInfoResult");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
+//        getRequest().setAttribute("api", "/order/dopayInfoResult");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(orderPayResultBO));
         DopayInfo dopayInfo = dopayInfoService.getDetailByOutTradeNo(orderPayResultBO.getOutTradeNo());
         if(null == dopayInfo){
             return AjaxResult.error("无取药信息。");
@@ -318,4 +318,29 @@ public class HisOrderApi extends BaseController
         }
     }
 
+    /**
+     * 免费预约
+     */
+    @ApiOperation("免费预约")
+    @PostMapping("/freeAppointment")
+    @ResponseBody
+    public AjaxResult freeAppointment(@RequestBody DoregInfo doregInfo)
+    {
+        if(StringUtils.isEmpty(doregInfo.getPayType())){
+            doregInfo.setPayType("5");
+        }
+        doregInfo.setAppId(WechatConfig.appId);
+        doregInfo.setCreateBy(doregInfo.getSynUserName());
+        doregInfo.setCreateTime(new Date());
+        doregInfo.setOutTradeNo(IdUtils.getOrderNo("RE"));
+        doregInfo.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
+        int iResult = doregInfoService.insertDoregInfo(doregInfo);
+        if(iResult>0) {
+            //默认为已支付，且生成支付流水号
+            BaseResponse baseResponse = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOREG)
+                    .payedNotify(true,doregInfo.getOutTradeNo(),IdUtils.getOrderNo("FREE"));
+            return baseResponse.isOk()?AjaxResult.success():AjaxResult.error();
+        }
+        return AjaxResult.error("预约失败");
+    }
 }

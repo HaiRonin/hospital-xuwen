@@ -21,10 +21,12 @@ import com.ruoyi.his.service.IHisUserService;
 import com.ruoyi.his.service.ISmsService;
 import com.ruoyi.his.service.ISymptomsOrganService;
 import com.ruoyi.system.domain.SysDictData;
+import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.vo.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 预约挂号Controller
@@ -69,8 +72,8 @@ public class HisCommonApi extends BaseController
     @PostMapping("/request")
     @ResponseBody
     public String invokeCall(@RequestBody HisRequestBO hisRequestBO){
-        ServletUtils.getRequest().setAttribute("api", hisRequestBO.getApi());
-        ServletUtils.getRequest().setAttribute("dataParam", hisRequestBO.getDataParam());
+//        ServletUtils.getRequest().setAttribute("api", hisRequestBO.getApi());
+//        ServletUtils.getRequest().setAttribute("dataParam", hisRequestBO.getDataParam());
         return hisBaseServices.requestHisService("/"+hisRequestBO.getApi().trim(),hisRequestBO.getDataParam());
     }
 
@@ -85,8 +88,8 @@ public class HisCommonApi extends BaseController
     @ResponseBody
     @ApiOperation("获取验证码短信")
     public AjaxResult sendMsg(@RequestParam("phone") @Validated String phone) {
-        ServletUtils.getRequest().setAttribute("api", "/user/sendMsg");
-        ServletUtils.getRequest().setAttribute("dataParam", phone);
+//        ServletUtils.getRequest().setAttribute("api", "/user/sendMsg");
+//        ServletUtils.getRequest().setAttribute("dataParam", phone);
         String msg = "【广东省农垦中心医院】您的验证码是:%1$s";
         return smsService.sendVerificationCode(phone,msg);
     }
@@ -101,8 +104,8 @@ public class HisCommonApi extends BaseController
     @PostMapping("/user/register")
     @ResponseBody
     public AjaxResult userRegister(@Validated @RequestBody UserRegBO userRegBO){
-        ServletUtils.getRequest().setAttribute("api", "register");
-        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(userRegBO));
+//        ServletUtils.getRequest().setAttribute("api", "register");
+//        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(userRegBO));
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
@@ -122,8 +125,8 @@ public class HisCommonApi extends BaseController
     @PostMapping("/user/modifyPassword")
     @ResponseBody
     public AjaxResult modifyPassword(@Validated @RequestBody UserRegBO userRegBO){
-        ServletUtils.getRequest().setAttribute("api", "modifyPassword");
-        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(userRegBO));
+//        ServletUtils.getRequest().setAttribute("api", "modifyPassword");
+//        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(userRegBO));
         HisUser hisUser = new HisUser();
         hisUser.setPhone(userRegBO.getPhone());
         hisUser.setPassword(userRegBO.getPassword());
@@ -141,8 +144,8 @@ public class HisCommonApi extends BaseController
     @PostMapping("/user/shortMessage")
     @ResponseBody
     public AjaxResult shortMessage(@Validated @RequestBody SmsMsgBO smsMsgBO) {
-        ServletUtils.getRequest().setAttribute("api", "/user/shortMessage");
-        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(smsMsgBO));
+//        ServletUtils.getRequest().setAttribute("api", "/user/shortMessage");
+//        ServletUtils.getRequest().setAttribute("dataParam",  JSON.toJSONString(smsMsgBO));
         if(StringUtils.isEmpty(smsMsgBO.getMessage())){
             return AjaxResult.error("短信内容不能为空");
         }
@@ -182,8 +185,8 @@ public class HisCommonApi extends BaseController
     @PostMapping(value = "/getBodyListPart")
     @ResponseBody
     public AjaxResult getBodyListPart() {
-        ServletUtils.getRequest().setAttribute("api", "getBodyListPart");
-        ServletUtils.getRequest().setAttribute("dataParam", "");
+//        ServletUtils.getRequest().setAttribute("api", "getBodyListPart");
+//        ServletUtils.getRequest().setAttribute("dataParam", "");
         SysDictData dictData = new SysDictData();
         dictData.setDictType("his_body_part");
         List<SysDictData> lstSysDictData = dictDataService.selectDictDataList(dictData);
@@ -209,8 +212,8 @@ public class HisCommonApi extends BaseController
     @ResponseBody
 //    @Cacheable(value="#bodyPart", key="#sex+'-'+#age")
     public AjaxResult getOrganList(@RequestBody SymptomsOrganBO symptomsOrganBO) {
-        ServletUtils.getRequest().setAttribute("api", "getOrganList");
-        ServletUtils.getRequest().setAttribute("dataParam", JSON.toJSONString(symptomsOrganBO));
+//        ServletUtils.getRequest().setAttribute("api", "getOrganList");
+//        ServletUtils.getRequest().setAttribute("dataParam", JSON.toJSONString(symptomsOrganBO));
         String sexCode = BodySymptomsEnum.getCodeByName(symptomsOrganBO.getSex()+"_"+symptomsOrganBO.getAge());
         SymptomsOrgan symptomsOrgan = new SymptomsOrgan();
         symptomsOrgan.setBodyPart(symptomsOrganBO.getBodyPart());
@@ -236,8 +239,8 @@ public class HisCommonApi extends BaseController
     @PostMapping(value = "/diagnosis")
     @ResponseBody
     public AjaxResult diagnosis(@RequestBody SymptomsOrganBO symptomsOrganBO) {
-        getRequest().setAttribute("api", "diagnosis");
-        getRequest().setAttribute("dataParam", JSON.toJSONString(symptomsOrganBO));
+//        getRequest().setAttribute("api", "diagnosis");
+//        getRequest().setAttribute("dataParam", JSON.toJSONString(symptomsOrganBO));
         SymptomsOrgan symptomsOrgan = new SymptomsOrgan();
         symptomsOrgan.setBodyPart(symptomsOrganBO.getBodyPart());
         symptomsOrgan.setSex(symptomsOrganBO.getSex());
@@ -279,5 +282,43 @@ public class HisCommonApi extends BaseController
         response.setContentType("multipart/form-data");
         response.setHeader("Content-Disposition","attachment;fileName=" + appName);
         FileUtils.writeBytes(downloadPath, response.getOutputStream());
+    }
+
+    /**
+     * 2021.1.22
+     * 问卷调查接口配置
+     *
+     * @return
+     */
+    @ApiOperation("版本升级配置")
+    @ResponseBody
+    @GetMapping(value = "/version/config")
+    public AjaxResult versionConfig(){
+        Map<String,Object> map = new HashMap<String,Object>();
+        String openState = configService.getKey("his.version.update.openState");
+        map.put("openState",openState);
+        map.put("openDesc","openState=1-内测,白名单可访问,openState=2-正式开放,用户可访问；openState=3-关闭下架,任何人不可访问");
+        String supportClient = configService.getKey("his.version.update.support");
+        String notSupportRemark = configService.getKey("his.version.update.notSupportRemark");
+        map.put("client",StringUtils.split("android,ios,wechat",","));
+        map.put("notSupportRemark",notSupportRemark);
+        map.put("clientDesc","已经开放的客户端");
+        if(StringUtils.isNotEmpty(supportClient)){
+            map.put("client",StringUtils.split(supportClient,","));
+        }
+        //内测的时候需要控制白名单可以访问
+        if("1".equals(openState)){
+            //内测状态
+            SysDictData dictData = new SysDictData();
+            dictData.setDictType("his.white.phone.list");
+            List<SysDictData> lstSysDictData = dictDataService.selectDictDataList(dictData);
+            if(CollectionUtils.isNotEmpty(lstSysDictData)){
+                List<String> phones = lstSysDictData.stream().map(p -> p.getDictValue()).collect(Collectors.toList());
+                map.put("whiteList",phones);
+            }
+        }
+
+
+        return AjaxResult.success(map);
     }
 }
