@@ -31,3 +31,9 @@ export const ordeDoRegCancel: TApi = (params = {}, options = {}) => {
     const url = '/his/order/doRegCancel';
     return ajax.apiPost(url, params, options);
 };
+
+// 免费预约
+export const freeAppointment: TApi = (params = {}, options = {}) => {
+    const url = '/his/order/freeAppointment';
+    return ajax.apiPost(url, params, options);
+};
