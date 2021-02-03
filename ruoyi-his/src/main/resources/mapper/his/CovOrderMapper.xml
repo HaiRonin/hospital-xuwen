@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.CovOrderMapper">
+    
+    <resultMap type="CovOrder" id="CovOrderResult">
+        <result property="id"    column="id"    />
+        <result property="appId"    column="app_id"    />
+        <result property="cardNo"    column="card_no"    />
+        <result property="name"    column="name"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="outTradeNo"    column="out_trade_no"    />
+        <result property="transactionId"    column="transaction_id"    />
+        <result property="payAmount"    column="pay_amount"    />
+        <result property="payCarNo"    column="pay_car_no"    />
+        <result property="successfulPayment"    column="successful_payment"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="resultMsg"    column="result_msg"    />
+        <result property="resultCode"    column="result_code"    />
+    </resultMap>
+
+    <sql id="selectCovOrderVo">
+        select id, app_id, card_no, name, pay_type, out_trade_no, transaction_id, pay_amount, pay_car_no, successful_payment, create_time, update_time, result_msg, result_code from his_cov_order
+    </sql>
+
+    <select id="selectCovOrderList" parameterType="CovOrder" resultMap="CovOrderResult">
+        <include refid="selectCovOrderVo"/>
+        <where>  
+            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
+            <if test="cardNo != null  and cardNo != ''"> and card_no = #{cardNo}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no like concat('%', #{outTradeNo}, '%')</if>
+            <if test="transactionId != null  and transactionId != ''"> and transaction_id like concat('%', #{transactionId}, '%')</if>
+            <if test="payAmount != null "> and pay_amount = #{payAmount}</if>
+            <if test="payCarNo != null  and payCarNo != ''"> and pay_car_no = #{payCarNo}</if>
+            <if test="successfulPayment != null  and successfulPayment != ''"> and successful_payment = #{successfulPayment}</if>
+            <if test="resultMsg != null  and resultMsg != ''"> and result_msg = #{resultMsg}</if>
+            <if test="resultCode != null  and resultCode != ''"> and result_code = #{resultCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectCovOrderById" parameterType="Long" resultMap="CovOrderResult">
+        <include refid="selectCovOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCovOrder" parameterType="CovOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into his_cov_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appId != null">app_id,</if>
+            <if test="cardNo != null">card_no,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="payType != null and payType != ''">pay_type,</if>
+            <if test="outTradeNo != null and outTradeNo != ''">out_trade_no,</if>
+            <if test="transactionId != null">transaction_id,</if>
+            <if test="payAmount != null">pay_amount,</if>
+            <if test="payCarNo != null">pay_car_no,</if>
+            <if test="successfulPayment != null">successful_payment,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="resultMsg != null">result_msg,</if>
+            <if test="resultCode != null">result_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appId != null">#{appId},</if>
+            <if test="cardNo != null">#{cardNo},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="payType != null and payType != ''">#{payType},</if>
+            <if test="outTradeNo != null and outTradeNo != ''">#{outTradeNo},</if>
+            <if test="transactionId != null">#{transactionId},</if>
+            <if test="payAmount != null">#{payAmount},</if>
+            <if test="payCarNo != null">#{payCarNo},</if>
+            <if test="successfulPayment != null">#{successfulPayment},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="resultMsg != null">#{resultMsg},</if>
+            <if test="resultCode != null">#{resultCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCovOrder" parameterType="CovOrder">
+        update his_cov_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="cardNo != null">card_no = #{cardNo},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="payType != null and payType != ''">pay_type = #{payType},</if>
+            <if test="outTradeNo != null and outTradeNo != ''">out_trade_no = #{outTradeNo},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="payAmount != null">pay_amount = #{payAmount},</if>
+            <if test="payCarNo != null">pay_car_no = #{payCarNo},</if>
+            <if test="successfulPayment != null">successful_payment = #{successfulPayment},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="resultMsg != null">result_msg = #{resultMsg},</if>
+            <if test="resultCode != null">result_code = #{resultCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCovOrderById" parameterType="Long">
+        delete from his_cov_order where id = #{id}
+    </delete>
+
+    <delete id="deleteCovOrderByIds" parameterType="String">
+        delete from his_cov_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

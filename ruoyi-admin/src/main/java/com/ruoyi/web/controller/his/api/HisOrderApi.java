@@ -10,10 +10,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import com.ruoyi.his.constant.HisBusinessTypeEnum;
 import com.ruoyi.his.constant.PayStatusEnum;
-import com.ruoyi.his.domain.DepositPayment;
-import com.ruoyi.his.domain.DopayInfo;
-import com.ruoyi.his.domain.DoregInfo;
-import com.ruoyi.his.domain.LeaveHosPay;
+import com.ruoyi.his.domain.*;
 import com.ruoyi.his.remote.AbstractHisServiceHandler;
 import com.ruoyi.his.remote.request.DoRegCancel;
 import com.ruoyi.his.remote.response.BaseResponse;
@@ -53,6 +50,9 @@ public class HisOrderApi extends BaseController
 
     @Autowired
     private ILeaveHosPayService leaveHosPayService;
+
+    @Autowired
+    private ICovOrderService covOrderService;
 
     /**
      * 取消预约
@@ -342,5 +342,38 @@ public class HisOrderApi extends BaseController
             return baseResponse.isOk()?AjaxResult.success():AjaxResult.error();
         }
         return AjaxResult.error("预约失败");
+    }
+
+    /**
+     * 新增缴费支付的记录
+     */
+//    @Log(title = "本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("新增核酸检测记录")
+    @PostMapping("/payCovPackage")
+    @ResponseBody
+    public AjaxResult payCovPackage(@RequestBody CovOrder covOrder)
+    {
+        if(StringUtils.isEmpty(covOrder.getPayType())){
+            covOrder.setPayType("5");
+        }
+        covOrder.setAppId(WechatConfig.appId);
+        covOrder.setCreateBy(covOrder.getName());
+        covOrder.setCreateTime(new Date());
+        covOrder.setUpdateTime(new Date());
+        covOrder.setSuccessfulPayment(PayStatusEnum.INIT.getCode());
+        covOrder.setOutTradeNo(IdUtils.getOrderNo("COV"));
+        int iResult = covOrderService.insertCovOrder(covOrder);
+        if(iResult>0) {
+            HisPayOrder order = new HisPayOrder();
+            order.setPayType(covOrder.getPayType());
+            order.setAmount(covOrder.getPayAmount());
+            order.setOrderType("covorder");
+            order.setOutTradeNo(covOrder.getOutTradeNo());
+            order.setOpenId(covOrder.getOpenId());
+            order.setRedirectUrl(covOrder.getRedirectUrl());
+            PayService payService = AbstractPayService.servicesInstance(order.getPayType());
+            covOrder.setPrePaySign(payService.prePay(order));
+        }
+        return iResult>0?AjaxResult.success(covOrder):AjaxResult.error("核酸检测缴费失败");
     }
 }

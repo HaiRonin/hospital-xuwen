@@ -53,7 +53,20 @@ public class HisTestApi extends BaseController
         BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.DOPAY).invokeCallSubmit(outTradeNo);
         return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
     }
-
+    /**
+     * 2020.8.26
+     * 测试预约挂号推his
+     *
+     * @return
+     */
+    @Log(title = "his本地调用", businessType = BusinessType.HIS_LOCALHOST)
+    @ApiOperation("核酸检测缴费支付推his")
+    @ResponseBody
+    @GetMapping(value = "/doCov")
+    public AjaxResult doCov(@RequestParam("outTradeNo") String outTradeNo){
+        BaseResponse response = AbstractHisServiceHandler.servicesInstance(HisBusinessTypeEnum.COV).invokeCallSubmit(outTradeNo);
+        return response.isOk()?AjaxResult.success():AjaxResult.error(response.getResultMsg());
+    }
     /**
      * 2020.8.26
      * 测试预约挂号推his

@@ -1,9 +1,6 @@
 package com.ruoyi.his.constant;
 
-import com.ruoyi.his.remote.DopayInfoHisServiceHander;
-import com.ruoyi.his.remote.DoregInfoHisServiceHander;
-import com.ruoyi.his.remote.InPatientPaymentHisServiceHander;
-import com.ruoyi.his.remote.LeaveHosPayHisServiceHander;
+import com.ruoyi.his.remote.*;
 
 /**
  * 业务异常枚举类
@@ -16,7 +13,10 @@ public enum HisBusinessTypeEnum {
 	DOREG("doreg","doRegIn", "/doReg","预约挂号", DoregInfoHisServiceHander.class),
 	DOPAY("dopay","doRegIn", "/doPay","缴费支付", DopayInfoHisServiceHander.class),
 	INPATIENTPAYMENT("inpatientpayment","doRegIn", "/inPatientPayment","住院押金补缴", InPatientPaymentHisServiceHander.class),
-	LEAVEHOSPAY("leavehospay","doRegIn", "/leaveHosPay","离院结算", LeaveHosPayHisServiceHander.class),;
+	LEAVEHOSPAY("leavehospay","doRegIn", "/leaveHosPay","离院结算", LeaveHosPayHisServiceHander.class),
+	COV("cov","doRegIn", "/PayCovPackage","支付核酸检测费用", CovOrderHisServiceHander.class),
+	;
+
 	private String key;
 	private String code;
 	private String apiUrl;
