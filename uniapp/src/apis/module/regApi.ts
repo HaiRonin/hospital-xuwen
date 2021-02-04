@@ -119,3 +119,10 @@ export const purchaseregister: TApi = (params = {}, options = {}) => {
     return ajax.apiPost(url, params, options);
 };
 
+// 6.31查询核酸检测套餐
+export const searchCovPackage: TApi = (params = {}, options = {}) => {
+    const url = '/his/request';
+    params.api = '/SearchCovPackage';
+    return ajax.apiPost(url, params, options);
+};
+

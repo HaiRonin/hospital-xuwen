@@ -20,10 +20,11 @@ export const homeUrl = [
     '/pages/home/my',
 ];
 
-// 进入这几个路径需要刷新
+// 进入这几个路径需要刷新，为了ios能支付
 export const refreshUrl = [
     '/pages/registration/confirmOrder',
     '/pages/registration/paymentPrescriptionRecord',
+    '/pages/registration/nucleicAcid',
 ];
 
 // 强制登录，白名单

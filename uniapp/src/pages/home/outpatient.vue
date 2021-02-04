@@ -29,11 +29,15 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
+    import {Action} from 'vuex-class';
 
     const {link} = utils;
 
     @Component
     export default class Outpatient extends Vue {
+        @Action('actionsIsUse') actionsIsUse!: TActionsIsUse;
+
+
         quickEntry1: IOBJ[] = [
             {
                 text: '当天预约挂号',
@@ -94,6 +98,24 @@
         ];
 
         link = link;
+
+        async init () {
+            const isUse = await this.actionsIsUse('nucleicAcid');
+
+            if (isUse) {
+                this.quickEntry2.push({
+                    text: '核酸检测',
+                    url: '/pages/registration/nucleicAcid',
+                    imgUrl: require('@/assets/image/icon/icon_91.png'),
+                    hide: false
+                });
+            }
+
+        }
+
+        onLoad () {
+            this.init();
+        }
 
         mounted () {
         }

@@ -94,11 +94,16 @@ export const addCovSurvey: TApi = (params = {}, options = {}) => {
     return ajax.apiPost(url, params, Object.assign({closeErrorTips: true, isLoad: true}, options));
 };
 
-// 获取内侧功能白名单
-export const getInnerWhitelist: TApi = (params = {}, options = {}) => {
+// 获取问卷功能配置
+export const getQuestionnaireConfig: TApi = (params = {}, options = {}) => {
     const url = '/his/questionnaire/getConfig';
     return ajax.apiGet(url, params, options);
 };
 
+// 获取核酸支付功能配置
+export const getVersionConfig: TApi = (params = {}, options = {}) => {
+    const url = '/his/version/config';
+    return ajax.apiGet(url, params, options);
+};
 
 

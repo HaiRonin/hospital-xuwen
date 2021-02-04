@@ -4,22 +4,48 @@ import cachePlugin from './cachePlugin';
 import time from './modules/time';
 import user from './modules/user';
 import redirect from './modules/redirect';
+import {getQuestionnaireConfig, getVersionConfig} from '@/apis';
 
 Vue.use(Vuex);
 
+const apiMap: TActionsApiMap = {
+    questionnaire: getQuestionnaireConfig,
+    nucleicAcid: getVersionConfig,
+};
+
 export default new Vuex.Store({
     state: {
-        // 1-内测,白名单可访问,2-正式开放,用户可访问；3-关闭下架,任何人不可访问
-        whiteListStatus: 3,
-        whiteList: [],
     },
     mutations: {
-        setWhiteData (state: IOBJ, data: IOBJ) {
-            state.whiteListStatus = data.whiteListStatus;
-            state.whiteList = data.whiteList;
-        }
     },
     actions: {
+        // 权限判断，传关键字
+        actionsIsUse ({commit, state}: IOBJ, key: TApiMapKey) {
+            const userInfo = state.user.userInfo;
+            const len = Object.keys(userInfo).length;
+            if (!len) return Promise.resolve(false);
+
+            const fn = apiMap[key];
+            return fn({}, {isLoad: true, closeErrorTips: true}).then((res) => {
+                // console.log(res.data);
+                const state = res.data.openState || res.data.state;
+                const whiteList = res.data.whiteList;
+
+                // 1-内测,白名单可访问,2-正式开放,用户可访问；3-关闭下架,任何人不可访问
+                if (+state === 2) return true;
+                if (+state === 3) return false;
+
+                if (+state === 1 && whiteList.includes(userInfo.userName)) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }).catch((err) => {
+                console.log(err);
+                return false;
+            });
+        }
     },
     getters: {
         // 当天日期
@@ -54,22 +80,6 @@ export default new Vuex.Store({
         userInfo (state: IOBJ) {
             return state.user.userInfo;
         },
-        // 是否可用
-        isUse (state: IOBJ) {
-            const userInfo = state.user.userInfo;
-            const len = Object.keys(userInfo).length;
-            const whiteListStatus = +state.whiteListStatus;
-            const whiteList = state.whiteList;
-
-            if (whiteListStatus === 2) return true;
-            if (!len || whiteListStatus === 3) return false;
-
-            if (whiteListStatus === 1 && whiteList.includes(userInfo.userName)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
     },
     modules: {
         time,
