@@ -286,6 +286,16 @@
                         // #endif
                         "navigationBarTitleText": "住院信息"
                     }
+                },
+                {
+                    "path": "nucleicAcid",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "核酸检测"
+                    }
                 }
             ]
         },

@@ -37,3 +37,9 @@ export const freeAppointment: TApi = (params = {}, options = {}) => {
     const url = '/his/order/freeAppointment';
     return ajax.apiPost(url, params, options);
 };
+
+// 核酸支付
+export const nucleicAcidPayment: TApi = (params = {}, options = {}) => {
+    const url = '/his/order/payCovPackage';
+    return ajax.apiPost(url, params, options);
+};

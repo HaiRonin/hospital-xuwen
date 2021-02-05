@@ -64,8 +64,8 @@
             {name: '已缴费'},
         ];
 
-        change (index?: number) {
-            const sortIndex = this.sortIndex = (utils.zEmpty(index) ? this.sortIndex : index) as number;
+        change (index: number | string) {
+            const sortIndex = this.sortIndex = (utils.zEmpty(index) ? this.sortIndex : +index) as number;
             return sortIndex === 0 ? this.getList1() : this.getList2();
         }
 
@@ -131,11 +131,13 @@
         }
 
         onLoad (options: IOBJ) {
+            // type 默认选中项
             this.options = options;
+            this.change(options.type || 0);
         }
 
         created () {
-            this.change(0);
+            // this.change(0);
             // this.getList1();
             // global.asd = this;
         }

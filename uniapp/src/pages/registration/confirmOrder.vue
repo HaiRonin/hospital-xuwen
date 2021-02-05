@@ -44,7 +44,7 @@
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
-    import {Getter} from 'vuex-class';
+    import {Action} from 'vuex-class';
     import pay from '@/components/pay.vue';
     import {orderOutpatientPayment, freeAppointment} from '@/apis';
     import {healthCardRD} from '@/assets/js/reportedData';
@@ -56,7 +56,7 @@
     })
     export default class ConfirmOrder extends Vue {
         @Ref('pay') readonly pay!: IOBJ;
-        @Getter('isUse') actionIsUse!: boolean;
+        @Action('actionsIsUse') actionsIsUse!: TActionsIsUse;
 
         params: IOBJ = {};
         options: IOBJ = {};
@@ -87,9 +87,10 @@
             utils.link('/pages/outpatient/index?sel=1');
         }
 
-        playQuestionnaire (data: IOBJ) {
-            const actionIsUse = this.actionIsUse;
+        async playQuestionnaire (data: IOBJ) {
+            // const actionIsUse = this.actionIsUse;
             // debugger
+            const actionIsUse = await this.actionsIsUse('questionnaire');
 
             // 限制性功能
             if (!actionIsUse) return false;
@@ -124,7 +125,7 @@
             if (utils.zEmpty(data.patientNo)) {
                 utils.toast('请选择就诊人');
                 return;
-            } else if (this.playQuestionnaire(data)) {
+            } else if (await this.playQuestionnaire(data)) {
                 return;
             }
 
