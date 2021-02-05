@@ -10,7 +10,7 @@ public enum HisOrderType {
     DOPAY("dopay", "缴费支付"),
     INPATIENTPAYMENT("inpatientpayment", "住院押金补缴"),
     LEAVEHOSPAY("leavehospay", "离院结算"),
-    COVORDER("covorder", "核酸检测"),
+    COV("cov", "核酸检测"),
     ;
     private String key;
     private String desc;
@@ -54,7 +54,7 @@ public enum HisOrderType {
         } else if (orderId.startsWith("DP")) {
             orderType = INPATIENTPAYMENT.key;
         }else if (orderId.startsWith("COV")) {
-            orderType = COVORDER.key;
+            orderType = COV.key;
         }
         return orderType;
     }
