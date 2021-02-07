@@ -142,7 +142,7 @@
 
             this.pay.startPay({
                 name: data.patientName,
-                patientNo: data.patientNo,
+                cardNo: data.patientNo,
                 payAmount: info.packageAccount
             });
         }
