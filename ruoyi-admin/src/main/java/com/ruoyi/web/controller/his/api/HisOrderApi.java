@@ -367,12 +367,14 @@ public class HisOrderApi extends BaseController
             HisPayOrder order = new HisPayOrder();
             order.setPayType(covOrder.getPayType());
             order.setAmount(covOrder.getPayAmount());
-            order.setOrderType("covorder");
+            order.setOrderType("cov");
             order.setOutTradeNo(covOrder.getOutTradeNo());
             order.setOpenId(covOrder.getOpenId());
             order.setRedirectUrl(covOrder.getRedirectUrl());
             PayService payService = AbstractPayService.servicesInstance(order.getPayType());
             covOrder.setPrePaySign(payService.prePay(order));
+            covOrder.setAmount(covOrder.getPayAmount());
+            covOrder.setOrderType(order.getOrderType());
         }
         return iResult>0?AjaxResult.success(covOrder):AjaxResult.error("核酸检测缴费失败");
     }

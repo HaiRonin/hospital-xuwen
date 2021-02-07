@@ -57,7 +57,6 @@ public class CovOrderHisServiceHander extends AbstractHisServiceHandler<DoCovIn,
         covIn.setCardNo(covOrder.getCardNo());
         covIn.setName(covOrder.getName());
         covIn.setPayType(covOrder.getPayType());
-        covIn.setPayCardNo(covOrder.getPayCarNo());
         covIn.setPayNo(covOrder.getTransactionId());
         covIn.setPayAmount(covOrder.getPayAmount().toString());
         return covIn;
@@ -77,10 +76,10 @@ public class CovOrderHisServiceHander extends AbstractHisServiceHandler<DoCovIn,
         covOrder.setResultCode(doCovOut.getResultCode());
         covOrder.setResultMsg(doCovOut.getResultMsg());
         covOrder.setSuccessfulPayment(doCovOut.isOk()?PayStatusEnum.ORDER_SUCCESS.getCode():PayStatusEnum.ORDER_FAIL.getCode());
-        if(doCovOut.isOk()){
-//            covOrder.setResultMsg(JSON.toJSONString(doCovOut.getResultMsg()));
-            System.out.println(JSON.toJSONString(doCovOut));
-        }
+//        if(doCovOut.isOk()){
+////            covOrder.setResultMsg(JSON.toJSONString(doCovOut.getResultMsg()));
+//            System.out.println(JSON.toJSONString(doCovOut));
+//        }
         iCovOrderService.updateCovOrder(covOrder);
         return doCovOut.isOk()?BaseResponse.success():BaseResponse.fail("操作失败，支付金额稍后将会原路返回");
     }
