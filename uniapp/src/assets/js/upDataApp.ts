@@ -1,6 +1,7 @@
 
 import {getLastAppVersion} from '@/apis';
 
+// 版本比对 versionComparison('2.2.2', '1.2.3')
 const versionComparison = (newVal: string, oldVal: string) => {
     if (newVal === oldVal) return false;
 
@@ -16,6 +17,8 @@ const versionComparison = (newVal: string, oldVal: string) => {
     }
 
     while (i < len) {
+        if (nArr[i] < oArr[i]) break;
+
         isUpdata = nArr[i] > oArr[i];
 
         if (isUpdata) break;
