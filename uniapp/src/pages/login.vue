@@ -166,6 +166,11 @@
 
             this.$store.commit('user/setState', res);
 
+            // TODO: 因为是通过 vuex的subscribe 来进行本地存储的，当某个页面一进入就刷新，数据还没存进去（这里的存储会有点延迟），会导致一直重复登录
+            utils.showLoad('跳转中');
+            await utils.sleep(1000);
+            utils.hideLoad();
+
             let {url, index}: IOBJ = {};
             const pageObj = this.$store.getters['redirect/getRedirectUrl'];
 

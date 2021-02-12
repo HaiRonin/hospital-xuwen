@@ -117,6 +117,8 @@
             this.init();
         }
 
+        onShow () {}
+
         mounted () {
         }
     }
