@@ -113,7 +113,7 @@
                         <view class="td-col td-col-2">{{child.feeItemName}}</view>
                         <view class="td-col">{{child.feeItemStandard}}</view>
                         <view class="td-col">{{child.feeItemUnit}}</view>
-                        <view class="td-col">{{child.feeItemAmoun}}</view>
+                        <view class="td-col">{{child.feeItemAmount}}</view>
                         <view class="td-col">{{child.feeItemNum}}</view>
                         <view class="td-col">{{child.feeItemAllAmount}}</view>
                     </view>

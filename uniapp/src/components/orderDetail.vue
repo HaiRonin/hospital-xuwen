@@ -8,15 +8,20 @@
         <view class="" v-if="curItem">
             <scroll-view class="content" scroll-y>
                 <view class="flex-box align-center flex-wrap">
+                    <view class="flex-100 flex-box">
+                        <text class="text-1">条形码:</text>
+                        <text class="text-2" v-if="curItem.errorImg">条形码加载失败</text>
+                        <img class="code-img" v-else :src="curItem.codeImg"/>
+                    </view>
                     <view class="flex-100">
                         <text class="text-1">缴费编号:</text>
                         <text class="text-2">{{curItem.hiFeeNo}}</text>
                     </view>
-                    <view class="flex-50">
+                    <view class="flex-100">
                         <text class="text-1">收费员名称:</text>
                         <text class="text-2">{{curItem.organdoctorId}}</text>
                     </view>
-                    <view class="flex-100">
+                    <view class="flex-50">
                         <text class="text-1">患者编号:</text>
                         <text class="text-2">{{curItem.patientNo}}</text>
                     </view>
@@ -24,7 +29,7 @@
                         <text class="text-1">患者名称:</text>
                         <text class="text-2">{{curItem.patientName}}</text>
                     </view>
-                    <view class="flex-50">
+                    <view class="flex-100">
                         <text class="text-1">就诊科室名:</text>
                         <text class="text-2">{{curItem.organName}}</text>
                     </view>
@@ -63,6 +68,10 @@
                         <text class="text-3">名称:</text>
                         <text class="text-4">{{item.feeItemName}}</text>
                     </view>
+                    <view class="flex-100">
+                        <text class="text-3">执行科室:</text>
+                        <text class="text-4 font-b">{{item.OfficeName}}</text>
+                    </view>
                     <view class="flex-50">
                         <text class="text-3">单价:</text>
                         <text class="text-4">{{item.feeItemAmount}}元</text>
@@ -96,7 +105,7 @@
 
     import {Component, Vue, Ref, Inject} from 'vue-property-decorator';
     import pay from '@/components/pay.vue';
-    import {ordeNewPayment} from '@/apis';
+    import {ordeNewPayment, createdBarCode} from '@/apis';
 
     @Component({
         components: {
@@ -112,7 +121,16 @@
         curItem: IOBJ | null = null;
         payRequest = ordeNewPayment;
 
-        openFun (item: IOBJ) {
+        async openFun (item: IOBJ) {
+            item = utils.jsCopyObj(item);
+
+            const res = await createdBarCode({CardNo: item.hiFeeNo}, {closeErrorTips: true, isLoad: true}).catch(() => {
+                item.errorImg = true;
+                return Promise.reject();
+            });
+
+            item.codeImg = 'data:image/png;base64,' + res.msg;
+
             this.curItem = item;
             // this.showBtn = this.curItem.status === '0';
             this.show = true;
@@ -154,7 +172,7 @@
         padding: 30rpx 20rpx;
     }
 
-    .text-1{color: $color-grey;width: 200rpx;display: inline-block;text-align: right;padding-right: 20rpx;}
+    .text-1{color: $color-grey;width: 198rpx;display: inline-block;text-align: right;padding-right: 20rpx;}
     .text-2{}
 
     .z-title{
@@ -197,4 +215,8 @@
 
     .flex-50{flex-basis: 50%;}
     .flex-100{flex-basis: 100%;}
+
+    .code-img{
+        height: 160rpx;
+    }
 </style>
