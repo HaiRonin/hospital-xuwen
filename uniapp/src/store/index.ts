@@ -15,8 +15,15 @@ const apiMap: TActionsApiMap = {
 
 export default new Vuex.Store({
     state: {
+        actionsData: {
+            questionnaire: null,
+            nucleicAcid: null,
+        },
     },
     mutations: {
+        updateActionsData (state, data) {
+            state.actionsData = data;
+        }
     },
     actions: {
         // 权限判断，传关键字
@@ -26,10 +33,15 @@ export default new Vuex.Store({
             if (!len) return Promise.resolve(false);
 
             const fn = apiMap[key];
+            const actionsData = state.actionsData;
             return fn({}, {isLoad: true, closeErrorTips: true}).then((res) => {
                 // console.log(res.data);
                 const state = res.data.openState || res.data.state;
                 const whiteList = res.data.whiteList;
+
+                // 保存接口数据
+                actionsData[key] = res;
+                commit('updateActionsData', actionsData);
 
                 // 1-内测,白名单可访问,2-正式开放,用户可访问；3-关闭下架,任何人不可访问
                 if (+state === 2) return true;

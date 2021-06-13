@@ -50,10 +50,12 @@
             <view class="title-tips">
                 <!-- <view>支付成功</view> -->
                 <!-- <view>请到门诊一楼后大厅核酸采样点进行采样，7天内有效</view> -->
-                <view>支付成功，请到门诊一楼后大厅核酸采样点进行采样，7天内有效</view>
+                <view class="center">支付成功</view>
+                <view>请于当天上午8:00--12:00到医院进行核酸检测，具体地点以当天医院指引为准</view>
+                <!-- <view>支付成功，请到门诊一楼后大厅核酸采样点进行采样，7天内有效</view>
                 <view class="tt-text-2">核酸采样点上班时间：</view>
                 <view class="tt-text-2">上午08:00--12：00 </view>
-                <view class="tt-text-2">下午14:30--17:30</view>
+                <view class="tt-text-2">下午14:30--17:30</view> -->
             </view>
         </u-modal>
 
@@ -66,7 +68,7 @@
                 <view>请注意：</view>
                 <view class="tt-text-1">一、门诊核酸检测，面对人群为“愿检尽检”的自费人群，线上完成核算检测缴费。如是非自费人群的，请到现场开单，进行核酸检测。</view>
                 <view class="tt-text-1">二、发热人员，健康码为红色或者黄色人员以及来自疫情中、高风险地区人员，请到发热门诊就诊，不要在线上进行核酸检测缴费。</view>
-                <view class="tt-text-1">三、由于目前核酸检测数量比较大，所以结果出具时间会延时。</view>
+                <view class="tt-text-1 error">三、由于目前核酸检测数量比较大，所以结果出具时间会延时。</view>
             </view>
         </u-modal>
 
@@ -77,7 +79,7 @@
 <script lang="ts">
 
     import {Component, Vue, Ref} from 'vue-property-decorator';
-    import {Action} from 'vuex-class';
+    import {Action, State} from 'vuex-class';
     import {searchCovPackage, nucleicAcidPayment} from '@/apis';
     import pay from '@/components/pay.vue';
 
@@ -89,6 +91,7 @@
     export default class NucleicAcid extends Vue {
         @Ref('pay') readonly pay!: IOBJ;
         @Action('actionsIsUse') actionsIsUse!: TActionsIsUse;
+        @State('actionsData') readonly actionsData!: IOBJ;
 
         info: IOBJ | null = null;
         params: IOBJ = {};
@@ -187,8 +190,13 @@
         // 权限判断
         async init () {
             const isUse = await this.actionsIsUse('nucleicAcid');
+            // console.log(this.actionsData.nucleicAcid);
 
-            isUse ? this.getDetail() : (this.oneLoad = false);
+            if (isUse) {
+                this.getDetail();
+            } else {
+                this.oneLoad = false;
+            }
         }
 
         onLoad () {
@@ -295,5 +303,12 @@
     }
     .tt-text-2{
         padding-left: 40rpx;
+    }
+    .error{
+        color: $main-error-color;
+    }
+    .center{
+        text-align: center;
+        font-size: 32rpx;
     }
 </style>
