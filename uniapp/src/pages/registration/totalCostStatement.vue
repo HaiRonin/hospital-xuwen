@@ -130,12 +130,15 @@
                 statement = null;
             }
 
-            // if (statement) {
-            //     statement.totalMoney = statement.inHosList.reduce((total: number, item: IOBJ) => {
-            //         total = +utils.toFixed(total + item.feeItemAllAmount);
-            //     }, 0);
-            //     statement.totalMoney = utils.toFixed(statement.totalMoney || 0);
-            // }
+            if (statement) {
+                statement.inHosList.sort((a: IOBJ, b: IOBJ) => {
+                    return Date.parse(a.payDate) - Date.parse(b.payDate)
+                });
+                // statement.totalMoney = statement.inHosList.reduce((total: number, item: IOBJ) => {
+                //     total = +utils.toFixed(total + item.feeItemAllAmount);
+                // }, 0);
+                // statement.totalMoney = utils.toFixed(statement.totalMoney || 0);
+            }
 
             this.info = Object.assign({}, hosInfoItem, statement);
             // this.inHosList = [];

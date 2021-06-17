@@ -1,111 +1,115 @@
 <template>
-    <u-popup
-        v-model="show"
-        mode="bottom"
-        closeable
-        border-radius="14"
-    >
-        <view class="" v-if="curItem">
-            <scroll-view class="content" scroll-y>
-                <view class="flex-box align-center flex-wrap">
-                    <view class="flex-100 flex-box">
-                        <text class="text-1">条形码:</text>
-                        <text class="text-2" v-if="curItem.errorImg">条形码加载失败</text>
-                        <img class="code-img" v-else :src="curItem.codeImg"/>
+    <div>
+        <u-popup
+            v-model="show"
+            mode="bottom"
+            closeable
+            border-radius="14"
+        >
+            <view class="" v-if="curItem">
+                <scroll-view class="content" scroll-y>
+                    <view class="flex-box align-center flex-wrap">
+                        <view class="flex-100 flex-box">
+                            <text class="text-1">条形码:</text>
+                            <text class="text-2" v-if="curItem.errorImg">条形码加载失败</text>
+                            <img class="code-img" v-else :src="curItem.codeImg"/>
+                            <view class="btn"  @tap="lookGuide()" >指引查询</view>
+                        </view>
+                        <view class="flex-100">
+                            <text class="text-1">缴费编号:</text>
+                            <text class="text-2">{{curItem.hiFeeNo}}</text>
+                        </view>
+                        <view class="flex-100">
+                            <text class="text-1">收费员名称:</text>
+                            <text class="text-2">{{curItem.organdoctorId}}</text>
+                        </view>
+                        <view class="flex-50">
+                            <text class="text-1">患者编号:</text>
+                            <text class="text-2">{{curItem.patientNo}}</text>
+                        </view>
+                        <view class="flex-50">
+                            <text class="text-1">患者名称:</text>
+                            <text class="text-2">{{curItem.patientName}}</text>
+                        </view>
+                        <view class="flex-100">
+                            <text class="text-1">就诊科室名:</text>
+                            <text class="text-2">{{curItem.organName}}</text>
+                        </view>
+                        <view class="flex-50">
+                            <text class="text-1">挂号医生名称:</text>
+                            <text class="text-2">{{curItem.doctorName}}</text>
+                        </view>
+                        <view class="flex-100">
+                            <text class="text-1">处方号:</text>
+                            <text class="text-2">{{curItem.serialNumber}}</text>
+                        </view>
+                        <view class="flex-100">
+                            <text class="text-1">打印状态:</text>
+                            <text class="text-2">{{curItem.isPrint === '1' ? '已打印' : '未打印'}}</text>
+                        </view>
+                        <view class="flex-50">
+                            <text class="text-1">结算金额:</text>
+                            <text class="text-2">{{curItem.settleAmount}}元</text>
+                        </view>
+                        <view class="flex-50">
+                            <text class="text-1">自费金额:</text>
+                            <text class="text-2">{{curItem.patientAmount}}元</text>
+                        </view>
+                        <view class="flex-100">
+                            <text class="text-1">就诊日期:</text>
+                            <text class="text-2">{{curItem.visitDate}}</text>
+                        </view>
+                        <view class="flex-100">
+                            <text class="text-1">订单创建时间:</text>
+                            <text class="text-2">{{curItem.createTime}}</text>
+                        </view>
                     </view>
-                    <view class="flex-100">
-                        <text class="text-1">缴费编号:</text>
-                        <text class="text-2">{{curItem.hiFeeNo}}</text>
+                    <view class="z-title">清单</view>
+                    <view class="flex-box align-center flex-wrap child-box" v-for="(item, index) in curItem.hiFeeItem" :key="index">
+                        <view class="flex-100">
+                            <text class="text-3">名称:</text>
+                            <text class="text-4">{{item.feeItemName}}</text>
+                        </view>
+                        <!-- <view class="flex-100">
+                            <text class="text-3">执行科室:</text>
+                            <text class="text-4 font-b">{{item.OfficeName}}</text>
+                        </view> -->
+                        <view class="flex-50">
+                            <text class="text-3">单价:</text>
+                            <text class="text-4">{{item.feeItemAmount}}元</text>
+                        </view>
+                        <view class="flex-50">
+                            <text class="text-3">数量:</text>
+                            <text class="text-4">{{item.feeItemNum}}{{item.feeItemUnit}}</text>
+                        </view>
+                        <view class="flex-50">
+                            <text class="text-3">规格:</text>
+                            <text class="text-4">{{item.feeItemStandard}}</text>
+                        </view>
+                        <view class="flex-50">
+                            <text class="text-3">总价:</text>
+                            <text class="text-4">{{item.feeItemAllAmount}}元</text>
+                        </view>
                     </view>
-                    <view class="flex-100">
-                        <text class="text-1">收费员名称:</text>
-                        <text class="text-2">{{curItem.organdoctorId}}</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-1">患者编号:</text>
-                        <text class="text-2">{{curItem.patientNo}}</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-1">患者名称:</text>
-                        <text class="text-2">{{curItem.patientName}}</text>
-                    </view>
-                    <view class="flex-100">
-                        <text class="text-1">就诊科室名:</text>
-                        <text class="text-2">{{curItem.organName}}</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-1">挂号医生名称:</text>
-                        <text class="text-2">{{curItem.doctorName}}</text>
-                    </view>
-                    <view class="flex-100">
-                        <text class="text-1">门诊流水号:</text>
-                        <text class="text-2">{{curItem.serialNumber}}</text>
-                    </view>
-                    <view class="flex-100">
-                        <text class="text-1">打印状态:</text>
-                        <text class="text-2">{{curItem.isPrint === '1' ? '已打印' : '未打印'}}</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-1">结算金额:</text>
-                        <text class="text-2">{{curItem.settleAmount}}元</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-1">自费金额:</text>
-                        <text class="text-2">{{curItem.patientAmount}}元</text>
-                    </view>
-                    <view class="flex-100">
-                        <text class="text-1">就诊日期:</text>
-                        <text class="text-2">{{curItem.visitDate}}</text>
-                    </view>
-                    <view class="flex-100">
-                        <text class="text-1">订单创建时间:</text>
-                        <text class="text-2">{{curItem.createTime}}</text>
-                    </view>
+                </scroll-view>
+                <view class="z-btn-box rel" v-if="showBtn">
+                    <view class="red-color zbb-text-1">医院门诊缴费</view>
+                    <view>合计: <text class="red-color zbb-text-2">{{curItem.settleAmount}}元</text></view>
+                    <view class="zbb-btn abs flex-box align-center justify-center" @tap="playPay">支付</view>
                 </view>
-                <view class="z-title">清单</view>
-                <view class="flex-box align-center flex-wrap child-box" v-for="(item, index) in curItem.hiFeeItem" :key="index">
-                    <view class="flex-100">
-                        <text class="text-3">名称:</text>
-                        <text class="text-4">{{item.feeItemName}}</text>
-                    </view>
-                    <view class="flex-100">
-                        <text class="text-3">执行科室:</text>
-                        <text class="text-4 font-b">{{item.OfficeName}}</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-3">单价:</text>
-                        <text class="text-4">{{item.feeItemAmount}}元</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-3">数量:</text>
-                        <text class="text-4">{{item.feeItemNum}}{{item.feeItemUnit}}</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-3">规格:</text>
-                        <text class="text-4">{{item.feeItemStandard}}</text>
-                    </view>
-                    <view class="flex-50">
-                        <text class="text-3">总价:</text>
-                        <text class="text-4">{{item.feeItemAllAmount}}元</text>
-                    </view>
-                </view>
-            </scroll-view>
-            <view class="z-btn-box rel" v-if="showBtn">
-                <view class="red-color zbb-text-1">医院门诊缴费</view>
-                <view>合计: <text class="red-color zbb-text-2">{{curItem.settleAmount}}元</text></view>
-                <view class="zbb-btn abs flex-box align-center justify-center" @tap="playPay">支付</view>
             </view>
-        </view>
 
-        <pay ref="pay" :request="payRequest" @paySuccess="paySuccess"/>
-    </u-popup>
+            <pay ref="pay" :request="payRequest" @paySuccess="paySuccess"/>
+        </u-popup>
+
+    </div>
 </template>
 
 <script lang="ts">
 
     import {Component, Vue, Ref, Inject} from 'vue-property-decorator';
     import pay from '@/components/pay.vue';
-    import {ordeNewPayment, createdBarCode} from '@/apis';
+    import {ordeNewPayment, createdBarCode, queryDrugWindowsInfo} from '@/apis';
 
     @Component({
         components: {
@@ -121,15 +125,23 @@
         curItem: IOBJ | null = null;
         payRequest = ordeNewPayment;
 
+        lookGuide () {
+            const curItem = this.curItem as IOBJ;
+            utils.link(`/pages/registration/guideContent?serialNumber=${curItem.serialNumber}`);
+        }
+
         async openFun (item: IOBJ) {
             item = utils.jsCopyObj(item);
 
-            const res = await createdBarCode({CardNo: item.hiFeeNo}, {closeErrorTips: true, isLoad: true}).catch(() => {
-                item.errorImg = true;
-                return Promise.reject();
-            });
+            try {
+                const res = await createdBarCode({CardNo: item.hiFeeNo}, {closeErrorTips: true, isLoad: true}).catch(() => {
+                    item.errorImg = true;
+                    return Promise.reject();
+                });
 
-            item.codeImg = 'data:image/png;base64,' + res.msg;
+                item.codeImg = 'data:image/png;base64,' + res.msg;
+            } catch (error) {
+            }
 
             this.curItem = item;
             // this.showBtn = this.curItem.status === '0';
@@ -218,5 +230,16 @@
 
     .code-img{
         height: 160rpx;
+    }
+
+    .btn {
+        margin-top: auto;
+        margin-left: auto;
+        color: $main-error-color;
+        border: 2rpx solid $main-error-color;
+        padding: 6rpx 10rpx;
+        line-height: initial;
+        border-radius: 10rpx;
+        margin-right: 80rpx;
     }
 </style>

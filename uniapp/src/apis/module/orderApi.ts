@@ -15,6 +15,13 @@ export const queryPaymentRecordList: TApi = (params = {}, options = {}) => {
     return ajax.apiPost(url, params, options);
 };
 
+// 1.1.1查询指引信息
+export const queryDrugWindowsInfo: TApi = (params = {}, options = {}) => {
+    const url = '/his/request';
+    params.api = '/queryDrugWindowsInfo';
+    return ajax.apiPost(url, params, options);
+};
+
 // 1.4.3状态查询
 export const queryPaymentRecordStatus: TApi = (params = {}, options = {}) => {
     const url = '/his/request';

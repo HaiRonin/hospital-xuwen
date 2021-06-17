@@ -29,7 +29,7 @@
                 <view class="text-2">{{item.chekckdoctorName}}</view>
             </view>
             <view class="flex-box align-center justify-s-b">
-                <view class="text-1">送检医生:</view>
+                <view class="text-1">审核医生:</view>
                 <view class="text-2">{{item.doctorName}}</view>
             </view>
             <view class="flex-box align-center justify-s-b">
@@ -64,7 +64,7 @@
         },
         filters: {
             f_reportStatus: (val: any) => globalConfig.gFilter(val, globalConfig.reportStatus),
-            f_reportType: (val: any) => globalConfig.gFilter(val, globalConfig.reportType),
+            f_reportType: (val: any) => globalConfig.gFilter(val, globalConfig.reportType2),
         }
     })
     export default class Index extends Vue {

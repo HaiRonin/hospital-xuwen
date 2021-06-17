@@ -268,6 +268,15 @@
                         // #endif
                         "navigationBarTitleText": "住院信息"
                     }
+                },
+                {
+                    "path": "guideContent",
+                    "style": {
+                        // #ifdef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "指引查询"
+                    }
                 }
             ]
         },

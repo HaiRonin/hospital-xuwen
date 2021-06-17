@@ -80,6 +80,16 @@ export const reportType = [
     {value: '14', text: '其它'},
 ];
 
+// 报告的各种类型2
+export const reportType2 = [
+    {value: '1', text: '检验'},
+    {value: '2', text: 'B超'},
+    {value: '3', text: '放射影像'},
+    {value: '4', text: '内镜'},
+    {value: '5', text: '病理'},
+    {value: '6', text: '心电图'},
+];
+
 // 报告的各种状态
 export const reportStatus = [
     {value: '0', text: '未出报告'},

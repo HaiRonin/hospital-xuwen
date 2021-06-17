@@ -31,6 +31,7 @@ declare module globalConfig {
 
     const gFilter: (val: any, list: IOBJ[], key?: string | 'value') => string;
     const reportType: IOBJ[];
+    const reportType2: IOBJ[];
     const reportStatus: IOBJ[];
     const regStatus: IOBJ[];
     const payType: IOBJ[];

@@ -17,7 +17,7 @@
                 <view class="text-2 main-color">{{item.status === '1' ? '已缴费' : '未缴费'}}</view>
             </view>
             <view class="flex-box align-center item">
-                <view class="text-1">类型:</view><view class="text-2">{{item.organName}}</view>
+                <view class="text-1">就诊科室:</view><view class="text-2">{{item.organName}}</view>
             </view>
             <view class="flex-box align-center item">
                 <view class="text-1">总金额:</view><view class="text-2">{{item.patientAmount}}元</view>
