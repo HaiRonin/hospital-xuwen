@@ -29,7 +29,7 @@ public class WeixinLoginUtils {
 
     public static String thirtypartyUserLogin(HttpServletRequest request, HttpServletResponse response) {
         // 微信，alipay登录入口
-        String openId = CookieUtils.getCookieValue(request, OPENID_TOKEN);
+        String openId = getOpenIdFromCookie(request, response);
 
         LOG.info(">>>>>>>>>>>>>>>通过cookie获取openId:" + openId);
 
