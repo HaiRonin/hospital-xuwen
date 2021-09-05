@@ -284,8 +284,12 @@ export const removeStorage: TRemoveStorage = (key) => {
     return uni.removeStorageSync(key);
 };
 
-export const clearStorage: TClearStorage = () => {
-    return uni.clearStorageSync();
+export const clearStorage: TClearStorage = (key) => {
+    if (zEmpty(key)) {
+        return uni.clearStorageSync();
+    } else {
+        return uni.removeStorageSync(key as string);
+    }
 };
 
 export const confirm: TConfirm = ({content = '', title = '提示', cancelText = '取消', confirmText = '确认', showCancel = true} = {}) => {

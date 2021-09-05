@@ -88,7 +88,7 @@ type TZEmpty = (str: any) => boolean;
 type TGetStorage = (str: string) => any;
 type TSetStorage = (str: string, val: any) => void;
 type TRemoveStorage = (str: string) => void;
-type TClearStorage = () => void;
+type TClearStorage = (key?: string) => void;
 type TConfirm = (duration: IConfirmData) => Promise<boolean>;
 type IGetBirthdayFromIdCard = (idCard: string) => string;
 type IGetSexIdCard = (idCard: string) => string;

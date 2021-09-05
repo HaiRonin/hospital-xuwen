@@ -21,15 +21,21 @@ const wxAuth = {
         }
     },
     async isCode (options: IOBJ, vueCompon: IOBJ) {
-        const code = options.code;
+        const {code, ...query} = options;
         if (utils.zEmpty(code)) return false;
 
         // code 换取openId 存到本地
         const res = await getOpenId({code}, {isLoad: true});
-        utils.setStorage('openId', res.data.openId);
+        const openId = res.data.openId;
+        if (utils.zEmpty(openId)) {
+            utils.toast('微信参数获取失败,请手动刷新重试');
+        } else {
+            utils.setStorage('openId', openId);
+            const r = vueCompon.$route;
+            vueCompon.$router.replace({path: r.path, query: query});
+            window.location.reload();
+        }
 
-        const r = vueCompon.$route;
-        vueCompon.$router.replace({path: r.path, query: {}});
         return true;
     },
     isOpenId () {
@@ -107,7 +113,8 @@ const obj = {
                 return;
             }
             WeixinJSBridge.invoke(
-                'getBrandWCPayRequest', {
+                'getBrandWCPayRequest',
+                {
                     appId: data.appId, // 公众号名称，由商户传入
                     timeStamp: data.timeStamp, // 时间戳，自1970年以来的秒数
                     nonceStr: data.nonceStr, // 随机串
@@ -122,9 +129,23 @@ const obj = {
                         rel(res);
                     } else {
                         rej(res);
-                        utils.toast('支付失败2');
+                        console.log(res);
+                        // utils.toast('支付失败2');
+                        // if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+
+                        const flag = confirm('支付失败，请点确定进行重试');
+
+                        if (flag) {
+                            document.cookie = 'OPENID_TOKEN=;path=/;expires=Mon, 28 Jun 1999 13:28:06 GMT';
+                            utils.clearStorage('openId');
+                            window.location.reload();
+                        } else {
+                            // utils.toast('支付失败2');
+                            utils.hideLoad();
+                        }
                     }
-                });
+                }
+            );
         });
     },
 };
