@@ -68,6 +68,7 @@ const get: TMyGet = (url, params, options) => {
             timeout: 15000,
             header: {
                 'Content-Type': contentType,
+                'Access-Control-Allow-Origin': '*'
             },
             success (res) {
                 const data = res.data as IMyResponse;

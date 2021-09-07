@@ -15,9 +15,10 @@
         </view>
         <view class="sort-block" v-if="modalShow">
             <view class="title-3">筛选条件</view>
-            <view @tap="timeShow = true" class="title-1">
-                <template v-if="params.startDate && params.endDate">{{params.startDate}}~{{params.endDate}}</template>
-                <text v-else class="color-grey">请选择时间范围</text>
+            <view class="main-color flex-box align-center flex-1 title-box" >
+                <view class="flex-1 title-1" @tap="timeStartShow = true">{{params.startDate || '开始时间'}}</view>
+                <view class="m-l-10 m-r-10">~</view>
+                <view class="flex-1 title-1" @tap="timeEndShow = true">{{params.endDate || '结束时间'}}</view>
             </view>
             <view class="flex-box align-center">
                 <view class="title-2">报告类型</view>
@@ -33,7 +34,8 @@
             <u-icon name="arrow-down" v-else class="z-icon"></u-icon>
         </view>
 
-        <u-calendar v-model="timeShow" active-bg-color="#299ff7" mode="range" @change="timeChange" class="z-calendar"></u-calendar>
+        <u-calendar v-model="timeStartShow" active-bg-color="#299ff7" mode="date" @change="timeStartChange" class="z-calendar"></u-calendar>
+        <u-calendar v-model="timeEndShow" active-bg-color="#299ff7" mode="date" @change="timeEndChange" class="z-calendar"></u-calendar>
     </view>
 </template>
 
@@ -46,7 +48,8 @@
         @Model('change', {type: Boolean}) readonly modalShow!: boolean;
 
         // modalShow = true;
-        timeShow = false;
+        timeStartShow = false;
+        timeEndShow = false;
         params: IOBJ = {
             xType: '1',
             endDate: '',
@@ -58,11 +61,18 @@
             {text: '检查', value: '2'},
         ];
 
-        timeChange (item: IOBJ) {
+        timeStartChange (item: IOBJ) {
             // console.log(item);
             const params = this.params;
-            params.startDate = item.startDate;
-            params.endDate = item.endDate;
+            params.startDate = item.result;
+            // params.endDate = item.endDate;
+        }
+
+        timeEndChange (item: IOBJ) {
+            // console.log(item);
+            const params = this.params;
+            // params.startDate = item.startDate;
+            params.endDate = item.result;
         }
 
         controlModal () {
@@ -116,13 +126,18 @@
         font-size: 28rpx;
     }
 
+    .title-box{
+        margin-bottom: 80rpx;
+        // margin-left: 10rpx;
+        // margin-right: 10rpx;
+    }
+
     .title-1{
         text-align: center;
         line-height: 80rpx;
         border: $border-line;
         border-radius: 50rpx;
         font-size: 32rpx;
-        margin-bottom: 80rpx;
         border-color:$main-color;
     }
 
