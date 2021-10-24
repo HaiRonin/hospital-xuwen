@@ -25,7 +25,7 @@
             // {text: '医院简介', url: '/pages/info/hospitalntroduction'},
             // {text: '专家介绍', url: '/pages/info/expertIntroduction'},
             {text: '科室介绍', url: '/pages/info/departmentIsIntroduced'},
-            {text: '药品/非药品查询', url: '/pages/info/drugSearch'},
+            {text: '药品/医疗服务/医用耗材查询', url: '/pages/info/drugSearch'},
         ];
 
         link = link;

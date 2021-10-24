@@ -102,7 +102,7 @@
                         // #ifdef H5
                         "navigationStyle": "custom",
                         // #endif
-                        "navigationBarTitleText": "药品/非药品查询",
+                        "navigationBarTitleText": "药品/医疗服务/医用耗材",
                         "enablePullDownRefresh": true
                     }
                 },

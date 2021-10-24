@@ -5,12 +5,12 @@
                 class="sort-btn flex-box align-center justify-center"
                 @tap="seachOpen = true;"
             >
-                <view class="sort-text">{{params.seachType === 1 ? '药 品' : '非药品'}}</view>
+                <view class="sort-text">{{sortText}}</view>
                 <u-icon name="arrow-down" class="item-icon"></u-icon>
             </view>
 
             <u-search
-                placeholder="请输入搜索关键词"
+                placeholder="请输入项目的拼音首字母"
                 shape="round"
                 clearabled
                 show-action
@@ -90,8 +90,16 @@
 
         sort: IOBJ[] = [
             {text: '药品', value: 1},
-            {text: '非药品', value: 2},
+            {text: '医疗服务', value: 2},
+            {text: '医用耗材', value: 3},
         ];
+
+        get sortText () {
+            // this.params.seachType
+            // globalConfig.gFilter(this.params.seachType, this.sort)
+
+            return globalConfig.gFilter(this.params.seachType, this.sort);
+        }
 
         handleItem (item: IOBJ) {
             item.oldPrice = item.price;
